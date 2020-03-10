@@ -1,0 +1,11 @@
+{
+  "test": "test",
+  "favorites_str": "Favorites",
+  "allTrending_str": "All Trending",
+  "myOrders_str": "My Orders",
+  "help&support_str": "Help & Support",
+  "aboutMomentoo_str": "About Momentoo",
+  "language_str": "Language",
+  "poweredByLine_str": "Powered by line",
+  "deliveryInAMoment_str": "Delivery in A Moment"
+}
