@@ -14,6 +14,7 @@ import 'package:momentoo/features/favorites/favorites_screen.dart';
 import 'package:momentoo/features/forget_password/forgetPassword_screen.dart';
 import 'package:momentoo/features/help_support/helpSupport_screen.dart';
 import 'package:momentoo/features/home/home_screen.dart';
+import 'package:momentoo/features/invoice/invoice_screen.dart';
 import 'package:momentoo/features/language/lang_screen.dart';
 import 'package:momentoo/features/my_orders/myOrders_screen.dart';
 import 'package:momentoo/features/near_by/currentMap_screen.dart';
@@ -22,6 +23,7 @@ import 'package:momentoo/features/near_by/manuallyMap_screen.dart';
 import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
+import 'package:momentoo/features/order_details/orderDetails_screen.dart';
 import 'package:momentoo/features/privacy_policy/privacy_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
@@ -32,13 +34,13 @@ import 'package:momentoo/features/shopping_cart/cart_screen.dart';
 import 'package:momentoo/features/sign_in/signIn_screen.dart';
 import 'package:momentoo/features/sign_up/signUp_screen.dart';
 import 'package:momentoo/features/terms_conditions/termsConditions_screen.dart';
-import 'package:momentoo/features/track_order/trackOrder_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStores.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:provider/provider.dart';
 
 import 'features/edit_address/editAddress_screen.dart';
@@ -110,7 +112,7 @@ class _MomentooAppState extends State<MomentooApp> {
             theme: ThemeData(
               primarySwatch: Colors.teal,
             ),
-            home: SignInScreen(),
+            home: _getStartupScreen(),
             routes: {
               '/langScreen': (_) => LangScreen(),
               '/adsScreen': (_) => AdsScreen(),
@@ -129,7 +131,6 @@ class _MomentooAppState extends State<MomentooApp> {
               '/privacyScreen': (_) => PrivacyScreen(),
               '/profileScreen': (_) => ProfileScreen(),
               '/termsConditionsScreen': (_) => TermsConditionsScreen(),
-              '/trackOrderScreen': (_) => TrackOrderScreen(),
               '/nearByScreen': (_) => NearByScreen(),
               '/cartScreen': (_) => CartScreen(),
               '/settingsScreen': (_) => SettingsScreen(),
@@ -144,10 +145,20 @@ class _MomentooAppState extends State<MomentooApp> {
               '/filterScreen': (_) => FilterScreen(),
               '/trendingStoresScreen': (_) => TrendingStoresScreen(),
               '/changePasswordScreen': (_) => ChangePasswordScreen(),
+              '/invoiceScreen': (_) => InvoiceScreen(),
+              '/orderDetailsScreen': (_) => OrderDetailsScreen(),
             },
           );
         },
       ),
     );
+  }
+
+  Widget _getStartupScreen() {
+    var prefsService = locator<PrefsService>();
+    if (!prefsService.hasChosenLanguage) {
+      return LangScreen();
+    }
+    return AdsScreen();
   }
 }

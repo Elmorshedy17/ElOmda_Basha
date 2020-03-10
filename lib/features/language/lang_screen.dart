@@ -48,8 +48,7 @@ class LangScreen extends StatelessWidget {
                           appLanguage.changeLanguage(Locale('en'));
                           locator<PrefsService>().appLanguage = 'en';
                           locator<PrefsService>().hasChosenLanguage = true;
-                          Navigator.pushReplacementNamed(
-                              context, '/homeScreen');
+                          Navigator.pushReplacementNamed(context, '/adsScreen');
                         }),
                   ),
                   ButtonTheme(
@@ -71,8 +70,7 @@ class LangScreen extends StatelessWidget {
                           appLanguage.changeLanguage(Locale('ar'));
                           locator<PrefsService>().appLanguage = 'ar';
                           locator<PrefsService>().hasChosenLanguage = true;
-                          Navigator.pushReplacementNamed(
-                              context, '/homeScreen');
+                          Navigator.pushReplacementNamed(context, '/adsScreen');
                         }),
                   ),
                 ],

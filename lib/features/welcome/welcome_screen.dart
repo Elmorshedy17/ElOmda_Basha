@@ -163,7 +163,7 @@ class _Welcome extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/langScreen');
+                    Navigator.of(context).pushReplacementNamed('/signInScreen');
                   },
                 )
               : InkWell(
@@ -179,7 +179,8 @@ class _Welcome extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed('/langScreen');
+                    locator<PrefsService>().hasWelcomeSeen = true;
+                    Navigator.of(context).pushReplacementNamed('/signInScreen');
                   },
                 ),
         ),

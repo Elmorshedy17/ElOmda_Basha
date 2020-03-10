@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class AdsScreen extends StatelessWidget {
   @override
@@ -33,7 +35,14 @@ class AdsScreen extends StatelessWidget {
                       fontFamily: 'en',
                       fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  if (locator<PrefsService>().hasWelcomeSeen) {
+                    Navigator.of(context).pushReplacementNamed('/homeScreen');
+                  } else {
+                    Navigator.of(context)
+                        .pushReplacementNamed('/welcomeScreen');
+                  }
+                }),
           ),
         )
       ],

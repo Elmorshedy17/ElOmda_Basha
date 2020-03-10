@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
-import 'package:momentoo/shared/services/prefs_service.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   @override

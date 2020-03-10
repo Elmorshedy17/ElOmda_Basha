@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class InvoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainBackground(

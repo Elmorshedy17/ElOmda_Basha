@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class SignInScreen extends StatelessWidget {
   final validationManager = locator<SignInValidationManager>();
@@ -158,7 +159,8 @@ class SignInScreen extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.of(context).pushNamed('/homeScreen');
+                            Navigator.of(context)
+                                .pushReplacementNamed('/homeScreen');
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
