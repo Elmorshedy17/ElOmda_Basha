@@ -1,13 +1,150 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/favorites/favorites_widgets/favoritesContent.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends StatefulWidget {
+  @override
+  _FavoritesScreenState createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  int pageIndex = 0;
+  PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      initialPage: 0,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainBackground(
       height: MediaQuery.of(context).size.height * 0.3,
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          centerTitle: true,
+          title: Text(
+            'Favorites',
+            // AppLocalizations.of(context).translate('test'),
+            style: TextStyle(color: Colors.white),
+          ),
+          leading: InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  Icons.arrow_back_ios,
+                  size: 15,
+                ),
+                Text('Back'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/notificationsScreen');
+              },
+            ),
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            favoritesCategoryList(),
+            Expanded(
+              child: PageView.builder(
+                  onPageChanged: (index) {
+                    pageIndex = index;
+                  },
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: favoritesContent.length,
+                  itemBuilder: (_, index) {
+                    return favoritesContent[index];
+                  }),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget favoritesCategoryList() {
+    return Container(
+      height: 40,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+        scrollDirection: Axis.horizontal,
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+            ),
+            child: RaisedButton(
+                color: pageIndex == index ? Colors.white24 : Colors.white54,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: Colors.white, width: pageIndex == index ? 1 : 0.0),
+                  borderRadius: BorderRadius.circular(9),
+                ),
+                elevation: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: index == 0
+                      ? Text(
+                          'Restaurants',
+                          style: TextStyle(
+                              color: pageIndex == index
+                                  ? Colors.white
+                                  : Colors.teal.shade100),
+                        )
+                      : index == 1
+                          ? Text(
+                              'Flowers',
+                              style: TextStyle(
+                                  color: pageIndex == index
+                                      ? Colors.white
+                                      : Colors.teal.shade100),
+                            )
+                          : Text(
+                              'Pharmacies',
+                              style: TextStyle(
+                                  color: pageIndex == index
+                                      ? Colors.white
+                                      : Colors.teal.shade100),
+                            ),
+                ),
+                onPressed: () async {
+                  if (_pageController.hasClients) {
+                    setState(() {
+                      _pageController.jumpToPage(index);
+                    });
+                  }
+                }),
+          );
+        },
       ),
     );
   }
