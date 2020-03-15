@@ -60,25 +60,6 @@ class AboutScreen extends StatelessWidget {
             ))
           ],
         ),
-        bottomNavigationBar: ListTile(
-          title: ButtonTheme(
-            minWidth: MediaQuery.of(context).size.width * 0.8,
-            child: RaisedButton(
-              color: Colors.redAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-                side: BorderSide(color: Colors.white24),
-              ),
-              child: Text(
-                'Join us',
-                style: TextStyle(
-                  color: Colors.white70,
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ),
       ),
     );
   }

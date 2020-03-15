@@ -15,6 +15,8 @@ import 'package:momentoo/features/forget_password/forgetPassword_screen.dart';
 import 'package:momentoo/features/help_support/helpSupport_screen.dart';
 import 'package:momentoo/features/home/home_screen.dart';
 import 'package:momentoo/features/invoice/invoice_screen.dart';
+import 'package:momentoo/features/join_us/joinUsFirst_screen.dart';
+import 'package:momentoo/features/join_us/joinUsSecond_screen.dart';
 import 'package:momentoo/features/language/lang_screen.dart';
 import 'package:momentoo/features/my_orders/myOrders_screen.dart';
 import 'package:momentoo/features/near_by/currentMap_screen.dart';
@@ -112,6 +114,7 @@ class _MomentooAppState extends State<MomentooApp> {
             theme: ThemeData(
               primarySwatch: Colors.teal,
             ),
+//            home: StoreDetailsScreen(),
             home: _getStartupScreen(),
             routes: {
               '/langScreen': (_) => LangScreen(),
@@ -147,6 +150,8 @@ class _MomentooAppState extends State<MomentooApp> {
               '/changePasswordScreen': (_) => ChangePasswordScreen(),
               '/invoiceScreen': (_) => InvoiceScreen(),
               '/orderDetailsScreen': (_) => OrderDetailsScreen(),
+              '/joinUsFirstScreen': (_) => JoinUsFirstScreen(),
+              '/joinUsSecondScreen': (_) => JoinUsSecondScreen(),
             },
           );
         },

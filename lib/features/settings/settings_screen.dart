@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
-import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/main_drawer.dart';
-import 'package:momentoo/shared/services/prefs_service.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -154,6 +152,28 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 4),
+                    child: ButtonTheme(
+                      minWidth: MediaQuery.of(context).size.width * 0.8,
+                      child: RaisedButton(
+                        color: Colors.teal.shade900,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: BorderSide(color: Colors.white24),
+                        ),
+                        child: Text(
+                          'Join us',
+                          style: TextStyle(
+                            color: Colors.white70,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/joinUsFirstScreen');
+                        },
                       ),
                     ),
                   ),

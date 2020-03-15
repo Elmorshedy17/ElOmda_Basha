@@ -20,14 +20,16 @@ class SignUpScreen extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
+          // padding: MediaQuery.of(context).viewInsets,
           child: Image.asset(
             'assets/images/sign_in.png',
             fit: BoxFit.fill,
           ),
         ),
         Scaffold(
+          // resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
-          resizeToAvoidBottomPadding: true,
+          // resizeToAvoidBottomPadding: true,
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(

@@ -92,13 +92,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.8"
-  dropdown_formfield:
-    dependency: "direct main"
-    description:
-      name: dropdown_formfield
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   email_validator:
     dependency: "direct main"
     description:
@@ -259,6 +252,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  image_picker:
+    dependency: "direct main"
+    description:
+      name: image_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.3+4"
   intl:
     dependency: transitive
     description:
