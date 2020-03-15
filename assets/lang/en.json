@@ -7,5 +7,19 @@
   "aboutMomentoo_str": "About Momentoo",
   "language_str": "Language",
   "poweredByLine_str": "Powered by line",
-  "deliveryInAMoment_str": "Delivery in A Moment"
+  "deliveryInAMoment_str": "Delivery in A Moment",
+  "Invoice_str": "Invoice",
+  "Order_str": "Order",
+  "Order_No_str": "No.#",
+  "total_Str": "Total",
+  "my_orders_Str": "My Orders",
+  "Order_Number_str": "Order Number",
+  "Track_your_order_str":"Track your order",
+  "Order_details_str":"Order Details",
+  "Ordered_successfully_str":"Ordered Successfully",
+  "Preparing_str":"Preparing",
+  "On_the_way_str":"On the way",
+  "Delivered_str":"Delivered",
+  "Rate_vendor_str":"Rate Vendor",
+  "Choose_Country_str":"Choose Country"
 }

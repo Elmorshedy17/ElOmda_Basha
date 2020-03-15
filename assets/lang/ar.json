@@ -7,5 +7,28 @@
   "aboutMomentoo_str": "حول مومينتو",
   "language_str": "اللغة",
   "poweredByLine_str": "مدعوم بواسطة لاين",
-  "deliveryInAMoment_str": "التوصيل في لحظة"
+  "deliveryInAMoment_str": "التوصيل في لحظة",
+  "Invoice_str": "الفاتورة",
+  "Order_str": "طلب",
+  "Order_No_str": "رقم.#",
+  "total_Str": "الاجمالي",
+  "my_orders_Str": "طلباتي",
+  "Order_Number_str": "رقم الاوردر",
+  "Track_your_order_str":"تتبع طلبك",
+  "Order_details_str":"تفاصيل الطلب",
+  "Ordered_successfully_str":"تم الطلب",
+  "Preparing_str":"تم التجهيز",
+  "On_the_way_str":"في الطريق",
+  "Delivered_str":"تم التوصيل",
+  "Rate_vendor_str":"تقييم البائع",
+  "Choose_Country_str":"اختر بلد"
+
+
+
+
+
+
+
+
+
 }
