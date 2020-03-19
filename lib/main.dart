@@ -37,6 +37,7 @@ import 'package:momentoo/features/settings/settings_screen.dart';
 import 'package:momentoo/features/shopping_cart/cart_screen.dart';
 import 'package:momentoo/features/sign_in/signIn_screen.dart';
 import 'package:momentoo/features/sign_up/signUp_screen.dart';
+import 'package:momentoo/features/single_product/SingleProduct.dart';
 import 'package:momentoo/features/terms_conditions/termsConditions_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStores.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
@@ -117,7 +118,7 @@ class _MomentooAppState extends State<MomentooApp> {
               primarySwatch: Colors.teal,
             ),
 //            home: StoreDetailsScreen(),
-            home: Successful(),
+            home: SingleProduct(),
             routes: {
               '/langScreen': (_) => LangScreen(),
               '/adsScreen': (_) => AdsScreen(),
@@ -154,6 +155,7 @@ class _MomentooAppState extends State<MomentooApp> {
               '/orderDetailsScreen': (_) => OrderDetailsScreen(),
               '/joinUsFirstScreen': (_) => JoinUsFirstScreen(),
               '/joinUsSecondScreen': (_) => JoinUsSecondScreen(),
+              '/singleProduct': (_) => SingleProduct(),
             },
           );
         },

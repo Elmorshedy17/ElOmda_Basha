@@ -45,6 +45,7 @@
   "Jadda_str": "الجادة",
   "Apartment_Office_name": "الشقة/اسم المكتب",
   "Delivery_instructions": "تعليمات التوصيل",
+  "instructions_str": "التعليمات",
   "optional_Str": "اختياري",
   "Address_Details_str": "تفاصيل العنوان",
   "Kuwait_str": "الكويت",
@@ -56,7 +57,17 @@
   "failed_str": "فشلت",
   "Rate_us_str": "قيمنا",
   "Done_str": "تمت",
-  "Try_again_str": "حاول مجددا "
+  "Try_again_str": "حاول مجددا ",
+  "Description_str": "الوصف",
+  "Extras_str": "زيادات",
+  "Quantity_str": "الكمية",
+  "item_str": "وحدة",
+  "Add_to_order_str": "اضف للطلب",
+  "Kd_str": "د.ك"
+
+
+
+
 
 
 

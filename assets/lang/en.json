@@ -45,6 +45,7 @@
   "Jadda_str": "Jadda",
   "Apartment_Office_name": "Apartment/Office Name",
   "Delivery_instructions": "Delivery instructions",
+  "instructions_str": "Instructions",
   "optional_Str": "optional",
   "Address_Details_str": "Address Details",
   "Kuwait_str": "Kuwait",
@@ -56,6 +57,12 @@
   "failed_str": "Failed",
   "Rate_us_str": "Rate Us",
   "Done_str": "Done",
-  "Try_again_str": "Try Again"
+  "Try_again_str": "Try Again",
+  "Description_str": "Description",
+  "Extras_str": "Extras",
+  "Quantity_str": "Quantity",
+  "item_str": "item",
+  "Add_to_order_str": "Add to order",
+  "Kd_str": "KD"
 
 }

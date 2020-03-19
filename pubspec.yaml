@@ -47,6 +47,7 @@ dependencies:
   geocoder: ^0.2.1
   image_picker: ^0.6.3+4
   gzx_dropdown_menu: ^1.0.1
+  share: ^0.6.3+6
 
 
 dev_dependencies:
