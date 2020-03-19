@@ -51,6 +51,11 @@
   "back_str": "Back",
   "cart_Str": "Cart",
   "additional_Fees_str" : "additional Fees",
-  "Checkout_str": "Checkout"
+  "Checkout_str": "Checkout",
+  "Successful_str": "Successful",
+  "failed_str": "Failed",
+  "Rate_us_str": "Rate Us",
+  "Done_str": "Done",
+  "Try_again_str": "Try Again"
 
 }

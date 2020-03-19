@@ -27,6 +27,7 @@ import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
 import 'package:momentoo/features/order_details/orderDetails_screen.dart';
+import 'package:momentoo/features/payment/successful_screen.dart';
 import 'package:momentoo/features/privacy_policy/privacy_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
@@ -116,7 +117,7 @@ class _MomentooAppState extends State<MomentooApp> {
               primarySwatch: Colors.teal,
             ),
 //            home: StoreDetailsScreen(),
-            home: CartScreen(),
+            home: Successful(),
             routes: {
               '/langScreen': (_) => LangScreen(),
               '/adsScreen': (_) => AdsScreen(),

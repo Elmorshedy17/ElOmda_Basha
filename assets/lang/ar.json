@@ -51,7 +51,14 @@
   "back_str": "للخلف",
   "cart_Str": "الكارت",
   "additional_Fees_str" : "تكاليف اضافيه",
-  "Checkout_str": "فحص"
+  "Checkout_str": "فحص",
+  "Successful_str": "تمت بنجاح",
+  "failed_str": "فشلت",
+  "Rate_us_str": "قيمنا",
+  "Done_str": "تمت",
+  "Try_again_str": "حاول مجددا "
+
+
 
 
 
