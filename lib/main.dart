@@ -27,6 +27,7 @@ import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
 import 'package:momentoo/features/order_details/orderDetails_screen.dart';
 import 'package:momentoo/features/privacy_policy/privacy_screen.dart';
+//import 'package:momentoo/features/product_details/productDetails_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
@@ -35,6 +36,7 @@ import 'package:momentoo/features/settings/settings_screen.dart';
 import 'package:momentoo/features/shopping_cart/cart_screen.dart';
 import 'package:momentoo/features/sign_in/signIn_screen.dart';
 import 'package:momentoo/features/sign_up/signUp_screen.dart';
+import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
 import 'package:momentoo/features/terms_conditions/termsConditions_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStores.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
@@ -114,7 +116,7 @@ class _MomentooAppState extends State<MomentooApp> {
             theme: ThemeData(
               primarySwatch: Colors.teal,
             ),
-//            home: StoreDetailsScreen(),
+//            home: ProductDetailsScreen(),
             home: _getStartupScreen(),
             routes: {
               '/langScreen': (_) => LangScreen(),
@@ -152,6 +154,8 @@ class _MomentooAppState extends State<MomentooApp> {
               '/orderDetailsScreen': (_) => OrderDetailsScreen(),
               '/joinUsFirstScreen': (_) => JoinUsFirstScreen(),
               '/joinUsSecondScreen': (_) => JoinUsSecondScreen(),
+              '/StoreDetailsScreen': (_) => StoreDetailsScreen(),
+//              '/productDetailsScreen': (_) => ProductDetailsScreen(),
             },
           );
         },
