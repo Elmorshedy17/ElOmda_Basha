@@ -116,7 +116,7 @@ class _MomentooAppState extends State<MomentooApp> {
             theme: ThemeData(
               primarySwatch: Colors.teal,
             ),
-//            home: StoreDetailsScreen(),
+//            home: ProductDetailsScreen(),
             home: _getStartupScreen(),
             routes: {
               '/langScreen': (_) => LangScreen(),

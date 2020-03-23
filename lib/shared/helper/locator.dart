@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
+import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
@@ -44,4 +45,7 @@ Future<void> setupLocator() async {
   // HelpSupportValidationManager
   locator.registerLazySingleton<HelpSupportValidationManager>(
       () => HelpSupportValidationManager());
+  // ProductDetailsCounterManager
+  locator.registerLazySingleton<ProductDetailsCounterManager>(
+      () => ProductDetailsCounterManager());
 }
