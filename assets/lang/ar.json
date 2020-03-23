@@ -21,7 +21,62 @@
   "On_the_way_str":"في الطريق",
   "Delivered_str":"تم التوصيل",
   "Rate_vendor_str":"تقييم البائع",
-  "Choose_Country_str":"اختر بلد"
+  "Delivery_str":"Delivery",
+  "PickUp_str":"Pick Up",
+  "Choose_Country_str":"اختر بلد",
+  "addresses_str":"العناوين",
+  "first_name_str":"الاسم الاول",
+  "last_name_str":"الاسم الاخير",
+  "965_phone_number_str":"+965 |  رقم الهاتف",
+  "email_str": "البريد الالكتروني",
+  "User_details_str":"بيانات المستخدم",
+  "check_str":"فحص",
+  "Discount_code_str":"كود الخصم",
+  "subtotal_str":"المجموع",
+  "Discount_str":"الخصم",
+  "total_str":"الاجمالي",
+  "Pay_now_Str": "ادفع الان",
+  "City_Str":"المدينة",
+  "Block_Str": "الحي",
+  "Street_str": "الشارع",
+  "Street_two_str": "شارع 2",
+  "House_building_str":"البناية/البيت",
+  "Floor_Str": "الطابق",
+  "Jadda_str": "الجادة",
+  "Apartment_Office_name": "الشقة/اسم المكتب",
+  "Delivery_instructions": "تعليمات التوصيل",
+  "instructions_str": "التعليمات",
+  "optional_Str": "اختياري",
+  "Address_Details_str": "تفاصيل العنوان",
+  "Kuwait_str": "الكويت",
+  "back_str": "للخلف",
+  "cart_Str": "الكارت",
+  "additional_Fees_str" : "تكاليف اضافيه",
+  "Checkout_str": "فحص",
+  "Successful_str": "تمت بنجاح",
+  "failed_str": "فشلت",
+  "Rate_us_str": "قيمنا",
+  "Done_str": "تمت",
+  "Try_again_str": "حاول مجددا ",
+  "Description_str": "الوصف",
+  "Extras_str": "زيادات",
+  "Quantity_str": "الكمية",
+  "item_str": "وحدة",
+  "Add_to_order_str": "اضف للطلب",
+  "Kd_str": "د.ك"
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
