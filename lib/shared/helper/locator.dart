@@ -4,6 +4,7 @@ import 'package:momentoo/features/near_by/getAddress_manager.dart';
 import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
+import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
@@ -20,6 +21,9 @@ Future<void> setupLocator() async {
   locator.registerSingleton<PrefsService>(instance);
   // Setup PermissionsService.
   locator.registerLazySingleton<PermissionsService>(() => PermissionsService());
+  // Setup ConnectionCheckerService.
+  locator.registerLazySingleton<ConnectionCheckerService>(
+      () => ConnectionCheckerService());
   // Setup LanguageManager
   locator.registerLazySingleton<AppLanguage>(() => AppLanguage());
   // SignInValidationManager
@@ -28,13 +32,10 @@ Future<void> setupLocator() async {
   // SignUpValidationManager
   locator.registerLazySingleton<SignUpValidationManager>(
       () => SignUpValidationManager());
-  // Home Page Controller
-//  locator.registerLazySingleton<PageController>(
-//      () => PageController(initialPage: 0, keepPage: false));
   // PushNotificationService
   locator.registerLazySingleton<PushNotificationService>(
       () => PushNotificationService());
-  // LocationService
+  // Setup LocationService
   locator.registerLazySingleton<LocationService>(() => LocationService());
   // ManuallyMapManager
   locator.registerLazySingleton<GetAddressManager>(() => GetAddressManager());

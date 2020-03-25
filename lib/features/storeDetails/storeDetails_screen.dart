@@ -19,34 +19,6 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // List<Widget> subChildren = List<Widget>.generate(5, (int internalIndex) {
-    //   return MyListTile(
-    //     isSelected: isSelected,
-    //     index: internalIndex,
-    //     title: Text(
-    //       'data',
-    //       style: TextStyle(
-    //           color: internalIndex == subIndex
-    //               ? Colors.teal.shade900
-    //               : Colors.black45),
-    //     ),
-    //     onTap: () {
-    //       setState(() {
-    //         subIndex = internalIndex;
-    //         // isSelected = true;
-    //       });
-    //     },
-    //     trailing: internalIndex == subIndex && isSelected == true
-    //         ? Icon(
-    //             Icons.check_circle,
-    //             color: Colors.teal.shade900,
-    //           )
-    //         : Container(
-    //             width: 1,
-    //             height: 1,
-    //           ),
-    //   );
-    // });
     return MainBackground(
       height: MediaQuery.of(context).size.height * 0.15,
       child: Scaffold(
@@ -333,17 +305,6 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
   }
 }
 
-///////////
-// class MyExpansionTile extends StatelessWidget {
-//   const MyExpansionTile({Key key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container();
-//   }
-// }
-
-/////////////////////
 class MyListTile extends StatelessWidget {
   final int index;
   final bool isSelected;
