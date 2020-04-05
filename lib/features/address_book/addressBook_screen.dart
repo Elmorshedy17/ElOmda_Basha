@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class AddressBookScreen extends StatelessWidget {
   @override
@@ -23,7 +26,9 @@ class AddressBookScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                ),
               ],
             ),
           ),
@@ -39,7 +44,7 @@ class AddressBookScreen extends StatelessWidget {
                   height: 60,
                   child: Center(
                     child: Text(
-                      'Address Book',
+                      AppLocalizations.of(context).translate('addressBook_str'),
                       style: TextStyle(
                         color: Colors.teal.shade900,
                         fontSize: 25,
@@ -107,10 +112,12 @@ class AddressBookScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.white24),
               ),
               child: Text(
-                'Add New Address',
+                AppLocalizations.of(context).translate('addNewAddress_str'),
                 style: TextStyle(
-                  color: Colors.white70,
-                ),
+                    color: Colors.white70,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar'),
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed('/newAddressScreen');
@@ -149,14 +156,15 @@ class AddressBookItem extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
+                child:
+                    // Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    // children: <Widget>[
                     Text('data jhgjgjg jgkhkh khkh'),
-                    Text('data'),
-                  ],
-                ),
+                // Text('data'),
+                // ],
+                // ),
               ),
             ),
             Row(
@@ -170,7 +178,13 @@ class AddressBookItem extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pushNamed('/editAddressScreen');
                   },
-                  child: Text('Edit'),
+                  child: Text(
+                    AppLocalizations.of(context).translate('edit_str'),
+                    style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar'),
+                  ),
                 ),
                 FloatingActionButton(
                   backgroundColor: Colors.red,
@@ -179,7 +193,13 @@ class AddressBookItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(0),
                   ),
                   onPressed: () {},
-                  child: Text('Delete'),
+                  child: Text(
+                    AppLocalizations.of(context).translate('delete_str'),
+                    style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar'),
+                  ),
                 ),
               ],
             ),

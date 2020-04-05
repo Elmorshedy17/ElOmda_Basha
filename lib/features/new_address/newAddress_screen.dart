@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/features/new_address/cityDropdown.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class NewAddressScreen extends StatelessWidget {
@@ -26,7 +27,14 @@ class NewAddressScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
@@ -41,11 +49,14 @@ class NewAddressScreen extends StatelessWidget {
                   height: 60,
                   child: Center(
                     child: Text(
-                      'New address',
+                      AppLocalizations.of(context).translate('newAddress_str'),
                       style: TextStyle(
                         color: Colors.teal.shade900,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
                       ),
                     ),
                   ),
@@ -74,11 +85,17 @@ class NewAddressScreen extends StatelessWidget {
                                       ? Alignment.centerLeft
                                       : Alignment.centerRight,
                               child: Text(
-                                'Kuwait',
+                                AppLocalizations.of(context)
+                                    .translate('Kuwait_str'),
                                 style: TextStyle(
                                   color: Colors.teal.shade900,
 //                              fontSize: 25,
                                   fontWeight: FontWeight.bold,
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
                                 ),
                               ),
                             ),
@@ -107,9 +124,16 @@ class NewAddressScreen extends StatelessWidget {
                                           const Radius.circular(10.0),
                                         ),
                                       ),
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[600]),
-                                      hintText: "Block",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                      ),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('Block_Str'),
                                       fillColor: Colors.grey[200]),
                                 ),
                               ),
@@ -129,9 +153,16 @@ class NewAddressScreen extends StatelessWidget {
                                           const Radius.circular(10.0),
                                         ),
                                       ),
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[600]),
-                                      hintText: "Street",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                      ),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('Street_str'),
                                       fillColor: Colors.grey[200]),
                                 ),
                               ),
@@ -151,8 +182,16 @@ class NewAddressScreen extends StatelessWidget {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintStyle: TextStyle(color: Colors.grey[600]),
-                                hintText: "Street 2",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('Street_two_str'),
                                 fillColor: Colors.grey[200]),
                           ),
                         ),
@@ -169,8 +208,16 @@ class NewAddressScreen extends StatelessWidget {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintStyle: TextStyle(color: Colors.grey[600]),
-                                hintText: "House/Building",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('House_building_str'),
                                 fillColor: Colors.grey[200]),
                           ),
                         ),
@@ -196,9 +243,16 @@ class NewAddressScreen extends StatelessWidget {
                                           const Radius.circular(10.0),
                                         ),
                                       ),
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[600]),
-                                      hintText: "Floor",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                      ),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('Floor_Str'),
                                       fillColor: Colors.grey[200]),
                                 ),
                               ),
@@ -218,9 +272,16 @@ class NewAddressScreen extends StatelessWidget {
                                           const Radius.circular(10.0),
                                         ),
                                       ),
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[600]),
-                                      hintText: "Jadda",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                      ),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('Jadda_str'),
                                       fillColor: Colors.grey[200]),
                                 ),
                               ),
@@ -231,7 +292,15 @@ class NewAddressScreen extends StatelessWidget {
                           padding: EdgeInsets.all(4),
                           child: TextField(
                             decoration: InputDecoration(
-                                suffixText: '(Optional)',
+                                suffixText: AppLocalizations.of(context)
+                                    .translate('optional_Str'),
+                                suffixStyle: TextStyle(
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
                                 filled: true,
                                 border: InputBorder.none,
                                 enabledBorder: OutlineInputBorder(
@@ -241,8 +310,16 @@ class NewAddressScreen extends StatelessWidget {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintStyle: TextStyle(color: Colors.grey[600]),
-                                hintText: "Apartment/Office Name",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('Apartment_Office_name'),
                                 fillColor: Colors.grey[200]),
                           ),
                         ),
@@ -250,7 +327,15 @@ class NewAddressScreen extends StatelessWidget {
                           padding: EdgeInsets.all(4),
                           child: TextField(
                             decoration: InputDecoration(
-                                suffixText: '(Optional)',
+                                suffixText: AppLocalizations.of(context)
+                                    .translate('optional_Str'),
+                                suffixStyle: TextStyle(
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
                                 filled: true,
                                 border: InputBorder.none,
                                 enabledBorder: OutlineInputBorder(
@@ -260,8 +345,16 @@ class NewAddressScreen extends StatelessWidget {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintStyle: TextStyle(color: Colors.grey[600]),
-                                hintText: "Delivery Instructions",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('Delivery_instructions'),
                                 fillColor: Colors.grey[200]),
                           ),
                         ),
@@ -284,9 +377,11 @@ class NewAddressScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.white24),
               ),
               child: Text(
-                'Save this address',
+                AppLocalizations.of(context).translate('saveThisAddress_str'),
                 style: TextStyle(
                   color: Colors.white70,
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
                 ),
               ),
               onPressed: () {},

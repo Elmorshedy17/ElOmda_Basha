@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/features/favorites/favorites_widgets/favoritesContent.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -38,9 +39,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            'Favorites',
-            // AppLocalizations.of(context).translate('test'),
-            style: TextStyle(color: Colors.white),
+            AppLocalizations.of(context).translate('favorites_str'),
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
           ),
           leading: InkWell(
             onTap: () {
@@ -53,7 +57,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
@@ -114,26 +125,44 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: index == 0
                       ? Text(
-                          'Restaurants',
+                          AppLocalizations.of(context)
+                              .translate('restaurants_str'),
                           style: TextStyle(
-                              color: pageIndex == index
-                                  ? Colors.white
-                                  : Colors.teal.shade100),
+                            color: pageIndex == index
+                                ? Colors.white
+                                : Colors.teal.shade100,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
+                          ),
                         )
                       : index == 1
                           ? Text(
-                              'Flowers',
+                              AppLocalizations.of(context)
+                                  .translate('flowers_str'),
                               style: TextStyle(
-                                  color: pageIndex == index
-                                      ? Colors.white
-                                      : Colors.teal.shade100),
+                                color: pageIndex == index
+                                    ? Colors.white
+                                    : Colors.teal.shade100,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             )
                           : Text(
-                              'Pharmacies',
+                              AppLocalizations.of(context)
+                                  .translate('pharmacies_str'),
                               style: TextStyle(
-                                  color: pageIndex == index
-                                      ? Colors.white
-                                      : Colors.teal.shade100),
+                                color: pageIndex == index
+                                    ? Colors.white
+                                    : Colors.teal.shade100,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
                 ),
                 onPressed: () async {

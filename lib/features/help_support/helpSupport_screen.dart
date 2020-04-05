@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   @override
@@ -25,7 +27,14 @@ class HelpSupportScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
@@ -35,11 +44,14 @@ class HelpSupportScreen extends StatelessWidget {
             Container(
               child: Center(
                 child: Text(
-                  'Help & Support',
+                  AppLocalizations.of(context).translate('help&support_str'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
                   ),
                 ),
               ),
@@ -71,8 +83,16 @@ class HelpSupportScreen extends StatelessWidget {
                                       const Radius.circular(10.0),
                                     ),
                                   ),
-                                  hintStyle: TextStyle(color: Colors.grey[600]),
-                                  hintText: "Your Name",
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                  ),
+                                  hintText: AppLocalizations.of(context)
+                                      .translate('yourName_str'),
                                   fillColor: Colors.white),
                             ),
                             Divider(
@@ -92,8 +112,16 @@ class HelpSupportScreen extends StatelessWidget {
                                       const Radius.circular(10.0),
                                     ),
                                   ),
-                                  hintStyle: TextStyle(color: Colors.grey[600]),
-                                  hintText: "Your Email",
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                  ),
+                                  hintText: AppLocalizations.of(context)
+                                      .translate('yourEmail_str'),
                                   fillColor: Colors.white),
                             ),
                           ],
@@ -115,8 +143,15 @@ class HelpSupportScreen extends StatelessWidget {
                                 const Radius.circular(10.0),
                               ),
                             ),
-                            hintStyle: TextStyle(color: Colors.grey[600]),
-                            hintText: "Phone number",
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
+                            ),
+                            hintText: AppLocalizations.of(context)
+                                .translate('phoneNumber_str'),
                             fillColor: Colors.white),
                       ),
                     ),
@@ -140,7 +175,16 @@ class HelpSupportScreen extends StatelessWidget {
                       ),
                     ),
                     child: ExpansionTile(
-                      title: Text('Type of complaint'),
+                      title: Text(
+                        AppLocalizations.of(context)
+                            .translate('typeOfComplaint_str'),
+                        style: TextStyle(
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                      ),
                       backgroundColor: Colors.white,
                       children: <Widget>[
                         Text('data'),
@@ -170,8 +214,15 @@ class HelpSupportScreen extends StatelessWidget {
                                 const Radius.circular(10.0),
                               ),
                             ),
-                            hintStyle: TextStyle(color: Colors.grey[600]),
-                            hintText: "Your message",
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
+                            ),
+                            hintText: AppLocalizations.of(context)
+                                .translate('yourMessage_str'),
                             fillColor: Colors.white),
                       ),
                     ),
@@ -200,18 +251,31 @@ class HelpSupportScreen extends StatelessWidget {
                               );
                             }),
                         Text(
-                          'I agree to the',
+                          AppLocalizations.of(context)
+                              .translate('iAgreeToThe_str'),
                           style: TextStyle(
                             color: Colors.black26,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
+                        ),
+                        SizedBox(
+                          width: 2,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              ' Terms and conditions',
+                              AppLocalizations.of(context)
+                                  .translate('termsAndConditions_str'),
                               style: TextStyle(
                                 color: Colors.teal.shade300,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
                               ),
                             ),
                             Container(
@@ -238,9 +302,14 @@ class HelpSupportScreen extends StatelessWidget {
                           side: BorderSide(color: Colors.white24),
                         ),
                         child: Text(
-                          'SEND MESSAGE',
+                          AppLocalizations.of(context)
+                              .translate('sendMessage_str'),
                           style: TextStyle(
                             color: Colors.white70,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                         ),
                         onPressed: () {},

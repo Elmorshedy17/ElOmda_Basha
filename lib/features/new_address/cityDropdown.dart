@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 // import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class CityDropdown extends StatefulWidget {
@@ -51,7 +54,12 @@ class _CityDropDownState extends State<CityDropdown> {
                   ),
                   filled: true,
                   // hintText: 'Choose City',
-                  hintText: 'City',
+                  hintText: AppLocalizations.of(context).translate('City_Str'),
+                  hintStyle: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
                 ),
                 isEmpty: _dropdownValue == null,
                 child: DropdownButton<CountryModel>(
@@ -69,7 +77,15 @@ class _CityDropDownState extends State<CityDropdown> {
                   items: _dropdownItems.map((CountryModel value) {
                     return DropdownMenuItem<CountryModel>(
                       value: value,
-                      child: Text(value.city),
+                      child: Text(
+                        value.city,
+                        style: TextStyle(
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                      ),
                     );
                   }).toList(),
                 ),

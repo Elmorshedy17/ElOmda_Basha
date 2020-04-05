@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class SearchScreen extends StatelessWidget {
   @override
@@ -16,10 +19,26 @@ class SearchScreen extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Row(
-              children: <Widget>[Icon(Icons.arrow_back_ios), Text('Back')],
+              children: <Widget>[
+                Icon(Icons.arrow_back_ios),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
+              ],
             ),
           ),
-          title: Text('Search'),
+          title: Text(
+            AppLocalizations.of(context).translate('search_str'),
+            style: TextStyle(
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
+          ),
           centerTitle: true,
         ),
         body: Column(
@@ -43,12 +62,19 @@ class SearchScreen extends StatelessWidget {
                         const Radius.circular(10.0),
                       ),
                     ),
-                    hintStyle: TextStyle(color: Colors.grey[600], fontSize: 13),
+                    hintStyle: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 13,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                    ),
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.teal[900],
                     ),
-                    hintText: "Search...",
+                    hintText:
+                        AppLocalizations.of(context).translate('search..._str'),
                     fillColor: Colors.white),
               ),
             ),

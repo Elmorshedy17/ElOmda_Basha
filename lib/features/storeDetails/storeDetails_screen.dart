@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:momentoo/shared/widgets/custom_card.dart';
 
@@ -38,7 +39,14 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
@@ -104,13 +112,37 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 children: <Widget>[
                   Expanded(
                     child: ListTile(
-                      title: Text('Delivery'),
-                      subtitle: Text('Free'),
+                      title: Text(
+                        AppLocalizations.of(context).translate('Delivery_str'),
+                        style: TextStyle(
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                      ),
+                      subtitle: Text(
+                        AppLocalizations.of(context).translate('free_str'),
+                        style: TextStyle(
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                      ),
                     ),
                   ),
                   Expanded(
                     child: ListTile(
-                      title: Text('Open time'),
+                      title: Text(
+                        AppLocalizations.of(context).translate('openTime_str'),
+                        style: TextStyle(
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                      ),
                       subtitle: Text('8:00 AM'),
                     ),
                   ),
@@ -171,8 +203,14 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                     child: RaisedButton(
                       color: Colors.white,
                       child: Text(
-                        'Contact',
-                        style: TextStyle(color: Colors.teal.shade900),
+                        AppLocalizations.of(context).translate('contact_str'),
+                        style: TextStyle(
+                          color: Colors.teal.shade900,
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
                       ),
                       onPressed: () {},
                       shape: RoundedRectangleBorder(
@@ -186,8 +224,13 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0, left: 16),
                 child: Text(
-                  'FEATURED ITEMS',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  AppLocalizations.of(context).translate('featuredItems_str'),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
                 ),
               ),
               Container(
@@ -216,16 +259,24 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      'MENU',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      AppLocalizations.of(context).translate('menu_str'),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
                     ),
                     Spacer(
                       flex: 1,
                     ),
                     Text(
-                      'View all >>',
+                      AppLocalizations.of(context).translate('viewAll>>_str'),
                       style: TextStyle(
                         color: Colors.red.shade700,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
                       ),
                     )
                   ],
@@ -248,7 +299,16 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       },
                       title: Row(
                         children: <Widget>[
-                          Text('Popular items'),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate('popularItems_str'),
+                            style: TextStyle(
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
+                            ),
+                          ),
                           Spacer(
                             flex: 1,
                           ),

@@ -65,10 +65,11 @@ class MainDrawer extends StatelessWidget {
                   title: Text(
                     AppLocalizations.of(context).translate('favorites_str'),
                     style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: locator<PrefsService>().appLanguage == 'en'
-                            ? 'en'
-                            : 'ar'),
+                      color: Colors.white,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                    ),
                   ),
                 ),
                 Container(

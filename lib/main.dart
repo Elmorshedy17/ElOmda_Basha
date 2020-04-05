@@ -76,7 +76,7 @@ It is not intended to be used for everyday development.*/
 class MomentooApp extends StatefulWidget {
   final AppLanguage appLanguage;
 
-  const MomentooApp({this.appLanguage});
+  const MomentooApp({@required this.appLanguage});
 
   @override
   _MomentooAppState createState() => _MomentooAppState();
@@ -116,7 +116,6 @@ class _MomentooAppState extends State<MomentooApp> {
             theme: ThemeData(
               primarySwatch: Colors.teal,
             ),
-//            home: ProductDetailsScreen(),
             home: _getStartupScreen(),
             routes: {
               '/langScreen': (_) => LangScreen(),

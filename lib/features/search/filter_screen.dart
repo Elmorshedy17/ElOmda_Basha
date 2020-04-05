@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class FilterScreen extends StatelessWidget {
   @override
@@ -17,10 +20,26 @@ class FilterScreen extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Row(
-              children: <Widget>[Icon(Icons.arrow_back_ios), Text('Back')],
+              children: <Widget>[
+                Icon(Icons.arrow_back_ios),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
+              ],
             ),
           ),
-          title: Text('Filter'),
+          title: Text(
+            AppLocalizations.of(context).translate('filter_str'),
+            style: TextStyle(
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
+          ),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
@@ -59,7 +78,14 @@ class FilterScreen extends StatelessWidget {
                     ),
                   ),
                   child: ExpansionTile(
-                    title: Text('Restaurant'),
+                    title: Text(
+                      AppLocalizations.of(context).translate('restaurant_str'),
+                      style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                    ),
                     backgroundColor: Colors.white,
                     children: <Widget>[
                       Text('data'),
@@ -92,7 +118,14 @@ class FilterScreen extends StatelessWidget {
                     ),
                   ),
                   child: ExpansionTile(
-                    title: Text('Food'),
+                    title: Text(
+                      AppLocalizations.of(context).translate('food_str'),
+                      style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                    ),
                     backgroundColor: Colors.white,
                     children: <Widget>[
                       Text('data'),
@@ -125,7 +158,14 @@ class FilterScreen extends StatelessWidget {
                     ),
                   ),
                   child: ExpansionTile(
-                    title: Text('Area'),
+                    title: Text(
+                      AppLocalizations.of(context).translate('area_str'),
+                      style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                    ),
                     backgroundColor: Colors.white,
                     children: <Widget>[
                       Text('data'),
@@ -153,9 +193,11 @@ class FilterScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.white24),
               ),
               child: Text(
-                'Done',
+                AppLocalizations.of(context).translate('Done_str'),
                 style: TextStyle(
                   color: Colors.white70,
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
                 ),
               ),
               onPressed: () {},

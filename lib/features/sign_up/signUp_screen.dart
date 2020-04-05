@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class SignUpScreen extends StatelessWidget {
   final validationManager = locator<SignUpValidationManager>();
@@ -41,10 +43,13 @@ class SignUpScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Text(
-                      'SIGN UP',
+                      AppLocalizations.of(context).translate('signUp_str'),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 35,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
                       ),
                     ),
                   ),
@@ -65,9 +70,14 @@ class SignUpScreen extends StatelessWidget {
                             Icons.person,
                             color: Colors.white,
                           ),
-                          labelText: 'First Name',
+                          labelText: AppLocalizations.of(context)
+                              .translate('first_name_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -86,17 +96,27 @@ class SignUpScreen extends StatelessWidget {
                         onChanged: validationManager.inMiddleName.add,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          suffixText: '(Optional)',
+                          suffixText: AppLocalizations.of(context)
+                              .translate('optional_Str'),
                           suffixStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           prefixIcon: Icon(
                             Icons.person,
                             color: Colors.white,
                           ),
-                          labelText: 'Middle Name',
+                          labelText: AppLocalizations.of(context)
+                              .translate('middleName_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -119,9 +139,14 @@ class SignUpScreen extends StatelessWidget {
                             Icons.person,
                             color: Colors.white,
                           ),
-                          labelText: 'Last Name',
+                          labelText: AppLocalizations.of(context)
+                              .translate('last_name_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -144,9 +169,14 @@ class SignUpScreen extends StatelessWidget {
                             Icons.location_on,
                             color: Colors.white,
                           ),
-                          labelText: 'Address',
+                          labelText: AppLocalizations.of(context)
+                              .translate('address_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -170,9 +200,14 @@ class SignUpScreen extends StatelessWidget {
                             Icons.phone_iphone,
                             color: Colors.white,
                           ),
-                          labelText: 'Phone Number',
+                          labelText: AppLocalizations.of(context)
+                              .translate('phoneNumber_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -196,9 +231,14 @@ class SignUpScreen extends StatelessWidget {
                             Icons.email,
                             color: Colors.white,
                           ),
-                          labelText: 'Email',
+                          labelText: AppLocalizations.of(context)
+                              .translate('email_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -221,9 +261,14 @@ class SignUpScreen extends StatelessWidget {
                             Icons.lock,
                             color: Colors.white,
                           ),
-                          labelText: 'Password',
+                          labelText: AppLocalizations.of(context)
+                              .translate('password_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -246,9 +291,14 @@ class SignUpScreen extends StatelessWidget {
                             Icons.lock,
                             color: Colors.white,
                           ),
-                          labelText: 'Confirm Password',
+                          labelText: AppLocalizations.of(context)
+                              .translate('confirmPassword_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                           errorText: snapshot.error,
                         ),
@@ -282,9 +332,15 @@ class SignUpScreen extends StatelessWidget {
                                     );
                                   }),
                               Text(
-                                'I agree to the',
+                                AppLocalizations.of(context)
+                                    .translate('iAgreeToThe_str'),
                                 style: TextStyle(
                                   color: Colors.white70,
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
                                 ),
                               ),
                               InkWell(
@@ -292,9 +348,15 @@ class SignUpScreen extends StatelessWidget {
                                 child: Column(
                                   children: <Widget>[
                                     Text(
-                                      'Terms and conditions',
+                                      AppLocalizations.of(context)
+                                          .translate('termsAndConditions_str'),
                                       style: TextStyle(
                                         color: Colors.white70,
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
                                       ),
                                     ),
                                     Container(
@@ -321,9 +383,15 @@ class SignUpScreen extends StatelessWidget {
                                   side: BorderSide(color: Colors.white24),
                                 ),
                                 child: Text(
-                                  'SIGN UP',
+                                  AppLocalizations.of(context)
+                                      .translate('signUp_str'),
                                   style: TextStyle(
                                     color: Colors.white70,
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
                                   ),
                                 ),
                                 onPressed: () {

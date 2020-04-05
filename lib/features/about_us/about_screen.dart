@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class AboutScreen extends StatelessWidget {
   @override
@@ -23,7 +26,13 @@ class AboutScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar'),
+                ),
               ],
             ),
           ),
@@ -38,8 +47,12 @@ class AboutScreen extends StatelessWidget {
                   height: 60,
                   child: Center(
                     child: Text(
-                      'About MOMENTOO',
+                      AppLocalizations.of(context)
+                          .translate('aboutMOMENTOO_str'),
                       style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
                         color: Colors.teal.shade900,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,

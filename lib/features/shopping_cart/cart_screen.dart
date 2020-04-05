@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:momentoo/features/order_details/orderDetails_screen.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
-import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CartScreen extends StatefulWidget {
@@ -12,14 +10,11 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
-
   List<BehaviorSubject> countWithIndex = new List();
   List<BehaviorSubject> singleCartTotal = new List();
   BehaviorSubject totalCartsMount = new BehaviorSubject();
   List<List> totalCartsMountList = new List();
   List testTotalCartsMountList = [];
-
 
   List<Cart> singleCart = <Cart>[
     Cart(1, "Product name 1", "This text is an example of text that can be  ",
@@ -97,15 +92,10 @@ class _CartScreenState extends State<CartScreen> {
                       physics: BouncingScrollPhysics(),
                       itemCount: singleCart.length,
                       itemBuilder: (context, index) {
+                        totalCartsMountList.add(new List());
+                        countWithIndex.add(new BehaviorSubject());
 
-
-                        totalCartsMountList
-                            .add(new List());
-                        countWithIndex
-                            .add(new BehaviorSubject());
-
-                        singleCartTotal
-                            .add(new BehaviorSubject());
+                        singleCartTotal.add(new BehaviorSubject());
 
                         return Container(
                           padding: EdgeInsets.all(15.0),
@@ -180,133 +170,165 @@ class _CartScreenState extends State<CartScreen> {
 
 // price
                                         StreamBuilder(
-                                          stream: countWithIndex[index].stream,
-                                          initialData: singleCart[index].count,
-                                          builder: (context, countWithIndexSnapshot) {
-                                            singleCartTotal[index].add(countWithIndexSnapshot.data * singleCart[index].price);
+                                            stream:
+                                                countWithIndex[index].stream,
+                                            initialData:
+                                                singleCart[index].count,
+                                            builder: (context,
+                                                countWithIndexSnapshot) {
+                                              singleCartTotal[index].add(
+                                                  countWithIndexSnapshot.data *
+                                                      singleCart[index].price);
 
-                                            return StreamBuilder(
-                                              stream: singleCartTotal[index].stream,
-                                                initialData: singleCart[index].price,
-                                                builder: (context, singleCartTotalSnapshot) {
-                                                return Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Text(
+                                              return StreamBuilder(
+                                                  stream: singleCartTotal[index]
+                                                      .stream,
+                                                  initialData:
+                                                      singleCart[index].price,
+                                                  builder: (context,
+                                                      singleCartTotalSnapshot) {
+                                                    return Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Text(
 //                                                            singleCart[index]
 //                                                                .price
 //                                                                .toString()
-                                                            singleCartTotalSnapshot.data.toString(),
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .teal.shade900,
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight.w600),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 4.0,
-                                                          ),
-                                                          Text(
-                                                            "KW",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .teal.shade900,
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight.w600),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          IconButton(
-                                                            onPressed: () {
-                                                                countWithIndex[index].add(singleCart[index].count++);
-
-                                                            },
-                                                            icon: Container(
-                                                              width: 50.0,
-                                                              height:25,
-                                                              decoration: new BoxDecoration(
-                                                                  color: Colors
-                                                                      .teal.shade900,
-                                                                  borderRadius:
-                                                                  new BorderRadius
-                                                                      .all(
-                                                                      Radius.circular(
-                                                                          13.0))),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  "+",
-                                                                  style: TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 21.0),
-                                                                ),
+                                                                singleCartTotalSnapshot
+                                                                    .data
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .teal
+                                                                        .shade900,
+                                                                    fontSize:
+                                                                        18,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
                                                               ),
-                                                            ),
+                                                              SizedBox(
+                                                                width: 4.0,
+                                                              ),
+                                                              Text(
+                                                                "KW",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .teal
+                                                                        .shade900,
+                                                                    fontSize:
+                                                                        18,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          Container(
-                                                            margin: const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal: 15.0),
-                                                            child: Text(
-//                                                          singleCart[index]
-//                                                              .count
-//                                                              .toString()
-                                                             countWithIndexSnapshot.data.toString() ,
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .teal.shade900,
-                                                                  fontSize: 24.0,
-                                                                  fontWeight:
-                                                                      FontWeight.bold),
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            onPressed: () {
-
-                                                              if (singleCart[index].count >= 1) {
-                                                                countWithIndex[index].add(singleCart[index].count--);
-                                                              }
-
-                                                            },
-                                                            icon: Container(
-                                                              width: 50.0,
-                                                              height:25,
-                                                              decoration: new BoxDecoration(
-                                                                  color: Colors
-                                                                      .teal.shade900,
-                                                                  borderRadius:
-                                                                      new BorderRadius
+                                                        ),
+                                                        Expanded(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: <Widget>[
+                                                              IconButton(
+                                                                onPressed: () {
+                                                                  countWithIndex[
+                                                                          index]
+                                                                      .add(singleCart[
+                                                                              index]
+                                                                          .count++);
+                                                                },
+                                                                icon: Container(
+                                                                  width: 50.0,
+                                                                  height: 25,
+                                                                  decoration: new BoxDecoration(
+                                                                      color: Colors
+                                                                          .teal
+                                                                          .shade900,
+                                                                      borderRadius: new BorderRadius
                                                                               .all(
                                                                           Radius.circular(
                                                                               13.0))),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  "-",
-                                                                  style: TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 21.0),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      "+",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              21.0),
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
+                                                              Container(
+                                                                margin: const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        15.0),
+                                                                child: Text(
+//                                                          singleCart[index]
+//                                                              .count
+//                                                              .toString()
+                                                                  countWithIndexSnapshot
+                                                                      .data
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .teal
+                                                                          .shade900,
+                                                                      fontSize:
+                                                                          24.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ),
+                                                              IconButton(
+                                                                onPressed: () {
+                                                                  if (singleCart[
+                                                                              index]
+                                                                          .count >=
+                                                                      1) {
+                                                                    countWithIndex[
+                                                                            index]
+                                                                        .add(singleCart[index]
+                                                                            .count--);
+                                                                  }
+                                                                },
+                                                                icon: Container(
+                                                                  width: 50.0,
+                                                                  height: 25,
+                                                                  decoration: new BoxDecoration(
+                                                                      color: Colors
+                                                                          .teal
+                                                                          .shade900,
+                                                                      borderRadius: new BorderRadius
+                                                                              .all(
+                                                                          Radius.circular(
+                                                                              13.0))),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      "-",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              21.0),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              }
-                                            );
-                                          }
-                                        ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+                                            }),
 // end price
                                       ],
                                     ),
@@ -333,135 +355,184 @@ class _CartScreenState extends State<CartScreen> {
                     height: 20.0,
                   ),
                   StreamBuilder(
-                    stream: totalCartsMount.stream,
-                    builder: (context, totalCartsMountSnapshot) {
-                      for (int index = 0;index < singleCart.length;index++) {
-                        totalCartsMountList[index].clear();
-                        totalCartsMountList[index].add(singleCartTotal[index].value);
-                      }
-                      var sum = totalCartsMountList.reduce((a, b) => a + b);
-                      var finalSum = sum.fold(0, (previous, current) => previous + current);
-                      totalCartsMount.add(finalSum);
+                      stream: totalCartsMount.stream,
+                      builder: (context, totalCartsMountSnapshot) {
+                        for (int index = 0;
+                            index < singleCart.length;
+                            index++) {
+                          totalCartsMountList[index].clear();
+                          totalCartsMountList[index]
+                              .add(singleCartTotal[index].value);
+                        }
+                        var sum = totalCartsMountList.reduce((a, b) => a + b);
+                        var finalSum = sum.fold(
+                            0, (previous, current) => previous + current);
+                        totalCartsMount.add(finalSum);
 
-                      return Card(
-                        elevation: 4.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(AppLocalizations.of(context)
-                                      .translate("subtotal_str"),style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w900),),
-                                  Row(
-                                    children: <Widget>[
-                                      Text(totalCartsMountSnapshot.data.toString() ,style: TextStyle(
-                                          color: Colors.grey.shade500,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-                                      SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Text("KD",style: TextStyle(
-                                          color: Colors.grey.shade500,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8.0,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(AppLocalizations.of(context)
-                                      .translate("additional_Fees_str"),style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w900),),
-                                  Row(
-                                    children: <Widget>[
-                                      Text("24.5",style: TextStyle(
-                                          color: Colors.grey.shade500,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-                                      SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Text("KD",style: TextStyle(
-                                          color: Colors.grey.shade500,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8.0,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(AppLocalizations.of(context)
-                                      .translate("Discount_str"),style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w900),),
-                                  Row(
-                                    children: <Widget>[
-                                      Text("24.5",style: TextStyle(
-                                          color: Colors.grey.shade500,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-                                      SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Text("KD",style: TextStyle(
-                                          color: Colors.grey.shade500,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                child: Divider(),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(AppLocalizations.of(context)
-                                      .translate("subtotal_str"),style: TextStyle(
-                                      color: Colors.teal.shade900,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),),
-                                  Row(
-                                    children: <Widget>[
-                                      Text("24.5",style: TextStyle(
-                                          color: Colors.teal.shade900,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-
-                                      Text("KD",style: TextStyle(
-                                          color: Colors.teal.shade900,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                        return Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                        ),
-                      );
-                    }
-                  ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate("subtotal_str"),
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          totalCartsMountSnapshot.data
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: Colors.grey.shade500,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        Text(
+                                          "KD",
+                                          style: TextStyle(
+                                              color: Colors.grey.shade500,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate("additional_Fees_str"),
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          "24.5",
+                                          style: TextStyle(
+                                              color: Colors.grey.shade500,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        Text(
+                                          "KD",
+                                          style: TextStyle(
+                                              color: Colors.grey.shade500,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate("Discount_str"),
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          "24.5",
+                                          style: TextStyle(
+                                              color: Colors.grey.shade500,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        Text(
+                                          "KD",
+                                          style: TextStyle(
+                                              color: Colors.grey.shade500,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Divider(),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate("subtotal_str"),
+                                      style: TextStyle(
+                                          color: Colors.teal.shade900,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          "24.5",
+                                          style: TextStyle(
+                                              color: Colors.teal.shade900,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        Text(
+                                          "KD",
+                                          style: TextStyle(
+                                              color: Colors.teal.shade900,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -478,9 +549,7 @@ class _CartScreenState extends State<CartScreen> {
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                       onPressed: () {
-
                         print("totalCartsMountList ${totalCartsMount.value}");
-
                       },
                     ),
                   ),
@@ -496,9 +565,6 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
-
-
-
 
   dispose() {
     totalCartsMount.close();

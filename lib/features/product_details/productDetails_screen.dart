@@ -33,7 +33,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       Icons.arrow_back_ios,
                       size: 15,
                     ),
-                    Text('Back'),
+                    Text(
+                      AppLocalizations.of(context).translate('back_str'),
+                      style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                    ),
                   ],
                 ),
               ),

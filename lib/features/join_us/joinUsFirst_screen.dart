@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class JoinUsFirstScreen extends StatefulWidget {
   @override
@@ -50,11 +53,24 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
-          title: Text('Join Us'),
+          title: Text(
+            AppLocalizations.of(context).translate('joinUs_str'),
+            style: TextStyle(
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
+          ),
           centerTitle: true,
         ),
         body: AnimatedPadding(
@@ -74,11 +90,15 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Details',
+                          AppLocalizations.of(context).translate('details_str'),
                           style: TextStyle(
                             color: Colors.teal.shade900,
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                         ),
                         Text(
@@ -117,8 +137,16 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                                 onTap: getImageFromGallery,
                                 leading: Icon(Icons.camera_alt),
                                 title: Text(
-                                  'Your LOGO',
-                                  style: TextStyle(color: Colors.black26),
+                                  AppLocalizations.of(context)
+                                      .translate('yourLOGO_str'),
+                                  style: TextStyle(
+                                    color: Colors.black26,
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                  ),
                                 ),
                                 trailing: FittedBox(
                                   child: _image == null
@@ -147,9 +175,16 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                                         const Radius.circular(10.0),
                                       ),
                                     ),
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[600]),
-                                    hintText: "Company Name",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                    ),
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('companyName_str'),
                                     fillColor: Colors.grey[200]),
                               ),
                             ),
@@ -173,9 +208,16 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                                         const Radius.circular(10.0),
                                       ),
                                     ),
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[600]),
-                                    hintText: "Address",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                    ),
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('address_str'),
                                     fillColor: Colors.grey[200]),
                               ),
                             ),
@@ -199,9 +241,16 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                                         const Radius.circular(10.0),
                                       ),
                                     ),
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[600]),
-                                    hintText: "Contact Number",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                    ),
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('contactNumber_str'),
                                     fillColor: Colors.grey[200]),
                               ),
                             ),
@@ -225,9 +274,16 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                                         const Radius.circular(10.0),
                                       ),
                                     ),
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[600]),
-                                    hintText: "Email",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                    ),
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('email_str'),
                                     fillColor: Colors.grey[200]),
                               ),
                             ),
@@ -253,9 +309,12 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                   side: BorderSide(color: Colors.white24),
                 ),
                 child: Text(
-                  'Next',
+                  AppLocalizations.of(context).translate('next_str'),
                   style: TextStyle(
                     color: Colors.white70,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
                   ),
                 ),
                 onPressed: () {

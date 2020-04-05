@@ -3,7 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:momentoo/features/join_us/birthDateDropdown.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class JoinUsSecondScreen extends StatefulWidget {
   @override
@@ -56,11 +59,24 @@ class _JoinUsSecondScreenState extends State<JoinUsSecondScreen> {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
-          title: Text('Join Us'),
+          title: Text(
+            AppLocalizations.of(context).translate('joinUs_str'),
+            style: TextStyle(
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
+          ),
           centerTitle: true,
         ),
         body: Column(
@@ -76,11 +92,15 @@ class _JoinUsSecondScreenState extends State<JoinUsSecondScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        'Drivers',
+                        AppLocalizations.of(context).translate('drivers_str'),
                         style: TextStyle(
                           color: Colors.teal.shade900,
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
                         ),
                       ),
                       Text(
@@ -301,8 +321,15 @@ class _JoinUsSecondScreenItemState extends State<JoinUsSecondScreenItem> {
                             const Radius.circular(10.0),
                           ),
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[600]),
-                        hintText: "Driver Name",
+                        hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                        hintText: AppLocalizations.of(context)
+                            .translate('driverName_str'),
                         fillColor: Colors.grey[200]),
                   ),
                 ),
@@ -325,8 +352,15 @@ class _JoinUsSecondScreenItemState extends State<JoinUsSecondScreenItem> {
                             const Radius.circular(10.0),
                           ),
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[600]),
-                        hintText: "Contact Number",
+                        hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                        hintText: AppLocalizations.of(context)
+                            .translate('contactNumber_str'),
                         fillColor: Colors.grey[200]),
                   ),
                 ),
@@ -340,9 +374,12 @@ class _JoinUsSecondScreenItemState extends State<JoinUsSecondScreenItem> {
                 child: Container(
                   padding: EdgeInsets.only(top: 4, left: 8),
                   child: Text(
-                    'Birth Date',
+                    AppLocalizations.of(context).translate('birthDate_str'),
                     style: TextStyle(
                       color: Colors.teal.shade900,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
                     ),
                   ),
                 ),
@@ -362,8 +399,14 @@ class _JoinUsSecondScreenItemState extends State<JoinUsSecondScreenItem> {
                     onTap: getImageFromGallery,
                     leading: Icon(Icons.camera_alt),
                     title: Text(
-                      'Driver Licenses',
-                      style: TextStyle(color: Colors.black26),
+                      AppLocalizations.of(context)
+                          .translate('driverLicense_str'),
+                      style: TextStyle(
+                        color: Colors.black26,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
                     ),
                     trailing: FittedBox(
                       child:
@@ -386,8 +429,13 @@ class _JoinUsSecondScreenItemState extends State<JoinUsSecondScreenItem> {
                     onTap: getImageFromGallery,
                     leading: Icon(Icons.camera_alt),
                     title: Text(
-                      'Driver ID',
-                      style: TextStyle(color: Colors.black26),
+                      AppLocalizations.of(context).translate('driverID_str'),
+                      style: TextStyle(
+                        color: Colors.black26,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
                     ),
                     trailing: FittedBox(
                       child:

@@ -1,12 +1,10 @@
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsService {
-  final PermissionHandler _permissionHandler = PermissionHandler();
-
   /// A generic function that takes in a PermissionGroup to request a permission of what we want.
-  Future<bool> _requestPermission(PermissionGroup permission) async {
-    var result = await _permissionHandler.requestPermissions([permission]);
-    if (result[permission] == PermissionStatus.granted) {
+  Future<bool> _requestPermission(Permission permission) async {
+    var result = await permission.request();
+    if (result == PermissionStatus.granted) {
       return true;
     }
 
@@ -15,7 +13,7 @@ class PermissionsService {
 
   /// Requests the users permission to read their contacts.
   Future<bool> requestContactsPermission({Function onPermissionDenied}) async {
-    var granted = await _requestPermission(PermissionGroup.contacts);
+    var granted = await _requestPermission(Permission.contacts);
     if (!granted) {
       onPermissionDenied();
     }
@@ -24,7 +22,7 @@ class PermissionsService {
 
   /// Requests the users permission to read their location when the app is in use
   Future<bool> requestLocationPermission({Function onPermissionDenied}) async {
-    var granted = await _requestPermission(PermissionGroup.locationWhenInUse);
+    var granted = await _requestPermission(Permission.locationWhenInUse);
     if (!granted) {
       onPermissionDenied();
     }
@@ -32,19 +30,18 @@ class PermissionsService {
   }
 
   /// A generic function to check if the app has a permission already.
-  Future<bool> _hasPermission(PermissionGroup permission) async {
-    var permissionStatus =
-        await _permissionHandler.checkPermissionStatus(permission);
+  Future<bool> _hasPermission(Permission permission) async {
+    var permissionStatus = await permission.status;
     return permissionStatus == PermissionStatus.granted;
   }
 
   /// Check if the app has (contacts permission) already.
   Future<bool> hasContactsPermission() async {
-    return _hasPermission(PermissionGroup.contacts);
+    return _hasPermission(Permission.contacts);
   }
 
   /// Check if the app has (location permission) already.
   Future<bool> hasLocationPermission() async {
-    return _hasPermission(PermissionGroup.locationWhenInUse);
+    return _hasPermission(Permission.locationWhenInUse);
   }
 }

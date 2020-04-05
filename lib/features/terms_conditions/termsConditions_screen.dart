@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class TermsConditionsScreen extends StatelessWidget {
   @override
@@ -23,7 +26,14 @@ class TermsConditionsScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
@@ -38,11 +48,14 @@ class TermsConditionsScreen extends StatelessWidget {
                   height: 60,
                   child: Center(
                     child: Text(
-                      'Terms of use',
+                      AppLocalizations.of(context).translate('termsOfUse_str'),
                       style: TextStyle(
                         color: Colors.teal.shade900,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
                       ),
                     ),
                   ),

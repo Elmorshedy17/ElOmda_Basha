@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class EditProfileScreen extends StatelessWidget {
   @override
@@ -25,11 +28,26 @@ class EditProfileScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
-          title: Text('Edit Profile'),
+          title: Text(
+            AppLocalizations.of(context).translate('editProfile_str'),
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
+          ),
           centerTitle: true,
           actions: <Widget>[
             Padding(
@@ -43,11 +61,15 @@ class EditProfileScreen extends StatelessWidget {
                         side: BorderSide(color: Colors.teal.shade900),
                       ),
                       child: Text(
-                        'Save',
+                        AppLocalizations.of(context).translate('save_str'),
                         style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'en',
-                            fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
                       ),
                       onPressed: () {
                         Navigator.of(context).pushNamed('/editProfileScreen');
@@ -73,8 +95,14 @@ class EditProfileScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "First Name",
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                      hintText: AppLocalizations.of(context)
+                          .translate('firstName_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -93,8 +121,14 @@ class EditProfileScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "Middle Name",
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                      hintText: AppLocalizations.of(context)
+                          .translate('middleName_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -113,8 +147,14 @@ class EditProfileScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "Last Name",
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                      hintText: AppLocalizations.of(context)
+                          .translate('lastName_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -133,8 +173,14 @@ class EditProfileScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "Phone Number",
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                      hintText: AppLocalizations.of(context)
+                          .translate('phoneNumber_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -153,8 +199,14 @@ class EditProfileScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "Email",
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                      hintText:
+                          AppLocalizations.of(context).translate('email_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -172,9 +224,11 @@ class EditProfileScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.white24),
               ),
               child: Text(
-                'Change Your Password',
+                AppLocalizations.of(context).translate('changePassword_str'),
                 style: TextStyle(
                   color: Colors.white70,
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
                 ),
               ),
               onPressed: () {

@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:momentoo/shared/helper/locator.dart';
-import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/networking/CustomInterceptor.dart';
 import 'package:momentoo/shared/services/networking/DioConnectivityRequestRecall.dart';
 
@@ -13,10 +11,7 @@ class ApiService {
     ),
   )..interceptors.add(
       CustomInterceptor(
-        requestRecall: DioConnectivityRequestRecall(
-          dio: locator<ApiService>().dioClient,
-          checkerService: locator<ConnectionCheckerService>(),
-        ),
+        requestRecall: DioConnectivityRequestRecall(),
       ),
     );
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class BirthDateDropdown extends StatefulWidget {
   @override
@@ -100,7 +102,10 @@ class _BirthDateDropdownState extends State<BirthDateDropdown> {
             child: DropdownButton<DayModel>(
               hint: Text(
                 'Day',
-                // style: TextStyle(fontSize: 12),
+                style: TextStyle(
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+                ),
               ),
               icon: Icon(Icons.keyboard_arrow_down),
               value: _dropdownDayValue,
@@ -157,7 +162,10 @@ class _BirthDateDropdownState extends State<BirthDateDropdown> {
             child: DropdownButton<MonthModel>(
               hint: Text(
                 'Month',
-                // style: TextStyle(fontSize: 12),
+                style: TextStyle(
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+                ),
               ),
               icon: Icon(
                 Icons.keyboard_arrow_down,
@@ -218,7 +226,10 @@ class _BirthDateDropdownState extends State<BirthDateDropdown> {
               isExpanded: false,
               hint: Text(
                 'Year',
-                // style: TextStyle(fontSize: 12),
+                style: TextStyle(
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+                ),
               ),
               icon: Icon(
                 Icons.keyboard_arrow_down,

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/settings/notificationSwitch_manager.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/main_drawer.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -16,8 +20,12 @@ class SettingsScreen extends StatelessWidget {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            'Sittings',
-            style: TextStyle(color: Colors.white),
+            AppLocalizations.of(context).translate('sittings_str'),
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
           ),
           leading: Builder(
             builder: (context) => IconButton(
@@ -59,10 +67,20 @@ class SettingsScreen extends StatelessWidget {
                               //     .pushNamed('/addressBookScreen');
                             },
                             title: Text(
-                              'Change your Email',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)
+                                  .translate('changeYourEmail_str'),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
-                            subtitle: Text('AAAA_aaa@gmail.com'),
+                            subtitle: Text(
+                              'AAAA_aaa@gmail.com',
+                              style: TextStyle(fontFamily: 'en'),
+                            ),
                             trailing: Icon(Icons.arrow_forward_ios),
                           ),
                           Divider(
@@ -77,8 +95,15 @@ class SettingsScreen extends StatelessWidget {
                               //     .pushNamed('/termsConditionsScreen');
                             },
                             title: Text(
-                              'Change your password',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)
+                                  .translate('changeYourPassword_str'),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
                             subtitle: Text('***********'),
                             trailing: Icon(Icons.arrow_forward_ios),
@@ -95,12 +120,26 @@ class SettingsScreen extends StatelessWidget {
                             },
                             trailing: Icon(Icons.arrow_forward_ios),
                             title: Text(
-                              'Country',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)
+                                  .translate('country_str'),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
                             subtitle: Text(
-                              'Kuwait',
-                              style: TextStyle(color: Colors.redAccent),
+                              AppLocalizations.of(context)
+                                  .translate('Kuwait_str'),
+                              style: TextStyle(
+                                color: Colors.redAccent,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
                           ),
                           Divider(
@@ -115,8 +154,15 @@ class SettingsScreen extends StatelessWidget {
                             },
                             trailing: Icon(Icons.arrow_forward_ios),
                             title: Text(
-                              'Terms & Conditions',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)
+                                  .translate('terms&Conditions_str'),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
                           ),
                           Divider(
@@ -131,8 +177,15 @@ class SettingsScreen extends StatelessWidget {
                             },
                             trailing: Icon(Icons.arrow_forward_ios),
                             title: Text(
-                              'Privacy policy',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)
+                                  .translate('privacyPolicy_str'),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
                           ),
                           Divider(
@@ -144,11 +197,37 @@ class SettingsScreen extends StatelessWidget {
                           ListTile(
                             onTap: () {
                               // Navigator.of(context).pushNamed('/privacyScreen');
+
+                              locator<NotificationSwitchManager>()
+                                  .notificationSwitch(
+                                      !locator<NotificationSwitchManager>()
+                                          .currentValue);
                             },
-                            trailing: Icon(Icons.arrow_forward_ios),
+                            trailing: StreamBuilder(
+                              stream:
+                                  locator<NotificationSwitchManager>().switch$,
+                              initialData: true,
+                              builder: (context, snapshot) {
+                                return Switch(
+                                  value:
+                                      snapshot.hasData ? snapshot.data : true,
+                                  onChanged: (value) {
+                                    locator<NotificationSwitchManager>()
+                                        .notificationSwitch(value);
+                                  },
+                                );
+                              },
+                            ),
                             title: Text(
-                              'Notification',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              AppLocalizations.of(context)
+                                  .translate('notifications_str'),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
                             ),
                           ),
                         ],
@@ -166,9 +245,13 @@ class SettingsScreen extends StatelessWidget {
                           side: BorderSide(color: Colors.white24),
                         ),
                         child: Text(
-                          'Join us',
+                          AppLocalizations.of(context).translate('joinUs_str'),
                           style: TextStyle(
                             color: Colors.white70,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
                           ),
                         ),
                         onPressed: () {

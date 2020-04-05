@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class AdsScreen extends StatelessWidget {
@@ -29,7 +30,7 @@ class AdsScreen extends StatelessWidget {
                   side: BorderSide(color: Colors.white70),
                 ),
                 child: Text(
-                  'Skip',
+                  AppLocalizations.of(context).translate('skip_str'),
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'en',

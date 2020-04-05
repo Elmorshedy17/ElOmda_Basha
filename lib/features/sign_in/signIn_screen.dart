@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -30,20 +31,27 @@ class SignInScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Text(
-                      'SIGN IN',
+                      AppLocalizations.of(context).translate('signIn_str'),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 35,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : "ar",
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: Text(
-                      'Sign to continue',
+                      AppLocalizations.of(context)
+                          .translate('signToContinue_str'),
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 18,
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : "ar",
                       ),
                     ),
                   ),
@@ -60,9 +68,14 @@ class SignInScreen extends StatelessWidget {
                             Icons.email,
                             color: Colors.white,
                           ),
-                          labelText: 'Email',
+                          labelText: AppLocalizations.of(context)
+                              .translate('email_str'),
                           labelStyle: TextStyle(
                             color: Colors.white24,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : "ar",
                           ),
                           errorText: snapshot.error,
                         ),
@@ -80,9 +93,14 @@ class SignInScreen extends StatelessWidget {
                               Icons.lock,
                               color: Colors.white,
                             ),
-                            labelText: 'Password',
+                            labelText: AppLocalizations.of(context)
+                                .translate('password_str'),
                             labelStyle: TextStyle(
                               color: Colors.white24,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : "ar",
                             ),
                             errorText: snapshot.error,
                           ),
@@ -107,9 +125,14 @@ class SignInScreen extends StatelessWidget {
                             );
                           }),
                       Text(
-                        'Remember me',
+                        AppLocalizations.of(context)
+                            .translate('rememberMe_str'),
                         style: TextStyle(
                           color: Colors.white70,
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : "ar",
                         ),
                       ),
                     ],
@@ -131,9 +154,15 @@ class SignInScreen extends StatelessWidget {
                                     side: BorderSide(color: Colors.white24),
                                   ),
                                   child: Text(
-                                    'SIGN IN',
+                                    AppLocalizations.of(context)
+                                        .translate('signIn_str'),
                                     style: TextStyle(
                                       color: Colors.white70,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : "ar",
                                     ),
                                   ),
                                   onPressed: () {
@@ -150,7 +179,8 @@ class SignInScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Text(
-                              'Forget your password?',
+                              AppLocalizations.of(context)
+                                  .translate('forgetYourPassword?_str'),
                               style: TextStyle(
                                 color: Colors.white70,
                               ),
@@ -165,9 +195,14 @@ class SignInScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Text(
-                              'Continue as guest',
+                              AppLocalizations.of(context)
+                                  .translate('continueAsGuest_str'),
                               style: TextStyle(
                                 color: Colors.white70,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : "ar",
                               ),
                             ),
                           ),
@@ -178,9 +213,15 @@ class SignInScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Don't have an account?",
+                                AppLocalizations.of(context)
+                                    .translate('doNotHaveAnAccount?_str'),
                                 style: TextStyle(
                                   color: Colors.white70,
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : "ar",
                                 ),
                               ),
                               SizedBox(
@@ -194,9 +235,15 @@ class SignInScreen extends StatelessWidget {
                                 child: Column(
                                   children: <Widget>[
                                     Text(
-                                      'SIGN UP',
+                                      AppLocalizations.of(context)
+                                          .translate('signUp_str'),
                                       style: TextStyle(
                                         color: Colors.white70,
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : "ar",
                                       ),
                                     ),
                                     Container(

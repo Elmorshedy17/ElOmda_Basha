@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -21,8 +22,14 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'Profile',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    AppLocalizations.of(context).translate('profile_str'),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                    ),
                   ),
                   ButtonTheme(
                     height: 25,
@@ -33,11 +40,16 @@ class ProfileScreen extends StatelessWidget {
                           side: BorderSide(color: Colors.teal.shade900),
                         ),
                         child: Text(
-                          'EDIT PROFILE',
+                          AppLocalizations.of(context)
+                              .translate('editProfile_str'),
                           style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'en',
-                              fontWeight: FontWeight.bold),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
+                          ),
                         ),
                         onPressed: () {
                           Navigator.of(context).pushNamed('/editProfileScreen');
@@ -66,9 +78,21 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.teal.shade900,
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
                             ),
                           ),
-                          Text('SalahSalah@email.com'),
+                          Text(
+                            'SalahSalah@email.com',
+                            style: TextStyle(
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -81,8 +105,25 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            title: Text('Name'),
-                            subtitle: Text('Salah'),
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate('name_str'),
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Salah',
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
                           ),
                           Divider(
                             endIndent: 15,
@@ -91,8 +132,25 @@ class ProfileScreen extends StatelessWidget {
                             color: Colors.black12,
                           ),
                           ListTile(
-                            title: Text('Address'),
-                            subtitle: Text('14 Street'),
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate('address_str'),
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
+                            subtitle: Text(
+                              '14 Street',
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
                           ),
                           Divider(
                             endIndent: 15,
@@ -101,11 +159,24 @@ class ProfileScreen extends StatelessWidget {
                             color: Colors.black12,
                           ),
                           ListTile(
-                            title: Text('Phone Number'),
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate('phoneNumber_str'),
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
                             subtitle: Text(
                               '01112222330',
                               style: TextStyle(
                                 color: Colors.red,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
                               ),
                             ),
                           ),
@@ -120,7 +191,16 @@ class ProfileScreen extends StatelessWidget {
                               Navigator.of(context)
                                   .pushNamed('/addressBookScreen');
                             },
-                            title: Text('Address book'),
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate('addressBook_str'),
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
                             trailing: Icon(Icons.arrow_forward_ios),
                           ),
                           Divider(
@@ -138,7 +218,16 @@ class ProfileScreen extends StatelessWidget {
                               Icons.error,
                               color: Colors.greenAccent,
                             ),
-                            title: Text('Terms of use'),
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate('termsOfUse_str'),
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
                             trailing: Icon(Icons.arrow_forward_ios),
                           ),
                           Divider(
@@ -156,7 +245,16 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.yellow,
                             ),
                             trailing: Icon(Icons.arrow_forward_ios),
-                            title: Text('Privacy policy'),
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate('privacyPolicy_str'),
+                              style: TextStyle(
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -188,11 +286,17 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                'Sign out',
+                                AppLocalizations.of(context)
+                                    .translate('signOut_str'),
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'en',
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
                               ),
                               onPressed: () {}),
                         ),

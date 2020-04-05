@@ -5,6 +5,7 @@ import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/main_drawer.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -45,9 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            'Momentoo',
-            // AppLocalizations.of(context).translate('test'),
-            style: TextStyle(color: Colors.white),
+            AppLocalizations.of(context).translate('momentoo_str'),
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily:
+                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+            ),
           ),
           leading: Builder(
             builder: (context) => IconButton(
@@ -89,7 +93,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icon(Icons.search, color: Colors.teal.shade900),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: Text('Search...'),
+                      child: Text(
+                        AppLocalizations.of(context).translate('search..._str'),
+                        style: TextStyle(
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -179,8 +191,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     }),
                 Text(
                   index == 0
-                      ? 'Restaurants'
-                      : index == 1 ? 'Flowers' : 'Pharmacies',
+                      ? AppLocalizations.of(context)
+                          .translate('restaurants_str')
+                      : index == 1
+                          ? AppLocalizations.of(context)
+                              .translate('flowers_str')
+                          : AppLocalizations.of(context)
+                              .translate('pharmacies_str'),
                   style: TextStyle(
                     fontSize: 12,
                     fontFamily: locator<PrefsService>().appLanguage == 'en'

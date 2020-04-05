@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class TrendingStoresArguments {
   final String title;
@@ -33,7 +36,14 @@ class TrendingStoresScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                  ),
+                ),
               ],
             ),
           ),
@@ -45,11 +55,14 @@ class TrendingStoresScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.90,
               height: 60,
               child: Text(
-                'Trending Restaurants',
+                AppLocalizations.of(context)
+                    .translate('trendingRestaurants_str'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
                 ),
               ),
             ),

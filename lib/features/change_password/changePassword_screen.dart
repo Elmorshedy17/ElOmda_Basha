@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   @override
@@ -24,11 +27,22 @@ class ChangePasswordScreen extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15,
                 ),
-                Text('Back'),
+                Text(
+                  AppLocalizations.of(context).translate('back_str'),
+                  style: TextStyle(
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar'),
+                ),
               ],
             ),
           ),
-          title: Text('Change Password'),
+          title: Text(
+            AppLocalizations.of(context).translate('changePassword_str'),
+            style: TextStyle(
+                fontFamily:
+                    locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar'),
+          ),
           centerTitle: true,
         ),
         body: Column(
@@ -47,8 +61,14 @@ class ChangePasswordScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "Current Email",
+                      hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('currentEmail_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -67,8 +87,14 @@ class ChangePasswordScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "New",
+                      hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('newPassword_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -87,8 +113,14 @@ class ChangePasswordScreen extends StatelessWidget {
                           const Radius.circular(10.0),
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      hintText: "ReType New Password",
+                      hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('retypeNewPassword_str'),
                       fillColor: Colors.white),
                 ),
               ),
@@ -106,10 +138,12 @@ class ChangePasswordScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.white24),
               ),
               child: Text(
-                'SAVE',
+                AppLocalizations.of(context).translate('save_str'),
                 style: TextStyle(
-                  color: Colors.white70,
-                ),
+                    color: Colors.white70,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar'),
               ),
               onPressed: () {},
             ),

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 int currentPageIndex = 0;
@@ -14,23 +15,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   PageController _welcomePageController;
-  List<Widget> welcomeScreens = <Widget>[
-    _Welcome(
-        index: 1,
-        title: 'Discover place near you',
-        content:
-            '''We make it simple to find the food you crave. Enter your address and let us do the rest.'''),
-    _Welcome(
-        index: 2,
-        title: 'Choose A Tasty Dish',
-        content:
-            """When you order Eat Street. we'll hook you up with exclusive coupons, specials and rewards."""),
-    _Welcome(
-        index: 3,
-        title: 'Delivery',
-        content:
-            '''We make food ordering fast, simple and free - no matter if you order online or cache'''),
-  ];
 
   @override
   void initState() {
@@ -48,6 +32,26 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> welcomeScreens = <Widget>[
+      _Welcome(
+        index: 1,
+        title: AppLocalizations.of(context).translate('welcomeTitle1_str'),
+        content: AppLocalizations.of(context).translate('welcomeContent1_str'),
+      ),
+      _Welcome(
+        index: 2,
+        title: AppLocalizations.of(context).translate('welcomeTitle2_str'),
+        content: AppLocalizations.of(context).translate('welcomeContent2_str'),
+      ),
+      _Welcome(
+        index: 3,
+        title: AppLocalizations.of(context).translate(
+          'welcomeTitle3_str',
+        ),
+        content: AppLocalizations.of(context).translate('welcomeContent3_str'),
+      ),
+    ];
+
     return MainBackground(
       height: MediaQuery.of(context).size.height * 0.3,
       child: Stack(
@@ -154,7 +158,7 @@ class _Welcome extends StatelessWidget {
               ? RaisedButton(
                   color: Colors.teal.shade900,
                   child: Text(
-                    'Get Started',
+                    AppLocalizations.of(context).translate('getStarted_str'),
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: locator<PrefsService>().appLanguage == 'en'
@@ -168,7 +172,7 @@ class _Welcome extends StatelessWidget {
                 )
               : InkWell(
                   child: Text(
-                    'Skip>>',
+                    AppLocalizations.of(context).translate('skip>>_str'),
                     style: TextStyle(
                       color: Colors.teal.shade900,
                       fontFamily: locator<PrefsService>().appLanguage == 'en'

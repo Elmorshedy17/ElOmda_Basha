@@ -1,37 +1,32 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
+import 'package:momentoo/shared/services/networking/ApiProvider.dart';
 
 class DioConnectivityRequestRecall {
-  final Dio dio;
-  final ConnectionCheckerService checkerService;
-
-  DioConnectivityRequestRecall({
-    @required this.dio,
-    @required this.checkerService,
-  });
-
   Future<Response> scheduleRequestRecall(RequestOptions requestOptions) async {
     StreamSubscription streamSubscription;
     final responseCompleter = Completer<Response>();
 
-    streamSubscription = checkerService.getConnectionStatus$.listen((status) {
+    streamSubscription = locator<ConnectionCheckerService>()
+        .getConnectionStatus$
+        .listen((status) {
       if (status == InternetStatus.Online) {
         // Ensure that only one retry happens per connectivity change by cancelling the listener.
         streamSubscription.cancel();
         // Complete the completer instead of returning
         responseCompleter.complete(
-          dio.request(
-            requestOptions.path,
-            cancelToken: requestOptions.cancelToken,
-            data: requestOptions.data,
-            onReceiveProgress: requestOptions.onReceiveProgress,
-            onSendProgress: requestOptions.onSendProgress,
-            queryParameters: requestOptions.queryParameters,
-            options: requestOptions,
-          ),
+          locator<ApiService>().dioClient.request(
+                requestOptions.path,
+                cancelToken: requestOptions.cancelToken,
+                data: requestOptions.data,
+                onReceiveProgress: requestOptions.onReceiveProgress,
+                onSendProgress: requestOptions.onSendProgress,
+                queryParameters: requestOptions.queryParameters,
+                options: requestOptions,
+              ),
         );
       }
     });

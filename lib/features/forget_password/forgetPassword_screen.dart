@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   @override
@@ -33,10 +36,26 @@ class ForgetPasswordScreen extends StatelessWidget {
                   Navigator.of(context).pop();
                 },
                 child: Row(
-                  children: <Widget>[Icon(Icons.arrow_back_ios), Text('Back')],
+                  children: <Widget>[
+                    Icon(Icons.arrow_back_ios),
+                    Text(
+                      AppLocalizations.of(context).translate('back_str'),
+                      style: TextStyle(
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              title: Text('Forget password'),
+              title: Text(
+                AppLocalizations.of(context).translate('forgetPassword_str'),
+                style: TextStyle(
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+                ),
+              ),
               centerTitle: true,
             ),
             body: Center(
@@ -51,7 +70,15 @@ class ForgetPasswordScreen extends StatelessWidget {
                     children: <Widget>[
                       ListTile(
                         title: Text(
-                            """Enter your email address below and we'll send you an email with instruction on how to change your password"""),
+                          AppLocalizations.of(context)
+                              .translate('forgetPasswordInstruction_str'),
+                          style: TextStyle(
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 40,
@@ -81,8 +108,16 @@ class ForgetPasswordScreen extends StatelessWidget {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintStyle: TextStyle(color: Colors.grey[600]),
-                                hintText: "Enter Your Email",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('enterYourEmail_str'),
                                 fillColor: Colors.white70),
                           ),
                         ),
@@ -102,9 +137,12 @@ class ForgetPasswordScreen extends StatelessWidget {
                     side: BorderSide(color: Colors.white24),
                   ),
                   child: Text(
-                    'Send',
+                    AppLocalizations.of(context).translate('send_str'),
                     style: TextStyle(
                       color: Colors.white70,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
                     ),
                   ),
                   onPressed: () {},

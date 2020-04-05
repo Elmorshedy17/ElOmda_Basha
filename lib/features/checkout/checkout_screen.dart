@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:momentoo/features/order_details/orderDetails_screen.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
-import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CheckOutScreen extends StatefulWidget {
@@ -20,7 +18,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   FocusNode phoneNumberFocusNode = new FocusNode();
   FocusNode emailFocusNode = new FocusNode();
 
-
   FocusNode blockFocusNode = new FocusNode();
   FocusNode streetFocusNode = new FocusNode();
   FocusNode streetTwoFocusNode = new FocusNode();
@@ -29,8 +26,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   FocusNode jaddaFocusNode = new FocusNode();
   FocusNode apartmentFocusNode = new FocusNode();
   FocusNode instructionsFocusNode = new FocusNode();
-
-
 
   List _countries = [
     "Afghanistan",
@@ -640,8 +635,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   ),
                   // end User details
 
-
-                  SizedBox(height: 20.0,),
+                  SizedBox(
+                    height: 20.0,
+                  ),
 
                   // User address details
                   Card(
@@ -672,15 +668,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             width: MediaQuery.of(context).size.width,
                             color: Colors.grey[100],
                             child: Container(
-                              margin:
-                              const EdgeInsets.symmetric(horizontal: 15.0,vertical: 12.0),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 12.0),
                               child: Row(
                                 children: <Widget>[
-                                  Text(   AppLocalizations.of(context)
-                                      .translate('Kuwait_str'),style: TextStyle(
-                                      color: Colors.teal.shade900,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600)),
+                                  Text(
+                                      AppLocalizations.of(context)
+                                          .translate('Kuwait_str'),
+                                      style: TextStyle(
+                                          color: Colors.teal.shade900,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600)),
                                 ],
                               ),
                             ),
@@ -691,19 +689,24 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           ExpansionTile(
                             backgroundColor: Colors.grey[100],
                             title: Text(
-                              AppLocalizations.of(context).translate('addresses_str'),
-                              style: TextStyle(color: Colors.grey, fontSize: 21),
+                              AppLocalizations.of(context)
+                                  .translate('addresses_str'),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 21),
                             ),
                             children: <Widget>[
                               StreamBuilder<Object>(
                                   stream: cityBehaviorSubject.stream,
                                   builder: (context, addressesSnapshot) {
                                     return Container(
-                                      height: MediaQuery.of(context).size.height / 3,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              3,
                                       child: ListView.separated(
                                           separatorBuilder: (context, index) =>
                                               Divider(
-                                                color: Colors.grey.withOpacity(.5),
+                                                color:
+                                                    Colors.grey.withOpacity(.5),
                                               ),
                                           itemCount: _countries.length,
                                           itemBuilder: (context, index) {
@@ -718,44 +721,48 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                 padding: EdgeInsets.all(8.0),
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: <Widget>[
                                                     Text(
                                                       _countries[index],
                                                       style: TextStyle(
                                                           color: index ==
-                                                              cityBehaviorSubject
-                                                                  .value
-                                                              ? Colors.teal.shade900
+                                                                  cityBehaviorSubject
+                                                                      .value
+                                                              ? Colors
+                                                                  .teal.shade900
                                                               : Colors.black54,
                                                           fontSize: 18,
                                                           fontWeight:
-                                                          FontWeight.w600),
+                                                              FontWeight.w600),
                                                     ),
                                                     index ==
-                                                        cityBehaviorSubject
-                                                            .value
+                                                            cityBehaviorSubject
+                                                                .value
                                                         ? Container(
-                                                      height: 28.0,
-                                                      width: 28.0,
-                                                      decoration:
-                                                      new BoxDecoration(
-                                                        color: Colors
-                                                            .teal.shade800,
-                                                        borderRadius:
-                                                        new BorderRadius
-                                                            .all(
-                                                          Radius.circular(50.0),
-                                                        ),
-                                                      ),
-                                                      child: Center(
-                                                        child: Icon(
-                                                          Icons.check,
-                                                          size: 18,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    )
+                                                            height: 28.0,
+                                                            width: 28.0,
+                                                            decoration:
+                                                                new BoxDecoration(
+                                                              color: Colors.teal
+                                                                  .shade800,
+                                                              borderRadius:
+                                                                  new BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    50.0),
+                                                              ),
+                                                            ),
+                                                            child: Center(
+                                                              child: Icon(
+                                                                Icons.check,
+                                                                size: 18,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          )
                                                         : Container()
                                                   ],
                                                 ),
@@ -789,16 +796,21 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         },
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey),
                                           hintText: AppLocalizations.of(context)
                                               .translate("Block_Str"),
                                           contentPadding: const EdgeInsets.only(
-                                              left: 14.0, bottom: 8.0, top: 8.0),
+                                              left: 14.0,
+                                              bottom: 8.0,
+                                              top: 8.0),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  Container(width: 5.0,),
+                                  Container(
+                                    width: 5.0,
+                                  ),
                                   Expanded(
                                     child: Container(
                                       color: Colors.grey[100],
@@ -812,11 +824,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         },
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey),
                                           hintText: AppLocalizations.of(context)
                                               .translate("Street_str"),
                                           contentPadding: const EdgeInsets.only(
-                                              left: 14.0, bottom: 8.0, top: 8.0),
+                                              left: 14.0,
+                                              bottom: 8.0,
+                                              top: 8.0),
                                         ),
                                       ),
                                     ),
@@ -832,7 +847,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             color: Colors.grey[100],
                             child: Container(
                               margin:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: TextFormField(
                                 focusNode: streetTwoFocusNode,
                                 textInputAction: TextInputAction.next,
@@ -858,7 +873,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             color: Colors.grey[100],
                             child: Container(
                               margin:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: TextFormField(
                                 focusNode: houseFocusNode,
                                 textInputAction: TextInputAction.next,
@@ -900,16 +915,21 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         },
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey),
                                           hintText: AppLocalizations.of(context)
                                               .translate("Floor_Str"),
                                           contentPadding: const EdgeInsets.only(
-                                              left: 14.0, bottom: 8.0, top: 8.0),
+                                              left: 14.0,
+                                              bottom: 8.0,
+                                              top: 8.0),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  Container(width: 5.0,),
+                                  Container(
+                                    width: 5.0,
+                                  ),
                                   Expanded(
                                     child: Container(
                                       color: Colors.grey[100],
@@ -923,11 +943,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         },
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey),
                                           hintText: AppLocalizations.of(context)
                                               .translate("Jadda_str"),
                                           contentPadding: const EdgeInsets.only(
-                                              left: 14.0, bottom: 8.0, top: 8.0),
+                                              left: 14.0,
+                                              bottom: 8.0,
+                                              top: 8.0),
                                         ),
                                       ),
                                     ),
@@ -943,7 +966,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             color: Colors.grey[100],
                             child: Container(
                               margin:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: TextFormField(
                                 focusNode: apartmentFocusNode,
                                 textInputAction: TextInputAction.done,
@@ -952,9 +975,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       .requestFocus(instructionsFocusNode);
                                 },
                                 decoration: InputDecoration(
-                                  suffix: Text("(${AppLocalizations.of(context)
-                                      .translate("optional_Str")})",),
-                                  suffixStyle: TextStyle(fontSize: 12.0,color: Colors.grey),
+                                  suffix: Text(
+                                    "(${AppLocalizations.of(context).translate("optional_Str")})",
+                                  ),
+                                  suffixStyle: TextStyle(
+                                      fontSize: 12.0, color: Colors.grey),
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(color: Colors.grey),
                                   hintText: AppLocalizations.of(context)
@@ -972,14 +997,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             color: Colors.grey[100],
                             child: Container(
                               margin:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: TextFormField(
                                 focusNode: instructionsFocusNode,
                                 textInputAction: TextInputAction.done,
                                 decoration: InputDecoration(
-                                  suffix: Text("(${AppLocalizations.of(context)
-                                      .translate("optional_Str")})",),
-                                  suffixStyle: TextStyle(fontSize: 12.0,color: Colors.grey),
+                                  suffix: Text(
+                                    "(${AppLocalizations.of(context).translate("optional_Str")})",
+                                  ),
+                                  suffixStyle: TextStyle(
+                                      fontSize: 12.0, color: Colors.grey),
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(color: Colors.grey),
                                   hintText: AppLocalizations.of(context)
@@ -996,11 +1023,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           Container(
                             color: Colors.grey[100],
                             child: Container(
-                              margin:
-                              const EdgeInsets.symmetric(horizontal: 15.0,vertical: 8.0),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 8.0),
                               child: TextFormField(
                                 maxLines: 8,
-
                                 focusNode: phoneNumberFocusNode,
                                 textInputAction: TextInputAction.done,
                                 onFieldSubmitted: (String value) {
@@ -1008,9 +1034,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       .requestFocus(emailFocusNode);
                                 },
                                 decoration: InputDecoration(
-                                  suffix: Text("(${AppLocalizations.of(context)
-                                      .translate("optional_Str")})",),
-                                  suffixStyle: TextStyle(fontSize: 12.0,color: Colors.grey),
+                                  suffix: Text(
+                                    "(${AppLocalizations.of(context).translate("optional_Str")})",
+                                  ),
+                                  suffixStyle: TextStyle(
+                                      fontSize: 12.0, color: Colors.grey),
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(color: Colors.grey),
                                   hintText: AppLocalizations.of(context)
@@ -1036,7 +1064,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 15.0),
                       child: TextField(
                         textInputAction: TextInputAction.done,
                         decoration: InputDecoration(
@@ -1073,56 +1102,77 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 20.0),
                       child: Column(
                         children: <Widget>[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(AppLocalizations.of(context)
-                                  .translate("subtotal_str"),style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900),),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate("subtotal_str"),
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w900),
+                              ),
                               Row(
                                 children: <Widget>[
-                                  Text("24.5",style: TextStyle(
-                              color: Colors.grey.shade500,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800),),
+                                  Text(
+                                    "24.5",
+                                    style: TextStyle(
+                                        color: Colors.grey.shade500,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Text("KD",style: TextStyle(
-                                      color: Colors.grey.shade500,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),),
+                                  Text(
+                                    "KD",
+                                    style: TextStyle(
+                                        color: Colors.grey.shade500,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
                                 ],
                               ),
                             ],
                           ),
-                          SizedBox(height: 8.0,),
+                          SizedBox(
+                            height: 8.0,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(AppLocalizations.of(context)
-                                  .translate("Discount_str"),style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900),),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate("Discount_str"),
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w900),
+                              ),
                               Row(
                                 children: <Widget>[
-                                  Text("24.5",style: TextStyle(
-                                      color: Colors.grey.shade500,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),),
+                                  Text(
+                                    "24.5",
+                                    style: TextStyle(
+                                        color: Colors.grey.shade500,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Text("KD",style: TextStyle(
-                                      color: Colors.grey.shade500,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),),
+                                  Text(
+                                    "KD",
+                                    style: TextStyle(
+                                        color: Colors.grey.shade500,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
                                 ],
                               ),
                             ],
@@ -1134,22 +1184,30 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(AppLocalizations.of(context)
-                                  .translate("subtotal_str"),style: TextStyle(
-                                  color: Colors.teal.shade900,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate("subtotal_str"),
+                                style: TextStyle(
+                                    color: Colors.teal.shade900,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600),
+                              ),
                               Row(
                                 children: <Widget>[
-                                  Text("24.5",style: TextStyle(
-                                      color: Colors.teal.shade900,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),),
-
-                                  Text("KD",style: TextStyle(
-                                      color: Colors.teal.shade900,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),),
+                                  Text(
+                                    "24.5",
+                                    style: TextStyle(
+                                        color: Colors.teal.shade900,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                  Text(
+                                    "KD",
+                                    style: TextStyle(
+                                        color: Colors.teal.shade900,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
                                 ],
                               ),
                             ],
@@ -1158,7 +1216,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0,),
+                  SizedBox(
+                    height: 20.0,
+                  ),
 
                   ButtonTheme(
                     minWidth: 280.0,
@@ -1172,10 +1232,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         AppLocalizations.of(context).translate('Pay_now_Str'),
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
-                      onPressed: (){},
+                      onPressed: () {},
                     ),
                   ),
-                  SizedBox(height: 30.0,),
+                  SizedBox(
+                    height: 30.0,
+                  ),
                 ],
               ),
             ),
