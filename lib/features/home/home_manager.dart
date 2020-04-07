@@ -1,22 +1,20 @@
-// import 'package:momentoo/features/home/home_repo.dart';
-// import 'package:momentoo/shared/helper/locator.dart';
-// import 'package:momentoo/shared/services/prefs_service.dart';
-// import 'package:rxdart/rxdart.dart';
+import 'package:momentoo/features/home/home_model.dart';
+import 'package:momentoo/features/home/home_repo.dart';
+import 'package:momentoo/shared/helper/manager.dart';
+import 'package:rxdart/rxdart.dart';
 
-// class HomeManager {
-//   final BehaviorSubject<String> _langSubject =
-//       BehaviorSubject<String>.seeded(locator<PrefsService>().appLanguage);
-//   // final BehaviorSubject<> _aboutSubject =
-//   //     BehaviorSubject<>();
+class HomeManager implements Manager {
+  final BehaviorSubject<HomeModel> _adsSubject = BehaviorSubject<HomeModel>();
 
-//   // Stream<> get home$ => _aboutSubject.stream;
-//   Sink<String> get inLang => _langSubject.sink;
+  Stream<HomeModel> getData(int categoryId) {
+    Stream.fromFuture(HomeRepo.getHomeData(categoryId)).listen((v) {
+      _adsSubject.add(v);
+    });
+    return _adsSubject.stream;
+  }
 
-//   HomeManager() {
-//     _langSubject.switchMap((lang) async* {
-//       yield await HomeRepo.getData();
-//     }).listen((value) {
-//       // _aboutSubject.add(value);
-//     });
-//   }
-// }
+  @override
+  void dispose() {
+    _adsSubject.close();
+  }
+}

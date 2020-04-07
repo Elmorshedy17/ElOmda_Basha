@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:momentoo/features/ads/ads_manager.dart';
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
+import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
 import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
 import 'package:momentoo/features/settings/notificationSwitch_manager.dart';
@@ -53,4 +55,8 @@ Future<void> setupLocator() async {
   // NotificationSwitchManager
   locator.registerLazySingleton<NotificationSwitchManager>(
       () => NotificationSwitchManager());
+  // AdsManager
+  locator.registerLazySingleton<AdsManager>(() => AdsManager());
+  // AdsManager
+  locator.registerLazySingleton<HomeManager>(() => HomeManager());
 }

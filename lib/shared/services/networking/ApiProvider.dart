@@ -5,7 +5,7 @@ import 'package:momentoo/shared/services/networking/DioConnectivityRequestRecall
 class ApiService {
   final Dio dioClient = Dio(
     BaseOptions(
-      baseUrl: '',
+      baseUrl: 'http://momento.linekw.net/api/',
       connectTimeout: 60000,
       receiveTimeout: 60000,
     ),

@@ -152,7 +152,7 @@
   "contact_str": "Contact",
   "featuredItems_str": "FEATURED ITEMS",
   "menu_str": "MENU",
-  "viewAll>>_str": "View all >>",
+  "viewAll_str": "View all",
   "popularItems_str": "Popular items",
   "signUp_str": "SIGN UP",
   "password_str": "Password",
@@ -162,5 +162,8 @@
   "rememberMe_str": "Remember me",
   "forgetYourPassword?_str": "Forget your password?",
   "continueAsGuest_str": "Continue as guest",
-  "doNotHaveAnAccount?_str": "Don't have an account?"
+  "doNotHaveAnAccount?_str": "Don't have an account?",
+  "noWifiTitle_str": "No Internet",
+  "noWifiContent_str": "Please check your connection to continue using Momentoo",
+  "ads_str": "Ads"
 }

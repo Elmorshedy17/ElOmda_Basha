@@ -4,7 +4,6 @@ import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
-import 'package:momentoo/shared/widgets/custom_card.dart';
 
 class StoreDetailsScreen extends StatefulWidget {
   const StoreDetailsScreen({Key key}) : super(key: key);
@@ -243,13 +242,15 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       ? true
                       : false,
                   scrollDirection: Axis.horizontal,
-                  itemCount: cards.length,
+                  itemCount: 3,
+                  // itemCount: cardsList.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 3,
                       ),
-                      child: cards[index],
+                      child: Container(),
+                      // child: cardsList[index],
                     );
                   },
                 ),

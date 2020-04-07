@@ -10,12 +10,6 @@ class FcmTokenManager implements Manager {
   // String get currentFcmToken => _fcmToken;
   String get currentFcmToken => _fcmTokenSubject.value;
 
-  // FcmTokenManager() {
-  //   _fcmTokenSubject.listen((token) {
-  //     _fcmToken = token;
-  //   });
-  // }
-
   @override
   void dispose() {
     _fcmTokenSubject.close();

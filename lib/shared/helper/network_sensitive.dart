@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/shared//helper/locator.dart';
+import 'package:momentoo/shared/helper/manager.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
@@ -8,8 +9,10 @@ import 'package:provider/provider.dart';
 
 class NetworkSensitive extends StatelessWidget {
   final Widget child;
+  // final Manager manager;
   NetworkSensitive({
-    this.child,
+    @required this.child,
+    // @required this.manager,
   });
 
   @override
@@ -31,11 +34,13 @@ class NetworkSensitive extends StatelessWidget {
     }
 
     if (hasConnection) {
-      if (locator<PrefsService>().isBackToOnline) {
-        locator<PrefsService>().isBackToOnline = false;
+      // if (locator<PrefsService>().isBackToOnline) {
+      //   locator<PrefsService>().isBackToOnline = false;
 
-        print('BACE TO ONLINE');
-      }
+      //   print('BACE TO ONLINE');
+
+      // }
+      // manager.getData();
       return child;
     } else {
       return AbsorbPointer(
@@ -59,7 +64,7 @@ class NetworkSensitive extends StatelessWidget {
 class InternetAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    locator<PrefsService>().isBackToOnline = true;
+    // locator<PrefsService>().isBackToOnline = true;
 
     return Scaffold(
       backgroundColor: Colors.black12.withOpacity(0.3),

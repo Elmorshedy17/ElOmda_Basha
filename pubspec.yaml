@@ -38,7 +38,7 @@ dependencies:
   cached_network_image: ^2.0.0
   email_validator: ^1.0.4
   google_maps_flutter: ^0.5.25+1
-  location: ^2.5.4
+  location: ^3.0.2
   firebase_messaging: ^6.0.13
   firebase_core: ^0.4.4+2
   firebase_analytics: ^5.0.11
@@ -46,6 +46,7 @@ dependencies:
   geocoder: ^0.2.1
   image_picker: ^0.6.4
   share: ^0.6.3+6
+  carousel_pro: ^1.0.0
 
 
 dev_dependencies:

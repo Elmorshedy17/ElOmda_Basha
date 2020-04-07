@@ -24,7 +24,7 @@ class LocationService {
     // Request permission to use location
     location.requestPermission().then(
       (status) {
-        if (status == PermissionStatus.GRANTED) {
+        if (status == PermissionStatus.granted) {
           location.getLocation().asStream().listen(
             (locationData) {
               if (locationData != null) {

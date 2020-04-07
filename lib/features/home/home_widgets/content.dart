@@ -1,43 +1,501 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/home/home_model.dart';
 import 'package:momentoo/features/home/home_widgets/ads_list.dart';
+import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class HomeContent extends StatelessWidget {
+  final int categoryId;
+  final String trendingSellersName;
+  final String trendingProductName;
+  final String sellersName;
+
+  final List<Ads> adsList;
+  final List<TrandingSellers> trendingSellersList;
+  final List<TrandingProducts> trendingProductsList;
+  final List<Sellers> sellersList;
+
+  const HomeContent({
+    @required this.categoryId,
+    @required this.adsList,
+    @required this.trendingSellersName,
+    @required this.trendingProductName,
+    @required this.sellersName,
+    @required this.trendingSellersList,
+    @required this.trendingProductsList,
+    @required this.sellersList,
+  });
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      physics: BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text('Ads'),
+        adsList.length == 0
+            ? Container()
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  AppLocalizations.of(context).translate('ads_str'),
+                  style: TextStyle(
+                      // fontSize:
+                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+        ////////////////////////////
+        //! adsList
+        ///////////////////////////
+        CarouselWidgetHome(
+          categoryId: categoryId,
+          adsList: adsList,
         ),
-        // Ads
-        CardsHorizontalList(),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(
+            8.0,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Trending'),
+              Text(
+                trendingSellersName,
+                style: TextStyle(
+                    // fontSize:
+                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                    fontWeight: FontWeight.bold),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed('/trendingStoresScreen');
                 },
-                child: Text('View all >>'),
+                child: Text(
+                  '${AppLocalizations.of(context).translate('viewAll_str')}>>',
+                  style: TextStyle(
+                      // fontSize:
+                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      fontWeight: FontWeight.bold),
+                ),
               )
             ],
           ),
         ),
-        // Trending
-        CardsHorizontalList(),
+        //////////////////////////
+        //! trendingSellersList
+        /////////////////////////
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 200,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+            scrollDirection: Axis.horizontal,
+            itemCount: trendingSellersList.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 3,
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 200,
+                      height: 200,
+                      child: Card(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Image.network(
+                              trendingSellersList[index].image,
+                              fit: BoxFit.fill,
+                              width: 200,
+                              height: 120,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                trendingSellersList[index].name,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  // fontSize:
+                                  //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: List<Widget>.generate(
+                                  5,
+                                  (innerIndex) => Icon(
+                                    Icons.star,
+                                    color: innerIndex <
+                                            trendingSellersList[index].rate
+                                        ? Colors.pink
+                                        : Colors.grey,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[50],
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 5,
+                      top: 5,
+                      child: IconButton(
+                          icon: Icon(
+                            sellersList[index].favourite == 'yes'
+                                ? Icons.star
+                                : Icons.star_border,
+                            color: sellersList[index].favourite == 'yes'
+                                ? Colors.pink
+                                : Colors.black38,
+                            size: 30,
+                          ),
+                          onPressed: () {}),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(
+            8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                trendingProductName,
+                style: TextStyle(
+                    // fontSize:
+                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                    fontWeight: FontWeight.bold),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/trendingStoresScreen');
+                },
+                child: Text(
+                  '${AppLocalizations.of(context).translate('viewAll_str')}>>',
+                  style: TextStyle(
+                      // fontSize:
+                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          ),
+        ),
+        //////////////////////////
+        //! trendingProductsList
+        ///////////////////////////
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 200,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+            scrollDirection: Axis.horizontal,
+            itemCount: trendingProductsList.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 3,
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 200,
+                      height: 200,
+                      child: Card(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Image.network(
+                              trendingProductsList[index].image,
+                              fit: BoxFit.fill,
+                              width: 200,
+                              height: 120,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                trendingProductsList[index].name,
+                                style: TextStyle(
+                                    // fontSize:
+                                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                trendingProductsList[index].section,
+                                style: TextStyle(
+                                  // fontSize:
+                                  //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage ==
+                                              'en'
+                                          ? 'en'
+                                          : 'ar',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black38,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                '${trendingProductsList[index].price} ${trendingProductsList[index].currency}',
+                                style: TextStyle(
+                                    // fontSize:
+                                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[50],
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 5,
+                      top: 5,
+                      child: IconButton(
+                          icon: Icon(
+                            sellersList[index].favourite == 'yes'
+                                ? Icons.star
+                                : Icons.star_border,
+                            color: sellersList[index].favourite == 'yes'
+                                ? Colors.pink
+                                : Colors.black38,
+                            size: 30,
+                          ),
+                          onPressed: () {}),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(
+            8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                sellersName,
+                style: TextStyle(
+                    // fontSize:
+                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                    fontWeight: FontWeight.bold),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/trendingStoresScreen');
+                },
+                child: Text(
+                  '${AppLocalizations.of(context).translate('viewAll_str')}>>',
+                  style: TextStyle(
+                      // fontSize:
+                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          ),
+        ),
+        //////////////////
+        //! sellersList
+        ///////////////////
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 200,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+            scrollDirection: Axis.horizontal,
+            itemCount: sellersList.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 3,
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 200,
+                      height: 200,
+                      child: Card(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Image.network(
+                              sellersList[index].image,
+                              fit: BoxFit.fill,
+                              width: 200,
+                              height: 120,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(sellersList[index].name,
+                                  style: TextStyle(
+                                      // fontSize:
+                                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(sellersList[index].cuisine,
+                                  style: TextStyle(
+                                      // fontSize:
+                                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                      color: Colors.black38)),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: List<Widget>.generate(
+                                  5,
+                                  (innerIndex) => Icon(
+                                    Icons.star,
+                                    color: innerIndex < sellersList[index].rate
+                                        ? Colors.pink
+                                        : Colors.grey,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[50],
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 5,
+                      top: 5,
+                      child: IconButton(
+                          icon: Icon(
+                            sellersList[index].favourite == 'yes'
+                                ? Icons.star
+                                : Icons.star_border,
+                            color: sellersList[index].favourite == 'yes'
+                                ? Colors.pink
+                                : Colors.black38,
+                            size: 30,
+                          ),
+                          onPressed: () {}),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 }
-
-List<Widget> content = [
-  HomeContent(),
-  HomeContent(),
-  HomeContent(),
-];

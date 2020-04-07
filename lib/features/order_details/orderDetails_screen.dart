@@ -8,7 +8,7 @@ import 'package:momentoo/shared/services/prefs_service.dart';
 class OrderDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //  _orderedSuccessfully() = > its alwayes active
+    //  _orderedSuccessfully() = > its always active
     Widget _orderedSuccessfully() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -818,8 +818,9 @@ class OrderDetailsScreen extends StatelessWidget {
                   ),
                   itemCount: _countries.length,
                   itemBuilder: (context, index) => InkWell(
-                    onTap: (){
-                      print("this is print of the countery name ${_countries[index]}");
+                    onTap: () {
+                      print(
+                          "this is print of the countery name ${_countries[index]}");
                     },
                     child: Padding(
                       padding: EdgeInsets.all(8.0),

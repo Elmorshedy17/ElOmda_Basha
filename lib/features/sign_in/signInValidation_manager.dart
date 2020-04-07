@@ -29,4 +29,9 @@ class SignInValidationManager with Validation implements Manager {
     _passwordSubject.close();
     _checkBoxSubject.close();
   }
+
+  @override
+  getData([Map<String, dynamic> map]) {
+    return null;
+  }
 }

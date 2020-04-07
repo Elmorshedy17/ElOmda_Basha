@@ -1,29 +1,60 @@
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:momentoo/shared/helper/locator.dart';
-import 'package:momentoo/shared/services/prefs_service.dart';
-import 'package:momentoo/shared/widgets/custom_card.dart';
+import 'package:momentoo/features/home/home_model.dart';
 
-class CardsHorizontalList extends StatelessWidget {
+// Home Carousel
+class CarouselWidgetHome extends StatefulWidget {
+  final int categoryId;
+  final List<Ads> adsList;
+
+  const CarouselWidgetHome({@required this.categoryId, @required this.adsList});
+  @override
+  _CarouselWidgetHomeState createState() => _CarouselWidgetHomeState();
+}
+
+class _CarouselWidgetHomeState extends State<CarouselWidgetHome> {
+  carouselImagesList() {
+    List<NetworkImage> widgetCarousel = widget.adsList
+        .map((slider) => new NetworkImage(
+              slider.image,
+            ))
+        .toList();
+    return widgetCarousel;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 200,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
-        scrollDirection: Axis.horizontal,
-        itemCount: cards.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 3,
+    return widget.adsList.length == 0
+        ? Container()
+        : Card(
+            child: Container(
+              margin: EdgeInsets.all(8),
+              height: 150.0,
+              width: double.infinity,
+              child: Carousel(
+                boxFit: BoxFit.fill,
+                autoplay: true,
+                animationCurve: Curves.fastOutSlowIn,
+                animationDuration: Duration(milliseconds: 1000),
+                dotSize: 4.0,
+                dotIncreasedColor: Theme.of(context).primaryColor,
+                dotBgColor: Colors.transparent,
+                dotPosition: DotPosition.bottomCenter,
+                dotVerticalPadding: 2.0,
+                showIndicator: widget.adsList.length < 2 ? false : true,
+                indicatorBgPadding: 2.0,
+                images: carouselImagesList(),
+                onImageTap: (int index) {
+                  // if (carouselList[index].clinicId != 0) {
+                  //   Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  //     return ClinicSectionsScreen(
+                  //       id: carouselList[index].clinicId,
+                  //     );
+                  //   }));
+                  // }
+                },
+              ),
             ),
-            child: cards[index],
           );
-        },
-      ),
-    );
   }
 }

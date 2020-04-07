@@ -40,6 +40,7 @@ import 'package:momentoo/features/terms_conditions/termsConditions_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStores.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
@@ -95,69 +96,72 @@ class _MomentooAppState extends State<MomentooApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AppLanguage>(
-      create: (_) => widget.appLanguage,
-      child: Consumer<AppLanguage>(
-        builder: (context, model, child) {
-          return MaterialApp(
-            title: 'Momento App',
-            debugShowCheckedModeBanner: false,
-            navigatorObservers: <NavigatorObserver>[observer],
-            locale: model.appLocal,
-            supportedLocales: [
-              Locale('en', 'US'),
-              Locale('ar', ''),
-            ],
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-            theme: ThemeData(
-              primarySwatch: Colors.teal,
-            ),
-            home: _getStartupScreen(),
-            routes: {
-              '/langScreen': (_) => LangScreen(),
-              '/adsScreen': (_) => AdsScreen(),
-              '/welcomeScreen': (_) => WelcomeScreen(),
-              '/signInScreen': (_) => SignInScreen(),
-              '/signUpScreen': (_) => SignUpScreen(),
-              '/forgetPasswordScreen': (_) => ForgetPasswordScreen(),
-              '/homeScreen': (_) => HomeScreen(),
-              '/favoritesScreen': (_) => FavoritesScreen(),
-              '/allTrendingScreen': (_) => AllTrendingScreen(),
-              '/myOrdersScreen': (_) => MyOrdersScreen(),
-              '/helpSupportScreen': (_) => HelpSupportScreen(),
-              '/aboutScreen': (_) => AboutScreen(),
-              '/addressBookScreen': (_) => AddressBookScreen(),
-              '/notificationsScreen': (_) => NotificationsScreen(),
-              '/privacyScreen': (_) => PrivacyScreen(),
-              '/profileScreen': (_) => ProfileScreen(),
-              '/termsConditionsScreen': (_) => TermsConditionsScreen(),
-              '/nearByScreen': (_) => NearByScreen(),
-              '/cartScreen': (_) => CartScreen(),
-              '/settingsScreen': (_) => SettingsScreen(),
-              '/editProfileScreen': (_) => EditProfileScreen(),
-              '/newAddressScreen': (_) => NewAddressScreen(),
-              '/editAddressScreen': (_) => EditAddressScreen(),
-              '/getLocationScreen': (_) => GetLocationScreen(),
-              '/currentMapScreen': (_) => CurrentMapScreen(),
-              '/manuallyMapScreen': (_) => ManuallyMapScreen(),
-              '/searchScreen': (_) => SearchScreen(),
-              '/searchResultScreen': (_) => SearchResultScreen(),
-              '/filterScreen': (_) => FilterScreen(),
-              '/trendingStoresScreen': (_) => TrendingStoresScreen(),
-              '/changePasswordScreen': (_) => ChangePasswordScreen(),
-              '/invoiceScreen': (_) => InvoiceScreen(),
-              '/orderDetailsScreen': (_) => OrderDetailsScreen(),
-              '/joinUsFirstScreen': (_) => JoinUsFirstScreen(),
-              '/joinUsSecondScreen': (_) => JoinUsSecondScreen(),
-              '/StoreDetailsScreen': (_) => StoreDetailsScreen(),
-              '/productDetailsScreen': (_) => ProductDetailsScreen(),
-            },
-          );
-        },
+    return StreamProvider(
+      create: (_) => ConnectionCheckerService().getConnectionStatus$,
+      child: ChangeNotifierProvider<AppLanguage>(
+        create: (_) => widget.appLanguage,
+        child: Consumer<AppLanguage>(
+          builder: (context, model, child) {
+            return MaterialApp(
+              title: 'Momento App',
+              debugShowCheckedModeBanner: false,
+              navigatorObservers: <NavigatorObserver>[observer],
+              locale: model.appLocal,
+              supportedLocales: [
+                Locale('en', 'US'),
+                Locale('ar', ''),
+              ],
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              theme: ThemeData(
+                primarySwatch: Colors.teal,
+              ),
+              home: _getStartupScreen(),
+              routes: {
+                '/langScreen': (_) => LangScreen(),
+                '/adsScreen': (_) => AdsScreen(),
+                '/welcomeScreen': (_) => WelcomeScreen(),
+                '/signInScreen': (_) => SignInScreen(),
+                '/signUpScreen': (_) => SignUpScreen(),
+                '/forgetPasswordScreen': (_) => ForgetPasswordScreen(),
+                '/homeScreen': (_) => HomeScreen(),
+                '/favoritesScreen': (_) => FavoritesScreen(),
+                '/allTrendingScreen': (_) => AllTrendingScreen(),
+                '/myOrdersScreen': (_) => MyOrdersScreen(),
+                '/helpSupportScreen': (_) => HelpSupportScreen(),
+                '/aboutScreen': (_) => AboutScreen(),
+                '/addressBookScreen': (_) => AddressBookScreen(),
+                '/notificationsScreen': (_) => NotificationsScreen(),
+                '/privacyScreen': (_) => PrivacyScreen(),
+                '/profileScreen': (_) => ProfileScreen(),
+                '/termsConditionsScreen': (_) => TermsConditionsScreen(),
+                '/nearByScreen': (_) => NearByScreen(),
+                '/cartScreen': (_) => CartScreen(),
+                '/settingsScreen': (_) => SettingsScreen(),
+                '/editProfileScreen': (_) => EditProfileScreen(),
+                '/newAddressScreen': (_) => NewAddressScreen(),
+                '/editAddressScreen': (_) => EditAddressScreen(),
+                '/getLocationScreen': (_) => GetLocationScreen(),
+                '/currentMapScreen': (_) => CurrentMapScreen(),
+                '/manuallyMapScreen': (_) => ManuallyMapScreen(),
+                '/searchScreen': (_) => SearchScreen(),
+                '/searchResultScreen': (_) => SearchResultScreen(),
+                '/filterScreen': (_) => FilterScreen(),
+                '/trendingStoresScreen': (_) => TrendingStoresScreen(),
+                '/changePasswordScreen': (_) => ChangePasswordScreen(),
+                '/invoiceScreen': (_) => InvoiceScreen(),
+                '/orderDetailsScreen': (_) => OrderDetailsScreen(),
+                '/joinUsFirstScreen': (_) => JoinUsFirstScreen(),
+                '/joinUsSecondScreen': (_) => JoinUsSecondScreen(),
+                '/StoreDetailsScreen': (_) => StoreDetailsScreen(),
+                '/productDetailsScreen': (_) => ProductDetailsScreen(),
+              },
+            );
+          },
+        ),
       ),
     );
   }

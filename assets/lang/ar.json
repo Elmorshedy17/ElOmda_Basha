@@ -152,7 +152,7 @@
   "contact_str": "اتصل",
   "featuredItems_str": "إضافات خاصة",
   "menu_str": "القائمة",
-  "viewAll>>_str": "اعرض الكل <<",
+  "viewAll_str": "اعرض الكل",
   "popularItems_str": "إضافات شائعة",
   "signUp_str": "التسجيل",
   "password_str": "كلمة المرور",
@@ -162,5 +162,8 @@
   "rememberMe_str": "تذكرني",
   "forgetYourPassword?_str": "نسيت كلمة المرور؟",
   "continueAsGuest_str": "اﻹستمرار كزائر",
-  "doNotHaveAnAccount?_str": "ليس لديك حساب؟"
+  "doNotHaveAnAccount?_str": "ليس لديك حساب؟",
+  "noWifiTitle_str": "لا يوجد إنترنت",
+  "noWifiContent_str": "لا يوجد إنترنت يرجى التحقق من اتصالك لمتابعة استخدام التطبيق",
+  "ads_str": "اعلانات"
 }
