@@ -165,5 +165,8 @@
   "doNotHaveAnAccount?_str": "ليس لديك حساب؟",
   "noWifiTitle_str": "لا يوجد إنترنت",
   "noWifiContent_str": "لا يوجد إنترنت يرجى التحقق من اتصالك لمتابعة استخدام التطبيق",
-  "ads_str": "اعلانات"
+  "ads_str": "اعلانات",
+  "old_password_str": "كلمة المرور القديمة",
+  "new_email_str": "البريد الالكتروني الجديد",
+  "confirm_new_email_str": "تأكيد البريد الالكتروني الجديد"
 }

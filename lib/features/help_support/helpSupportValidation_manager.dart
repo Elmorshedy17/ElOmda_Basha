@@ -5,14 +5,14 @@ import 'package:momentoo/shared/validation/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HelpSupportValidationManager with Validation implements Manager {
-  // final _emailSubject = BehaviorSubject<String>();
-  // Stream<String> get email$ => _emailSubject.stream.transform(validateEmail);
-  // Sink<String> get inEmail => _emailSubject.sink;
+  // final emailSubject = BehaviorSubject<String>();
+  // Stream<String> get email$ => emailSubject.stream.transform(validateEmail);
+  // Sink<String> get inEmail => emailSubject.sink;
 
-  // final _passwordSubject = BehaviorSubject<String>();
+  // final passwordSubject = BehaviorSubject<String>();
   // Stream<String> get password$ =>
-  //     _passwordSubject.stream.transform(validateField);
-  // Sink<String> get inPassword => _passwordSubject.sink;
+  //     passwordSubject.stream.transform(validateField);
+  // Sink<String> get inPassword => passwordSubject.sink;
 
   final _checkBoxSubject = BehaviorSubject<bool>.seeded(true);
   Stream<bool> get checkBoxValue$ => _checkBoxSubject.stream;
@@ -25,8 +25,8 @@ class HelpSupportValidationManager with Validation implements Manager {
 
   @override
   dispose() {
-    // _emailSubject.close();
-    // _passwordSubject.close();
+    // emailSubject.close();
+    // passwordSubject.close();
     _checkBoxSubject.close();
   }
 }

@@ -1,11 +1,11 @@
-class RegisterModel {
+class ChangeEmailModel {
   int status;
   String message;
   Data data;
 
-  RegisterModel({this.status, this.message, this.data});
+  ChangeEmailModel({this.status, this.message, this.data});
 
-  RegisterModel.fromJson(Map<String, dynamic> json) {
+  ChangeEmailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

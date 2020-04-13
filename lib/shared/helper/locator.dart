@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:momentoo/features/about_us/about_manager.dart';
 import 'package:momentoo/features/ads/ads_manager.dart';
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/features/home/home_manager.dart';
@@ -7,6 +8,7 @@ import 'package:momentoo/features/product_details/productDetailsCounter_manager.
 import 'package:momentoo/features/settings/notificationSwitch_manager.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
+import 'package:momentoo/features/sign_up/sign_up_manger.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
@@ -59,4 +61,6 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<AdsManager>(() => AdsManager());
   // AdsManager
   locator.registerLazySingleton<HomeManager>(() => HomeManager());
+  locator.registerLazySingleton<AboutManager>(() => AboutManager());
+  locator.registerLazySingleton<RegisterManager>(() => RegisterManager());
 }

@@ -165,5 +165,8 @@
   "doNotHaveAnAccount?_str": "Don't have an account?",
   "noWifiTitle_str": "No Internet",
   "noWifiContent_str": "Please check your connection to continue using Momentoo",
-  "ads_str": "Ads"
+  "old_password_str": "Ads",
+  "ads_str": "Ads",
+  "new_email_str": "New Email",
+  "confirm_new_email_str": "Confirm New Email"
 }
