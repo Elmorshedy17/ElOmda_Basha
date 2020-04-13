@@ -12,7 +12,8 @@ class HomeRepo {
           );
       return HomeModel.fromJson(response.data);
     } on DioError {
-      throw FetchDataException('No Internet connection');
+      // throw FetchDataException('No Internet connection');
+      throw FetchDataException(DioError().error);
     }
   }
 }

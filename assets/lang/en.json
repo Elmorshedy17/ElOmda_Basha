@@ -148,7 +148,7 @@
   "getStarted_str": "Get Started",
   "trendingRestaurants_str": "Trending Restaurants",
   "free_str": "Free",
-  "openTime_str": "Open time",
+  "workTime_str": "Work time",
   "contact_str": "Contact",
   "featuredItems_str": "FEATURED ITEMS",
   "menu_str": "MENU",
@@ -165,5 +165,10 @@
   "doNotHaveAnAccount?_str": "Don't have an account?",
   "noWifiTitle_str": "No Internet",
   "noWifiContent_str": "Please check your connection to continue using Momentoo",
-  "ads_str": "Ads"
+  "ads_str": "Ads",
+  "noSearchResult_str": "There are no matching search results",
+  "categories_str": "Categories",
+  "type_str": "Type",
+  "DeliveryTime_str": "Delivery time",
+  "status_str": "Status"
 }

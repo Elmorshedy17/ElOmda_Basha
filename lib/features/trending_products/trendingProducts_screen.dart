@@ -1,60 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:momentoo/features/search/filter_screen.dart';
-import 'package:momentoo/features/search/search_manager.dart';
-import 'package:momentoo/features/search/search_model.dart';
+import 'package:momentoo/features/trending_products/trendinfProduct_manager.dart';
+import 'package:momentoo/features/trending_products/trendingProduct_model.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
-class SearchResultsScreenArguments {
+class TrendingProductsArguments {
   final int categoryId;
-  final String title;
 
-  SearchResultsScreenArguments({
-    @required this.categoryId,
-    @required this.title,
-  });
+  TrendingProductsArguments({@required this.categoryId});
 }
 
-class SearchResultScreen extends StatefulWidget {
-  @override
-  _SearchResultScreenState createState() => _SearchResultScreenState();
-}
-
-class _SearchResultScreenState extends State<SearchResultScreen> {
-  int resultOfCategoryIdFromFilter = -1;
-
-  void updateInformation(information) {
-    setState(() => resultOfCategoryIdFromFilter = information);
-  }
-
+class TrendingProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SearchResultsScreenArguments args =
-        ModalRoute.of(context).settings.arguments;
-    locator<SearchManager>().inCategoryId.add(resultOfCategoryIdFromFilter != -1
-        ? resultOfCategoryIdFromFilter
-        : args.categoryId);
-    locator<SearchManager>().inQuery.add(args.title);
+    TrendingProductsArguments args = ModalRoute.of(context).settings.arguments;
 
     return MainBackground(
       height: MediaQuery.of(context).size.height * 0.3,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
           elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: CustomObserver(
+            stream: locator<TrendingProductsManager>().getData(args.categoryId),
+            onWaiting: (_) => Container(),
+            onSuccess: (_, TrendingProductsModel model) => FittedBox(
+              child: Text(
+                model.message,
+                style: TextStyle(
+                  color: Colors.white,
+                  // fontSize: 20,
+                  // fontWeight: FontWeight.bold,
+                  fontFamily:
+                      locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+                ),
+              ),
+            ),
+          ),
           leading: InkWell(
             onTap: () {
-              locator<TextEditingController>().clear();
               Navigator.of(context).pop();
             },
             child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(Icons.arrow_back_ios),
+                Icon(
+                  Icons.arrow_back_ios,
+                  size: 15,
+                ),
                 Text(
                   AppLocalizations.of(context).translate('back_str'),
                   style: TextStyle(
@@ -66,28 +65,17 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               ],
             ),
           ),
-          title: Text(args.title),
-          centerTitle: true,
           actions: <Widget>[
-            IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.filter,
-                  size: 15,
-                ),
-                onPressed: () async {
-                  final information = await Navigator.of(context).pushNamed(
-                    '/filterScreen',
-                    arguments:
-                        FilterScreenArguments(categoryId: args.categoryId),
-                  );
-                  updateInformation(information);
-                }),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.notifications),
+            )
           ],
         ),
         body: CustomObserver(
-          stream: locator<SearchManager>().getData(),
-          onSuccess: (_, SearchModel model) => GridView.builder(
-            itemCount: model.data.products?.length ?? 0,
+          stream: locator<TrendingProductsManager>().getData(args.categoryId),
+          onSuccess: (_, TrendingProductsModel model) => GridView.builder(
+            itemCount: model.data.products.length,
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,

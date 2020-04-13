@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/home/home_model.dart';
 import 'package:momentoo/features/home/home_widgets/ads_list.dart';
+import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
+import 'package:momentoo/features/trending_products/trendingProducts_screen.dart';
+import 'package:momentoo/features/trending_stores/trendingStores_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
@@ -55,6 +58,9 @@ class HomeContent extends StatelessWidget {
           categoryId: categoryId,
           adsList: adsList,
         ),
+        //////////////////////////
+        //! View All trendingSellersList
+        /////////////////////////
         Padding(
           padding: const EdgeInsets.all(
             8.0,
@@ -74,17 +80,21 @@ class HomeContent extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/trendingStoresScreen');
+                  Navigator.of(context).pushNamed(
+                    '/trendingStoresScreen',
+                    arguments: TrendingStoresArguments(categoryId: categoryId),
+                  );
                 },
                 child: Text(
                   '${AppLocalizations.of(context).translate('viewAll_str')}>>',
                   style: TextStyle(
-                      // fontSize:
-                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                      fontFamily: locator<PrefsService>().appLanguage == 'en'
-                          ? 'en'
-                          : 'ar',
-                      fontWeight: FontWeight.bold),
+                    // fontSize:
+                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                    fontWeight: FontWeight.bold, color: Colors.teal.shade900,
+                  ),
                 ),
               )
             ],
@@ -101,7 +111,7 @@ class HomeContent extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
             scrollDirection: Axis.horizontal,
-            itemCount: trendingSellersList.length,
+            itemCount: trendingSellersList?.length ?? 0,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -109,68 +119,79 @@ class HomeContent extends StatelessWidget {
                 ),
                 child: Stack(
                   children: <Widget>[
-                    Container(
-                      width: 200,
-                      height: 200,
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Image.network(
-                              trendingSellersList[index].image,
-                              fit: BoxFit.fill,
-                              width: 200,
-                              height: 120,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                trendingSellersList[index].name,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  // fontSize:
-                                  //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                                  fontFamily:
-                                      locator<PrefsService>().appLanguage ==
-                                              'en'
-                                          ? 'en'
-                                          : 'ar',
-                                ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/StoreDetailsScreen',
+                          arguments: StoreDetailsArguments(
+                            categoryId: categoryId,
+                            sellerId: trendingSellersList[index].id,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Image.network(
+                                trendingSellersList[index].image,
+                                fit: BoxFit.fill,
+                                width: 200,
+                                height: 120,
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: List<Widget>.generate(
-                                  5,
-                                  (innerIndex) => Icon(
-                                    Icons.star,
-                                    color: innerIndex <
-                                            trendingSellersList[index].rate
-                                        ? Colors.pink
-                                        : Colors.grey,
-                                    size: 15,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  trendingSellersList[index].name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    // fontSize:
+                                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: List<Widget>.generate(
+                                    5,
+                                    (innerIndex) => Icon(
+                                      Icons.star,
+                                      color: innerIndex <
+                                              trendingSellersList[index].rate
+                                          ? Colors.pink
+                                          : Colors.grey,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey[50],
+                              blurRadius: 5,
                             ),
                           ],
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[50],
-                            blurRadius: 5,
-                          ),
-                        ],
                       ),
                     ),
                     Positioned(
@@ -178,12 +199,10 @@ class HomeContent extends StatelessWidget {
                       top: 5,
                       child: IconButton(
                           icon: Icon(
-                            sellersList[index].favourite == 'yes'
-                                ? Icons.star
-                                : Icons.star_border,
+                            Icons.star,
                             color: sellersList[index].favourite == 'yes'
                                 ? Colors.pink
-                                : Colors.black38,
+                                : Colors.white,
                             size: 30,
                           ),
                           onPressed: () {}),
@@ -194,6 +213,9 @@ class HomeContent extends StatelessWidget {
             },
           ),
         ),
+        //////////////////////////
+        //! View All trendingProductsList
+        ///////////////////////////
         Padding(
           padding: const EdgeInsets.all(
             8.0,
@@ -213,17 +235,22 @@ class HomeContent extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/trendingStoresScreen');
+                  Navigator.of(context).pushNamed(
+                    '/trendingProductsScreen',
+                    arguments:
+                        TrendingProductsArguments(categoryId: categoryId),
+                  );
                 },
                 child: Text(
                   '${AppLocalizations.of(context).translate('viewAll_str')}>>',
                   style: TextStyle(
-                      // fontSize:
-                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                      fontFamily: locator<PrefsService>().appLanguage == 'en'
-                          ? 'en'
-                          : 'ar',
-                      fontWeight: FontWeight.bold),
+                    // fontSize:
+                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                    fontWeight: FontWeight.bold, color: Colors.teal.shade900,
+                  ),
                 ),
               )
             ],
@@ -330,12 +357,10 @@ class HomeContent extends StatelessWidget {
                       top: 5,
                       child: IconButton(
                           icon: Icon(
-                            sellersList[index].favourite == 'yes'
-                                ? Icons.star
-                                : Icons.star_border,
+                            Icons.star,
                             color: sellersList[index].favourite == 'yes'
                                 ? Colors.pink
-                                : Colors.black38,
+                                : Colors.white,
                             size: 30,
                           ),
                           onPressed: () {}),
@@ -346,6 +371,9 @@ class HomeContent extends StatelessWidget {
             },
           ),
         ),
+        //////////////////
+        //! View All sellersList
+        ///////////////////
         Padding(
           padding: const EdgeInsets.all(
             8.0,
@@ -370,12 +398,13 @@ class HomeContent extends StatelessWidget {
                 child: Text(
                   '${AppLocalizations.of(context).translate('viewAll_str')}>>',
                   style: TextStyle(
-                      // fontSize:
-                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                      fontFamily: locator<PrefsService>().appLanguage == 'en'
-                          ? 'en'
-                          : 'ar',
-                      fontWeight: FontWeight.bold),
+                    // fontSize:
+                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+                        ? 'en'
+                        : 'ar',
+                    fontWeight: FontWeight.bold, color: Colors.teal.shade900,
+                  ),
                 ),
               )
             ],
@@ -412,7 +441,7 @@ class HomeContent extends StatelessWidget {
                               sellersList[index].image,
                               fit: BoxFit.fill,
                               width: 200,
-                              height: 120,
+                              height: 125,
                             ),
                             Padding(
                               padding:
@@ -479,12 +508,10 @@ class HomeContent extends StatelessWidget {
                       top: 5,
                       child: IconButton(
                           icon: Icon(
-                            sellersList[index].favourite == 'yes'
-                                ? Icons.star
-                                : Icons.star_border,
+                            Icons.star,
                             color: sellersList[index].favourite == 'yes'
                                 ? Colors.pink
-                                : Colors.black38,
+                                : Colors.white,
                             size: 30,
                           ),
                           onPressed: () {}),
