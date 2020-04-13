@@ -20,8 +20,8 @@ class AdsScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: CustomObserver(
                 stream: locator<AdsManager>().getData(),
-                onSuccess: (BuildContext context, AdsModel data) {
-                  return Image.network(data.data.ads.image);
+                onSuccess: (BuildContext context, AdsModel model) {
+                  return Image.network(model.data.ads.image);
                 }),
           ),
           Positioned(

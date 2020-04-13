@@ -31,14 +31,15 @@ import 'package:momentoo/features/privacy_policy/privacy_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
-import 'package:momentoo/features/search/search_screen.dart';
+//import 'package:momentoo/features/search/search_screen.dart';
 import 'package:momentoo/features/settings/settings_screen.dart';
 import 'package:momentoo/features/shopping_cart/cart_screen.dart';
 import 'package:momentoo/features/sign_in/signIn_screen.dart';
 import 'package:momentoo/features/sign_up/signUp_screen.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
 import 'package:momentoo/features/terms_conditions/termsConditions_screen.dart';
-import 'package:momentoo/features/trending_stores/trendingStores.dart';
+import 'package:momentoo/features/trending_products/trendingProducts_screen.dart';
+import 'package:momentoo/features/trending_stores/trendingStores_screen.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
@@ -148,7 +149,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/getLocationScreen': (_) => GetLocationScreen(),
                 '/currentMapScreen': (_) => CurrentMapScreen(),
                 '/manuallyMapScreen': (_) => ManuallyMapScreen(),
-                '/searchScreen': (_) => SearchScreen(),
+                // '/searchScreen': (_) => SearchScreen(),
                 '/searchResultScreen': (_) => SearchResultScreen(),
                 '/filterScreen': (_) => FilterScreen(),
                 '/trendingStoresScreen': (_) => TrendingStoresScreen(),
@@ -160,6 +161,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/StoreDetailsScreen': (_) => StoreDetailsScreen(),
                 '/productDetailsScreen': (_) => ProductDetailsScreen(),
                 '/ChangeEmailScreen': (_) => ChangeEmailScreen(),
+                '/trendingProductsScreen': (_) => TrendingProductsScreen(),
               },
             );
           },
