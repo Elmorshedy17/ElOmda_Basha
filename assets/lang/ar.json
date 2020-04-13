@@ -166,15 +166,12 @@
   "noWifiTitle_str": "لا يوجد إنترنت",
   "noWifiContent_str": "لا يوجد إنترنت يرجى التحقق من اتصالك لمتابعة استخدام التطبيق",
   "ads_str": "اعلانات",
-<<<<<<< HEAD
   "old_password_str": "كلمة المرور القديمة",
   "new_email_str": "البريد الالكتروني الجديد",
-  "confirm_new_email_str": "تأكيد البريد الالكتروني الجديد"
-=======
+  "confirm_new_email_str": "تأكيد البريد الالكتروني الجديد",
   "noSearchResult_str": "لا توجد نتائج مطابقة",
   "categories_str": "اﻷقسام",
   "type_str": "النوع",
   "DeliveryTime_str": "وقت التوصيل",
   "status_str": "الحالة"
->>>>>>> 9ff436ad2bf67b074964798b326ec87390a3c424
 }
