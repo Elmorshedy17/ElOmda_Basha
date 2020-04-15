@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/change_email/_repo.dart';
 import 'package:momentoo/features/change_password/_repo.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -7,21 +8,21 @@ import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 
-class ChangePasswordScreen extends StatefulWidget {
+class ChangeEmailScreen extends StatefulWidget {
   @override
-  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+  _ChangeEmailScreenState createState() => _ChangeEmailScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
 
 
-  final oldPasswordFocus = FocusNode();
-  final newPasswordFocus = FocusNode();
-  final newConfirmPasswordFocus = FocusNode();
+  final oldEmailFocus = FocusNode();
+  final newEmailFocus = FocusNode();
+  final newConfirmEmailFocus = FocusNode();
 
-  TextEditingController oldPasswordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController oldEmailController = TextEditingController();
+  TextEditingController newEmailController = TextEditingController();
+  TextEditingController confirmEmailController = TextEditingController();
 
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
@@ -67,7 +68,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         ),
                       ),
                       title: Text(
-                        AppLocalizations.of(context).translate('changePassword_str'),
+                        AppLocalizations.of(context).translate('changeYourEmail_str'),
                         style: TextStyle(
                             fontFamily:
                             locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar'),
@@ -83,10 +84,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         elevation: 5,
                         child: TextField(
                           textInputAction: TextInputAction.next,
-                          focusNode: oldPasswordFocus,
-                          controller: oldPasswordController,
+                          focusNode: oldEmailFocus,
+                          controller: oldEmailController,
                           onSubmitted: (v) {
-                            FocusScope.of(context).requestFocus(newPasswordFocus);
+                            FocusScope.of(context).requestFocus(newEmailFocus);
                           },
                           decoration: InputDecoration(
                               filled: true,
@@ -104,7 +105,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       ? 'en'
                                       : 'ar'),
                               hintText: AppLocalizations.of(context)
-                                  .translate('old_password_str'),
+                                  .translate('currentEmail_str'),
                               fillColor: Colors.white),
                         ),
                       ),
@@ -115,10 +116,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         elevation: 5,
                         child: TextField(
                           textInputAction: TextInputAction.next,
-                          focusNode: newPasswordFocus,
-                          controller: newPasswordController,
+                          focusNode: newEmailFocus,
+                          controller: newEmailController,
                           onSubmitted: (v) {
-                            FocusScope.of(context).requestFocus(newConfirmPasswordFocus);
+                            FocusScope.of(context).requestFocus(newConfirmEmailFocus);
                           },
                           decoration: InputDecoration(
                               filled: true,
@@ -136,7 +137,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       ? 'en'
                                       : 'ar'),
                               hintText: AppLocalizations.of(context)
-                                  .translate('newPassword_str'),
+                                  .translate("new_email_str"),
                               fillColor: Colors.white),
                         ),
                       ),
@@ -147,8 +148,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         elevation: 5,
                         child: TextField(
                           textInputAction: TextInputAction.done,
-                          focusNode: newConfirmPasswordFocus,
-                          controller: confirmPasswordController,
+                          focusNode: newConfirmEmailFocus,
+                          controller: confirmEmailController,
                           decoration: InputDecoration(
                               filled: true,
                               border: InputBorder.none,
@@ -165,7 +166,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       ? 'en'
                                       : 'ar'),
                               hintText: AppLocalizations.of(context)
-                                  .translate('retypeNewPassword_str'),
+                                  .translate('confirm_new_email_str'),
                               fillColor: Colors.white),
                         ),
                       ),
@@ -198,7 +199,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           onPressed: () {
                             isLoading.add(true);
 
-                            ChangePasswordRepo.postChangePasswordData(oldPasswordController.text,newPasswordController.text,confirmPasswordController.text).then((onValue){
+                            ChangeEmailRepo.postChangeEmailData(oldEmailController.text,newEmailController.text,confirmEmailController.text).then((onValue){
 
                               isLoading.add(false);
                               showDialog(
@@ -242,9 +243,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   @override
   void dispose() {
-    oldPasswordController.dispose();
-    newPasswordController.dispose();
-    confirmPasswordController.dispose();
+    oldEmailController.dispose();
+    newEmailController.dispose();
+    confirmEmailController.dispose();
     isLoading.close();
     super.dispose();
   }

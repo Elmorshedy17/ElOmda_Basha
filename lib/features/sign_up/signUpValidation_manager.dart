@@ -5,14 +5,14 @@ import 'package:momentoo/shared/validation/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SignUpValidationManager with Validation implements Manager {
-  final _emailSubject = BehaviorSubject<String>();
-  Stream<String> get email$ => _emailSubject.stream.transform(validateEmail);
-  Sink<String> get inEmail => _emailSubject.sink;
+  final emailSubject = BehaviorSubject<String>();
+  Stream<String> get email$ => emailSubject.stream.transform(validateEmail);
+  Sink<String> get inEmail => emailSubject.sink;
 
-  final _passwordSubject = BehaviorSubject<String>();
+  final passwordSubject = BehaviorSubject<String>();
   Stream<String> get password$ =>
-      _passwordSubject.stream.transform(validateField);
-  Sink<String> get inPassword => _passwordSubject.sink;
+      passwordSubject.stream.transform(validateField);
+  Sink<String> get inPassword => passwordSubject.sink;
 
   final _checkBoxSubject = BehaviorSubject<bool>.seeded(true);
   Stream<bool> get checkBoxValue$ => _checkBoxSubject.stream;
@@ -20,33 +20,33 @@ class SignUpValidationManager with Validation implements Manager {
     _checkBoxSubject.sink.add(value);
   }
 
-  final _firstNameSubject = BehaviorSubject<String>();
+  final firstNameSubject = BehaviorSubject<String>();
   Stream<String> get firstName$ =>
-      _firstNameSubject.stream.transform(validateField);
-  Sink<String> get inFirstName => _firstNameSubject.sink;
+      firstNameSubject.stream.transform(validateField);
+  Sink<String> get inFirstName => firstNameSubject.sink;
 
-  final _middleNameSubject = BehaviorSubject<String>.seeded('');
-  Stream<String> get middleName$ => _middleNameSubject.stream;
-  Sink<String> get inMiddleName => _middleNameSubject.sink;
+  final middleNameSubject = BehaviorSubject<String>.seeded('');
+  Stream<String> get middleName$ => middleNameSubject.stream;
+  Sink<String> get inMiddleName => middleNameSubject.sink;
 
-  final _lastNameSubject = BehaviorSubject<String>();
+  final lastNameSubject = BehaviorSubject<String>();
   Stream<String> get lastName$ =>
-      _lastNameSubject.stream.transform(validateField);
-  Sink<String> get inLastName => _lastNameSubject.sink;
+      lastNameSubject.stream.transform(validateField);
+  Sink<String> get inLastName => lastNameSubject.sink;
 
-  final _addressSubject = BehaviorSubject<String>();
+  final addressSubject = BehaviorSubject<String>();
   Stream<String> get address$ =>
-      _addressSubject.stream.transform(validateField);
-  Sink<String> get inAddress => _addressSubject.sink;
+      addressSubject.stream.transform(validateField);
+  Sink<String> get inAddress => addressSubject.sink;
 
-  final _phoneSubject = BehaviorSubject<String>();
-  Stream<String> get phone$ => _phoneSubject.stream.transform(validateField);
-  Sink<String> get inPhone => _phoneSubject.sink;
+  final phoneSubject = BehaviorSubject<String>();
+  Stream<String> get phone$ => phoneSubject.stream.transform(validateField);
+  Sink<String> get inPhone => phoneSubject.sink;
 
-  final _passwordConfirmationSubject = BehaviorSubject<String>();
+  final passwordConfirmationSubject = BehaviorSubject<String>();
   Stream<String> get passwordConfirmation$ =>
-      _passwordConfirmationSubject.stream.transform(validateField);
-  Sink<String> get inPasswordConfirmation => _passwordConfirmationSubject.sink;
+      passwordConfirmationSubject.stream.transform(validateField);
+  Sink<String> get inPasswordConfirmation => passwordConfirmationSubject.sink;
 
   Stream<bool> get isFormValid$ => Rx.combineLatest([
         email$,
@@ -60,14 +60,14 @@ class SignUpValidationManager with Validation implements Manager {
 
   @override
   dispose() {
-    _emailSubject.close();
-    _passwordSubject.close();
+    emailSubject.close();
+    passwordSubject.close();
     _checkBoxSubject.close();
-    _firstNameSubject.close();
-    _middleNameSubject.close();
-    _lastNameSubject.close();
-    _addressSubject.close();
-    _phoneSubject.close();
-    _passwordConfirmationSubject.close();
+    firstNameSubject.close();
+    middleNameSubject.close();
+    lastNameSubject.close();
+    addressSubject.close();
+    phoneSubject.close();
+    passwordConfirmationSubject.close();
   }
 }

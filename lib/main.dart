@@ -8,6 +8,7 @@ import 'package:momentoo/features/about_us/about_screen.dart';
 import 'package:momentoo/features/address_book/addressBook_screen.dart';
 import 'package:momentoo/features/ads/ads_screen.dart';
 import 'package:momentoo/features/all_trending/allTrending_screen.dart';
+import 'package:momentoo/features/change_email/changeEmail_screen.dart';
 import 'package:momentoo/features/change_password/changePassword_screen.dart';
 import 'package:momentoo/features/edit_profile/editProfile_screen.dart';
 import 'package:momentoo/features/favorites/favorites_screen.dart';
@@ -159,6 +160,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/joinUsSecondScreen': (_) => JoinUsSecondScreen(),
                 '/StoreDetailsScreen': (_) => StoreDetailsScreen(),
                 '/productDetailsScreen': (_) => ProductDetailsScreen(),
+                '/ChangeEmailScreen': (_) => ChangeEmailScreen(),
                 '/trendingProductsScreen': (_) => TrendingProductsScreen(),
               },
             );

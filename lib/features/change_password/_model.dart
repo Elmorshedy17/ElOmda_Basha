@@ -1,11 +1,11 @@
-class RegisterModel {
+class ChangePasswordModel {
   int status;
   String message;
   Data data;
 
-  RegisterModel({this.status, this.message, this.data});
+  ChangePasswordModel({this.status, this.message, this.data});
 
-  RegisterModel.fromJson(Map<String, dynamic> json) {
+  ChangePasswordModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

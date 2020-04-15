@@ -21,8 +21,8 @@ mixin Validation {
     int length = value.length;
     if (length == 0) {
       sink.addError('The field cannot be empty');
-    } else if (length < 4) {
-      sink.addError('The field must be longer than 4 characters');
+    } else if (length < 3) {
+      sink.addError('The field must be longer than 3 characters');
     } else {
       sink.add(value);
     }
