@@ -6,6 +6,7 @@ import 'package:momentoo/features/home/autoComplete_manager.dart';
 import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
 import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
+import 'package:momentoo/features/product_details/productDetails_manager.dart';
 import 'package:momentoo/features/search/search_manager.dart';
 import 'package:momentoo/features/settings/notificationSwitch_manager.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
@@ -21,6 +22,7 @@ import 'package:momentoo/shared/services/location_service.dart';
 import 'package:momentoo/shared/services/networking/ApiProvider.dart';
 import 'package:momentoo/shared/services/permission_service.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/services/share_servce/shareService.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -82,4 +84,9 @@ Future<void> setupLocator() async {
   // StoreDetailsManager
   locator
       .registerLazySingleton<StoreDetailsManager>(() => StoreDetailsManager());
+  // ShareService
+  locator.registerLazySingleton<ShareService>(() => ShareService());
+  // ProductDetailsManager
+  locator.registerLazySingleton<ProductDetailsManager>(
+      () => ProductDetailsManager());
 }

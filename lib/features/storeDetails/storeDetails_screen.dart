@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:momentoo/features/product_details/productDetails_screen.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_manager.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_model.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
@@ -396,7 +397,14 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                 horizontal: 3,
                               ),
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    '/productDetailsScreen',
+                                    arguments: ProductDetailsArguments(
+                                        productId: model.data.seller
+                                            .productsFeatured[index].id),
+                                  );
+                                },
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -545,6 +553,16 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                         subIndex = internalIndex;
                                         // isSelected = true;
                                       });
+                                      Navigator.of(context).pushNamed(
+                                        '/productDetailsScreen',
+                                        arguments: ProductDetailsArguments(
+                                            productId: model
+                                                .data
+                                                .seller
+                                                .menu[index]
+                                                .products[internalIndex]
+                                                .id),
+                                      );
                                     },
                                     trailing: internalIndex == subIndex &&
                                             mainIndex == index
