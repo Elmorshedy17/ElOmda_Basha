@@ -72,7 +72,7 @@ It is not intended to be used for everyday development.*/
       ));
     }, onError: Crashlytics.instance.recordError);
   } catch (error) {
-    print(error);
+    print("erroro $error");
   }
 }
 
@@ -121,7 +121,7 @@ class _MomentooAppState extends State<MomentooApp> {
               theme: ThemeData(
                 primarySwatch: Colors.teal,
               ),
-              home: AddressBookScreen(),
+              home: LangScreen(),
 //              home: _getStartupScreen(),
               routes: {
                 '/langScreen': (_) => LangScreen(),
