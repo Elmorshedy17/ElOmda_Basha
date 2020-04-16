@@ -102,5 +102,5 @@ Future<void> setupLocator() async {
   // ProductDetailsManager
   locator.registerLazySingleton<ProductDetailsManager>(
       () => ProductDetailsManager());
-  locator.registerLazySingleton<StoreDetailsManager>(() => StoreDetailsManager());
+//  locator.registerLazySingleton<StoreDetailsManager>(() => StoreDetailsManager());
 }
