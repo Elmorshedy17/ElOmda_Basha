@@ -1,3 +1,5 @@
+import 'package:momentoo/features/edit_address/editaddresses/_model.dart';
+import 'package:momentoo/features/edit_address/editaddresses/_repo.dart';
 import 'package:momentoo/features/home/home_repo.dart';
 import 'package:momentoo/features/new_address/_model.dart';
 import 'package:momentoo/features/new_address/_repo.dart';
@@ -8,12 +10,12 @@ import 'package:momentoo/features/sign_up/_repo.dart';
 import 'package:momentoo/shared/helper/manager.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NewAddressManager implements Manager {
-  final BehaviorSubject<AddNewAddressModel> _adsSubject = BehaviorSubject<AddNewAddressModel>();
+class EditAddressManager implements Manager {
+  final BehaviorSubject<EditAddressesModel> _adsSubject = BehaviorSubject<EditAddressesModel>();
 
 
-  Stream<AddNewAddressModel> postData(city,block,street,streetTwo,building,floor,jadda,flat,notes) {
-    Stream.fromFuture(NewAddressRepo.postAddNewAddressData(city,block,street,streetTwo,building,floor,jadda,flat,notes)).listen((v) {
+  Stream<EditAddressesModel> postData(city,block,street,streetTwo,building,floor,jadda,flat,notes,id) {
+    Stream.fromFuture(EditAddressRepo.postEditAddressData(city,block,street,streetTwo,building,floor,jadda,flat,notes,id)).listen((v) {
       _adsSubject.add(v);
     });
     return _adsSubject.stream;

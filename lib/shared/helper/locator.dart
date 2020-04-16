@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:momentoo/features/about_us/about_manager.dart';
+import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/ads/ads_manager.dart';
+import 'package:momentoo/features/edit_address/dropdown_data.dart';
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/features/home/autoComplete_manager.dart';
 import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
+import 'package:momentoo/features/new_address/dropdown_data.dart';
 import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
+import 'package:momentoo/features/profile/_manager.dart';
 import 'package:momentoo/features/search/search_manager.dart';
 import 'package:momentoo/features/settings/notificationSwitch_manager.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
@@ -70,6 +74,10 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<HomeManager>(() => HomeManager());
   locator.registerLazySingleton<AboutManager>(() => AboutManager());
   locator.registerLazySingleton<RegisterManager>(() => RegisterManager());
+  locator.registerLazySingleton<ProfileManager>(() => ProfileManager());
+  locator.registerLazySingleton<AddressesManager>(() => AddressesManager());
+  locator.registerLazySingleton<DrobDownBloc>(() => DrobDownBloc());
+  locator.registerLazySingleton<EditDrobDownBloc>(() => EditDrobDownBloc());
   // TrendingStoreManager
   locator.registerLazySingleton<TrendingStoreManager>(
       () => TrendingStoreManager());

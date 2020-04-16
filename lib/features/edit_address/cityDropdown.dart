@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/edit_address/dropdown_data.dart';
 import 'package:momentoo/features/new_address/dropdown_data.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class CityDropdown extends StatefulWidget {
+
+  var cities;
+  CityDropdown(this.cities);
+
   @override
   _CityDropDownState createState() => _CityDropDownState();
 }
@@ -50,7 +55,7 @@ class _CityDropDownState extends State<CityDropdown> {
                   child: DropdownButton(
                     isDense: true,
                     items:
-                    locator<DrobDownBloc>().currentDrobDownBloc.map<DropdownMenuItem<String>>((item) {
+                    widget.cities.map<DropdownMenuItem<String>>((item) {
                       return new DropdownMenuItem(
                         child: new Text(item.name),
                         value: item.id.toString(),
@@ -60,9 +65,9 @@ class _CityDropDownState extends State<CityDropdown> {
                       setState(() {
                         _mySelection = newVal;
                       });
-                      locator<DrobDownBloc>().DrobDownvalueSink.add(newVal);
+                      locator<EditDrobDownBloc>().DrobDownvalueSink.add(newVal);
 
-                      print("${locator<DrobDownBloc>().currentDrobDownvalue} _mySelection");
+                      print("${locator<EditDrobDownBloc>().currentDrobDownvalue} _mySelection");
                     },
                     value: _mySelection,
                   ),

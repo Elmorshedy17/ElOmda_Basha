@@ -173,5 +173,9 @@
   "categories_str": "اﻷقسام",
   "type_str": "النوع",
   "DeliveryTime_str": "وقت التوصيل",
-  "status_str": "الحالة"
+  "status_str": "الحالة",
+  "update_profile_str": "تحديث الحساب",
+  "fill_required_fileds": "برجاء ملئ الحقول الالزامية اولا"
+
+
 }

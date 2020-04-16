@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/address_book/addressBook_manager.dart';
+import 'package:momentoo/features/address_book/addressBook_model.dart';
+import 'package:momentoo/features/delete_addresses/delete_address_repo.dart';
+import 'package:momentoo/features/edit_address/_repo.dart';
+import 'package:momentoo/features/edit_address/editAddress_screen.dart';
+import 'package:momentoo/features/new_address/dropdown_data.dart';
+import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/theme_setting.dart';
+import 'package:rxdart/rxdart.dart';
 
-class AddressBookScreen extends StatelessWidget {
+BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
+
+
+class AddressBookScreen extends StatefulWidget {
+  @override
+  _AddressBookScreenState createState() => _AddressBookScreenState();
+}
+
+class _AddressBookScreenState extends State<AddressBookScreen> {
+
+  List<User> users = <User>[const User(1,'Foo'), const User(2,'Bar')];
+//List<List<User>> Users = [];
   @override
   Widget build(BuildContext context) {
     return MainBackground(
@@ -12,6 +33,15 @@ class AddressBookScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).translate('addressBook_str'),
+            style: TextStyle(
+              color: Colors.white,
+//              fontSize: 25,
+//              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
           elevation: 0.0,
           backgroundColor: Colors.transparent,
           leading: InkWell(
@@ -33,112 +63,173 @@ class AddressBookScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: Column(
-//          crossAxisAlignment: CrossAxisAlignment.center,
+        body:  Stack(
           children: <Widget>[
-            Center(
-              child: Card(
-                elevation: 5,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.90,
-                  height: 60,
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context).translate('addressBook_str'),
-                      style: TextStyle(
-                        color: Colors.teal.shade900,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+            CustomObserver(
+                stream: locator<AddressesManager>().getData(),
+                onSuccess: (_, AddressesModel model) {
+                  print("model$model");
+                  for (int index = 0;index < model.data.cities.length;index++) {
+                    users.add( User(model.data.cities[index].id,model.data.cities[index].name));
+                  }
+                  locator<DrobDownBloc>().DrobDownBlocSink.add(model.data.cities);
+
+                  print("locator<DrobDownBloc>().currentDrobDownBloc${locator<DrobDownBloc>().currentDrobDownBloc[0].name}");
+                  return Stack(
+                    children: <Widget>[
+                      Column(
+//          crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+//            Center(
+//              child: Container(
+////                elevation: 5,
+//                child: Container(
+//                  width: MediaQuery.of(context).size.width * 0.90,
+//                  height: 60,
+//                  child: Center(
+//                    child: Text(
+//                      AppLocalizations.of(context).translate('addressBook_str'),
+//                      style: TextStyle(
+//                        color: Colors.white,
+//                        fontSize: 25,
+//                        fontWeight: FontWeight.bold,
+//                      ),
+//                    ),
+//                  ),
+//                ),
+//              ),
+//            ),
+
+
+                          Expanded(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount:  model.data.addresses.length,
+                                  itemBuilder: (context, index) {
+                                    return AddressBookItem(
+                                   id: model.data.addresses[index].id ,
+                                   modelData: model,
+//                                deleteTag: 'd1',
+//                                editTag: 'e1',
+                                      adress: model.data.addresses[index].title,
+                                    );
+                                  }),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 85.0,
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ),
-              ),
+                      Positioned(
+                        bottom: 5.0,
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: ButtonTheme(
+                            height: 55,
+                            minWidth: MediaQuery.of(context).size.width * 0.8,
+                            child: RaisedButton(
+                              color: Colors.teal.shade900,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.white24),
+                              ),
+                              child: Text(
+                                AppLocalizations.of(context)
+                                    .translate('addNewAddress_str'),
+                                style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar'),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => NewAddressScreen(model)),
+                                );
+//                          model
+//                          Navigator.of(context).pushNamed('/newAddressScreen');
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  );
+                }
             ),
-            Expanded(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  children: <Widget>[
-                    AddressBookItem(
-                      deleteTag: 'd1',
-                      editTag: 'e1',
-                    ),
-                    AddressBookItem(
-                      deleteTag: 'd2',
-                      editTag: 'e2',
-                    ),
-                    AddressBookItem(
-                      deleteTag: 'd3',
-                      editTag: 'e3',
-                    ),
-                    AddressBookItem(
-                      deleteTag: 'd4',
-                      editTag: 'e4',
-                    ),
-                    AddressBookItem(
-                      deleteTag: 'd5',
-                      editTag: 'e5',
-                    ),
-                    AddressBookItem(
-                      deleteTag: 'd6',
-                      editTag: 'e6',
-                    ),
-                    AddressBookItem(
-                      deleteTag: 'd7',
-                      editTag: 'e7',
-                    ),
-                    AddressBookItem(
-                      deleteTag: 'd8',
-                      editTag: 'e8',
-                    ),
-                  ],
+            isLoading.value == true
+                ? Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.black.withOpacity(0.5),
+              child: Center(child: Container(
+//                      color: mainColor,
+                child: Center(
+                  child: CircularProgressIndicator(),
                 ),
-              ),
-            ),
+              )),
+            )
+                : Container(),
           ],
         ),
-        bottomNavigationBar: ListTile(
-          title: ButtonTheme(
-            height: 45,
-            minWidth: MediaQuery.of(context).size.width * 0.8,
-            child: RaisedButton(
-              color: Colors.teal.shade900,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-                side: BorderSide(color: Colors.white24),
-              ),
-              child: Text(
-                AppLocalizations.of(context).translate('addNewAddress_str'),
-                style: TextStyle(
-                    color: Colors.white70,
-                    fontFamily: locator<PrefsService>().appLanguage == 'en'
-                        ? 'en'
-                        : 'ar'),
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed('/newAddressScreen');
-              },
-            ),
-          ),
-        ),
+//        bottomNavigationBar: ListTile(
+//          title: ButtonTheme(
+//            height: 45,
+//            minWidth: MediaQuery.of(context).size.width * 0.8,
+//            child: RaisedButton(
+//              color: Colors.teal.shade900,
+//              shape: RoundedRectangleBorder(
+//                borderRadius: BorderRadius.circular(5.0),
+//                side: BorderSide(color: Colors.white24),
+//              ),
+//              child: Text(
+//                AppLocalizations.of(context).translate('addNewAddress_str'),
+//                style: TextStyle(
+//                    color: Colors.white70,
+//                    fontFamily: locator<PrefsService>().appLanguage == 'en'
+//                        ? 'en'
+//                        : 'ar'),
+//              ),
+//              onPressed: () {
+//                Navigator.of(context).pushNamed('/newAddressScreen');
+//              },
+//            ),
+//          ),
+//        ),
       ),
     );
-  }
-}
+  }}
+
+
+
 
 class AddressBookItem extends StatelessWidget {
-  final String deleteTag;
-  final String editTag;
-  AddressBookItem({this.deleteTag, this.editTag});
+//  final String deleteTag;
+//  final String editTag;
+  final String adress;
+  final int id;
+  final modelData;
+
+  AddressBookItem({this.adress,this.id,this.modelData});
+//    , this.editTag, this.adress
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(8),
-      height: 80,
+      height: 95,
       child: Card(
         elevation: 5,
         child: Row(
@@ -161,7 +252,7 @@ class AddressBookItem extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.center,
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     // children: <Widget>[
-                    Text('data jhgjgjg jgkhkh khkh'),
+                    Text(adress),
                 // Text('data'),
                 // ],
                 // ),
@@ -169,36 +260,91 @@ class AddressBookItem extends StatelessWidget {
             ),
             Row(
               children: <Widget>[
-                FloatingActionButton(
-                  backgroundColor: Colors.grey[350],
-                  heroTag: editTag,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/editAddressScreen');
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).translate('edit_str'),
-                    style: TextStyle(
-                        fontFamily: locator<PrefsService>().appLanguage == 'en'
-                            ? 'en'
-                            : 'ar'),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: double.infinity),
+                  child: RaisedButton(
+                    color: Colors.grey[350],
+//                  heroTag: editTag,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    onPressed: () {
+//                      Navigator.of(context).pushNamed('/editAddressScreen');
+
+                      isLoading.add(true);
+
+
+                      AddressesInfoRepo.getAddressesInfoData(id).then((onValue){
+                        isLoading.add(false);
+
+                        if(onValue.status == 1){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditAddressScreen(onValue)),
+                          );
+                        }else{
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(onValue.message),
+                              );
+                            },
+                          );
+                        }
+
+
+                      });
+
+
+
+                    },
+                    child: Text(
+                      AppLocalizations.of(context).translate('edit_str'),
+                      style: TextStyle(
+                          fontFamily: locator<PrefsService>().appLanguage == 'en'
+                              ? 'en'
+                              : 'ar'),
+                    ),
                   ),
                 ),
-                FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  heroTag: deleteTag,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    AppLocalizations.of(context).translate('delete_str'),
-                    style: TextStyle(
-                        fontFamily: locator<PrefsService>().appLanguage == 'en'
-                            ? 'en'
-                            : 'ar'),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: double.infinity),
+                  child: RaisedButton(
+                    color: Colors.red,
+//                  heroTag: deleteTag,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    onPressed: () {
+                      isLoading.add(true);
+                      DeleteAddressRepo.postDeleteNewAddressData(id).then((onValue){
+                        isLoading.add(false);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(onValue.message),
+                            );
+                          },
+                        );
+//                        Navigator.pushReplacementNamed(context, '/AddressBookScreen');
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddressBookScreen()),
+                        );
+
+
+                      });
+                    },
+                    child: Text(
+                      AppLocalizations.of(context).translate('delete_str'),
+                      style: TextStyle(
+                          fontFamily: locator<PrefsService>().appLanguage == 'en'
+                              ? 'en'
+                              : 'ar'),
+                    ),
                   ),
                 ),
               ],
@@ -208,4 +354,11 @@ class AddressBookItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class User {
+  const User(this.id,this.name);
+
+  final String name;
+  final int id;
 }

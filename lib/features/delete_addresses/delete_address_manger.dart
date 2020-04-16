@@ -1,6 +1,6 @@
+import 'package:momentoo/features/delete_addresses/delete_address_model.dart';
+import 'package:momentoo/features/delete_addresses/delete_address_repo.dart';
 import 'package:momentoo/features/home/home_repo.dart';
-import 'package:momentoo/features/new_address/_model.dart';
-import 'package:momentoo/features/new_address/_repo.dart';
 import 'package:momentoo/features/sign_in/_model.dart';
 import 'package:momentoo/features/sign_in/_repo.dart';
 import 'package:momentoo/features/sign_up/_model.dart';
@@ -8,12 +8,12 @@ import 'package:momentoo/features/sign_up/_repo.dart';
 import 'package:momentoo/shared/helper/manager.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NewAddressManager implements Manager {
-  final BehaviorSubject<AddNewAddressModel> _adsSubject = BehaviorSubject<AddNewAddressModel>();
+class DeleteNewAddressManager implements Manager {
+  final BehaviorSubject<DeleteNewAddressModel> _adsSubject = BehaviorSubject<DeleteNewAddressModel>();
 
 
-  Stream<AddNewAddressModel> postData(city,block,street,streetTwo,building,floor,jadda,flat,notes) {
-    Stream.fromFuture(NewAddressRepo.postAddNewAddressData(city,block,street,streetTwo,building,floor,jadda,flat,notes)).listen((v) {
+  Stream<DeleteNewAddressModel> postData(id) {
+    Stream.fromFuture(DeleteAddressRepo.postDeleteNewAddressData(id)).listen((v) {
       _adsSubject.add(v);
     });
     return _adsSubject.stream;
