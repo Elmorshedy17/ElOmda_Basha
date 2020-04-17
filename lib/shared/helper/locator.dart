@@ -4,6 +4,7 @@ import 'package:momentoo/features/about_us/about_manager.dart';
 import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/ads/ads_manager.dart';
 import 'package:momentoo/features/edit_address/dropdown_data.dart';
+import 'package:momentoo/features/help_support/get_help_support/_manger.dart';
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/features/home/autoComplete_manager.dart';
 import 'package:momentoo/features/home/home_manager.dart';
@@ -80,6 +81,7 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<AddressesManager>(() => AddressesManager());
   locator.registerLazySingleton<DrobDownBloc>(() => DrobDownBloc());
   locator.registerLazySingleton<EditDrobDownBloc>(() => EditDrobDownBloc());
+  locator.registerLazySingleton<ContactUsManager>(() => ContactUsManager());
   // TrendingStoreManager
   locator.registerLazySingleton<TrendingStoreManager>(
       () => TrendingStoreManager());

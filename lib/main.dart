@@ -122,7 +122,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 primarySwatch: Colors.teal,
               ),
               home: LangScreen(),
-//              home: _getStartupScreen(),
+//              home: HelpSupportScreen(),
               routes: {
                 '/langScreen': (_) => LangScreen(),
                 '/adsScreen': (_) => AdsScreen(),
