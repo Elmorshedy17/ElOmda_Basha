@@ -173,5 +173,7 @@
   "categories_str": "Categories",
   "type_str": "Type",
   "DeliveryTime_str": "Delivery time",
-  "status_str": "Status"
+  "status_str": "Status",
+  "update_profile_str": "Update Profile",
+  "fill_required_fileds": "please fill required fields"
 }

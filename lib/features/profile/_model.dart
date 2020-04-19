@@ -1,11 +1,11 @@
-class EditProfileModel {
+class ProfileModel {
   int status;
   String message;
   Data data;
 
-  EditProfileModel({this.status, this.message, this.data});
+  ProfileModel({this.status, this.message, this.data});
 
-  EditProfileModel.fromJson(Map<String, dynamic> json) {
+  ProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

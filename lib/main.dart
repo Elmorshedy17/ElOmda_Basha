@@ -72,7 +72,7 @@ It is not intended to be used for everyday development.*/
       ));
     }, onError: Crashlytics.instance.recordError);
   } catch (error) {
-    print(error);
+    print("erroro $error");
   }
 }
 
@@ -121,7 +121,8 @@ class _MomentooAppState extends State<MomentooApp> {
               theme: ThemeData(
                 primarySwatch: Colors.teal,
               ),
-              home: _getStartupScreen(),
+              home: LangScreen(),
+//              home: HelpSupportScreen(),
               routes: {
                 '/langScreen': (_) => LangScreen(),
                 '/adsScreen': (_) => AdsScreen(),
@@ -143,9 +144,9 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/nearByScreen': (_) => NearByScreen(),
                 '/cartScreen': (_) => CartScreen(),
                 '/settingsScreen': (_) => SettingsScreen(),
-                '/editProfileScreen': (_) => EditProfileScreen(),
-                '/newAddressScreen': (_) => NewAddressScreen(),
-                '/editAddressScreen': (_) => EditAddressScreen(),
+//                '/editProfileScreen': (_) => EditProfileScreen(),
+//                '/newAddressScreen': (_) => NewAddressScreen(),
+//                '/editAddressScreen': (_) => EditAddressScreen(),
                 '/getLocationScreen': (_) => GetLocationScreen(),
                 '/currentMapScreen': (_) => CurrentMapScreen(),
                 '/manuallyMapScreen': (_) => ManuallyMapScreen(),

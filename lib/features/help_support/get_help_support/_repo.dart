@@ -1,19 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:momentoo/features/about_us/about_model.dart';
-import 'package:momentoo/features/edit_address/_model.dart';
+import 'package:momentoo/features/address_book/addressBook_model.dart';
+import 'package:momentoo/features/help_support/get_help_support/_model.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/networking/ApiProvider.dart';
 import 'package:momentoo/shared/services/networking/CustomException.dart';
 
-class AddressesInfoRepo {
-  static Future<AddressesInfoModel> getAddressesInfoData(Id) async {
+class ContactUsGetRepo {
+  static Future<ContactUsGetModel> getContactUsGetData() async {
     try {
       final Response response = await locator<ApiService>().dioClient.get(
-        '${locator<ApiService>().dioClient.options.baseUrl}edit_address/$Id',
+        '${locator<ApiService>().dioClient.options.baseUrl}contact',
       );
-      return AddressesInfoModel.fromJson(response.data);
+      return ContactUsGetModel.fromJson(response.data);
     } on DioError {
       throw FetchDataException('No Internet connection');
     }
   }
 }
+
+

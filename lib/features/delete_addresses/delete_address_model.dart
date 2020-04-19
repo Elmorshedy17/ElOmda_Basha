@@ -1,11 +1,11 @@
-class AddressesModel {
+class DeleteNewAddressModel {
   int status;
   String message;
   Data data;
 
-  AddressesModel({this.status, this.message, this.data});
+  DeleteNewAddressModel({this.status, this.message, this.data});
 
-  AddressesModel.fromJson(Map<String, dynamic> json) {
+  DeleteNewAddressModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -114,5 +114,3 @@ class Cities {
     return data;
   }
 }
-
-
