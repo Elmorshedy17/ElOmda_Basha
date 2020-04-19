@@ -45,14 +45,14 @@ class AboutScreen extends StatelessWidget {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(15.0),
-          margin: EdgeInsets.only(right:15.0,left: 15.0,bottom: 15.0),
+          // padding: EdgeInsets.all(15.0),
+          // margin: EdgeInsets.only(right:15.0,left: 15.0,bottom: 15.0),
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
             elevation: 5,
-            child:Container(
+            child: Container(
               child: CustomObserver(
                 stream: locator<AboutManager>().getData(),
                 onSuccess: (_, AboutModel model) {
@@ -68,36 +68,35 @@ class AboutScreen extends StatelessWidget {
                       ),
                       ButtonTheme(
                           height: 60.0,
-                          child:  Container(
+                          child: Container(
                             padding: EdgeInsets.all(15.0),
                             child: RaisedButton(
                               color: Colors.red,
                               shape: RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(8.0)),
 //                    color: Theme.of(context).primaryColor,
-                              child:   Container(
-                                padding:
-                                EdgeInsets.symmetric(horizontal: 60.0),
-                                child:  Text(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 60.0),
+                                child: Text(
                                   'Join US',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: MainFont,
                                       fontWeight: semiFont,
-                                      fontFamily: "sukar"
-                                  ),
+                                      fontFamily: "sukar"),
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.of(context).pushNamed('/joinUsFirstScreen');
-                  },
+                                Navigator.of(context)
+                                    .pushNamed('/joinUsFirstScreen');
+                              },
                             ),
                           ))
                     ],
                   );
                 },
               ),
-            ) ,
+            ),
           ),
         ),
       ),

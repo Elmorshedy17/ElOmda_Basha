@@ -27,7 +27,6 @@ import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
 import 'package:momentoo/features/order_details/orderDetails_screen.dart';
-import 'package:momentoo/features/privacy_policy/privacy_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
@@ -50,6 +49,7 @@ import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:provider/provider.dart';
 
 import 'features/edit_address/editAddress_screen.dart';
+import 'features/privacyPolicy&Terms/privacy&terms_screen.dart';
 import 'features/product_details/productDetails_screen.dart';
 
 Future<void> main() async {
@@ -137,7 +137,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/aboutScreen': (_) => AboutScreen(),
                 '/addressBookScreen': (_) => AddressBookScreen(),
                 '/notificationsScreen': (_) => NotificationsScreen(),
-                '/privacyScreen': (_) => PrivacyScreen(),
+                '/privacyScreen': (_) => PrivacyTermsScreen(),
                 '/profileScreen': (_) => ProfileScreen(),
                 '/termsConditionsScreen': (_) => TermsConditionsScreen(),
                 '/nearByScreen': (_) => NearByScreen(),

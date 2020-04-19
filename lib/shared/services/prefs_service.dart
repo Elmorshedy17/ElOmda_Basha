@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:momentoo/features/product_details/productDetails_model.dart';
+import 'package:momentoo/shared/domain/cartRequest.dart';
+import 'package:momentoo/shared/domain/user.dart';
 import 'package:momentoo/shared/domain/user_location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,10 +15,11 @@ class PrefsService {
   static const String HAS_CHOSEN_LANGUAGE = 'hasChosenLanguage';
   static const String SIGN_UP_KEY = 'signedUp';
   static const String LOG_IN_KEY = 'loggedIn';
-  // static const String NOTIFICATION_FlAG = 'notificationFlag';
+  static const String NOTIFICATION_FlAG = 'notificationFlag';
   static const String IS_NEARBY_FIRST_TIME_OPINING = 'isNearbyFirstTimeOpining';
   static const String IS_BACK_TO_ONLINE = 'isBackToOnline';
   static const String USER_OBJ = 'user';
+  static const String CART_OBJ = 'cart';
   static const String USER_PASSWORD = 'userPassword';
   static const String USER_LOCATION = 'userLocation';
   static const String HAS_WELCOME_SEEN = 'hasWelcomeSeen';
@@ -65,8 +71,8 @@ class PrefsService {
   }
 
 /////////////////////////////////////////////////////////////////////////////////
-  // bool get notificationFlag => _getFromPrefs(NOTIFICATION_FlAG) ?? true;
-  // set notificationFlag(bool value) => _saveToPrefs(NOTIFICATION_FlAG, value);
+  bool get notificationFlag => _getFromPrefs(NOTIFICATION_FlAG) ?? true;
+  set notificationFlag(bool value) => _saveToPrefs(NOTIFICATION_FlAG, value);
 ////////////////////////////////////////////////////////////////////////////////
   bool get hasSignedUp => _getFromPrefs(SIGN_UP_KEY) ?? false;
   set hasSignedUp(bool value) => _saveToPrefs(SIGN_UP_KEY, value);
@@ -116,26 +122,44 @@ class PrefsService {
   // bool get hasConnection => _getFromPrefs(HAS_CONNECTION) ?? false;
   // set hasConnection(bool value) => _saveToPrefs(HAS_CONNECTION, value);
 ////////////////////////////////////////////////////////////////////////////////
-  // getter for USER_OBJECT from RegisterModel.
-  // User get userObj {
-  //   var userJson = _getFromPrefs(USER_OBJ);
-  //   if (userJson == null) {
-  //     return null;
-  //   }
+  // getter for USER_OBJECT.
+  User get userObj {
+    var userJson = _getFromPrefs(USER_OBJ);
+    if (userJson == null) {
+      return null;
+    }
 
-  //   return User.fromJson(json.decode(userJson));
-  // }
+    return User.fromJson(json.decode(userJson));
+  }
 
-  // // setter for USER_OBJECT.
-  // set userObj(User userToSave) {key
-  //   _saveToPrefs(USER_OBJ, json.encode(userToSave.toJson()));
-  // }
+  // setter for USER_OBJECT.
+  set userObj(User userToSave) {
+    _saveToPrefs(USER_OBJ, json.encode(userToSave.toJson()));
+  }
 
   // // Remove UserObj
-  // removeUserObj() => _removeFromPrefs(USER_OBJ);
+  removeUserObj() => _removeFromPrefs(USER_OBJ);
 //////////////////////////////////////////////////
 
   UserLocation get userLocation => _getFromPrefs(USER_LOCATION) ?? null;
   set userLocation(UserLocation userLocation) =>
       _saveToPrefs(USER_LOCATION, userLocation);
+
+////////////////////////////////////////////////////////////
+  // getter for CART_OBJECT.
+  LocalCart get cartObj {
+    var cartJson = _getFromPrefs(CART_OBJ);
+    if (cartJson == null) {
+      return LocalCart();
+    }
+
+    return LocalCart.fromJson(json.decode(cartJson));
+  }
+
+  // setter for CART_OBJECT.
+  set cartObj(LocalCart cartToSave) {
+    _saveToPrefs(CART_OBJ, json.encode(cartToSave.toJson()));
+  }
+
+  removeCartObj() => _removeFromPrefs(CART_OBJ);
 }

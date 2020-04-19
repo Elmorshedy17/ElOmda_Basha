@@ -366,7 +366,8 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       ),
                       Divider(),
                       Padding(
-                        padding: const EdgeInsets.only(top: 16.0, left: 16),
+                        padding: const EdgeInsets.only(
+                            top: 16.0, right: 16, left: 16),
                         child: Text(
                           AppLocalizations.of(context)
                               .translate('featuredItems_str'),
@@ -401,58 +402,63 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                   Navigator.of(context).pushNamed(
                                     '/productDetailsScreen',
                                     arguments: ProductDetailsArguments(
+                                        sellerId: model.data.seller.id,
                                         productId: model.data.seller
                                             .productsFeatured[index].id),
                                   );
                                 },
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 160,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.99,
-                                      child: Card(
-                                        child: Image.network(
+                                child: FittedBox(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 160,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.99,
+                                        child: Card(
+                                          child: Image.network(
+                                            model.data.seller
+                                                .productsFeatured[index].image,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: Text(
                                           model.data.seller
-                                              .productsFeatured[index].image,
-                                          fit: BoxFit.fill,
+                                              .productsFeatured[index].name,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: locator<PrefsService>()
+                                                        .appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8),
-                                      child: Text(
-                                        model.data.seller
-                                            .productsFeatured[index].name,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: locator<PrefsService>()
-                                                      .appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar',
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: Text(
+                                          '${model.data.seller.productsFeatured[index].price} ${model.data.seller.productsFeatured[index].currency}',
+                                          style: TextStyle(
+                                            color: Colors.black54,
+                                            fontFamily: locator<PrefsService>()
+                                                        .appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8),
-                                      child: Text(
-                                        '${model.data.seller.productsFeatured[index].price} ${model.data.seller.productsFeatured[index].currency}',
-                                        style: TextStyle(
-                                          color: Colors.black54,
-                                          fontFamily: locator<PrefsService>()
-                                                      .appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar',
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                               // child: cardsList[index],
@@ -556,6 +562,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                       Navigator.of(context).pushNamed(
                                         '/productDetailsScreen',
                                         arguments: ProductDetailsArguments(
+                                            sellerId: model.data.seller.id,
                                             productId: model
                                                 .data
                                                 .seller

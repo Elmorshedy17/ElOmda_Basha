@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/home/home_model.dart';
 import 'package:momentoo/features/home/home_widgets/ads_list.dart';
+import 'package:momentoo/features/product_details/productDetails_screen.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
 import 'package:momentoo/features/trending_products/trendingProducts_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStores_screen.dart';
@@ -275,60 +276,50 @@ class HomeContent extends StatelessWidget {
                 ),
                 child: Stack(
                   children: <Widget>[
-                    Container(
-                      width: 200,
-                      height: 200,
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Image.network(
-                              trendingProductsList[index].image,
-                              fit: BoxFit.fill,
-                              width: 200,
-                              height: 120,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                trendingProductsList[index].name,
-                                style: TextStyle(
-                                    // fontSize:
-                                    //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                    fontWeight: FontWeight.bold),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/productDetailsScreen',
+                          arguments: ProductDetailsArguments(
+                              productId: trendingProductsList[index].id),
+                        );
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Image.network(
+                                trendingProductsList[index].image,
+                                fit: BoxFit.fill,
+                                width: 200,
+                                height: 120,
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                trendingProductsList[index].section,
-                                style: TextStyle(
-                                  // fontSize:
-                                  //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                                  fontFamily:
-                                      locator<PrefsService>().appLanguage ==
-                                              'en'
-                                          ? 'en'
-                                          : 'ar',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black38,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  trendingProductsList[index].name,
+                                  style: TextStyle(
+                                      // fontSize:
+                                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                '${trendingProductsList[index].price} ${trendingProductsList[index].currency}',
-                                style: TextStyle(
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  trendingProductsList[index].section,
+                                  style: TextStyle(
                                     // fontSize:
                                     //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
                                     fontFamily:
@@ -336,20 +327,39 @@ class HomeContent extends StatelessWidget {
                                                 'en'
                                             ? 'en'
                                             : 'ar',
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black38,
+                                  ),
+                                ),
                               ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  '${trendingProductsList[index].price} ${trendingProductsList[index].currency}',
+                                  style: TextStyle(
+                                      // fontSize:
+                                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey[50],
+                              blurRadius: 5,
                             ),
                           ],
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[50],
-                            blurRadius: 5,
-                          ),
-                        ],
                       ),
                     ),
                     Positioned(
@@ -393,7 +403,9 @@ class HomeContent extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/trendingStoresScreen');
+                  Navigator.of(context).pushNamed('/trendingStoresScreen',
+                      arguments:
+                          TrendingStoresArguments(categoryId: categoryId));
                 },
                 child: Text(
                   '${AppLocalizations.of(context).translate('viewAll_str')}>>',
@@ -429,78 +441,90 @@ class HomeContent extends StatelessWidget {
                 ),
                 child: Stack(
                   children: <Widget>[
-                    Container(
-                      width: 200,
-                      height: 200,
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Image.network(
-                              sellersList[index].image,
-                              fit: BoxFit.fill,
-                              width: 200,
-                              height: 125,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(sellersList[index].name,
-                                  style: TextStyle(
-                                      // fontSize:
-                                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar',
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(sellersList[index].cuisine,
-                                  style: TextStyle(
-                                      // fontSize:
-                                      //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar',
-                                      color: Colors.black38)),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: List<Widget>.generate(
-                                  5,
-                                  (innerIndex) => Icon(
-                                    Icons.star,
-                                    color: innerIndex < sellersList[index].rate
-                                        ? Colors.pink
-                                        : Colors.grey,
-                                    size: 15,
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/StoreDetailsScreen',
+                          arguments: StoreDetailsArguments(
+                            categoryId: categoryId,
+                            sellerId: sellersList[index].id,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Image.network(
+                                sellersList[index].image,
+                                fit: BoxFit.fill,
+                                width: 200,
+                                height: 125,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(sellersList[index].name,
+                                    style: TextStyle(
+                                        // fontSize:
+                                        //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(sellersList[index].cuisine,
+                                    style: TextStyle(
+                                        // fontSize:
+                                        //     locator<PrefsService>().appLanguage == 'en' ? 12 : 11,
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                        color: Colors.black38)),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: List<Widget>.generate(
+                                    5,
+                                    (innerIndex) => Icon(
+                                      Icons.star,
+                                      color:
+                                          innerIndex < sellersList[index].rate
+                                              ? Colors.pink
+                                              : Colors.grey,
+                                      size: 15,
+                                    ),
                                   ),
                                 ),
                               ),
+                            ],
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey[50],
+                              blurRadius: 5,
                             ),
                           ],
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[50],
-                            blurRadius: 5,
-                          ),
-                        ],
                       ),
                     ),
                     Positioned(
