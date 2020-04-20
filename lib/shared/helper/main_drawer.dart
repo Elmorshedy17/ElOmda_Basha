@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/home/home_manager.dart';
+import 'package:momentoo/features/home/home_model.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -47,38 +51,44 @@ class MainDrawer extends StatelessWidget {
                   height: 110,
                   child: Image.asset('assets/images/logo.png'),
                 ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/favoritesScreen",
-                        (route) => route.isCurrent
-                            ? route.settings.name == "/favoritesScreen"
-                                ? false
-                                : true
-                            : true);
-                  },
-                  leading: Icon(
-                    Icons.star,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    AppLocalizations.of(context).translate('favorites_str'),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: locator<PrefsService>().appLanguage == 'en'
-                          ? 'en'
-                          : 'ar',
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: locator<PrefsService>().appLanguage == 'en'
-                      ? EdgeInsets.only(left: 16, right: 5)
-                      : EdgeInsets.only(right: 16, left: 5),
-                  height: 0.5,
-                  color: Colors.white,
-                ),
+                locator<PrefsService>().userObj != null
+                    ? ListTile(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/favoritesScreen",
+                              (route) => route.isCurrent
+                                  ? route.settings.name == "/favoritesScreen"
+                                      ? false
+                                      : true
+                                  : true);
+                        },
+                        leading: Icon(
+                          Icons.star,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          AppLocalizations.of(context)
+                              .translate('favorites_str'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily:
+                                locator<PrefsService>().appLanguage == 'en'
+                                    ? 'en'
+                                    : 'ar',
+                          ),
+                        ),
+                      )
+                    : Container(),
+                locator<PrefsService>().userObj != null
+                    ? Container(
+                        margin: locator<PrefsService>().appLanguage == 'en'
+                            ? EdgeInsets.only(left: 16, right: 5)
+                            : EdgeInsets.only(right: 16, left: 5),
+                        height: 0.5,
+                        color: Colors.white,
+                      )
+                    : Container(),
                 ListTile(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -110,37 +120,43 @@ class MainDrawer extends StatelessWidget {
                   height: 0.5,
                   color: Colors.white,
                 ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/myOrdersScreen",
-                        (route) => route.isCurrent
-                            ? route.settings.name == "/myOrdersScreen"
-                                ? false
-                                : true
-                            : true);
-                  },
-                  leading: Icon(
-                    Icons.touch_app,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    AppLocalizations.of(context).translate('myOrders_str'),
-                    style: TextStyle(
+                locator<PrefsService>().userObj == null
+                    ? ListTile(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/myOrdersScreen",
+                              (route) => route.isCurrent
+                                  ? route.settings.name == "/myOrdersScreen"
+                                      ? false
+                                      : true
+                                  : true);
+                        },
+                        leading: Icon(
+                          Icons.touch_app,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          AppLocalizations.of(context)
+                              .translate('myOrders_str'),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar'),
+                        ),
+                      )
+                    : Container(),
+                locator<PrefsService>().userObj != null
+                    ? Container(
+                        margin: locator<PrefsService>().appLanguage == 'en'
+                            ? EdgeInsets.only(left: 16, right: 5)
+                            : EdgeInsets.only(right: 16, left: 5),
+                        height: 0.5,
                         color: Colors.white,
-                        fontFamily: locator<PrefsService>().appLanguage == 'en'
-                            ? 'en'
-                            : 'ar'),
-                  ),
-                ),
-                Container(
-                  margin: locator<PrefsService>().appLanguage == 'en'
-                      ? EdgeInsets.only(left: 16, right: 5)
-                      : EdgeInsets.only(right: 16, left: 5),
-                  height: 0.5,
-                  color: Colors.white,
-                ),
+                      )
+                    : Container(),
                 ListTile(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -287,21 +303,68 @@ class MainDrawer extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 12),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context)
-                            .translate('poweredByLine_str'),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar'),
+                      Padding(
+                        padding: locator<PrefsService>().appLanguage == 'en'
+                            ? EdgeInsets.only(left: 8)
+                            : EdgeInsets.only(right: 8),
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .translate('poweredByLine_str'),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
+                              fontSize:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 13
+                                      : 11),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: 400,
+                          height: 30,
+                          child: CustomObserver(
+                              stream: locator<HomeManager>().socialMedia$,
+                              onSuccess: (_, List<SocialMedia> data) {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: data?.length ?? 0,
+                                    itemBuilder: (_, index) {
+                                      return InkWell(
+                                        onTap: () async {
+                                          await canLaunch(data[index].link)
+                                              ? await launch(data[index].link)
+                                              : throw 'Link cannot be handled';
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                          child: Image.network(
+                                            data[index].image,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              }),
+                        ),
                       ),
                     ],
                   ),
-                  // Text('Delivery in A Moment'),
                 ),
+                // Text('Delivery in A Moment'),
               ],
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomObserver<T> extends StatelessWidget {
@@ -13,8 +14,12 @@ class CustomObserver<T> extends StatelessWidget {
     this.onError,
   });
 
-  Function get _defaultOnWaiting =>
-      (context) => Center(child: CircularProgressIndicator());
+  Function get _defaultOnWaiting => (context) => Center(
+        child: CircularProgressIndicator(),
+        //   child: CupertinoActivityIndicator(
+        // radius: 20,
+        // )
+      );
 
   Function get _defaultOnError => (context, error) => Container();
 

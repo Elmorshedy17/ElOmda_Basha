@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/settings/settings_model.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
+class TermsConditionsScreenArguments {
+  final List<Pages> pages;
+
+  TermsConditionsScreenArguments({
+    @required this.pages,
+  });
+}
+
 class TermsConditionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    TermsConditionsScreenArguments args =
+        ModalRoute.of(context).settings.arguments;
+
     return MainBackground(
       height: MediaQuery.of(context).size.height * 0.3,
       child: Scaffold(

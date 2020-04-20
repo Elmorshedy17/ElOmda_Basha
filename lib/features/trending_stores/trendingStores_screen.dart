@@ -89,68 +89,70 @@ class TrendingStoresScreen extends StatelessWidget {
                     Container(
                       // margin: EdgeInsets.only(top: 8),
                       height: 250,
-                      child: Card(
-                        elevation: 3,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Image.network(
-                              model.data.sellers[index].image,
-                              fit: BoxFit.fill,
-                              width: MediaQuery.of(context).size.width,
-                              height: 170,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, bottom: 4),
-                              child: Text(
-                                model.data.sellers[index].name,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar'),
+                      child: FittedBox(
+                        child: Card(
+                          elevation: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Image.network(
+                                model.data.sellers[index].image,
+                                fit: BoxFit.fill,
+                                width: MediaQuery.of(context).size.width,
+                                height: 170,
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, bottom: 4),
-                              child: Text(
-                                model.data.sellers[index].cuisine,
-                                style: TextStyle(
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                    color: Colors.black38),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8.0, bottom: 4),
+                                child: Text(
+                                  model.data.sellers[index].name,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar'),
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, bottom: 4),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: List<Widget>.generate(
-                                  5,
-                                  (innerIndex) => Icon(
-                                    Icons.star,
-                                    color: innerIndex <
-                                            model.data.sellers[index].rate
-                                        ? Colors.pink
-                                        : Colors.grey,
-                                    size: 15,
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8.0, bottom: 4),
+                                child: Text(
+                                  model.data.sellers[index].cuisine,
+                                  style: TextStyle(
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                      color: Colors.black38),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8.0, bottom: 4),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: List<Widget>.generate(
+                                    5,
+                                    (innerIndex) => Icon(
+                                      Icons.star,
+                                      color: innerIndex <
+                                              model.data.sellers[index].rate
+                                          ? Colors.pink
+                                          : Colors.grey,
+                                      size: 15,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

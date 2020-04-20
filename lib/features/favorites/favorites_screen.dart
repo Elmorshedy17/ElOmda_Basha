@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/favorites/favorites_manager.dart';
+import 'package:momentoo/features/favorites/favorites_model.dart';
 import 'package:momentoo/features/favorites/favorites_widgets/favoritesContent.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
@@ -81,17 +84,23 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           children: <Widget>[
             favoritesCategoryList(),
             Expanded(
-              child: PageView.builder(
-                  onPageChanged: (index) {
-                    pageIndex = index;
-                  },
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: _pageController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: favoritesContent.length,
-                  itemBuilder: (_, index) {
-                    return favoritesContent[index];
-                  }),
+              child: CustomObserver(
+                stream: locator<FavoritesManager>().getData(),
+                onSuccess: (_, FavoritesModel model) => PageView.builder(
+                    onPageChanged: (index) {
+                      pageIndex = index;
+                    },
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _pageController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: model.data.categories?.length ?? 0,
+                    itemBuilder: (_, index) {
+                      return FavoritesContent(
+                        pageIndex: pageIndex,
+                        categories: model.data.categories,
+                      );
+                    }),
+              ),
             ),
           ],
         ),
@@ -102,76 +111,53 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Widget favoritesCategoryList() {
     return Container(
       height: 40,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
-        scrollDirection: Axis.horizontal,
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-            ),
-            child: RaisedButton(
-                color: pageIndex == index ? Colors.white24 : Colors.white54,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      color: Colors.white, width: pageIndex == index ? 1 : 0.0),
-                  borderRadius: BorderRadius.circular(9),
+      child: CustomObserver(
+        stream: locator<FavoritesManager>().getData(),
+        onSuccess: (_, FavoritesModel model) {
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+            scrollDirection: Axis.horizontal,
+            itemCount: model.data.categories?.length ?? 0,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
                 ),
-                elevation: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: index == 0
-                      ? Text(
-                          AppLocalizations.of(context)
-                              .translate('restaurants_str'),
-                          style: TextStyle(
-                            color: pageIndex == index
-                                ? Colors.white
-                                : Colors.teal.shade100,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                          ),
-                        )
-                      : index == 1
-                          ? Text(
-                              AppLocalizations.of(context)
-                                  .translate('flowers_str'),
-                              style: TextStyle(
-                                color: pageIndex == index
-                                    ? Colors.white
-                                    : Colors.teal.shade100,
-                                fontFamily:
-                                    locator<PrefsService>().appLanguage == 'en'
-                                        ? 'en'
-                                        : 'ar',
-                              ),
-                            )
-                          : Text(
-                              AppLocalizations.of(context)
-                                  .translate('pharmacies_str'),
-                              style: TextStyle(
-                                color: pageIndex == index
-                                    ? Colors.white
-                                    : Colors.teal.shade100,
-                                fontFamily:
-                                    locator<PrefsService>().appLanguage == 'en'
-                                        ? 'en'
-                                        : 'ar',
-                              ),
-                            ),
-                ),
-                onPressed: () async {
-                  if (_pageController.hasClients) {
-                    setState(() {
-                      _pageController.jumpToPage(index);
-                    });
-                  }
-                }),
+                child: RaisedButton(
+                    color: pageIndex == index ? Colors.white24 : Colors.white54,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                          color: Colors.white,
+                          width: pageIndex == index ? 1 : 0.0),
+                      borderRadius: BorderRadius.circular(9),
+                    ),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        model.data.categories[index].name,
+                        style: TextStyle(
+                          color: pageIndex == index
+                              ? Colors.white
+                              : Colors.teal.shade100,
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
+                      ),
+                    ),
+                    onPressed: () async {
+                      if (_pageController.hasClients) {
+                        setState(() {
+                          _pageController.jumpToPage(index);
+                        });
+                      }
+                    }),
+              );
+            },
           );
         },
       ),

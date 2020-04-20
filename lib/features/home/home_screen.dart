@@ -5,7 +5,9 @@ import 'package:momentoo/features/home/autoComplete_model.dart';
 import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/home/home_model.dart';
 import 'package:momentoo/features/home/home_widgets/content.dart';
+import 'package:momentoo/features/notifications/notifications_manager.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -34,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController = PageController(
       initialPage: 0,
     );
+    locator<NotificationsManager>().getData();
   }
 
   @override
@@ -138,22 +141,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
               actions: <Widget>[
                 isSearchQueryEmpty
-                    ? IconButton(
-                        icon: Icon(Icons.notifications),
-                        onPressed: () {
-                          //              setState(() {
-                          //   isSearchQueryEmpty = true;
-                          //   locator<TextEditingController>().clear();
-                          //   FocusScope.of(context).requestFocus(FocusNode());
-                          // });
+                    ? NotificationWidget(
+                        onPressedNotifications: () {
                           FocusScope.of(context).requestFocus(FocusNode());
                           isSearchQueryEmpty = true;
-                          // if (overlayEntry.opaque) {
-                          //   overlayEntry?.remove();
-                          // }
                           locator<TextEditingController>().clear();
                           Navigator.of(context)
                               .pushNamed('/notificationsScreen');
+                          locator<PrefsService>().notificationFlag = false;
                         },
                       )
                     : Container(
@@ -203,13 +198,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             const Radius.circular(10.0),
                           ),
                         ),
-                        hintStyle:
-                            TextStyle(color: Colors.grey[600], fontSize: 13),
+                        hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 13,
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar',
+                        ),
                         prefixIcon: Icon(
                           Icons.search,
                           color: Colors.teal[900],
                         ),
-                        hintText: "Search...",
+                        hintText: AppLocalizations.of(context)
+                            .translate('search..._str'),
                         fillColor: Colors.white),
                   ),
                 ),
