@@ -10,6 +10,7 @@ class PrefsService {
   static const String HAS_CHOSEN_LANGUAGE = 'hasChosenLanguage';
   static const String SIGN_UP_KEY = 'signedUp';
   static const String LOG_IN_KEY = 'loggedIn';
+  static const String City_id = 'cityID';
   // static const String NOTIFICATION_FlAG = 'notificationFlag';
   static const String IS_NEARBY_FIRST_TIME_OPINING = 'isNearbyFirstTimeOpining';
   static const String IS_BACK_TO_ONLINE = 'isBackToOnline';
@@ -90,6 +91,13 @@ class PrefsService {
   String get appLanguage => _getFromPrefs(APP_LANGUAGE_KEY);
   // setter for App language.
   set appLanguage(String value) => _saveToPrefs(APP_LANGUAGE_KEY, value);
+// //////////////////////////////////////////////////////////////////////////////
+//
+// //////////////////////////////////////////////////////////////////////////////
+  // getter for App language.
+  String get cityID => _getFromPrefs(City_id);
+  // setter for App language.
+  set cityID(String value) => _saveToPrefs(City_id, value);
 // ////////////////////////////////////////////////////////////////////////////////
   // getter for UserPassword.
   String get userPassword => _getFromPrefs(USER_PASSWORD);

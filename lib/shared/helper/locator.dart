@@ -9,6 +9,7 @@ import 'package:momentoo/features/help_support/helpSupportValidation_manager.dar
 import 'package:momentoo/features/home/autoComplete_manager.dart';
 import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
+import 'package:momentoo/features/near_by/manger.dart';
 import 'package:momentoo/features/new_address/dropdown_data.dart';
 import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
 import 'package:momentoo/features/profile/_manager.dart';
@@ -82,6 +83,7 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<DrobDownBloc>(() => DrobDownBloc());
   locator.registerLazySingleton<EditDrobDownBloc>(() => EditDrobDownBloc());
   locator.registerLazySingleton<ContactUsManager>(() => ContactUsManager());
+  locator.registerLazySingleton<NearByManager>(() => NearByManager());
   // TrendingStoreManager
   locator.registerLazySingleton<TrendingStoreManager>(
       () => TrendingStoreManager());

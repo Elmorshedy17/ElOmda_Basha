@@ -141,7 +141,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/privacyScreen': (_) => PrivacyScreen(),
                 '/profileScreen': (_) => ProfileScreen(),
                 '/termsConditionsScreen': (_) => TermsConditionsScreen(),
-                '/nearByScreen': (_) => NearByScreen(),
+//                '/nearByScreen': (_) => NearByScreen(),
                 '/cartScreen': (_) => CartScreen(),
                 '/settingsScreen': (_) => SettingsScreen(),
 //                '/editProfileScreen': (_) => EditProfileScreen(),

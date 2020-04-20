@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
@@ -69,13 +70,26 @@ class CustomBottomNavigation extends StatelessWidget {
                       locator<PrefsService>().isNearbyFirstTimeOpining = false;
                       Navigator.of(context).pushNamed('/getLocationScreen');
                     } else {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/nearByScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/nearByScreen"
-                                  ? false
-                                  : true
-                              : true);
+//                      Navigator.of(context).pushNamedAndRemoveUntil(
+//                          "/nearByScreen",
+//                          (route) => route.isCurrent
+//                              ? route.settings.name == "/nearByScreen"
+//                                  ? false
+//                                  : true
+//                              : true);
+//                      Navigator.of(context).pushNamed('/getLocationScreen');
+
+
+
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                NearByScreen(locator<PrefsService>().cityID)),
+                      );
+
+
                     }
                   },
                 ),

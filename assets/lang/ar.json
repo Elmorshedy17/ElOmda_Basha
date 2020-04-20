@@ -175,7 +175,23 @@
   "DeliveryTime_str": "وقت التوصيل",
   "status_str": "الحالة",
   "update_profile_str": "تحديث الحساب",
-  "fill_required_fileds": "برجاء ملئ الحقول الالزامية اولا"
+  "fill_required_fileds": "برجاء ملئ الحقول الالزامية اولا",
+  "choose_your_location_str": "ادخل موقعك لبدء اختيار المطاعم القريبه منك .",
+  "No_str": "لا",
+  "Yes_Str": "حسنا",
+  "nice_to_meet_you_str": "مرحبا , سررت بلقائك",
+  "Use_current_location_str": "استخدم موقعك الحاليي",
+  "Select_it_manually_str": "اختار موقعك بنفسك",
+  "chooseCity_str": "اختر مدينة",
+  "cant_regonize_city_str": "لا يمكننا التعرف على موقعك ، يرجى اختيار مدينتك",
+  "Deliver_Here_str": "وصل هنا"
+
+
+
+
+
+
+
 
 
 }

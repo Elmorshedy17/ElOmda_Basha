@@ -175,5 +175,14 @@
   "DeliveryTime_str": "Delivery time",
   "status_str": "Status",
   "update_profile_str": "Update Profile",
-  "fill_required_fileds": "please fill required fields"
+  "fill_required_fileds": "please fill required fields",
+  "choose_your_location_str": "Choose your location to start find restaurants around you.",
+  "No_str": "No",
+  "Yes_Str": "Yes",
+  "nice_to_meet_you_str": "Hi, nice to meet you!",
+  "Use_current_location_str": "Use current location",
+  "Select_it_manually_str": "Select it manually",
+  "chooseCity_str": "Chose City",
+  "cant_regonize_city_str": "we can't recognize your location , please chose your city",
+  "Deliver_Here_str": "Deliver Here"
 }
