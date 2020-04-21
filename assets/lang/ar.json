@@ -184,7 +184,13 @@
   "Select_it_manually_str": "اختار موقعك بنفسك",
   "chooseCity_str": "اختر مدينة",
   "cant_regonize_city_str": "لا يمكننا التعرف على موقعك ، يرجى اختيار مدينتك",
-  "Deliver_Here_str": "وصل هنا"
+  "Deliver_Here_str": "وصل هنا",
+  "number_delivery_str": "عدد السائقين",
+  "camera_str": "الكاميرا",
+  "gallery_str": "معرض الصور",
+  "diffrent_sellers_str": "لا يمكنك اضافة منتجات من بائعين مختلفين . ازل السلة ثم ضف المنتج ؟"
+
+
 
 
 

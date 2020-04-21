@@ -451,6 +451,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               borderRadius: const BorderRadius.all(
                                 const Radius.circular(10.0),
                               ),
+                            ),focusedBorder:  OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
+                          ),
+                        ),
+                            disabledBorder:  OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0),
+                              ),
                             ),
                             hintStyle: TextStyle(
                               color: Colors.grey[600],
@@ -541,8 +552,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Text(
-                                              "You can't add products from different sellers. Clear cart and add this product?"),
-                                          Row(
+//                                              "diffrent_sellers_str"),
+                                      AppLocalizations.of(context)
+                                          .translate('diffrent_sellers_str'),)   ,
+                                      Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -561,7 +574,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                               .circular(25.0),
                                                     ),
                                                     child: Text(
-                                                      'NO',
+                                                       AppLocalizations.of(context)
+                                                           .translate('No_str'),
                                                       // AppLocalizations.of(context)
                                                       //     .translate('ok_str'),
                                                       style: TextStyle(
@@ -589,9 +603,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                               .circular(25.0),
                                                     ),
                                                     child: Text(
-                                                      'OK',
-                                                      // AppLocalizations.of(context)
-                                                      //     .translate('notNow_str'),
+//                                                      'OK_str',
+                                                       AppLocalizations.of(context)
+                                                           .translate('OK_str'),
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 15),

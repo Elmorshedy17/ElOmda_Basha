@@ -10,6 +10,7 @@ import 'package:momentoo/features/ads/ads_screen.dart';
 import 'package:momentoo/features/all_trending/allTrending_screen.dart';
 import 'package:momentoo/features/change_email/changeEmail_screen.dart';
 import 'package:momentoo/features/change_password/changePassword_screen.dart';
+import 'package:momentoo/features/checkout/checkout_screen.dart';
 import 'package:momentoo/features/edit_profile/editProfile_screen.dart';
 import 'package:momentoo/features/favorites/favorites_screen.dart';
 import 'package:momentoo/features/forget_password/forgetPassword_screen.dart';
@@ -121,7 +122,7 @@ class _MomentooAppState extends State<MomentooApp> {
               theme: ThemeData(
                 primarySwatch: Colors.teal,
               ),
-              home: LangScreen(),
+              home: HomeScreen(),
 //              home: HelpSupportScreen(),
               routes: {
                 '/langScreen': (_) => LangScreen(),

@@ -32,7 +32,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
     StoreDetailsArguments args = ModalRoute.of(context).settings.arguments;
 
     return MainBackground(
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: MediaQuery.of(context).size.height * 0.28,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -287,82 +287,85 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                         height: 10,
                       ),
                       Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(right: 2, left: 4),
-                            decoration: BoxDecoration(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 2, left: 4),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(1000))),
+                              child: IconButton(
+                                icon: Transform.rotate(
+                                    angle: 4.7,
+                                    child: Icon(FontAwesomeIcons.signOutAlt)),
+                                // icon: Icon(FontAwesomeIcons.shareSquare),
+                                onPressed: () {},
+                              ),
+                            ),
+                            Container(
+                              height: 50,
+                              width: 50,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 2,
+                              ),
+                              decoration: BoxDecoration(
                                 color: Colors.grey.shade200,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(1000))),
-                            child: IconButton(
-                              icon: Transform.rotate(
-                                  angle: 4.7,
-                                  child: Icon(FontAwesomeIcons.signOutAlt)),
-                              // icon: Icon(FontAwesomeIcons.shareSquare),
-                              onPressed: () {},
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            width: 50,
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
                               ),
-                            ),
-                            child: Icon(
-                              model.data.seller.featured == 'yes'
-                                  ? Icons.star
-                                  : Icons.star_border,
-                              color: model.data.seller.featured == 'yes'
-                                  ? Colors.yellow[700]
-                                  : Colors.grey,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.location_on),
-                              onPressed: () {},
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                model.data.seller.favourite == 'yes'
+                              child: Icon(
+                                model.data.seller.featured == 'yes'
                                     ? Icons.star
                                     : Icons.star_border,
-                                color: model.data.seller.favourite == 'yes'
-                                    ? Colors.pink
-                                    : Colors.black,
+                                color: model.data.seller.featured == 'yes'
+                                    ? Colors.yellow[700]
+                                    : Colors.grey,
                               ),
-                              onPressed: () {},
                             ),
-                          ),
-                        ],
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.location_on),
+                                onPressed: () {},
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                  model.data.seller.favourite == 'yes'
+                                      ? Icons.star
+                                      : Icons.star_border,
+                                  color: model.data.seller.favourite == 'yes'
+                                      ? Colors.pink
+                                      : Colors.black,
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Divider(),
                       Padding(
@@ -422,7 +425,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                           child: Image.network(
                                             model.data.seller
                                                 .productsFeatured[index].image,
-                                            fit: BoxFit.fill,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),

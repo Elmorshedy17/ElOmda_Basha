@@ -98,12 +98,12 @@ class TrendingStoresScreen extends StatelessWidget {
                             children: <Widget>[
                               Image.network(
                                 model.data.sellers[index].image,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 width: MediaQuery.of(context).size.width,
                                 height: 170,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: const EdgeInsets.only(top: 4.0,
                                     right: 8, left: 8.0, bottom: 4),
                                 child: Text(
                                   model.data.sellers[index].name,
@@ -133,7 +133,7 @@ class TrendingStoresScreen extends StatelessWidget {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    right: 8, left: 8.0, bottom: 4),
+                                    right: 8, left: 8.0, bottom: 8),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment:
@@ -151,6 +151,7 @@ class TrendingStoresScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 4,),
                             ],
                           ),
                         ),

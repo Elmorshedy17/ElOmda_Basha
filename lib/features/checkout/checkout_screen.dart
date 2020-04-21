@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CheckOutScreen extends StatefulWidget {
@@ -75,16 +78,27 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ],
             ),
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                // FocusScope.of(context).requestFocus(FocusNode());
-                // overlayEntry?.remove();
-                Navigator.of(context).pushNamed('/notificationsScreen');
-              },
-            ),
-          ],
+actions: <Widget>[
+  NotificationWidget(
+    onPressedNotifications: () {
+      FocusScope.of(context).requestFocus(FocusNode());
+      locator<TextEditingController>().clear();
+      Navigator.of(context)
+          .pushNamed('/notificationsScreen');
+      locator<PrefsService>().notificationFlag = false;
+    },
+  )
+],
+//          actions: <Widget>[
+//            IconButton(
+//              icon: Icon(Icons.notifications),
+//              onPressed: () {
+//                // FocusScope.of(context).requestFocus(FocusNode());
+//                // overlayEntry?.remove();
+//                Navigator.of(context).pushNamed('/notificationsScreen');
+//              },
+//            ),
+//          ],
         ),
         body: Center(
           child: Container(

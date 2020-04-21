@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/features/shopping_cart/cartActions_manager.dart';
 import 'package:momentoo/features/shopping_cart/cartActions_model.dart';
 import 'package:momentoo/shared/domain/cartRequest.dart' as cart;
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -51,12 +52,15 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.notifications),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/notificationsScreen');
+              NotificationWidget(
+                onPressedNotifications: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  locator<TextEditingController>().clear();
+                  Navigator.of(context)
+                      .pushNamed('/notificationsScreen');
+                  locator<PrefsService>().notificationFlag = false;
                 },
-              ),
+              )
             ],
           ),
           body: locator<PrefsService>().cartObj.products.isNotEmpty

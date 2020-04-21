@@ -3,6 +3,7 @@ import 'package:momentoo/features/privacyPolicy&Terms/privacy&terms_screen.dart'
 import 'package:momentoo/features/settings/notificationSwitch_manager.dart';
 import 'package:momentoo/features/settings/settings_manager.dart';
 import 'package:momentoo/features/settings/settings_model.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -42,14 +43,28 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
           ),
+
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                Navigator.of(context).pushNamed('/notificationsScreen');
+          NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                locator<TextEditingController>().clear();
+                Navigator.of(context)
+                    .pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
               },
-            ),
+            )
           ],
+
+
+//          actions: <Widget>[
+//            IconButton(
+//              icon: Icon(Icons.notifications),
+//              onPressed: () {
+//                Navigator.of(context).pushNamed('/notificationsScreen');
+//              },
+//            ),
+//          ],
         ),
         body: Column(
           children: <Widget>[

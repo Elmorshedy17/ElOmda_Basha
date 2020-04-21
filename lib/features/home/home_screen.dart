@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: MainBackground(
-          height: MediaQuery.of(context).size.height * 0.3,
+          height: MediaQuery.of(context).size.height * 0.25,
           child: Scaffold(
             drawer: MainDrawer(),
             backgroundColor: Colors.transparent,
@@ -193,6 +193,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         filled: true,
                         border: InputBorder.none,
                         enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
+                          ),
+                        ),focusedBorder:  OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(10.0),
+                      ),
+                    ),
+                        disabledBorder:  OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent),
                           borderRadius: const BorderRadius.all(
                             const Radius.circular(10.0),

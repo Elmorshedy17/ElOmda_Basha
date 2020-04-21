@@ -133,7 +133,7 @@
   "filter_str": "Filter",
   "food_str": "Food",
   "area_str": "Area",
-  "sittings_str": "Sittings",
+  "sittings_str": "Settings",
   "changeYourEmail_str": "Change your Email",
   "changeYourPassword_str": "Change your password",
   "country_str": "Country",
@@ -184,5 +184,10 @@
   "Select_it_manually_str": "Select it manually",
   "chooseCity_str": "Chose City",
   "cant_regonize_city_str": "we can't recognize your location , please chose your city",
-  "Deliver_Here_str": "Deliver Here"
+  "Deliver_Here_str": "Deliver Here",
+  "number_delivery_str": "Number of Deliveries",
+  "camera_str": "Camera",
+  "gallery_str": "Gallery",
+  "OK_str": "OK",
+  "diffrent_sellers_str": "You can't add products from different sellers. Clear cart and add this product?"
 }

@@ -38,7 +38,11 @@ class PrivacyTermsScreen extends StatelessWidget {
           actions: <Widget>[
             NotificationWidget(
               onPressedNotifications: () {
-                Navigator.of(context).pushNamed('/notificationsScreen');
+                FocusScope.of(context).requestFocus(FocusNode());
+                locator<TextEditingController>().clear();
+                Navigator.of(context)
+                    .pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
               },
             )
           ],
