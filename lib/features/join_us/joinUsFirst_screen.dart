@@ -456,6 +456,16 @@ Column(
                 ),
                 onPressed: () {
 //                  Navigator.of(context).pushNamed('/joinUsSecondScreen');
+                if( imago == null){
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(AppLocalizations.of(context).translate('image_joinus_erre')),
+                      );
+                    },
+                  );
+                }else{
                   isLoading.add(true);
 
                   JoinUsRepo.postJoinUsData(nameController.text,addressController.text,emailController.text,phoneController.text,imago,int.parse(deliveryController.text)).then((onValue) {
@@ -469,6 +479,8 @@ Column(
                       },
                     );
                   });
+                }
+
 
 
                 },

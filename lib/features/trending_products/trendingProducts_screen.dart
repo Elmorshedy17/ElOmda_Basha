@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/trending_products/trendinfProduct_manager.dart';
 import 'package:momentoo/features/trending_products/trendingProduct_model.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
@@ -66,9 +67,14 @@ class TrendingProductsScreen extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.notifications),
+            NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                locator<TextEditingController>().clear();
+                Navigator.of(context)
+                    .pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
+              },
             )
           ],
         ),
