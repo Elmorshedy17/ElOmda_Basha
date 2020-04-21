@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/cartItemsCount_manger.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
@@ -175,6 +177,32 @@ class CustomBottomNavigation extends StatelessWidget {
               ),
             ),
           ),
+          Positioned(
+              left: MediaQuery.of(context).size.width / 4 - 6,
+              bottom: 40,
+              child: CustomObserver(
+                stream: locator<CartItemsCountManager>().cartCount$,
+                onWaiting: (_) => Container(),
+                onSuccess: (_, int count) {
+                  return count != 0
+                      ? Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          decoration: BoxDecoration(
+                            // border: Border.all(color: Colors.teal),
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            '$count',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : Container();
+                },
+              )),
           //! Settings
           Positioned(
             // height: 70,

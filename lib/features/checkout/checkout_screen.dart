@@ -1,8 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/checkout/checkout_manager.dart';
+import 'package:momentoo/features/checkout/checkout_request/asUser_request.dart';
+import 'package:momentoo/features/checkout/checkout_validation.dart';
+import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
+import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
+import 'package:momentoo/features/payment/successful_screen.dart';
+import 'package:momentoo/features/shopping_cart/cartActions_model.dart'
+    as cartActions;
+// import 'package:momentoo/shared/domain/cartRequest.dart' as cart;
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:rxdart/rxdart.dart';
+
+class CheckOutScreenArguments {
+  final double finalPrice;
+  final cartActions.Seller seller;
+  final List<cartActions.Addresses> addresses;
+  final List<cartActions.Products> products;
+  final List<cartActions.Cities> cities;
+
+  CheckOutScreenArguments({
+    @required this.seller,
+    @required this.addresses,
+    @required this.products,
+    @required this.cities,
+    @required this.finalPrice,
+  });
+}
 
 class CheckOutScreen extends StatefulWidget {
   @override
@@ -12,6 +40,8 @@ class CheckOutScreen extends StatefulWidget {
 class _CheckOutScreenState extends State<CheckOutScreen> {
   BehaviorSubject addressesBehaviorSubject = BehaviorSubject();
   BehaviorSubject cityBehaviorSubject = BehaviorSubject();
+
+  CheckoutValidationManager validation = locator<CheckoutValidationManager>();
 
   FocusNode firstNameFocusNode = new FocusNode();
   FocusNode lastNameFocusNode = new FocusNode();
@@ -27,25 +57,31 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   FocusNode apartmentFocusNode = new FocusNode();
   FocusNode instructionsFocusNode = new FocusNode();
 
-  List _countries = [
-    "Afghanistan",
-    "Albania",
-    "Algeria",
-    "Andorra",
-    "Angola",
-    " Antigua and Barbuda",
-    "Argentina",
-    " Armenia",
-    "Australia",
-    "Austria",
-    "Austrian Empire",
-  ];
-
   bool deliveryChecked = true;
   bool pickUpCheck = false;
 
+  double priceAfterDiscount = 0.0;
+  int addressId = -1;
+  int cityId = -1;
+  String promoCode = '';
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController notesController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController blockController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController jaddaController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController flatController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
+  TextEditingController street2Controller = TextEditingController();
+  TextEditingController buildingController = TextEditingController();
+  TextEditingController promoCodeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    CheckOutScreenArguments args = ModalRoute.of(context).settings.arguments;
     return MainBackground(
       height: MediaQuery.of(context).size.height * 0.2,
       child: Scaffold(
@@ -55,8 +91,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            AppLocalizations.of(context).translate('my_orders_Str'),
-            // AppLocalizations.of(context).translate('test'),
+            'Checkout',
+            // AppLocalizations.of(context).translate('my_orders_Str'),
             style: TextStyle(color: Colors.white),
           ),
           leading: InkWell(
@@ -76,19 +112,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             ),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                // FocusScope.of(context).requestFocus(FocusNode());
-                // overlayEntry?.remove();
+            NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.of(context).pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
               },
-            ),
+            )
           ],
         ),
         body: Center(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
+            margin: EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
             decoration: new BoxDecoration(
               borderRadius: new BorderRadius.all(Radius.circular(8.0)),
             ),
@@ -100,176 +135,67 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: ListView(
+                    child: ListView.separated(
                       shrinkWrap: true,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                            children: <Widget>[
-                              // picture and other details
-                              Row(
-                                children: <Widget>[
-                                  // the order image
-                                  Container(
-                                    height: 65.0,
-                                    width: 65.0,
-                                    child: Image.network(
-                                      'https://picsum.photos/250?image=9',
-                                      fit: BoxFit.fill,
+                      itemCount: args.products.length,
+                      separatorBuilder: (_, index) => Divider(
+                        indent: 15,
+                        endIndent: 15,
+                        height: 1,
+                      ),
+                      itemBuilder: (_, index) => Container(
+                        height: 100,
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              height: 100.0,
+                              width: 100.0,
+                              child: Image.network(
+                                args.products[index].image,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Container(
+                              width: 190,
+                              child: ListTile(
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 8),
+                                title: Text(
+                                  '${args.products[index].name}',
+                                  style: TextStyle(
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text('options'),
+                                    Text(
+                                      '${args.products[index].price} ${args.products[index].currency}',
+                                      style: TextStyle(
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  // end the order image
-                                  SizedBox(
-                                    width: 15.0,
-                                  ),
-                                  // order number & price & desc
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        // order number
-                                        Text(
-                                          "# 2235",
-                                          style: TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        // end order number
-
-                                        SizedBox(
-                                          height: 8.0,
-                                        ),
-// desc of order
-                                        Text(
-                                          "2x tuna sahimi , 3x vegtables, 1x nudle",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        // end desc of order
-
-                                        SizedBox(
-                                          height: 8.0,
-                                        ),
-
-                                        // price
-                                        Text(
-                                          "18 KW",
-                                          style: TextStyle(
-                                              color: Colors.teal.shade900,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        // end price
-                                      ],
-                                    ),
-                                  ),
-                                  // order number & price & desc
-                                ],
+                                  ],
+                                ),
                               ),
-                              // end picture and other details
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 1.0,
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.grey.withOpacity(.2),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                            children: <Widget>[
-                              // picture and other details
-                              Row(
-                                children: <Widget>[
-                                  // the order image
-                                  Container(
-                                    height: 65.0,
-                                    width: 65.0,
-                                    child: Image.network(
-                                      'https://picsum.photos/250?image=9',
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  // end the order image
-                                  SizedBox(
-                                    width: 15.0,
-                                  ),
-                                  // order number & price & desc
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        // order number
-                                        Text(
-                                          "# 2235",
-                                          style: TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        // end order number
-
-                                        SizedBox(
-                                          height: 8.0,
-                                        ),
-// desc of order
-                                        Text(
-                                          "2x tuna sahimi , 3x vegtables, 1x nudle",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        // end desc of order
-
-                                        SizedBox(
-                                          height: 8.0,
-                                        ),
-
-                                        // price
-                                        Text(
-                                          "18 KW",
-                                          style: TextStyle(
-                                              color: Colors.teal.shade900,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        // end price
-                                      ],
-                                    ),
-                                  ),
-                                  // order number & price & desc
-                                ],
-                              ),
-                              // end picture and other details
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 1.0,
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.grey.withOpacity(.2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
 
@@ -418,276 +344,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     height: 20.0,
                   ),
 
-                  Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ExpansionTile(
-                      title: Text(
-                        AppLocalizations.of(context).translate('addresses_str'),
-                        style: TextStyle(color: Colors.grey, fontSize: 21),
-                      ),
-                      children: <Widget>[
-                        StreamBuilder<Object>(
-                            stream: addressesBehaviorSubject.stream,
-                            builder: (context, addressesSnapshot) {
-                              return Container(
-                                height: MediaQuery.of(context).size.height / 3,
-                                child: ListView.separated(
-                                    separatorBuilder: (context, index) =>
-                                        Divider(
-                                          color: Colors.grey.withOpacity(.5),
-                                        ),
-                                    itemCount: _countries.length,
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          addressesBehaviorSubject.sink
-                                              .add(index);
-                                          print(
-                                              "this is print of the countery name ${_countries[index]}");
-                                        },
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Text(
-                                                _countries[index],
-                                                style: TextStyle(
-                                                    color: index ==
-                                                            addressesBehaviorSubject
-                                                                .value
-                                                        ? Colors.teal.shade900
-                                                        : Colors.black54,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              index ==
-                                                      addressesBehaviorSubject
-                                                          .value
-                                                  ? Container(
-                                                      height: 28.0,
-                                                      width: 28.0,
-                                                      decoration:
-                                                          new BoxDecoration(
-                                                        color: Colors
-                                                            .teal.shade800,
-                                                        borderRadius:
-                                                            new BorderRadius
-                                                                .all(
-                                                          Radius.circular(50.0),
-                                                        ),
-                                                      ),
-                                                      child: Center(
-                                                        child: Icon(
-                                                          Icons.check,
-                                                          size: 18,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Container()
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                              );
-                            }),
-                      ],
-                    ),
-                  ),
-                  // end Delivery & pickup
-
-                  SizedBox(
-                    height: 20.0,
-                  ),
-
-                  // User details
-                  Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate('User_details_str'),
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(.7),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                  locator<PrefsService>().userObj != null
+                      ? Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: firstNameFocusNode,
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (String value) {
-                                  FocusScope.of(context)
-                                      .requestFocus(lastNameFocusNode);
-                                },
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("first_name_str"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: lastNameFocusNode,
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (String value) {
-                                  FocusScope.of(context)
-                                      .requestFocus(phoneNumberFocusNode);
-                                },
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("last_name_str"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: phoneNumberFocusNode,
-                                textInputAction: TextInputAction.done,
-                                onFieldSubmitted: (String value) {
-                                  FocusScope.of(context)
-                                      .requestFocus(emailFocusNode);
-                                },
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("965_phone_number_str"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: emailFocusNode,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("email_str"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // end User details
-
-                  SizedBox(
-                    height: 20.0,
-                  ),
-
-                  // User address details
-                  Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate('Address_Details_str'),
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(.7),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 12.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                      AppLocalizations.of(context)
-                                          .translate('Kuwait_str'),
-                                      style: TextStyle(
-                                          color: Colors.teal.shade900,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600)),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          ExpansionTile(
-                            backgroundColor: Colors.grey[100],
+                          child: ExpansionTile(
                             title: Text(
                               AppLocalizations.of(context)
                                   .translate('addresses_str'),
@@ -696,26 +359,27 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             ),
                             children: <Widget>[
                               StreamBuilder<Object>(
-                                  stream: cityBehaviorSubject.stream,
+                                  stream: addressesBehaviorSubject.stream,
                                   builder: (context, addressesSnapshot) {
                                     return Container(
                                       height:
                                           MediaQuery.of(context).size.height /
                                               3,
                                       child: ListView.separated(
+                                          shrinkWrap: true,
                                           separatorBuilder: (context, index) =>
                                               Divider(
-                                                color:
-                                                    Colors.grey.withOpacity(.5),
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
                                               ),
-                                          itemCount: _countries.length,
+                                          itemCount: args.addresses.length,
                                           itemBuilder: (context, index) {
                                             return InkWell(
                                               onTap: () {
-                                                cityBehaviorSubject.sink
+                                                addressesBehaviorSubject.sink
                                                     .add(index);
-                                                print(
-                                                    "this is print of the countery name ${_countries[index]}");
+                                                addressId =
+                                                    args.addresses[index].id;
                                               },
                                               child: Padding(
                                                 padding: EdgeInsets.all(8.0),
@@ -725,10 +389,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                           .spaceBetween,
                                                   children: <Widget>[
                                                     Text(
-                                                      _countries[index],
+                                                      args.addresses[index]
+                                                          .title,
                                                       style: TextStyle(
                                                           color: index ==
-                                                                  cityBehaviorSubject
+                                                                  addressesBehaviorSubject
                                                                       .value
                                                               ? Colors
                                                                   .teal.shade900
@@ -738,7 +403,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               FontWeight.w600),
                                                     ),
                                                     index ==
-                                                            cityBehaviorSubject
+                                                            addressesBehaviorSubject
                                                                 .value
                                                         ? Container(
                                                             height: 28.0,
@@ -773,286 +438,731 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   }),
                             ],
                           ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-//                            color: Colors.grey[100],
-                            child: Container(
-//                              margin:
-//                              const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.grey[100],
-                                      child: TextFormField(
-                                        textAlign: TextAlign.center,
-                                        focusNode: blockFocusNode,
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (String value) {
-                                          FocusScope.of(context)
-                                              .requestFocus(streetFocusNode);
-                                        },
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          hintText: AppLocalizations.of(context)
-                                              .translate("Block_Str"),
-                                          contentPadding: const EdgeInsets.only(
-                                              left: 14.0,
-                                              bottom: 8.0,
-                                              top: 8.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 5.0,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.grey[100],
-                                      child: TextFormField(
-                                        textAlign: TextAlign.center,
-                                        focusNode: streetFocusNode,
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (String value) {
-                                          FocusScope.of(context)
-                                              .requestFocus(streetTwoFocusNode);
-                                        },
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          hintText: AppLocalizations.of(context)
-                                              .translate("Street_str"),
-                                          contentPadding: const EdgeInsets.only(
-                                              left: 14.0,
-                                              bottom: 8.0,
-                                              top: 8.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: streetTwoFocusNode,
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (String value) {
-                                  FocusScope.of(context)
-                                      .requestFocus(houseFocusNode);
-                                },
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("Street_two_str"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: houseFocusNode,
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (String value) {
-                                  FocusScope.of(context)
-                                      .requestFocus(floorFocusNode);
-                                },
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("House_building_str"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-//                            color: Colors.grey[100],
-                            child: Container(
-//                              margin:
-//                              const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.grey[100],
-                                      child: TextFormField(
-                                        textAlign: TextAlign.center,
-                                        focusNode: floorFocusNode,
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (String value) {
-                                          FocusScope.of(context)
-                                              .requestFocus(jaddaFocusNode);
-                                        },
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          hintText: AppLocalizations.of(context)
-                                              .translate("Floor_Str"),
-                                          contentPadding: const EdgeInsets.only(
-                                              left: 14.0,
-                                              bottom: 8.0,
-                                              top: 8.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 5.0,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.grey[100],
-                                      child: TextFormField(
-                                        textAlign: TextAlign.center,
-                                        focusNode: jaddaFocusNode,
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (String value) {
-                                          FocusScope.of(context)
-                                              .requestFocus(apartmentFocusNode);
-                                        },
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          hintText: AppLocalizations.of(context)
-                                              .translate("Jadda_str"),
-                                          contentPadding: const EdgeInsets.only(
-                                              left: 14.0,
-                                              bottom: 8.0,
-                                              top: 8.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: apartmentFocusNode,
-                                textInputAction: TextInputAction.done,
-                                onFieldSubmitted: (String value) {
-                                  FocusScope.of(context)
-                                      .requestFocus(instructionsFocusNode);
-                                },
-                                decoration: InputDecoration(
-                                  suffix: Text(
-                                    "(${AppLocalizations.of(context).translate("optional_Str")})",
-                                  ),
-                                  suffixStyle: TextStyle(
-                                      fontSize: 12.0, color: Colors.grey),
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("Apartment_Office_name"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextFormField(
-                                focusNode: instructionsFocusNode,
-                                textInputAction: TextInputAction.done,
-                                decoration: InputDecoration(
-                                  suffix: Text(
-                                    "(${AppLocalizations.of(context).translate("optional_Str")})",
-                                  ),
-                                  suffixStyle: TextStyle(
-                                      fontSize: 12.0, color: Colors.grey),
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("Apartment_Office_name"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Container(
-                            color: Colors.grey[100],
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 8.0),
-                              child: TextFormField(
-                                maxLines: 8,
-                                focusNode: phoneNumberFocusNode,
-                                textInputAction: TextInputAction.done,
-                                onFieldSubmitted: (String value) {
-                                  FocusScope.of(context)
-                                      .requestFocus(emailFocusNode);
-                                },
-                                decoration: InputDecoration(
-                                  suffix: Text(
-                                    "(${AppLocalizations.of(context).translate("optional_Str")})",
-                                  ),
-                                  suffixStyle: TextStyle(
-                                      fontSize: 12.0, color: Colors.grey),
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("Delivery_instructions"),
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                        )
+                      : Container(),
+                  // end Delivery & pickup
+
+                  SizedBox(
+                    height: locator<PrefsService>().userObj != null ? 0 : 20.0,
                   ),
+
+                  // User details
+                  locator<PrefsService>().userObj != null
+                      ? Container()
+                      : Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.all(15.0),
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate('User_details_str'),
+                                      style: TextStyle(
+                                          color: Colors.black.withOpacity(.7),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: StreamBuilder<Object>(
+                                        stream: validation.firstName$,
+                                        builder: (context, snapshot) {
+                                          return TextFormField(
+                                            controller: firstNameController,
+                                            onChanged:
+                                                validation.inFirstName.add,
+                                            focusNode: firstNameFocusNode,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onFieldSubmitted: (String value) {
+                                              FocusScope.of(context)
+                                                  .requestFocus(
+                                                      lastNameFocusNode);
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintText: AppLocalizations.of(
+                                                      context)
+                                                  .translate("first_name_str"),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 14.0,
+                                                      bottom: 8.0,
+                                                      top: 8.0),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: StreamBuilder<Object>(
+                                        stream: validation.lastName$,
+                                        builder: (context, snapshot) {
+                                          return TextFormField(
+                                            controller: lastNameController,
+                                            onChanged:
+                                                validation.inLastName.add,
+                                            focusNode: lastNameFocusNode,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onFieldSubmitted: (String value) {
+                                              FocusScope.of(context)
+                                                  .requestFocus(
+                                                      phoneNumberFocusNode);
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintText: AppLocalizations.of(
+                                                      context)
+                                                  .translate("last_name_str"),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 14.0,
+                                                      bottom: 8.0,
+                                                      top: 8.0),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: StreamBuilder<Object>(
+                                        stream: validation.phone$,
+                                        builder: (context, snapshot) {
+                                          return TextFormField(
+                                            controller: phoneController,
+                                            onChanged: validation.inPhone.add,
+                                            keyboardType: TextInputType
+                                                .numberWithOptions(),
+                                            focusNode: phoneNumberFocusNode,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            onFieldSubmitted: (String value) {
+                                              FocusScope.of(context)
+                                                  .requestFocus(emailFocusNode);
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintText: AppLocalizations.of(
+                                                      context)
+                                                  .translate(
+                                                      "965_phone_number_str"),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 14.0,
+                                                      bottom: 8.0,
+                                                      top: 8.0),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: StreamBuilder<Object>(
+                                        stream: validation.email$,
+                                        builder: (context, snapshot) {
+                                          return TextFormField(
+                                            controller: emailController,
+                                            onChanged: validation.inEmail.add,
+                                            focusNode: emailFocusNode,
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintText:
+                                                  AppLocalizations.of(context)
+                                                      .translate("email_str"),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 14.0,
+                                                      bottom: 8.0,
+                                                      top: 8.0),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                  // end User details
+
+                  SizedBox(
+                    height: locator<PrefsService>().userObj != null ? 0 : 20.0,
+                  ),
+
+                  // User address details
+                  locator<PrefsService>().userObj != null
+                      ? Container()
+                      : Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.all(15.0),
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate('Address_Details_str'),
+                                      style: TextStyle(
+                                          color: Colors.black.withOpacity(.7),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0, vertical: 12.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                            AppLocalizations.of(context)
+                                                .translate('Kuwait_str'),
+                                            style: TextStyle(
+                                                color: Colors.teal.shade900,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                ExpansionTile(
+                                  backgroundColor: Colors.grey[100],
+                                  title: Text(
+                                    AppLocalizations.of(context)
+                                        .translate('City_Str'),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 21),
+                                  ),
+                                  children: <Widget>[
+                                    StreamBuilder<Object>(
+                                        stream: cityBehaviorSubject.stream,
+                                        builder: (context, addressesSnapshot) {
+                                          return Container(
+                                            // height: MediaQuery.of(context)
+                                            //         .size
+                                            //         .height /
+                                            //     3,
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  3,
+                                              child: ListView.separated(
+                                                  primary: false,
+                                                  shrinkWrap: true,
+                                                  separatorBuilder: (context,
+                                                          index) =>
+                                                      Divider(
+                                                        color: Colors.grey
+                                                            .withOpacity(.5),
+                                                      ),
+                                                  itemCount:
+                                                      args.cities?.length ?? 0,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        cityBehaviorSubject.sink
+                                                            .add(index);
+                                                        cityId = args
+                                                            .cities[index].id;
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8.0),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              args.cities[index]
+                                                                  .name,
+                                                              style: TextStyle(
+                                                                  color: index ==
+                                                                          cityBehaviorSubject
+                                                                              .value
+                                                                      ? Colors
+                                                                          .teal
+                                                                          .shade900
+                                                                      : Colors
+                                                                          .black54,
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
+                                                            ),
+                                                            index ==
+                                                                    cityBehaviorSubject
+                                                                        .value
+                                                                ? Container(
+                                                                    height:
+                                                                        28.0,
+                                                                    width: 28.0,
+                                                                    decoration:
+                                                                        new BoxDecoration(
+                                                                      color: Colors
+                                                                          .teal
+                                                                          .shade800,
+                                                                      borderRadius:
+                                                                          new BorderRadius
+                                                                              .all(
+                                                                        Radius.circular(
+                                                                            50.0),
+                                                                      ),
+                                                                    ),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .check,
+                                                                        size:
+                                                                            18,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Container()
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
+                                          );
+                                        }),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+//                            color: Colors.grey[100],
+                                  child: Container(
+//                              margin:
+//                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Container(
+                                            color: Colors.grey[100],
+                                            child: StreamBuilder<Object>(
+                                                stream: validation.block$,
+                                                builder: (context, snapshot) {
+                                                  return TextFormField(
+                                                    controller: blockController,
+                                                    onChanged: (value) {
+                                                      validation.inBlock
+                                                          .add(value);
+                                                    },
+                                                    textAlign: TextAlign.center,
+                                                    focusNode: blockFocusNode,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    onFieldSubmitted:
+                                                        (String value) {
+                                                      FocusScope.of(context)
+                                                          .requestFocus(
+                                                              streetFocusNode);
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintStyle: TextStyle(
+                                                          color: Colors.grey),
+                                                      hintText:
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .translate(
+                                                                  "Block_Str"),
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                              left: 14.0,
+                                                              bottom: 8.0,
+                                                              top: 8.0),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 5.0,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            color: Colors.grey[100],
+                                            child: StreamBuilder<Object>(
+                                                stream: validation.street$,
+                                                builder: (context, snapshot) {
+                                                  return TextFormField(
+                                                    controller:
+                                                        streetController,
+                                                    onChanged:
+                                                        validation.inStreet.add,
+                                                    textAlign: TextAlign.center,
+                                                    focusNode: streetFocusNode,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    onFieldSubmitted:
+                                                        (String value) {
+                                                      FocusScope.of(context)
+                                                          .requestFocus(
+                                                              streetTwoFocusNode);
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintStyle: TextStyle(
+                                                          color: Colors.grey),
+                                                      hintText:
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .translate(
+                                                                  "Street_str"),
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                              left: 14.0,
+                                                              bottom: 8.0,
+                                                              top: 8.0),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: StreamBuilder<Object>(
+                                        stream: validation.street2$,
+                                        builder: (context, snapshot) {
+                                          return TextFormField(
+                                            controller: street2Controller,
+                                            onChanged: validation.inStreet2.add,
+                                            focusNode: streetTwoFocusNode,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onFieldSubmitted: (String value) {
+                                              FocusScope.of(context)
+                                                  .requestFocus(houseFocusNode);
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintText: AppLocalizations.of(
+                                                      context)
+                                                  .translate("Street_two_str"),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 14.0,
+                                                      bottom: 8.0,
+                                                      top: 8.0),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: StreamBuilder<Object>(
+                                        stream: validation.building$,
+                                        builder: (context, snapshot) {
+                                          return TextFormField(
+                                            controller: buildingController,
+                                            onChanged: validation.iBuilding.add,
+                                            focusNode: houseFocusNode,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onFieldSubmitted: (String value) {
+                                              FocusScope.of(context)
+                                                  .requestFocus(floorFocusNode);
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintText:
+                                                  AppLocalizations.of(context)
+                                                      .translate(
+                                                          "House_building_str"),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 14.0,
+                                                      bottom: 8.0,
+                                                      top: 8.0),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+//                            color: Colors.grey[100],
+                                  child: Container(
+//                              margin:
+//                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Container(
+                                            color: Colors.grey[100],
+                                            child: StreamBuilder<Object>(
+                                                stream: validation.floor$,
+                                                builder: (context, snapshot) {
+                                                  return TextFormField(
+                                                    controller: floorController,
+                                                    onChanged:
+                                                        validation.inFloor.add,
+                                                    textAlign: TextAlign.center,
+                                                    focusNode: floorFocusNode,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    onFieldSubmitted:
+                                                        (String value) {
+                                                      FocusScope.of(context)
+                                                          .requestFocus(
+                                                              jaddaFocusNode);
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintStyle: TextStyle(
+                                                          color: Colors.grey),
+                                                      hintText:
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .translate(
+                                                                  "Floor_Str"),
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                              left: 14.0,
+                                                              bottom: 8.0,
+                                                              top: 8.0),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 5.0,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            color: Colors.grey[100],
+                                            child: StreamBuilder<Object>(
+                                                stream: validation.jadda$,
+                                                builder: (context, snapshot) {
+                                                  return TextFormField(
+                                                    controller: jaddaController,
+                                                    onChanged:
+                                                        validation.inJadda.add,
+                                                    textAlign: TextAlign.center,
+                                                    focusNode: jaddaFocusNode,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    onFieldSubmitted:
+                                                        (String value) {
+                                                      FocusScope.of(context)
+                                                          .requestFocus(
+                                                              apartmentFocusNode);
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintStyle: TextStyle(
+                                                          color: Colors.grey),
+                                                      hintText:
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .translate(
+                                                                  "Jadda_str"),
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                              left: 14.0,
+                                                              bottom: 8.0,
+                                                              top: 8.0),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: TextFormField(
+                                      focusNode: apartmentFocusNode,
+                                      textInputAction: TextInputAction.done,
+                                      onFieldSubmitted: (String value) {
+                                        FocusScope.of(context).requestFocus(
+                                            instructionsFocusNode);
+                                      },
+                                      decoration: InputDecoration(
+                                        suffix: Text(
+                                          "(${AppLocalizations.of(context).translate("optional_Str")})",
+                                        ),
+                                        suffixStyle: TextStyle(
+                                            fontSize: 12.0, color: Colors.grey),
+                                        border: InputBorder.none,
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintText: AppLocalizations.of(context)
+                                            .translate("Apartment_Office_name"),
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 14.0, bottom: 8.0, top: 8.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: TextFormField(
+                                      controller: flatController,
+                                      focusNode: instructionsFocusNode,
+                                      textInputAction: TextInputAction.done,
+                                      decoration: InputDecoration(
+                                        suffix: Text(
+                                          "(${AppLocalizations.of(context).translate("optional_Str")})",
+                                        ),
+                                        suffixStyle: TextStyle(
+                                            fontSize: 12.0, color: Colors.grey),
+                                        border: InputBorder.none,
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintText: AppLocalizations.of(context)
+                                            .translate("Apartment_Office_name"),
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 14.0, bottom: 8.0, top: 8.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Container(
+                                  color: Colors.grey[100],
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0, vertical: 8.0),
+                                    child: TextFormField(
+                                      controller: notesController,
+                                      maxLines: 8,
+                                      focusNode: phoneNumberFocusNode,
+                                      textInputAction: TextInputAction.done,
+                                      onFieldSubmitted: (String value) {
+                                        FocusScope.of(context)
+                                            .requestFocus(emailFocusNode);
+                                      },
+                                      decoration: InputDecoration(
+                                        suffix: Text(
+                                          "(${AppLocalizations.of(context).translate("optional_Str")})",
+                                        ),
+                                        suffixStyle: TextStyle(
+                                            fontSize: 12.0, color: Colors.grey),
+                                        border: InputBorder.none,
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintText: AppLocalizations.of(context)
+                                            .translate("Delivery_instructions"),
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 14.0, bottom: 8.0, top: 8.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                   // end User address details
 
                   SizedBox(
@@ -1066,11 +1176,100 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 8.0, horizontal: 15.0),
-                      child: TextField(
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          suffixIcon: RaisedButton(
-                            onPressed: () {},
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              onChanged: (value) {
+                                if (value.isNotEmpty) {
+                                  promoCode = value;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                if (value.isNotEmpty) {
+                                  promoCode = value;
+                                }
+                              },
+                              textInputAction: TextInputAction.done,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(color: Colors.grey),
+                                hintText: AppLocalizations.of(context)
+                                    .translate("Discount_code_str"),
+                                contentPadding: const EdgeInsets.only(
+                                    left: 14.0, bottom: 8.0, top: 8.0),
+                              ),
+                            ),
+                          ),
+                          RaisedButton(
+                            onPressed: () async {
+                              FocusScope.of(context).requestFocus(FocusNode());
+
+                              locator<CouponRequest>()
+                                ..sellerId =
+                                    locator<PrefsService>().cartObj.sellerId
+                                ..products =
+                                    locator<PrefsService>().cartObj.products
+                                ..orderType =
+                                    deliveryChecked ? 'delivery' : 'pickup'
+                                ..promoCode = promoCode;
+                              // ..promoCode =
+                              //     promoCodeController.value?.text ?? '';
+
+                              await locator<CouponManager>()
+                                  .getFutureData()
+                                  .then((value) {
+                                if (value.status != 0) {
+                                  priceAfterDiscount =
+                                      double.parse(value.data.total);
+                                }
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      elevation: 3,
+                                      // contentPadding: const EdgeInsets.all(8.0),
+                                      content: Container(
+                                        // height: 90,
+
+                                        padding: EdgeInsets.all(8),
+                                        child: Text('${value.message}'),
+                                      ),
+                                      actions: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 1.0),
+                                          child: ButtonTheme(
+                                            minWidth: 70.0,
+                                            height: 30.0,
+                                            child: RaisedButton(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        25.0),
+                                              ),
+                                              child: Text(
+                                                'OK',
+                                                // AppLocalizations.of(context)
+                                                //     .translate('notNow_str'),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              // color: greyBlue,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              });
+                            },
                             color: Colors.teal.shade900,
                             shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(10.0),
@@ -1083,13 +1282,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey),
-                          hintText: AppLocalizations.of(context)
-                              .translate("Discount_code_str"),
-                          contentPadding: const EdgeInsets.only(
-                              left: 14.0, bottom: 8.0, top: 8.0),
-                        ),
+                        ],
                       ),
                     ),
                   ),
@@ -1103,114 +1296,62 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 20.0),
+                          horizontal: 8.0, vertical: 20.0),
                       child: Column(
                         children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate("subtotal_str"),
-                                style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    "24.5",
-                                    style: TextStyle(
-                                        color: Colors.grey.shade500,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text(
-                                    "KD",
-                                    style: TextStyle(
-                                        color: Colors.grey.shade500,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          ListTile(
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate("subtotal_str"),
+                              style: TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                            trailing: Text(
+                              '${args.finalPrice.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800),
+                            ),
                           ),
-                          SizedBox(
-                            height: 8.0,
+                          ListTile(
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate("Discount_str"),
+                              style: TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                            trailing: Text(
+                              '${priceAfterDiscount != 0.0 ? (args.finalPrice - priceAfterDiscount).toStringAsFixed(2) : 0.0}',
+                              style: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800),
+                            ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate("Discount_str"),
-                                style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    "24.5",
-                                    style: TextStyle(
-                                        color: Colors.grey.shade500,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text(
-                                    "KD",
-                                    style: TextStyle(
-                                        color: Colors.grey.shade500,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          Divider(
+                            height: 1,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Divider(),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate("subtotal_str"),
-                                style: TextStyle(
-                                    color: Colors.teal.shade900,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    "24.5",
-                                    style: TextStyle(
-                                        color: Colors.teal.shade900,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                  Text(
-                                    "KD",
-                                    style: TextStyle(
-                                        color: Colors.teal.shade900,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          ListTile(
+                            title: Text(
+                              AppLocalizations.of(context)
+                                  .translate("subtotal_str"),
+                              style: TextStyle(
+                                  color: Colors.teal.shade900,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            trailing: Text(
+                              '${priceAfterDiscount == 0.0 ? args.finalPrice.toStringAsFixed(2) : priceAfterDiscount.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                  color: Colors.teal.shade900,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800),
+                            ),
                           ),
                         ],
                       ),
@@ -1232,7 +1373,77 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         AppLocalizations.of(context).translate('Pay_now_Str'),
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (addressId != -1) {
+                          locator<AsUserRequest>()
+                            ..sellerId =
+                                locator<PrefsService>().cartObj.sellerId
+                            ..products =
+                                locator<PrefsService>().cartObj.products
+                            ..orderType =
+                                deliveryChecked ? 'delivery' : 'pickup'
+                            ..promoCode = promoCode
+                            // ..promoCode = promoCodeController.value?.text ?? ''
+                            ..addressId = addressId
+                            ..notes = 'ddd';
+                          // ..notes = notesController.value?.text ?? '';
+
+                          await locator<CheckoutManager>()
+                              .getFutureData()
+                              .then((value) {
+                            // Navigator.push(
+                            //     context,
+                            //     new MaterialPageRoute(
+                            //         builder: (BuildContext context) =>
+                            //             Successful())); //Failed
+                          });
+                        } else {
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                elevation: 3,
+                                // contentPadding: const EdgeInsets.all(8.0),
+                                content: Container(
+                                  // height: 90,
+
+                                  padding: EdgeInsets.all(8),
+                                  child: Text('You must choose an address'),
+                                ),
+                                actions: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 1.0),
+                                    child: ButtonTheme(
+                                      minWidth: 70.0,
+                                      height: 30.0,
+                                      child: RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(25.0),
+                                        ),
+                                        child: Text(
+                                          'OK',
+                                          // AppLocalizations.of(context)
+                                          //     .translate('notNow_str'),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        // color: greyBlue,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
                     ),
                   ),
                   SizedBox(

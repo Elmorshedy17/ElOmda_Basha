@@ -296,6 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                     : CustomObserver(
                         stream: locator<AutoCompleteManager>().searchResult$,
+                        onWaiting: (_) => Container(),
                         onSuccess: (_, AutoCompleteModel model) {
                           return Card(
                             elevation: 5,

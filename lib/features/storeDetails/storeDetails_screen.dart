@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:momentoo/features/product_details/productDetails_screen.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_manager.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_model.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -62,7 +63,13 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
             ),
           ),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.notifications), onPressed: () {})
+            NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                Navigator.of(context).pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
+              },
+            ),
           ],
         ),
         body: CustomObserver(

@@ -25,18 +25,12 @@ class CartActionsRepo {
     FormData formData = FormData.fromMap(myMap()
         // locator<PrefsService>().cartObj.toJson()
         );
-    print(
-        'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX${locator<PrefsService>().cartObj.toJson()}');
-    print(
-        'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy${formData.fields}');
 
     try {
       final Response response = await locator<ApiService>().dioClient.post(
             '${locator<ApiService>().dioClient.options.baseUrl}cart',
             data: formData,
           );
-      print(
-          'zZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZzzz${response.data}');
       return CartActionsModel.fromJson(response.data);
     } on DioError {
       // throw FetchDataException('No Internet connection');

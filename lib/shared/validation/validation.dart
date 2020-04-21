@@ -28,6 +28,18 @@ mixin Validation {
     }
   });
 
+  final validatePhoneField =
+      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+    int length = value.length;
+    if (length == 0) {
+      sink.addError('The field cannot be empty');
+    } else if (length < 8) {
+      sink.addError('The field must be longer than 8 characters');
+    } else {
+      sink.add(value);
+    }
+  });
+
   final validateConfirmPassword =
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     String confirm;

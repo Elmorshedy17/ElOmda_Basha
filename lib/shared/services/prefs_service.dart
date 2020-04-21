@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:momentoo/features/product_details/productDetails_model.dart';
 import 'package:momentoo/shared/domain/cartRequest.dart';
 import 'package:momentoo/shared/domain/user.dart';
 import 'package:momentoo/shared/domain/user_location.dart';
@@ -39,13 +38,13 @@ class PrefsService {
 
   dynamic _getFromPrefs(String key) {
     var value = _preferences.get(key);
-    print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
+    // print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
     return value;
   }
 
   // updated _saveToDisk function that handles all types
   void _saveToPrefs<T>(String key, T content) {
-    print('(TRACE) LocalStorageService:_saveToDisk. key: $key value: $content');
+    // print('(TRACE) LocalStorageService:_saveToDisk. key: $key value: $content');
 
     if (content is String) {
       _preferences.setString(key, content);

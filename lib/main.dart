@@ -10,7 +10,7 @@ import 'package:momentoo/features/ads/ads_screen.dart';
 import 'package:momentoo/features/all_trending/allTrending_screen.dart';
 import 'package:momentoo/features/change_email/changeEmail_screen.dart';
 import 'package:momentoo/features/change_password/changePassword_screen.dart';
-import 'package:momentoo/features/edit_profile/editProfile_screen.dart';
+import 'package:momentoo/features/checkout/checkout_screen.dart';
 import 'package:momentoo/features/favorites/favorites_screen.dart';
 import 'package:momentoo/features/forget_password/forgetPassword_screen.dart';
 import 'package:momentoo/features/help_support/helpSupport_screen.dart';
@@ -24,7 +24,6 @@ import 'package:momentoo/features/near_by/currentMap_screen.dart';
 import 'package:momentoo/features/near_by/getLocation_screen.dart';
 import 'package:momentoo/features/near_by/manuallyMap_screen.dart';
 import 'package:momentoo/features/near_by/nearBy_screen.dart';
-import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
 import 'package:momentoo/features/order_details/orderDetails_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
@@ -48,7 +47,6 @@ import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:provider/provider.dart';
 
-import 'features/edit_address/editAddress_screen.dart';
 import 'features/privacyPolicy&Terms/privacy&terms_screen.dart';
 import 'features/product_details/productDetails_screen.dart';
 
@@ -121,7 +119,7 @@ class _MomentooAppState extends State<MomentooApp> {
               theme: ThemeData(
                 primarySwatch: Colors.teal,
               ),
-              home: LangScreen(),
+              home: _getStartupScreen(),
 //              home: HelpSupportScreen(),
               routes: {
                 '/langScreen': (_) => LangScreen(),
@@ -163,6 +161,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/productDetailsScreen': (_) => ProductDetailsScreen(),
                 '/ChangeEmailScreen': (_) => ChangeEmailScreen(),
                 '/trendingProductsScreen': (_) => TrendingProductsScreen(),
+                '/checkOutScreen': (_) => CheckOutScreen(),
               },
             );
           },
@@ -176,6 +175,7 @@ class _MomentooAppState extends State<MomentooApp> {
     if (!prefsService.hasChosenLanguage) {
       return LangScreen();
     }
-    return AdsScreen();
+    // if(!PrefsService.s)
+    return SignInScreen();
   }
 }

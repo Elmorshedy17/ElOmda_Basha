@@ -3,6 +3,11 @@ import 'package:get_it/get_it.dart';
 import 'package:momentoo/features/about_us/about_manager.dart';
 import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/ads/ads_manager.dart';
+import 'package:momentoo/features/checkout/checkout_manager.dart';
+import 'package:momentoo/features/checkout/checkout_request/asUser_request.dart';
+import 'package:momentoo/features/checkout/checkout_validation.dart';
+import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
+import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
 
 import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
 import 'package:momentoo/features/favorites/favorites_manager.dart';
@@ -32,6 +37,7 @@ import 'package:momentoo/features/sign_up/signUp_manger.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_manager.dart';
 import 'package:momentoo/features/trending_products/trendinfProduct_manager.dart';
 import 'package:momentoo/features/trending_stores/trendingStore_manager.dart';
+import 'package:momentoo/shared/helper/cartItemsCount_manger.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
@@ -129,4 +135,18 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<CartActionsManager>(() => CartActionsManager());
 
 //  locator.registerLazySingleton<StoreDetailsManager>(() => StoreDetailsManager());
+// CouponRequest
+  locator.registerLazySingleton<CouponRequest>(() => CouponRequest());
+  // CouponManager
+  locator.registerLazySingleton<CouponManager>(() => CouponManager());
+  // AsUserRequest
+  locator.registerLazySingleton<AsUserRequest>(() => AsUserRequest());
+  // CheckoutManager
+  locator.registerLazySingleton<CheckoutManager>(() => CheckoutManager());
+  //CartItemsCountManager
+  locator.registerLazySingleton<CartItemsCountManager>(
+      () => CartItemsCountManager());
+  // CheckoutValidationManager
+  locator.registerLazySingleton<CheckoutValidationManager>(
+      () => CheckoutValidationManager());
 }

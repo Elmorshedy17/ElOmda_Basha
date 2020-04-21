@@ -120,7 +120,7 @@ class MainDrawer extends StatelessWidget {
                   height: 0.5,
                   color: Colors.white,
                 ),
-                locator<PrefsService>().userObj == null
+                locator<PrefsService>().userObj != null
                     ? ListTile(
                         onTap: () {
                           Navigator.of(context).pop();

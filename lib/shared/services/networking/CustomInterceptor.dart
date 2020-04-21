@@ -16,13 +16,10 @@ class CustomInterceptor implements Interceptor {
   @override
   Future onRequest(RequestOptions options) async {
     options.headers = {
-      // 'Auth': locator<PrefsService>().userObj?.authorization ?? '',
-      'Auth': '\$2y\$10\$0HkTz09Oaj1Cyoy0F15vfeiPAf6LUhhOHpGEFBA0PEZBsGDj1WBVy',
+      'Auth': locator<PrefsService>().userObj?.authorization ?? '',
       'Lang': locator<PrefsService>().appLanguage,
       'Platform': Platform.isAndroid ? 'android' : 'ios',
-      'FirebaseToken': "dsdasdsadasdasdasdasdasdasdsad",
-//      'FirebaseToken': locator<FcmTokenManager>().currentFcmToken,
-      // 'FirebaseToken': 'dfsdfsdfsdfsdasdsadsfdsfdsfdf'
+      'FirebaseToken': locator<FcmTokenManager>().currentFcmToken,
     };
     return options;
   }

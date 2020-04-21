@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/features/favorites/favorites_manager.dart';
 import 'package:momentoo/features/favorites/favorites_model.dart';
 import 'package:momentoo/features/favorites/favorites_widgets/favoritesContent.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
@@ -72,10 +73,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             ),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
+            NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.of(context).pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
               },
             ),
           ],

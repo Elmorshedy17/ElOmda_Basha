@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -590,12 +591,11 @@ class OrderDetailsScreen extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                // FocusScope.of(context).requestFocus(FocusNode());
-                // overlayEntry?.remove();
+            NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.of(context).pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
               },
             ),
           ],

@@ -4,8 +4,8 @@ import 'package:momentoo/features/product_details/productDetailsCounter_manager.
 import 'package:momentoo/features/product_details/productDetails_manager.dart';
 import 'package:momentoo/features/product_details/productDetails_model.dart';
 import 'package:momentoo/features/product_details/productImagesPreview_screen.dart';
-import 'package:momentoo/features/shopping_cart/cartActions_manager.dart';
 import 'package:momentoo/shared/domain/cartRequest.dart';
+import 'package:momentoo/shared/helper/cartItemsCount_manger.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
@@ -512,8 +512,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
                           onPressed: () {
-                            print(
-                                '####################${locator<PrefsService>().cartObj.sellerId}#########${args.sellerId}##############$count');
                             if (locator<PrefsService>().cartObj.sellerId ==
                                     -1 ||
                                 locator<PrefsService>().cartObj.sellerId ==
@@ -526,6 +524,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     options: selectedExtrasIds.toString(),
                                     notes: note));
                               locator<PrefsService>().cartObj = cart;
+                              locator<CartItemsCountManager>().inCartCount.add(
+                                  locator<PrefsService>()
+                                          .cartObj
+                                          .products
+                                          ?.length ??
+                                      0);
                             } else {
                               showDialog(
                                 barrierDismissible: false,

@@ -79,6 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               onChanged: (value) {
                                 validationManager.inEmail.add(value);
                               },
+                              keyboardType: TextInputType.emailAddress,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -202,6 +203,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                                     .then((onValue) {
                                                   isLoading.add(false);
                                                   if (onValue.status == 1) {
+                                                    locator<PrefsService>()
+                                                            .userObj =
+                                                        onValue.data.user;
+                                                    locator<PrefsService>()
+                                                        .hasLoggedIn = true;
                                                     Navigator.of(context)
                                                         .pushReplacementNamed(
                                                             '/homeScreen');
@@ -242,7 +248,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context)
-                                      .pushReplacementNamed('/homeScreen');
+                                      .pushNamed('/homeScreen');
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),

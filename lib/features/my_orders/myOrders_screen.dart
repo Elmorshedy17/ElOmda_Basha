@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/order_details/orderDetails_screen.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainBackground(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.3,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -40,12 +40,11 @@ class MyOrdersScreen extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                // FocusScope.of(context).requestFocus(FocusNode());
-                // overlayEntry?.remove();
+            NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.of(context).pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
               },
             ),
           ],
@@ -56,14 +55,8 @@ class MyOrdersScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(15.0),
             ),
             child: Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height - 150,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width - 50,
+              height: MediaQuery.of(context).size.height - 150,
+              width: MediaQuery.of(context).size.width - 50,
               margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
               decoration: new BoxDecoration(
                 borderRadius: new BorderRadius.all(Radius.circular(8.0)),
@@ -173,7 +166,9 @@ class MyOrdersScreen extends StatelessWidget {
                             ],
                           ),
                           // end picture and other details
-                          SizedBox(height: 15.0,),
+                          SizedBox(
+                            height: 15.0,
+                          ),
                           RaisedButton(
                             color: Colors.teal.shade900,
                             shape: RoundedRectangleBorder(
@@ -181,33 +176,35 @@ class MyOrdersScreen extends StatelessWidget {
 //                                side: BorderSide(color: Colors.red)
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: Text(
-                                AppLocalizations.of(context).translate(
-                                    'Track_your_order_str'),
+                                AppLocalizations.of(context)
+                                    .translate('Track_your_order_str'),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
-                            onPressed: (){
+                            onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => OrderDetailsScreen()),
+                                MaterialPageRoute(
+                                    builder: (context) => OrderDetailsScreen()),
                               );
                             },
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 10.0,bottom: 20.0),
+                            margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
                             height: 1.0,
                             width: MediaQuery.of(context).size.width,
-                          color: Colors.grey.withOpacity(.2),
+                            color: Colors.grey.withOpacity(.2),
                           ),
                         ],
                       ),
-                    ),  Container(
+                    ),
+                    Container(
                       child: Column(
                         children: <Widget>[
                           // order status
@@ -309,7 +306,9 @@ class MyOrdersScreen extends StatelessWidget {
                             ],
                           ),
                           // end picture and other details
-                          SizedBox(height: 15.0,),
+                          SizedBox(
+                            height: 15.0,
+                          ),
                           RaisedButton(
                             color: Colors.teal.shade900,
                             shape: RoundedRectangleBorder(
@@ -317,24 +316,24 @@ class MyOrdersScreen extends StatelessWidget {
 //                                side: BorderSide(color: Colors.red)
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: Text(
-                                AppLocalizations.of(context).translate(
-                                    'Track_your_order_str'),
+                                AppLocalizations.of(context)
+                                    .translate('Track_your_order_str'),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
-                            onPressed: (){},
+                            onPressed: () {},
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 10.0,bottom: 20.0),
+                            margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
                             height: 1.0,
                             width: MediaQuery.of(context).size.width,
-                          color: Colors.grey.withOpacity(.2),
+                            color: Colors.grey.withOpacity(.2),
                           ),
                         ],
                       ),

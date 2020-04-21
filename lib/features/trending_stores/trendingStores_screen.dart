@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/trending_stores/trendingStore_manager.dart';
 import 'package:momentoo/features/trending_stores/trendingStore_model.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
@@ -66,10 +67,13 @@ class TrendingStoresScreen extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.notifications),
-            )
+            NotificationWidget(
+              onPressedNotifications: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                Navigator.of(context).pushNamed('/notificationsScreen');
+                locator<PrefsService>().notificationFlag = false;
+              },
+            ),
           ],
         ),
         body: Container(
