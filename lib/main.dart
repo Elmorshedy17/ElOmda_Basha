@@ -11,6 +11,7 @@ import 'package:momentoo/features/all_trending/allTrending_screen.dart';
 import 'package:momentoo/features/change_email/changeEmail_screen.dart';
 import 'package:momentoo/features/change_password/changePassword_screen.dart';
 import 'package:momentoo/features/checkout/checkout_screen.dart';
+import 'package:momentoo/features/edit_profile/editProfile_screen.dart';
 import 'package:momentoo/features/favorites/favorites_screen.dart';
 import 'package:momentoo/features/forget_password/forgetPassword_screen.dart';
 import 'package:momentoo/features/help_support/helpSupport_screen.dart';
@@ -120,7 +121,6 @@ class _MomentooAppState extends State<MomentooApp> {
                 primarySwatch: Colors.teal,
               ),
               home: _getStartupScreen(),
-//              home: HelpSupportScreen(),
               routes: {
                 '/langScreen': (_) => LangScreen(),
                 '/adsScreen': (_) => AdsScreen(),
@@ -139,7 +139,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/privacyScreen': (_) => PrivacyTermsScreen(),
                 '/profileScreen': (_) => ProfileScreen(),
                 '/termsConditionsScreen': (_) => TermsConditionsScreen(),
-                '/nearByScreen': (_) => NearByScreen(),
+//                '/nearByScreen': (_) => NearByScreen(),
                 '/cartScreen': (_) => CartScreen(),
                 '/settingsScreen': (_) => SettingsScreen(),
 //                '/editProfileScreen': (_) => EditProfileScreen(),

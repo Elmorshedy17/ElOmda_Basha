@@ -11,19 +11,15 @@ import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
 
 import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
 import 'package:momentoo/features/favorites/favorites_manager.dart';
-
 import 'package:momentoo/features/edit_address/dropdown_data.dart';
 import 'package:momentoo/features/help_support/get_help_support/_manger.dart';
-
 import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/features/home/autoComplete_manager.dart';
 import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
-
+import 'package:momentoo/features/near_by/manger.dart';
 import 'package:momentoo/features/notifications/notifications_manager.dart';
-
 import 'package:momentoo/features/new_address/dropdown_data.dart';
-
 import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
 import 'package:momentoo/features/profile/_manager.dart';
 import 'package:momentoo/features/product_details/productDetails_manager.dart';
@@ -98,6 +94,7 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<DrobDownBloc>(() => DrobDownBloc());
   locator.registerLazySingleton<EditDrobDownBloc>(() => EditDrobDownBloc());
   locator.registerLazySingleton<ContactUsManager>(() => ContactUsManager());
+  locator.registerLazySingleton<NearByManager>(() => NearByManager());
   // TrendingStoreManager
   locator.registerLazySingleton<TrendingStoreManager>(
       () => TrendingStoreManager());

@@ -121,8 +121,18 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       filled: true,
                                       border: InputBorder.none,
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent),
+                                        borderSide: BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),focusedBorder:  OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.transparent),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10.0),
+                                    ),
+                                  ),
+                                      disabledBorder:  OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent),
                                         borderRadius: const BorderRadius.all(
                                           const Radius.circular(10.0),
                                         ),

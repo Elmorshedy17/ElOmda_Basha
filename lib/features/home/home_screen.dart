@@ -5,6 +5,7 @@ import 'package:momentoo/features/home/autoComplete_model.dart';
 import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/home/home_model.dart';
 import 'package:momentoo/features/home/home_widgets/content.dart';
+import 'package:momentoo/features/near_by/manger.dart';
 import 'package:momentoo/features/notifications/notifications_manager.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
 import 'package:momentoo/shared/helper/customNotification_widget.dart';
@@ -30,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController _pageController;
   bool isSearchQueryEmpty = true;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+
+
+
   Widget build(BuildContext context) {
+    locator<NearByManager>().catSubject.add(categoryId);
+
     print(MediaQuery.of(context).size.height);
     locator<AutoCompleteManager>().query$.listen((v) =>
         v.isEmpty ? isSearchQueryEmpty = true : isSearchQueryEmpty = false);
@@ -80,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: MainBackground(
-          height: MediaQuery.of(context).size.height * 0.3,
+          height: MediaQuery.of(context).size.height * 0.25,
           child: Scaffold(
             drawer: MainDrawer(),
             backgroundColor: Colors.transparent,
@@ -193,6 +201,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         filled: true,
                         border: InputBorder.none,
                         enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
+                          ),
+                        ),focusedBorder:  OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(10.0),
+                      ),
+                    ),
+                        disabledBorder:  OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent),
                           borderRadius: const BorderRadius.all(
                             const Radius.circular(10.0),

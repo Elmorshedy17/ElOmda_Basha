@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentoo/features/help_support/get_help_support/_manger.dart';
 import 'package:momentoo/features/help_support/get_help_support/_model.dart';
 import 'package:momentoo/features/help_support/post_help_support/_repo.dart';
+import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
@@ -132,16 +133,16 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                         ),
                                       ),
                                     ),
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.notifications,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        // FocusScope.of(context).requestFocus(FocusNode());
-                                        // overlayEntry?.remove();
+                                    NotificationWidget(
+                                      onPressedNotifications: () {
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
+                                        locator<TextEditingController>()
+                                            .clear();
                                         Navigator.of(context)
                                             .pushNamed('/notificationsScreen');
+                                        locator<PrefsService>()
+                                            .notificationFlag = false;
                                       },
                                     ),
                                   ],

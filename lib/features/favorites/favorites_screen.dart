@@ -79,7 +79,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 Navigator.of(context).pushNamed('/notificationsScreen');
                 locator<PrefsService>().notificationFlag = false;
               },
-            ),
+            )
           ],
         ),
         body: Column(

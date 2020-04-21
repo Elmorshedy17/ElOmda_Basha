@@ -59,9 +59,10 @@ class _CartScreenState extends State<CartScreen> {
                 onPressedNotifications: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   Navigator.of(context).pushNamed('/notificationsScreen');
+
                   locator<PrefsService>().notificationFlag = false;
                 },
-              ),
+              )
             ],
           ),
           body: locator<PrefsService>().cartObj.products.isNotEmpty

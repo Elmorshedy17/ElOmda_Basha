@@ -48,9 +48,10 @@ class SettingsScreen extends StatelessWidget {
               onPressedNotifications: () {
                 FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.of(context).pushNamed('/notificationsScreen');
+
                 locator<PrefsService>().notificationFlag = false;
               },
-            ),
+            )
           ],
         ),
         body: Column(

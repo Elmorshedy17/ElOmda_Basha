@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/near_by/manger.dart';
+import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStore_manager.dart';
 import 'package:momentoo/features/trending_stores/trendingStore_model.dart';
 import 'package:momentoo/shared/helper/customNotification_widget.dart';
@@ -88,92 +90,106 @@ class TrendingStoresScreen extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               itemCount: model.data.sellers.length,
               itemBuilder: (BuildContext context, int index) {
-                return Stack(
-                  children: <Widget>[
-                    Container(
-                      // margin: EdgeInsets.only(top: 8),
-                      height: 250,
-                      child: FittedBox(
-                        child: Card(
-                          elevation: 3,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Image.network(
-                                model.data.sellers[index].image,
-                                fit: BoxFit.fill,
-                                width: MediaQuery.of(context).size.width,
-                                height: 170,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8, left: 8.0, bottom: 4),
-                                child: Text(
-                                  model.data.sellers[index].name,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar'),
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      '/StoreDetailsScreen',
+                      arguments: StoreDetailsArguments(
+                          categoryId: locator<NearByManager>().catSubject.value,
+                          sellerId: model.data.sellers[index].id),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        // margin: EdgeInsets.only(top: 8),
+                        height: 250,
+                        child: FittedBox(
+                          child: Card(
+                            elevation: 3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Image.network(
+                                  model.data.sellers[index].image,
+                                  fit: BoxFit.cover,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 170,
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8, left: 8.0, bottom: 4),
-                                child: Text(
-                                  model.data.sellers[index].cuisine,
-                                  style: TextStyle(
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar',
-                                      color: Colors.black38),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 4.0, right: 8, left: 8.0, bottom: 4),
+                                  child: Text(
+                                    model.data.sellers[index].name,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar'),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8, left: 8.0, bottom: 4),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: List<Widget>.generate(
-                                    5,
-                                    (innerIndex) => Icon(
-                                      Icons.star,
-                                      color: innerIndex <
-                                              model.data.sellers[index].rate
-                                          ? Colors.pink
-                                          : Colors.grey,
-                                      size: 15,
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8, left: 8.0, bottom: 4),
+                                  child: Text(
+                                    model.data.sellers[index].cuisine,
+                                    style: TextStyle(
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                        color: Colors.black38),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8, left: 8.0, bottom: 8),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List<Widget>.generate(
+                                      5,
+                                      (innerIndex) => Icon(
+                                        Icons.star,
+                                        color: innerIndex <
+                                                model.data.sellers[index].rate
+                                            ? Colors.pink
+                                            : Colors.grey,
+                                        size: 15,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 4,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      right: 5,
-                      top: 5,
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.star,
-                            color: model.data.sellers[index].favourite == 'yes'
-                                ? Colors.pink
-                                : Colors.white,
-                            size: 30,
-                          ),
-                          onPressed: () {}),
-                    )
-                  ],
+                      Positioned(
+                        right: 5,
+                        top: 5,
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.star,
+                              color:
+                                  model.data.sellers[index].favourite == 'yes'
+                                      ? Colors.pink
+                                      : Colors.white,
+                              size: 30,
+                            ),
+                            onPressed: () {}),
+                      )
+                    ],
+                  ),
                 );
               },
             ),
