@@ -379,7 +379,8 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                 ),
                                 onPressed: () {
 
-                                  if(locator<PrefsService>().hasSignedUp == false){
+                                  if(locator<PrefsService>()
+                                      .userObj  == null){
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

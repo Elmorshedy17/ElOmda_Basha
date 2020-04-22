@@ -221,7 +221,8 @@ class HomeContent extends StatelessWidget {
                                 ),
                                 onPressed: () {
 
-                                  if(locator<PrefsService>().hasSignedUp == false){
+                                  if(locator<PrefsService>()
+                                      .userObj  == null){
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -455,7 +456,8 @@ class HomeContent extends StatelessWidget {
                                 onPressed: () {
 
 
-                                  if(locator<PrefsService>().hasSignedUp == false){
+                                  if(locator<PrefsService>()
+                                      .userObj  == null){
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -682,7 +684,8 @@ class HomeContent extends StatelessWidget {
                                 ),
                                 onPressed: () {
 
-                                  if(locator<PrefsService>().hasSignedUp == false){
+                                  if(locator<PrefsService>()
+                                      .userObj  == null){
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

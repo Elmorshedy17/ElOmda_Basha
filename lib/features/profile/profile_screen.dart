@@ -16,15 +16,38 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainBackground(
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.2,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: locator<PrefsService>().hasSignedUp == false ?  Container(
-          child: Center(child: FlatButton(
-              onPressed: (){
-                Navigator.of(context).pushNamed('/signInScreen');
-              },
-              child: Text(   AppLocalizations.of(context).translate("signToContinue_str"),style: TextStyle(color: Colors.black , fontSize: 18.0),))),
+        body:
+//        locator<PrefsService>().hasSignedUp == false
+        locator<PrefsService>()
+            .userObj  == null ?  Container(
+          child: Center(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+
+
+              Center(
+                child: Icon(Icons.lock,size: 150.0,
+                  color: Colors.teal.shade900,
+                ),
+              ),
+SizedBox(
+  height:15.0,
+),
+              RaisedButton(
+                  color: Colors.teal.shade900,
+                  onPressed: (){
+                    Navigator.of(context).pushNamed('/signInScreen');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(   AppLocalizations.of(context).translate("signToContinue_str"),style: TextStyle(color: Colors.white , fontSize: 18.0),),
+                  )),
+            ],
+          )),
         ):Padding(
           padding: const EdgeInsets.all(15.0),
           child: CustomObserver(
