@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
 import 'package:momentoo/features/product_details/productDetailsCounter_manager.dart';
 import 'package:momentoo/features/product_details/productDetails_manager.dart';
@@ -116,15 +117,47 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 : Colors.white,
                           ),
                           onPressed: () {
-                            model.data.product.favourite == 'yes'
-                                ? locator<FavoritesActionsManager>()
-                                    .addOrRemoveFavorite('product', 'remove',
-                                        model.data.product.id.toString())
-                                : locator<FavoritesActionsManager>()
-                                    .addOrRemoveFavorite('product', 'add',
-                                        model.data.product.id.toString());
-                            locator<ProductDetailsManager>()
-                                .getData(args.productId);
+
+                            if(locator<PrefsService>().hasSignedUp == false){
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                    content: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        FlatButton(
+                                          onPressed: (){
+                                            Navigator.of(context).pushNamed('/signInScreen');
+                                          },
+                                          child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                        ),
+                                        FlatButton(
+                                          onPressed:(){
+                                            Navigator.of(context).pop();
+
+                                          },
+                                          child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            }else{
+                              model.data.product.favourite == 'yes'
+                                  ? locator<FavoritesActionsManager>()
+                                  .addOrRemoveFavorite('product', 'remove',
+                                  model.data.product.id.toString())
+                                  : locator<FavoritesActionsManager>()
+                                  .addOrRemoveFavorite('product', 'add',
+                                  model.data.product.id.toString());
+                              locator<ProductDetailsManager>()
+                                  .getData(args.productId);
+                            }
+
+
                           },
                         ),
                       ),
@@ -538,6 +571,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           .products
                                           ?.length ??
                                       0);
+
+
+                              Fluttertoast.showToast(
+                                msg: "${locator<PrefsService>().appLanguage == "en" ? 'added successfully' : 'تم الاضافة بنجاح'}",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                backgroundColor: Colors.black.withOpacity(.6),
+                                textColor: Colors.white,
+                                fontSize: 14.0,
+                              );
+
                             } else {
                               showDialog(
                                 barrierDismissible: false,

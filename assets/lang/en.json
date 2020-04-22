@@ -158,7 +158,7 @@
   "password_str": "Password",
   "confirmPassword_str": "Confirm Password",
   "signIn_str": "SIGN IN",
-  "signToContinue_str": "Sign to continue",
+  "signToContinue_str": "Sign in to continue",
   "rememberMe_str": "Remember me",
   "forgetYourPassword?_str": "Forget your password?",
   "continueAsGuest_str": "Continue as guest",
@@ -190,5 +190,6 @@
   "gallery_str": "Gallery",
   "OK_str": "OK",
   "diffrent_sellers_str": "You can't add products from different sellers. Clear cart and add this product?",
-  "image_joinus_erre": "please chose or pick image"
+  "image_joinus_erre": "please chose or pick image",
+  "continue_str": "continue"
 }

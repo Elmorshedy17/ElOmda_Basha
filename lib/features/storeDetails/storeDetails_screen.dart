@@ -10,6 +10,11 @@ import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/services/share_servce/shareService.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
+
+
 
 class StoreDetailsArguments {
   final int categoryId;
@@ -310,7 +315,9 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                     angle: 4.7,
                                     child: Icon(FontAwesomeIcons.signOutAlt)),
                                 // icon: Icon(FontAwesomeIcons.shareSquare),
-                                onPressed: () {},
+                                onPressed: () {
+                                  ShareService.shareService(context , "${model.data.seller.name} \n\n  ${model.data.seller.share}" ,model.data.seller.share );
+                                },
                               ),
                             ),
                             Container(
@@ -346,7 +353,9 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                               ),
                               child: IconButton(
                                 icon: Icon(Icons.location_on),
-                                onPressed: () {},
+                                onPressed: () {
+                                  _launchMapsUrl(double.parse(model.data.seller.lat) ,double.parse(model.data.seller.lng) );
+                                },
                               ),
                             ),
                             Container(
@@ -368,7 +377,49 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                       ? Colors.pink
                                       : Colors.black,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+
+                                  if(locator<PrefsService>().hasSignedUp == false){
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                          content: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              FlatButton(
+                                                onPressed: (){
+                                                  Navigator.of(context).pushNamed('/signInScreen');
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                              ),
+                                              FlatButton(
+                                                onPressed:(){
+                                                  Navigator.of(context).pop();
+
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }else{
+                                    model.data.seller.favourite == 'yes'
+                                        ? locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite(
+                                        'seller',
+                                        'remove',
+                                        model.data.seller.id.toString())
+                                        : locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite('seller', 'add',
+                                        model.data.seller.id.toString());
+                                  }
+
+
+                                },
                               ),
                             ),
                           ],
@@ -608,6 +659,14 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
         bottomNavigationBar: CustomBottomNavigation(),
       ),
     );
+  }
+  void _launchMapsUrl(double lat, double lon) async {
+    final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
 

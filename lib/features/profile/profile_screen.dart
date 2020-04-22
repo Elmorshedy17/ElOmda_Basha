@@ -19,7 +19,13 @@ class ProfileScreen extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.3,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Padding(
+        body: locator<PrefsService>().hasSignedUp == false ?  Container(
+          child: Center(child: FlatButton(
+              onPressed: (){
+                Navigator.of(context).pushNamed('/signInScreen');
+              },
+              child: Text(   AppLocalizations.of(context).translate("signToContinue_str"),style: TextStyle(color: Colors.black , fontSize: 18.0),))),
+        ):Padding(
           padding: const EdgeInsets.all(15.0),
           child: CustomObserver(
               stream: locator<ProfileManager>().getData(),
