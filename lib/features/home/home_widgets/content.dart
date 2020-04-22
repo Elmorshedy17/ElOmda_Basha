@@ -220,16 +220,58 @@ class HomeContent extends StatelessWidget {
                                   size: 30,
                                 ),
                                 onPressed: () {
-                                  sellersList[index].favourite == 'yes'
-                                      ? locator<FavoritesActionsManager>()
-                                          .addOrRemoveFavorite(
-                                              'seller',
-                                              'remove',
-                                              sellersList[index].id.toString())
-                                      : locator<FavoritesActionsManager>()
-                                          .addOrRemoveFavorite('seller', 'add',
-                                              sellersList[index].id.toString());
-                                  locator<HomeManager>().getData(categoryId);
+
+                                  if(locator<PrefsService>().hasSignedUp == false){
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                          content: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              FlatButton(
+                                                onPressed: (){
+                                                  Navigator.of(context).pushNamed('/signInScreen');
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                              ),
+                                              FlatButton(
+                                                onPressed:(){
+                                                  Navigator.of(context).pop();
+
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }else{
+                                    sellersList[index].favourite == 'yes'
+                                        ? locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite(
+                                        'seller',
+                                        'remove',
+                                        sellersList[index].id.toString())
+                                        : locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite('seller', 'add',
+                                        sellersList[index].id.toString());
+                                    locator<HomeManager>().getData(categoryId);
+
+                                  }
+
+//                                  sellersList[index].favourite == 'yes'
+//                                      ? locator<FavoritesActionsManager>()
+//                                          .addOrRemoveFavorite(
+//                                              'seller',
+//                                              'remove',
+//                                              sellersList[index].id.toString())
+//                                      : locator<FavoritesActionsManager>()
+//                                          .addOrRemoveFavorite('seller', 'add',
+//                                              sellersList[index].id.toString());
+//                                  locator<HomeManager>().getData(categoryId);
                                 }),
                           ),
                         ],
@@ -411,22 +453,56 @@ class HomeContent extends StatelessWidget {
                                   size: 30,
                                 ),
                                 onPressed: () {
-                                  trendingProductsList[index].favourite == 'yes'
-                                      ? locator<FavoritesActionsManager>()
-                                          .addOrRemoveFavorite(
-                                              'product',
-                                              'remove',
-                                              trendingProductsList[index]
-                                                  .id
-                                                  .toString())
-                                      : locator<FavoritesActionsManager>()
-                                          .addOrRemoveFavorite(
-                                              'product',
-                                              'add',
-                                              trendingProductsList[index]
-                                                  .id
-                                                  .toString());
-                                  locator<HomeManager>().getData(categoryId);
+
+
+                                  if(locator<PrefsService>().hasSignedUp == false){
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                          content: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              FlatButton(
+                                                onPressed: (){
+                                                  Navigator.of(context).pushNamed('/signInScreen');
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                              ),
+                                              FlatButton(
+                                                onPressed:(){
+                                                  Navigator.of(context).pop();
+
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }else{
+                                    trendingProductsList[index].favourite == 'yes'
+                                        ? locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite(
+                                        'product',
+                                        'remove',
+                                        trendingProductsList[index]
+                                            .id
+                                            .toString())
+                                        : locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite(
+                                        'product',
+                                        'add',
+                                        trendingProductsList[index]
+                                            .id
+                                            .toString());
+                                    locator<HomeManager>().getData(categoryId);
+
+                                  }
+
+
                                 }),
                           ),
                         ],
@@ -605,16 +681,51 @@ class HomeContent extends StatelessWidget {
                                   size: 30,
                                 ),
                                 onPressed: () {
-                                  sellersList[index].favourite == 'yes'
-                                      ? locator<FavoritesActionsManager>()
-                                          .addOrRemoveFavorite(
-                                              'seller',
-                                              'remove',
-                                              sellersList[index].id.toString())
-                                      : locator<FavoritesActionsManager>()
-                                          .addOrRemoveFavorite('seller', 'add',
-                                              sellersList[index].id.toString());
-                                  locator<HomeManager>().getData(categoryId);
+
+                                  if(locator<PrefsService>().hasSignedUp == false){
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                          content: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              FlatButton(
+                                                onPressed: (){
+                                                  Navigator.of(context).pushNamed('/signInScreen');
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                              ),
+                                              FlatButton(
+                                                onPressed:(){
+                                                  Navigator.of(context).pop();
+
+                                                },
+                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }else{
+                                    sellersList[index].favourite == 'yes'
+                                        ? locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite(
+                                        'seller',
+                                        'remove',
+                                        sellersList[index].id.toString())
+                                        : locator<FavoritesActionsManager>()
+                                        .addOrRemoveFavorite('seller', 'add',
+                                        sellersList[index].id.toString());
+                                    locator<HomeManager>().getData(categoryId);
+
+                                  }
+
+
+
+
                                 }),
                           )
                         ],

@@ -117,15 +117,47 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 : Colors.white,
                           ),
                           onPressed: () {
-                            model.data.product.favourite == 'yes'
-                                ? locator<FavoritesActionsManager>()
-                                    .addOrRemoveFavorite('product', 'remove',
-                                        model.data.product.id.toString())
-                                : locator<FavoritesActionsManager>()
-                                    .addOrRemoveFavorite('product', 'add',
-                                        model.data.product.id.toString());
-                            locator<ProductDetailsManager>()
-                                .getData(args.productId);
+
+                            if(locator<PrefsService>().hasSignedUp == false){
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                    content: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        FlatButton(
+                                          onPressed: (){
+                                            Navigator.of(context).pushNamed('/signInScreen');
+                                          },
+                                          child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                        ),
+                                        FlatButton(
+                                          onPressed:(){
+                                            Navigator.of(context).pop();
+
+                                          },
+                                          child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            }else{
+                              model.data.product.favourite == 'yes'
+                                  ? locator<FavoritesActionsManager>()
+                                  .addOrRemoveFavorite('product', 'remove',
+                                  model.data.product.id.toString())
+                                  : locator<FavoritesActionsManager>()
+                                  .addOrRemoveFavorite('product', 'add',
+                                  model.data.product.id.toString());
+                              locator<ProductDetailsManager>()
+                                  .getData(args.productId);
+                            }
+
+
                           },
                         ),
                       ),

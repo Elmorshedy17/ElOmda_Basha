@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
 class ShareService {
-  void shareService(BuildContext context, String title, String subject) {
+  static shareService(BuildContext context, String title, String subject) {
     final RenderBox box = context.findRenderObject();
 
     Share.share(
