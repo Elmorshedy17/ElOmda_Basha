@@ -27,11 +27,10 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  List<bool> selectedExtra = [];
   double productPrice = 0.0;
   double extraPrice = 0.0;
   int count = 1;
-  List<int> selectedExtrasIds = [];
+  String selectedExtrasIds = '';
   String note = '';
 
   // Widget trailingWidget(int index, Function doThis) {
@@ -191,12 +190,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                     model.data.product.options.length > 0
-                        ? ListTile(
-                            title: Text(
+                        ? Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
                               AppLocalizations.of(context)
                                   .translate('Extras_str'),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                fontSize: 15,
                                 fontFamily:
                                     locator<PrefsService>().appLanguage == 'en'
                                         ? 'en'
@@ -218,31 +219,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         );
                       },
                       itemBuilder: (context, index) {
-                        for (var i = 0;
-                            i < model.data.product.options?.length ?? 0;
-                            i++) {
-                          selectedExtra.add(false);
-                        }
                         return ListTile(
                           // key: GlobalKey(),
                           onTap: () {
-                            setState(() {
-                              if (selectedExtra.length > 0) {
-                                if (selectedExtra[index] != null) {
-                                  selectedExtra.insert(
-                                      index, !selectedExtra[index]);
-                                  if (selectedExtra[index]) {
-                                    selectedExtrasIds.add(
-                                        model.data.product.options[index].id);
-                                  } else {
-                                    if (selectedExtrasIds.isNotEmpty) {
-                                      selectedExtrasIds.remove(
-                                          model.data.product.options[index].id);
-                                    }
-                                  }
-                                }
-                              }
-                            });
+                            model.data.product.options[index].inIsSelected.add(
+                                !model
+                                    .data.product.options[index].currentState);
+                            if (model
+                                .data.product.options[index].currentState) {
+                              selectedExtrasIds +=
+                                  '${model.data.product.options[index].id},';
+                            } else {
+                              selectedExtrasIds = selectedExtrasIds.replaceFirst(
+                                  '${model.data.product.options[index].id},',
+                                  "");
+                            }
                           },
                           title: Row(
                             children: <Widget>[
@@ -250,6 +241,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 model.data.product.options[index].name,
                                 style: TextStyle(
                                   color: Colors.grey.shade800,
+                                  fontWeight: FontWeight.bold,
                                   fontFamily:
                                       locator<PrefsService>().appLanguage ==
                                               'en'
@@ -273,20 +265,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ],
                           ),
-                          trailing: selectedExtra.length > 0
-                              ? selectedExtra[index] ?? false
-                                  ? Icon(
-                                      Icons.check_circle,
-                                      color: Colors.teal.shade900,
-                                    )
-                                  : Container(
-                                      width: 1,
-                                      height: 1,
-                                    )
-                              : Container(
-                                  width: 1,
-                                  height: 1,
-                                ),
+                          trailing: Container(
+                            width: 20,
+                            child: StreamBuilder<Object>(
+                                initialData: false,
+                                stream: model
+                                    .data.product.options[index].isSelected$,
+                                builder: (context, snapshot) {
+                                  return snapshot.data
+                                      ? Icon(
+                                          Icons.check_circle,
+                                          color: Colors.teal.shade900,
+                                        )
+                                      : Container(
+                                          width: 1,
+                                          height: 1,
+                                        );
+                                }),
+                          ),
                         );
                       },
                     ),
@@ -451,13 +447,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               borderRadius: const BorderRadius.all(
                                 const Radius.circular(10.0),
                               ),
-                            ),focusedBorder:  OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(10.0),
-                          ),
-                        ),
-                            disabledBorder:  OutlineInputBorder(
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0),
+                              ),
+                            ),
+                            disabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
                               borderRadius: const BorderRadius.all(
                                 const Radius.circular(10.0),
@@ -532,7 +529,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ..products.add(Products(
                                     productId: args.productId,
                                     count: count,
-                                    options: selectedExtrasIds.toString(),
+                                    options: selectedExtrasIds,
                                     notes: note));
                               locator<PrefsService>().cartObj = cart;
                               locator<CartItemsCountManager>().inCartCount.add(
@@ -557,9 +554,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         children: <Widget>[
                                           Text(
 //                                              "diffrent_sellers_str"),
-                                      AppLocalizations.of(context)
-                                          .translate('diffrent_sellers_str'),)   ,
-                                      Row(
+                                            AppLocalizations.of(context)
+                                                .translate(
+                                                    'diffrent_sellers_str'),
+                                          ),
+                                          Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -578,8 +577,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                               .circular(25.0),
                                                     ),
                                                     child: Text(
-                                                       AppLocalizations.of(context)
-                                                           .translate('No_str'),
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .translate('No_str'),
                                                       // AppLocalizations.of(context)
                                                       //     .translate('ok_str'),
                                                       style: TextStyle(
@@ -608,8 +608,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                     ),
                                                     child: Text(
 //                                                      'OK_str',
-                                                       AppLocalizations.of(context)
-                                                           .translate('OK_str'),
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .translate('OK_str'),
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 15),

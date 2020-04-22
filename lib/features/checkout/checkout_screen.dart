@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/checkout/checkout_manager.dart';
 import 'package:momentoo/features/checkout/checkout_request/asUser_request.dart';
+import 'package:momentoo/features/checkout/checkout_request/asVisitor_request.dart';
 import 'package:momentoo/features/checkout/checkout_validation.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
@@ -495,6 +496,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                       lastNameFocusNode);
                                             },
                                             decoration: InputDecoration(
+                                              errorText: snapshot.error,
                                               border: InputBorder.none,
                                               hintStyle:
                                                   TextStyle(color: Colors.grey),
@@ -535,6 +537,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                       phoneNumberFocusNode);
                                             },
                                             decoration: InputDecoration(
+                                              errorText: snapshot.error,
                                               border: InputBorder.none,
                                               hintStyle:
                                                   TextStyle(color: Colors.grey),
@@ -575,6 +578,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   .requestFocus(emailFocusNode);
                                             },
                                             decoration: InputDecoration(
+                                              errorText: snapshot.error,
                                               border: InputBorder.none,
                                               hintStyle:
                                                   TextStyle(color: Colors.grey),
@@ -610,6 +614,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             decoration: InputDecoration(
+                                              errorText: snapshot.error,
                                               border: InputBorder.none,
                                               hintStyle:
                                                   TextStyle(color: Colors.grey),
@@ -828,6 +833,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               streetFocusNode);
                                                     },
                                                     decoration: InputDecoration(
+                                                      errorText: snapshot.error,
                                                       border: InputBorder.none,
                                                       hintStyle: TextStyle(
                                                           color: Colors.grey),
@@ -871,6 +877,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               streetTwoFocusNode);
                                                     },
                                                     decoration: InputDecoration(
+                                                      errorText: snapshot.error,
                                                       border: InputBorder.none,
                                                       hintStyle: TextStyle(
                                                           color: Colors.grey),
@@ -915,6 +922,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   .requestFocus(houseFocusNode);
                                             },
                                             decoration: InputDecoration(
+                                              errorText: snapshot.error,
                                               border: InputBorder.none,
                                               hintStyle:
                                                   TextStyle(color: Colors.grey),
@@ -953,6 +961,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   .requestFocus(floorFocusNode);
                                             },
                                             decoration: InputDecoration(
+                                              errorText: snapshot.error,
                                               border: InputBorder.none,
                                               hintStyle:
                                                   TextStyle(color: Colors.grey),
@@ -1001,6 +1010,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               jaddaFocusNode);
                                                     },
                                                     decoration: InputDecoration(
+                                                      errorText: snapshot.error,
                                                       border: InputBorder.none,
                                                       hintStyle: TextStyle(
                                                           color: Colors.grey),
@@ -1043,6 +1053,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               apartmentFocusNode);
                                                     },
                                                     decoration: InputDecoration(
+                                                      errorText: snapshot.error,
                                                       border: InputBorder.none,
                                                       hintStyle: TextStyle(
                                                           color: Colors.grey),
@@ -1062,38 +1073,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 8.0,
-                                ),
-                                Container(
-                                  color: Colors.grey[100],
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 15.0),
-                                    child: TextFormField(
-                                      focusNode: apartmentFocusNode,
-                                      textInputAction: TextInputAction.done,
-                                      onFieldSubmitted: (String value) {
-                                        FocusScope.of(context).requestFocus(
-                                            instructionsFocusNode);
-                                      },
-                                      decoration: InputDecoration(
-                                        suffix: Text(
-                                          "(${AppLocalizations.of(context).translate("optional_Str")})",
-                                        ),
-                                        suffixStyle: TextStyle(
-                                            fontSize: 12.0, color: Colors.grey),
-                                        border: InputBorder.none,
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: AppLocalizations.of(context)
-                                            .translate("Apartment_Office_name"),
-                                        contentPadding: const EdgeInsets.only(
-                                            left: 14.0, bottom: 8.0, top: 8.0),
-                                      ),
                                     ),
                                   ),
                                 ),
@@ -1375,8 +1354,36 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                       onPressed: () async {
-                        if (addressId != -1) {
-                          locator<AsUserRequest>()
+                        if (locator<PrefsService>().userObj != null) {
+                          // As User
+                          if (addressId != -1) {
+                            locator<AsUserRequest>()
+                              ..sellerId =
+                                  locator<PrefsService>().cartObj.sellerId
+                              ..products =
+                                  locator<PrefsService>().cartObj.products
+                              ..orderType =
+                                  deliveryChecked ? 'delivery' : 'pickup'
+                              ..promoCode = promoCode
+                              // ..promoCode = promoCodeController.value?.text ?? ''
+                              ..addressId = addressId
+                              ..notes = '';
+                            // ..notes = notesController.value?.text ?? '';
+
+                            await locator<CheckoutManager>()
+                                .checkoutAsUserFuture()
+                                .then((value) {
+                              if (value.status != 0) {
+                              } else {
+                                checkoutDialog(value.message);
+                              }
+                            });
+                          } else {
+                            checkoutDialog('You must choose an address');
+                          }
+                        } else {
+                          // As Visitor
+                          locator<AsVisitorRequest>()
                             ..sellerId =
                                 locator<PrefsService>().cartObj.sellerId
                             ..products =
@@ -1384,65 +1391,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             ..orderType =
                                 deliveryChecked ? 'delivery' : 'pickup'
                             ..promoCode = promoCode
-                            // ..promoCode = promoCodeController.value?.text ?? ''
-                            ..addressId = addressId
-                            ..notes = 'ddd';
-                          // ..notes = notesController.value?.text ?? '';
-
-                          await locator<CheckoutManager>()
-                              .getFutureData()
-                              .then((value) {
-                            // Navigator.push(
-                            //     context,
-                            //     new MaterialPageRoute(
-                            //         builder: (BuildContext context) =>
-                            //             Successful())); //Failed
-                          });
-                        } else {
-                          showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                elevation: 3,
-                                // contentPadding: const EdgeInsets.all(8.0),
-                                content: Container(
-                                  // height: 90,
-
-                                  padding: EdgeInsets.all(8),
-                                  child: Text('You must choose an address'),
-                                ),
-                                actions: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 1.0),
-                                    child: ButtonTheme(
-                                      minWidth: 70.0,
-                                      height: 30.0,
-                                      child: RaisedButton(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(25.0),
-                                        ),
-                                        child: Text(
-                                          'OK',
-                                          // AppLocalizations.of(context)
-                                          //     .translate('notNow_str'),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        // color: greyBlue,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                            ..notes = '';
                         }
                       },
                     ),
@@ -1457,6 +1406,49 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         ),
         bottomNavigationBar: CustomBottomNavigation(),
       ),
+    );
+  }
+
+  checkoutDialog(message) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          elevation: 3,
+          // contentPadding: const EdgeInsets.all(8.0),
+          content: Container(
+            // height: 90,
+
+            padding: EdgeInsets.all(8),
+            child: Text('${message}'),
+          ),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 1.0),
+              child: ButtonTheme(
+                minWidth: 70.0,
+                height: 30.0,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                  ),
+                  child: Text(
+                    'OK',
+                    // AppLocalizations.of(context)
+                    //     .translate('notNow_str'),
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  // color: greyBlue,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

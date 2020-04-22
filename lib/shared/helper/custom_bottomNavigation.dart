@@ -190,7 +190,7 @@ class CustomBottomNavigation extends StatelessWidget {
               left: MediaQuery.of(context).size.width / 4 - 6,
               bottom: 40,
               child: CustomObserver(
-                stream: locator<CartItemsCountManager>().cartCount$,
+                stream: locator<CartItemsCountManager>().cartCount$(),
                 onWaiting: (_) => Container(),
                 onSuccess: (_, int count) {
                   return count != 0

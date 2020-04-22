@@ -181,7 +181,7 @@ class Products {
   String count;
   String notes;
   String desc;
-  Null options;
+  String options;
   String price;
 
   Products(

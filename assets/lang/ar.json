@@ -20,7 +20,7 @@
   "On_the_way_str": "في الطريق",
   "Delivered_str": "تم التوصيل",
   "Rate_vendor_str": "تقييم البائع",
-  "Delivery_str": "توصيل",
+  "Delivery_str": "مصاريف التوصيل",
   "PickUp_str": "إستلام",
   "Choose_Country_str": "اختر بلد",
   "addresses_str": "العناوين",
@@ -49,9 +49,9 @@
   "Address_Details_str": "تفاصيل العنوان",
   "Kuwait_str": "الكويت",
   "back_str": "رجوع",
-  "cart_Str": "الكارت",
+  "cart_Str": "سلة الشراء",
   "additional_Fees_str": "تكاليف اضافيه",
-  "Checkout_str": "فحص",
+  "Checkout_str": "الدفع",
   "Successful_str": "تمت بنجاح",
   "failed_str": "فشلت",
   "Rate_us_str": "قيمنا",
@@ -190,16 +190,4 @@
   "gallery_str": "معرض الصور",
   "diffrent_sellers_str": "لا يمكنك اضافة منتجات من بائعين مختلفين . ازل السلة ثم ضف المنتج ؟",
   "image_joinus_erre": "برجاء اختيار او التقاط صورة"
-
-
-
-
-
-
-
-
-
-
-
-
 }

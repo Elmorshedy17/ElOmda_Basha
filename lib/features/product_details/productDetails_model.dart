@@ -1,3 +1,5 @@
+import 'package:rxdart/rxdart.dart';
+
 class ProductDetailsModel {
   int status;
   String message;
@@ -63,6 +65,14 @@ class Product {
       this.options,
       this.images});
 
+  // List<Options> getOptions() {
+  //   options.add(options[0]);
+  //   options.add(options[0]);
+  //   options.add(options[0]);
+  //   options.add(options[0]);
+  //   return options;
+  // }
+
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
@@ -109,6 +119,11 @@ class Options {
   String name;
   String price;
   String currency;
+  BehaviorSubject<bool> _isSelected = BehaviorSubject.seeded(false);
+
+  bool get currentState => _isSelected.value;
+  Stream<bool> get isSelected$ => _isSelected.stream;
+  Sink<bool> get inIsSelected => _isSelected.sink;
 
   Options({this.id, this.name, this.price, this.currency});
 

@@ -1,6 +1,7 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/home/home_model.dart';
+import 'package:momentoo/features/product_details/productDetails_screen.dart';
 
 // Home Carousel
 class CarouselWidgetHome extends StatefulWidget {
@@ -45,6 +46,11 @@ class _CarouselWidgetHomeState extends State<CarouselWidgetHome> {
                 indicatorBgPadding: 2.0,
                 images: carouselImagesList(),
                 onImageTap: (int index) {
+                  Navigator.of(context).pushNamed('/productDetailsScreen',
+                      arguments: ProductDetailsArguments(
+                        sellerId: widget.adsList[index].sellerId,
+                        productId: widget.adsList[index].id,
+                      ));
                   // if (carouselList[index].clinicId != 0) {
                   //   Navigator.push(context, MaterialPageRoute(builder: (_) {
                   //     return ClinicSectionsScreen(

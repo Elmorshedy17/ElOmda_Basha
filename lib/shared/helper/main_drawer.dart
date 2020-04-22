@@ -89,37 +89,37 @@ class MainDrawer extends StatelessWidget {
                         color: Colors.white,
                       )
                     : Container(),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/allTrendingScreen",
-                        (route) => route.isCurrent
-                            ? route.settings.name == "/allTrendingScreen"
-                                ? false
-                                : true
-                            : true);
-                  },
-                  leading: Icon(
-                    Icons.trending_up,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    AppLocalizations.of(context).translate('allTrending_str'),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: locator<PrefsService>().appLanguage == 'en'
-                            ? 'en'
-                            : 'ar'),
-                  ),
-                ),
-                Container(
-                  margin: locator<PrefsService>().appLanguage == 'en'
-                      ? EdgeInsets.only(left: 16, right: 5)
-                      : EdgeInsets.only(right: 16, left: 5),
-                  height: 0.5,
-                  color: Colors.white,
-                ),
+                // ListTile(
+                //   onTap: () {
+                //     Navigator.of(context).pop();
+                //     Navigator.of(context).pushNamedAndRemoveUntil(
+                //         "/allTrendingScreen",
+                //         (route) => route.isCurrent
+                //             ? route.settings.name == "/allTrendingScreen"
+                //                 ? false
+                //                 : true
+                //             : true);
+                //   },
+                //   leading: Icon(
+                //     Icons.trending_up,
+                //     color: Colors.white,
+                //   ),
+                //   title: Text(
+                //     AppLocalizations.of(context).translate('allTrending_str'),
+                //     style: TextStyle(
+                //         color: Colors.white,
+                //         fontFamily: locator<PrefsService>().appLanguage == 'en'
+                //             ? 'en'
+                //             : 'ar'),
+                //   ),
+                // ),
+                // Container(
+                //   margin: locator<PrefsService>().appLanguage == 'en'
+                //       ? EdgeInsets.only(left: 16, right: 5)
+                //       : EdgeInsets.only(right: 16, left: 5),
+                //   height: 0.5,
+                //   color: Colors.white,
+                // ),
                 locator<PrefsService>().userObj != null
                     ? ListTile(
                         onTap: () {
@@ -286,6 +286,46 @@ class MainDrawer extends StatelessWidget {
                   height: 0.5,
                   color: Colors.white,
                 ),
+                locator<PrefsService>().userObj != null
+                    ? Container()
+                    : ListTile(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/signInScreen",
+                              (route) => route.isCurrent
+                                  ? route.settings.name == "/signInScreen"
+                                      ? false
+                                      : true
+                                  : true);
+                        },
+                        leading: Container(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            'assets/images/signIn.png',
+                            color: Colors.white,
+                          ),
+                        ),
+                        title: Text(
+                          AppLocalizations.of(context).translate('signIn_str'),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar'),
+                        ),
+                      ),
+                locator<PrefsService>().userObj == null
+                    ? Container(
+                        margin: locator<PrefsService>().appLanguage == 'en'
+                            ? EdgeInsets.only(left: 16, right: 5)
+                            : EdgeInsets.only(right: 16, left: 5),
+                        height: 0.5,
+                        color: Colors.white,
+                      )
+                    : Container(),
                 Padding(
                     padding: EdgeInsets.only(top: 12),
                     child: ListTile(

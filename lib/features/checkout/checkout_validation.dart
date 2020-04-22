@@ -24,7 +24,8 @@ class CheckoutValidationManager with Validation implements Manager {
   Sink<String> get inAddress => addressSubject.sink;
 
   final blockSubject = BehaviorSubject<String>();
-  Stream<String> get block$ => addressSubject.stream.transform(validateField);
+  Stream<String> get block$ =>
+      addressSubject.stream.transform(validateFieldIsRequired);
   Sink<String> get inBlock => addressSubject.sink;
 
   final streetSubject = BehaviorSubject<String>();
@@ -72,5 +73,11 @@ class CheckoutValidationManager with Validation implements Manager {
     lastNameSubject.close();
     addressSubject.close();
     phoneSubject.close();
+    blockSubject.close();
+    streetSubject.close();
+    street2Subject.close();
+    buildingSubject.close();
+    floorSubject.close();
+    jaddaSubject.close();
   }
 }

@@ -20,9 +20,21 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      sink.addError('The field cannot be empty');
+      sink.addError('* required');
     } else if (length < 3) {
       sink.addError('The field must be longer than 3 characters');
+    } else {
+      sink.add(value);
+    }
+  });
+
+  final validateFieldIsRequired =
+      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+    int length = value.length;
+    if (length == 0) {
+      sink.addError('* required');
+      // } else if (length < 3) {
+      //   sink.addError('The field must be longer than 3 characters');
     } else {
       sink.add(value);
     }
@@ -32,7 +44,7 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      sink.addError('The field cannot be empty');
+      sink.addError('* required ');
     } else if (length < 8) {
       sink.addError('The field must be longer than 8 characters');
     } else {

@@ -36,7 +36,8 @@ class WebViewKnet extends StatelessWidget {
     return NetworkSensitive(
       child: Scaffold(
         body: CustomObserver(
-            stream: locator<CheckoutManager>().getFutureData().asStream(),
+            stream:
+                locator<CheckoutManager>().checkoutAsUserFuture().asStream(),
             onSuccess: (context, CheckoutResponse response) {
               String msg = response.message;
               int status = response.status;

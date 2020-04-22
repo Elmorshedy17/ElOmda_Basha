@@ -8,6 +8,7 @@ import 'package:momentoo/features/home/home_widgets/content.dart';
 import 'package:momentoo/features/near_by/manger.dart';
 import 'package:momentoo/features/notifications/notifications_manager.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
+import 'package:momentoo/shared/helper/cartItemsCount_manger.dart';
 import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
@@ -31,8 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController _pageController;
   bool isSearchQueryEmpty = true;
 
-
-
   @override
   void initState() {
     super.initState();
@@ -40,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       initialPage: 0,
     );
     locator<NotificationsManager>().getData();
+    locator<CartItemsCountManager>().cartCount$();
   }
 
   @override
@@ -49,9 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-
-
-
   Widget build(BuildContext context) {
     locator<NearByManager>().catSubject.add(categoryId);
 
@@ -205,13 +202,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: const BorderRadius.all(
                             const Radius.circular(10.0),
                           ),
-                        ),focusedBorder:  OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(10.0),
-                      ),
-                    ),
-                        disabledBorder:  OutlineInputBorder(
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
+                          ),
+                        ),
+                        disabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent),
                           borderRadius: const BorderRadius.all(
                             const Radius.circular(10.0),

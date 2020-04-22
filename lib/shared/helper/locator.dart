@@ -5,6 +5,7 @@ import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/ads/ads_manager.dart';
 import 'package:momentoo/features/checkout/checkout_manager.dart';
 import 'package:momentoo/features/checkout/checkout_request/asUser_request.dart';
+import 'package:momentoo/features/checkout/checkout_request/asVisitor_request.dart';
 import 'package:momentoo/features/checkout/checkout_validation.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
@@ -138,6 +139,8 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<CouponManager>(() => CouponManager());
   // AsUserRequest
   locator.registerLazySingleton<AsUserRequest>(() => AsUserRequest());
+  // AsVisitorRequest
+  locator.registerLazySingleton<AsVisitorRequest>(() => AsVisitorRequest());
   // CheckoutManager
   locator.registerLazySingleton<CheckoutManager>(() => CheckoutManager());
   //CartItemsCountManager

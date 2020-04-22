@@ -33,9 +33,7 @@ class _CartScreenState extends State<CartScreen> {
             elevation: 0.0,
             centerTitle: true,
             title: Text(
-              'Cart',
-              // AppLocalizations.of(context).translate('my_orders_Str'),
-              // AppLocalizations.of(context).translate('test'),
+              AppLocalizations.of(context).translate('cart_Str'),
               style: TextStyle(color: Colors.white),
             ),
             leading: InkWell(
@@ -130,12 +128,8 @@ class _CartScreenState extends State<CartScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: <Widget>[
-                                                        Text('$index'),
                                                         Text(
-                                                          model
-                                                              .data
-                                                              .products[index]
-                                                              .price,
+                                                          '${model.data.products[index].price} ${model.data.products[index].currency}',
                                                         ),
                                                       ],
                                                     ),
@@ -143,147 +137,340 @@ class _CartScreenState extends State<CartScreen> {
                                                 ),
                                               ],
                                             ),
-                                            Positioned(
-                                              right: 1,
-                                              top: 1,
-                                              child: IconButton(
-                                                  icon: Icon(
-                                                    Icons.close,
-                                                    color: Colors.red.shade900,
-                                                  ),
-                                                  onPressed: () {
-                                                    var removedFromCart =
-                                                        locator<PrefsService>()
-                                                            .cartObj;
-                                                    removedFromCart.products
-                                                        .removeAt(index);
-                                                    if (removedFromCart
-                                                        .products.isEmpty) {
-                                                      removedFromCart.sellerId =
-                                                          -1;
-                                                    }
-                                                    locator<PrefsService>()
-                                                            .cartObj =
-                                                        removedFromCart;
-                                                    locator<CartItemsCountManager>()
-                                                        .inCartCount
-                                                        .add(
-                                                            locator<PrefsService>()
-                                                                    .cartObj
-                                                                    .products
-                                                                    ?.length ??
-                                                                0);
-                                                    if (locator<PrefsService>()
-                                                        .cartObj
-                                                        .products
-                                                        .isNotEmpty) {
-                                                      locator<CartActionsManager>()
-                                                          .getData();
-                                                    } else {
-                                                      setState(() {});
-                                                    }
-                                                  }),
-                                            ),
-                                            Positioned(
-                                              right: 1,
-                                              bottom: 1,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    InkWell(
-                                                      onTap: () {
-                                                        if (locator<PrefsService>()
-                                                                .cartObj
-                                                                .products[index]
-                                                                .count >
-                                                            1) {
-                                                          var cart = locator<
-                                                                  PrefsService>()
-                                                              .cartObj;
-                                                          cart.products[index]
-                                                              .count -= 1;
+                                            locator<PrefsService>()
+                                                        .appLanguage ==
+                                                    'en'
+                                                ? Positioned(
+                                                    right: 1,
+                                                    top: 1,
+                                                    child: IconButton(
+                                                        icon: Icon(
+                                                          Icons.close,
+                                                          color: Colors
+                                                              .red.shade900,
+                                                        ),
+                                                        onPressed: () {
+                                                          var removedFromCart =
+                                                              locator<PrefsService>()
+                                                                  .cartObj;
+                                                          removedFromCart
+                                                              .products
+                                                              .removeAt(index);
+                                                          if (removedFromCart
+                                                              .products
+                                                              .isEmpty) {
+                                                            removedFromCart
+                                                                .sellerId = -1;
+                                                          }
                                                           locator<PrefsService>()
-                                                              .cartObj = cart;
-                                                          locator<CartActionsManager>()
-                                                              .getData();
-                                                        }
-                                                      },
-                                                      child: Container(
-                                                        width: 25.0,
-                                                        height: 12.5,
-                                                        decoration:
-                                                            new BoxDecoration(
+                                                                  .cartObj =
+                                                              removedFromCart;
+                                                          locator<CartItemsCountManager>()
+                                                              .inCartCount
+                                                              .add(locator<
+                                                                          PrefsService>()
+                                                                      .cartObj
+                                                                      .products
+                                                                      ?.length ??
+                                                                  0);
+                                                          if (locator<
+                                                                  PrefsService>()
+                                                              .cartObj
+                                                              .products
+                                                              .isNotEmpty) {
+                                                            locator<CartActionsManager>()
+                                                                .getData();
+                                                          } else {
+                                                            setState(() {});
+                                                          }
+                                                        }),
+                                                  )
+                                                : Positioned(
+                                                    left: 1,
+                                                    top: 1,
+                                                    child: IconButton(
+                                                        icon: Icon(
+                                                          Icons.close,
                                                           color: Colors
-                                                              .teal.shade900,
-                                                          borderRadius:
-                                                              new BorderRadius
-                                                                  .all(
-                                                            Radius.circular(
-                                                                13.0),
+                                                              .red.shade900,
+                                                        ),
+                                                        onPressed: () {
+                                                          var removedFromCart =
+                                                              locator<PrefsService>()
+                                                                  .cartObj;
+                                                          removedFromCart
+                                                              .products
+                                                              .removeAt(index);
+                                                          if (removedFromCart
+                                                              .products
+                                                              .isEmpty) {
+                                                            removedFromCart
+                                                                .sellerId = -1;
+                                                          }
+                                                          locator<PrefsService>()
+                                                                  .cartObj =
+                                                              removedFromCart;
+                                                          locator<CartItemsCountManager>()
+                                                              .inCartCount
+                                                              .add(locator<
+                                                                          PrefsService>()
+                                                                      .cartObj
+                                                                      .products
+                                                                      ?.length ??
+                                                                  0);
+                                                          if (locator<
+                                                                  PrefsService>()
+                                                              .cartObj
+                                                              .products
+                                                              .isNotEmpty) {
+                                                            locator<CartActionsManager>()
+                                                                .getData();
+                                                          } else {
+                                                            setState(() {});
+                                                          }
+                                                        }),
+                                                  ),
+                                            locator<PrefsService>()
+                                                        .appLanguage ==
+                                                    'en'
+                                                ? Positioned(
+                                                    right: 1,
+                                                    bottom: 1,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          InkWell(
+                                                            onTap: () {
+                                                              if (locator<PrefsService>()
+                                                                      .cartObj
+                                                                      .products[
+                                                                          index]
+                                                                      .count >
+                                                                  1) {
+                                                                var cart = locator<
+                                                                        PrefsService>()
+                                                                    .cartObj;
+                                                                cart
+                                                                    .products[
+                                                                        index]
+                                                                    .count -= 1;
+                                                                locator<PrefsService>()
+                                                                        .cartObj =
+                                                                    cart;
+                                                                locator<CartActionsManager>()
+                                                                    .getData();
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              width: 25.0,
+                                                              height: 12.5,
+                                                              decoration:
+                                                                  new BoxDecoration(
+                                                                color: Colors
+                                                                    .teal
+                                                                    .shade900,
+                                                                borderRadius:
+                                                                    new BorderRadius
+                                                                        .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          13.0),
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                Icons.remove,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 12,
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.remove,
-                                                          color: Colors.white,
-                                                          size: 12,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 8.0),
-                                                      child: Text(
-                                                        model
-                                                            .data
-                                                            .products[index]
-                                                            .count,
-                                                        style: TextStyle(
-                                                            fontSize: 25),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        var cart = locator<
-                                                                PrefsService>()
-                                                            .cartObj;
-                                                        cart.products[index]
-                                                            .count += 1;
-                                                        locator<PrefsService>()
-                                                            .cartObj = cart;
-                                                        locator<CartActionsManager>()
-                                                            .getData();
-                                                      },
-                                                      child: Container(
-                                                        width: 25.0,
-                                                        height: 12.5,
-                                                        decoration:
-                                                            new BoxDecoration(
-                                                          color: Colors
-                                                              .teal.shade900,
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(
-                                                                13.0),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        8.0),
+                                                            child: Text(
+                                                              model
+                                                                  .data
+                                                                  .products[
+                                                                      index]
+                                                                  .count,
+                                                              style: TextStyle(
+                                                                  fontSize: 25),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          color: Colors.white,
-                                                          size: 12,
-                                                        ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              var cart = locator<
+                                                                      PrefsService>()
+                                                                  .cartObj;
+                                                              cart
+                                                                  .products[
+                                                                      index]
+                                                                  .count += 1;
+                                                              locator<PrefsService>()
+                                                                      .cartObj =
+                                                                  cart;
+                                                              locator<CartActionsManager>()
+                                                                  .getData();
+                                                            },
+                                                            child: Container(
+                                                              width: 25.0,
+                                                              height: 12.5,
+                                                              decoration:
+                                                                  new BoxDecoration(
+                                                                color: Colors
+                                                                    .teal
+                                                                    .shade900,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          13.0),
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                Icons.add,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 12,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
+                                                  )
+                                                : Positioned(
+                                                    left: 1,
+                                                    bottom: 1,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          InkWell(
+                                                            onTap: () {
+                                                              if (locator<PrefsService>()
+                                                                      .cartObj
+                                                                      .products[
+                                                                          index]
+                                                                      .count >
+                                                                  1) {
+                                                                var cart = locator<
+                                                                        PrefsService>()
+                                                                    .cartObj;
+                                                                cart
+                                                                    .products[
+                                                                        index]
+                                                                    .count -= 1;
+                                                                locator<PrefsService>()
+                                                                        .cartObj =
+                                                                    cart;
+                                                                locator<CartActionsManager>()
+                                                                    .getData();
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              width: 25.0,
+                                                              height: 12.5,
+                                                              decoration:
+                                                                  new BoxDecoration(
+                                                                color: Colors
+                                                                    .teal
+                                                                    .shade900,
+                                                                borderRadius:
+                                                                    new BorderRadius
+                                                                        .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          13.0),
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                Icons.remove,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 12,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        8.0),
+                                                            child: Text(
+                                                              model
+                                                                  .data
+                                                                  .products[
+                                                                      index]
+                                                                  .count,
+                                                              style: TextStyle(
+                                                                  fontSize: 25),
+                                                            ),
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              var cart = locator<
+                                                                      PrefsService>()
+                                                                  .cartObj;
+                                                              cart
+                                                                  .products[
+                                                                      index]
+                                                                  .count += 1;
+                                                              locator<PrefsService>()
+                                                                      .cartObj =
+                                                                  cart;
+                                                              locator<CartActionsManager>()
+                                                                  .getData();
+                                                            },
+                                                            child: Container(
+                                                              width: 25.0,
+                                                              height: 12.5,
+                                                              decoration:
+                                                                  new BoxDecoration(
+                                                                color: Colors
+                                                                    .teal
+                                                                    .shade900,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          13.0),
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                Icons.add,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 12,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
                                           ],
                                         ),
                                       );
@@ -306,23 +493,56 @@ class _CartScreenState extends State<CartScreen> {
                                   children: <Widget>[
                                     ListTile(
                                       // contentPadding: EdgeInsets.symmetric(vertical: 4),
-                                      title: Text('Subtotal'),
+                                      title: Text(
+                                        // 's0',
+                                        AppLocalizations.of(context)
+                                            .translate('subtotal_str'),
+                                        style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                        ),
+                                      ),
                                       trailing: Text(
                                           '${model.data.getTotalPrice()} ${model.data.seller.currency}'),
                                     ),
                                     ListTile(
-                                      title: Text('Additional Fees'),
+                                      title: Text(
+                                          // 'z',
+                                          AppLocalizations.of(context)
+                                              .translate('Delivery_str'),
+                                          style: TextStyle(
+                                            fontFamily: locator<PrefsService>()
+                                                        .appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                          )),
                                       trailing: Text(
-                                          '${model.data.seller.deliveryFee} ${model.data.seller.currency}'),
-                                    ),
-                                    ListTile(
-                                      title: Text('Delivery'),
-                                      trailing: Text(
-                                          '${model.data.seller.deliveryFee} ${model.data.seller.currency}'),
+                                          '${model.data.seller.deliveryFee} ${model.data.seller.currency}',
+                                          style: TextStyle(
+                                            fontFamily: locator<PrefsService>()
+                                                        .appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                          )),
                                     ),
                                     Divider(),
                                     ListTile(
-                                      title: Text('Total'),
+                                      title: Text(
+                                          // '3',
+                                          AppLocalizations.of(context)
+                                              .translate('total_Str'),
+                                          style: TextStyle(
+                                            fontFamily: locator<PrefsService>()
+                                                        .appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                          )),
                                       trailing: Text(
                                           '${model.data.getFinalPrice()} ${model.data.seller.currency}'),
                                     ),
@@ -347,8 +567,14 @@ class _CartScreenState extends State<CartScreen> {
                           child: Text(
                             AppLocalizations.of(context)
                                 .translate('Checkout_str'),
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20.0),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
+                            ),
                           ),
                           onPressed: () {
                             Navigator.of(context).pushNamed(
