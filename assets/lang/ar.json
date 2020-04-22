@@ -190,5 +190,8 @@
   "gallery_str": "معرض الصور",
   "diffrent_sellers_str": "لا يمكنك اضافة منتجات من بائعين مختلفين . ازل السلة ثم ضف المنتج ؟",
   "image_joinus_erre": "برجاء اختيار او التقاط صورة",
-  "continue_str": "استمرار"
+  "continue_str": "استمرار",
+  "Home_str": "الرئيسية",
+  "CartNav_str": "سلة الشراء",
+  "Nearby_str": "أماكن قريبة"
 }
