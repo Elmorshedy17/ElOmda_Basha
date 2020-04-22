@@ -176,6 +176,10 @@ class _MomentooAppState extends State<MomentooApp> {
       return LangScreen();
     }
     // if(!PrefsService.s)
-    return SignInScreen();
+    if(locator<PrefsService>().cartObj == null){
+      return SignInScreen();
+    }else{
+      return HomeScreen();
+    }
   }
 }
