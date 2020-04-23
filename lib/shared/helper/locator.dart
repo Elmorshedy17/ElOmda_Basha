@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:momentoo/features/new_address/addAddressValidation_manager.dart';
 import 'package:momentoo/features/about_us/about_manager.dart';
 import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/ads/ads_manager.dart';
@@ -9,7 +10,8 @@ import 'package:momentoo/features/checkout/checkout_request/asVisitor_request.da
 import 'package:momentoo/features/checkout/checkout_validation.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
-
+import 'package:momentoo/features/invoice/_manager.dart';
+import 'package:momentoo/features/track_details/_manager.dart';
 import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
 import 'package:momentoo/features/favorites/favorites_manager.dart';
 import 'package:momentoo/features/edit_address/dropdown_data.dart';
@@ -65,6 +67,8 @@ Future<void> setupLocator() async {
   // SignUpValidationManager
   locator.registerLazySingleton<SignUpValidationManager>(
       () => SignUpValidationManager());
+  locator.registerLazySingleton<AddAddressValidationManager>(
+      () => AddAddressValidationManager());
   // PushNotificationService
   locator.registerLazySingleton<PushNotificationService>(
       () => PushNotificationService());
@@ -98,6 +102,8 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<ContactUsManager>(() => ContactUsManager());
   locator.registerLazySingleton<NearByManager>(() => NearByManager());
   locator.registerLazySingleton<MyOrdersManager>(() => MyOrdersManager());
+  locator.registerLazySingleton<TrackOrderManager>(() => TrackOrderManager());
+  locator.registerLazySingleton<OrderDetailsManager>(() => OrderDetailsManager());
   // TrendingStoreManager
   locator.registerLazySingleton<TrendingStoreManager>(
       () => TrendingStoreManager());

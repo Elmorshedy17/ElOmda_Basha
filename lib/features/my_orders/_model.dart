@@ -47,16 +47,16 @@ class Data {
 
 class Orders {
   String date;
-  List<Orders> orders;
+  List<OrdersInsider> ordersInsider;
 
-  Orders({this.date, this.orders});
+  Orders({this.date, this.ordersInsider});
 
   Orders.fromJson(Map<String, dynamic> json) {
     date = json['date'];
     if (json['orders'] != null) {
-      orders = new List<Orders>();
+      ordersInsider = new List<OrdersInsider>();
       json['orders'].forEach((v) {
-        orders.add(new Orders.fromJson(v));
+        ordersInsider.add(new OrdersInsider.fromJson(v));
       });
     }
   }
@@ -64,8 +64,9 @@ class Orders {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['date'] = this.date;
-    if (this.orders != null) {
-      data['orders'] = this.orders.map((v) => v.toJson()).toList();
+    if (this.ordersInsider != null) {
+      data['orders'] =
+          this.ordersInsider.map((v) => v.toJson()).toList();
     }
     return data;
   }

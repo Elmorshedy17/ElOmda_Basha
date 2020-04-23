@@ -1,11 +1,11 @@
-class InvoiceModel {
+class TrackOrderModel {
   int status;
   String message;
   Data data;
 
-  InvoiceModel({this.status, this.message, this.data});
+  TrackOrderModel({this.status, this.message, this.data});
 
-  InvoiceModel.fromJson(Map<String, dynamic> json) {
+  TrackOrderModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -43,44 +43,21 @@ class Data {
 class Order {
   int id;
   String seller;
-  String date;
-  String time;
-  String street;
-  String orderType;
-  String delivery;
-  String name;
-  String subTotal;
+  String logo;
   String total;
-  List<Products> products;
+  List<Steps> steps;
 
-  Order(
-      {this.id,
-        this.seller,
-        this.date,
-        this.time,
-        this.street,
-        this.orderType,
-        this.delivery,
-        this.name,
-        this.subTotal,
-        this.total,
-        this.products});
+  Order({this.id, this.seller, this.logo, this.total, this.steps});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     seller = json['seller'];
-    date = json['date'];
-    time = json['time'];
-    street = json['street'];
-    orderType = json['order_type'];
-    delivery = json['delivery'];
-    name = json['name'];
-    subTotal = json['sub_total'];
+    logo = json['logo'];
     total = json['total'];
-    if (json['products'] != null) {
-      products = new List<Products>();
-      json['products'].forEach((v) {
-        products.add(new Products.fromJson(v));
+    if (json['steps'] != null) {
+      steps = new List<Steps>();
+      json['steps'].forEach((v) {
+        steps.add(new Steps.fromJson(v));
       });
     }
   }
@@ -89,36 +66,36 @@ class Order {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['seller'] = this.seller;
-    data['date'] = this.date;
-    data['time'] = this.time;
-    data['street'] = this.street;
-    data['order_type'] = this.orderType;
-    data['delivery'] = this.delivery;
-    data['name'] = this.name;
-    data['sub_total'] = this.subTotal;
+    data['logo'] = this.logo;
     data['total'] = this.total;
-    if (this.products != null) {
-      data['products'] = this.products.map((v) => v.toJson()).toList();
+    if (this.steps != null) {
+      data['steps'] = this.steps.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Products {
+class Steps {
+  int id;
   String name;
-  String price;
+  String date;
+  String active;
 
-  Products({this.name, this.price});
+  Steps({this.id, this.name, this.date, this.active});
 
-  Products.fromJson(Map<String, dynamic> json) {
+  Steps.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
-    price = json['price'];
+    date = json['date'];
+    active = json['active'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
-    data['price'] = this.price;
+    data['date'] = this.date;
+    data['active'] = this.active;
     return data;
   }
 }

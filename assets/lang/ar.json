@@ -193,5 +193,8 @@
   "continue_str": "استمرار",
   "Home_str": "الرئيسية",
   "CartNav_str": "سلة الشراء",
-  "Nearby_str": "أماكن قريبة"
+  "Nearby_str": "أماكن قريبة",
+  "reorder_order_str": "إعادة طلب",
+  "Not_yet_str": "ليس حتي الان",
+  "delivery_Fees_str": "خدمة التوصيل"
 }

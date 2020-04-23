@@ -14,6 +14,7 @@
   "my_orders_Str": "My Orders",
   "Order_Number_str": "Order Number",
   "Track_your_order_str": "Track your order",
+  "reorder_order_str": "reorder",
   "Order_details_str": "Order Details",
   "Ordered_successfully_str": "Ordered Successfully",
   "Preparing_str": "Preparing",
@@ -51,6 +52,7 @@
   "back_str": "Back",
   "cart_Str": "Cart",
   "additional_Fees_str": "additional Fees",
+  "delivery_Fees_str": "Delivery Fees",
   "Checkout_str": "Checkout",
   "Successful_str": "Successful",
   "failed_str": "Failed",
@@ -194,5 +196,6 @@
   "continue_str": "continue",
   "Home_str": "Home",
   "CartNav_str": "Cart",
-  "Nearby_str": "Nearby"
+  "Nearby_str": "Nearby",
+  "Not_yet_str": "Not yet"
 }

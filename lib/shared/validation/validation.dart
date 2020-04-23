@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 mixin Validation {
   static bool isEmail(String email) => EmailValidator.validate(email);
@@ -20,9 +21,9 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      sink.addError('* required');
+      locator<PrefsService>().appLanguage == "en" ? sink.addError('* required') : sink.addError('* مطلوب');
     } else if (length < 3) {
-      sink.addError('The field must be longer than 3 characters');
+      locator<PrefsService>().appLanguage == "en" ? sink.addError('The field must be longer than 3 characters') : sink.addError('لا يمكن ان تقل عدد الاحرف عن 3 احرف');
     } else {
       sink.add(value);
     }
@@ -32,7 +33,7 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      sink.addError('* required');
+      locator<PrefsService>().appLanguage == "en" ? sink.addError('* required') : sink.addError('* مطلوب');
       // } else if (length < 3) {
       //   sink.addError('The field must be longer than 3 characters');
     } else {
@@ -44,9 +45,9 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      sink.addError('* required ');
+      locator<PrefsService>().appLanguage == "en" ? sink.addError('* required') : sink.addError('* مطلوب');
     } else if (length < 8) {
-      sink.addError('The field must be longer than 8 characters');
+      locator<PrefsService>().appLanguage == "en" ? sink.addError('The field must be longer than 8 characters') : sink.addError('لا يمكن ان تقل عدد الاحرف عن 8 احرف');
     } else {
       sink.add(value);
     }
@@ -59,7 +60,7 @@ mixin Validation {
       confirm = password.toString();
     });
     if (value.toString().toLowerCase() == confirm.toLowerCase()) {
-      sink.addError('Please enter the same password');
+      locator<PrefsService>().appLanguage == "en" ? sink.addError('Please enter the same password') : sink.addError('برجاء ادخال نفس كلمة المرور');
     } else {
       sink.add(value);
     }
