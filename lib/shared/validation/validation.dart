@@ -30,7 +30,7 @@ mixin Validation {
       sink.addError(locator<PrefsService>().appLanguage == 'en'
           ? 'The field must be 3 characters at least'
           : 'أدخل 3 رموز على الأقل');
-    } else {
+
       sink.add(value);
     }
   });
@@ -42,6 +42,7 @@ mixin Validation {
       sink.addError(locator<PrefsService>().appLanguage == 'en'
           ? '* required'
           : 'هذا الحقل مطلوب');
+
       // } else if (length < 3) {
       //   sink.addError('The field must be longer than 3 characters');
     } else {

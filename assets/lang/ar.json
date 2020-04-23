@@ -196,5 +196,8 @@
   "CartNav_str": "سلة الشراء",
   "Nearby_str": "أماكن قريبة",
   "NewAddress_str": "عنوان جديد",
-  "DeliveryCheck_str": "توصيل"
+  "DeliveryCheck_str": "توصيل",
+  "reorder_order_str": "إعادة طلب",
+  "Not_yet_str": "ليس حتي الان",
+  "delivery_Fees_str": "خدمة التوصيل"
 }

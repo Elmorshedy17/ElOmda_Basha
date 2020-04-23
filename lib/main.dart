@@ -26,7 +26,7 @@ import 'package:momentoo/features/near_by/getLocation_screen.dart';
 import 'package:momentoo/features/near_by/manuallyMap_screen.dart';
 import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
-import 'package:momentoo/features/order_details/orderDetails_screen.dart';
+import 'package:momentoo/features/track_details/trackDetails_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
@@ -154,7 +154,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/trendingStoresScreen': (_) => TrendingStoresScreen(),
                 '/changePasswordScreen': (_) => ChangePasswordScreen(),
                 '/invoiceScreen': (_) => InvoiceScreen(),
-                '/orderDetailsScreen': (_) => OrderDetailsScreen(),
+                '/TrackorderScreen': (_) => TrackOrderScreen(),
                 '/joinUsFirstScreen': (_) => JoinUsFirstScreen(),
                 '/joinUsSecondScreen': (_) => JoinUsSecondScreen(),
                 '/StoreDetailsScreen': (_) => StoreDetailsScreen(),
@@ -176,6 +176,10 @@ class _MomentooAppState extends State<MomentooApp> {
       return LangScreen();
     }
     // if(!PrefsService.s)
-    return SignInScreen();
+    if (locator<PrefsService>().userObj == null) {
+      return SignInScreen();
+    } else {
+      return HomeScreen();
+    }
   }
 }

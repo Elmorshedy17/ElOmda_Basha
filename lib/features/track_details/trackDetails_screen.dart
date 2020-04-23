@@ -3,14 +3,52 @@ import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/features/track_details/_model.dart';
+import 'package:momentoo/features/track_details/_manager.dart';
+import 'package:rxdart/rxdart.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
+
+class TrackOrderScreenArguments {
+  final int id;
+
+  TrackOrderScreenArguments({@required this.id});
+}
+
+
+class TrackOrderScreen extends StatefulWidget {
   @override
+  _TrackOrderScreenState createState() => _TrackOrderScreenState();
+}
+
+class _TrackOrderScreenState extends State<TrackOrderScreen> {
+
+  TrackOrderScreenArguments args;
+
+//  List firstTrackingList = [];
+//  List secondTrackingList = [];
+//  List thirdTrackingList = [];
+//  List forthTrackingList = [];
+
+
+
+  BehaviorSubject firstTrackingController = new BehaviorSubject();
+  BehaviorSubject secondTrackingController = new BehaviorSubject();
+  BehaviorSubject thirdTrackingController = new BehaviorSubject();
+  BehaviorSubject forthTrackingController = new BehaviorSubject();
+
+
+
+
+  @override
+
   Widget build(BuildContext context) {
+    args = ModalRoute.of(context).settings.arguments;
+
     //  _orderedSuccessfully() = > its always active
-    Widget _orderedSuccessfully() {
+    Widget _orderedSuccessfully(name,date) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,18 +93,19 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context)
-                        .translate("Ordered_successfully_str"),
+//                    AppLocalizations.of(context)
+//                        .translate("Ordered_successfully_str"),
+                    name,
                     style: TextStyle(
                         color: Colors.teal.shade900,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Container(
-                    height: 5.0,
-                  ),
+//                  Container(
+//                    height: 5.0,
+//                  ),
                   Text(
-                    "24/11/2019",
+                    date,
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
@@ -83,7 +122,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
     // _preparing active
 
-    Widget _preparing() {
+    Widget _preparing(name , date) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,17 +166,18 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).translate("Preparing_str"),
+//                    AppLocalizations.of(context).translate("Preparing_str")
+                    name,
                     style: TextStyle(
                         color: Colors.teal.shade900,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Container(
-                    height: 5.0,
-                  ),
+//                  Container(
+//                    height: 5.0,
+//                  ),
                   Text(
-                    "24/11/2019",
+                    date,
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
@@ -153,7 +193,7 @@ class OrderDetailsScreen extends StatelessWidget {
     // _preparing
 
     // _onTheWay active
-    Widget _onTheWay() {
+    Widget _onTheWay(name,date) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -198,17 +238,18 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).translate("On_the_way_str"),
+//                    AppLocalizations.of(context).translate("On_the_way_str")
+                   name ,
                     style: TextStyle(
                         color: Colors.teal.shade900,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Container(
-                    height: 5.0,
-                  ),
+//                  Container(
+//                    height: 5.0,
+//                  ),
                   Text(
-                    "24/11/2019",
+                    date,
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
@@ -224,7 +265,7 @@ class OrderDetailsScreen extends StatelessWidget {
     // end _onTheWay
 
     // _delivered active
-    Widget _delivered() {
+    Widget _delivered(name ,date) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -265,46 +306,56 @@ class OrderDetailsScreen extends StatelessWidget {
           Center(
             child: Container(
               height: 110.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).translate("Delivered_str"),
-                    style: TextStyle(
-                        color: Colors.teal.shade900,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Container(
-                    height: 5.0,
-                  ),
-                  Text(
-                    "24/11/2019",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  RaisedButton(
-                    color: Colors.teal.shade700,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .translate("Rate_vendor_str"),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    onPressed: () {
-                      _showDialog(context);
-                    },
-                  ),
-                ],
+              child:                   Text(
+//                    AppLocalizations.of(context).translate("Delivered_str")
+                name,
+                style: TextStyle(
+                    color: Colors.teal.shade900,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
               ),
+//              Column(
+//                mainAxisAlignment: MainAxisAlignment.end,
+//                crossAxisAlignment: CrossAxisAlignment.start,
+//                children: <Widget>[
+//                  Text(
+////                    AppLocalizations.of(context).translate("Delivered_str")
+//                    name,
+//                    style: TextStyle(
+//                        color: Colors.teal.shade900,
+//                        fontSize: 18,
+//                        fontWeight: FontWeight.w600),
+//                  ),
+//                  Container(
+//                    height: 5.0,
+//                  ),
+//                  Text(
+//                    date,
+//                    style: TextStyle(
+//                        color: Colors.grey,
+//                        fontSize: 16,
+//                        fontWeight: FontWeight.bold),
+//                  ),
+//                  SizedBox(
+//                    height: 5.0,
+//                  ),
+//                  RaisedButton(
+//                    color: Colors.teal.shade700,
+//                    child: Padding(
+//                      padding: const EdgeInsets.all(4.0),
+//                      child: Text(
+//                        AppLocalizations.of(context)
+//                            .translate("Rate_vendor_str"),
+//                        style: TextStyle(color: Colors.white),
+//                      ),
+//                    ),
+//                    onPressed: () {
+////                      _showDialog(context);
+//                      print(firstTrackingController.value);
+//                    },
+//                  ),
+//                ],
+//              ),
             ),
           ),
         ],
@@ -313,7 +364,7 @@ class OrderDetailsScreen extends StatelessWidget {
     // _delivered finish
 
     // not active delivered
-    Widget _notDelivered() {
+    Widget _notDelivered(name,date) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,7 +380,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           ? 20.0
                           : 0,
                       right:
-                          locator<PrefsService>().appLanguage == "en" ? 0 : 20),
+                      locator<PrefsService>().appLanguage == "en" ? 0 : 20),
                   width: 70.0,
                   child: Container(
                     margin: EdgeInsets.only(top: 28.0),
@@ -355,7 +406,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         color: Colors.white,
                         border: Border.all(color: Colors.grey, width: 4),
                         borderRadius:
-                            new BorderRadius.all(Radius.circular(40.0)),
+                        new BorderRadius.all(Radius.circular(40.0)),
                       ),
                     ),
                   ),
@@ -370,17 +421,18 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).translate("Delivered_str"),
+//                    AppLocalizations.of(context).translate("Delivered_str")
+                    name,
                     style: TextStyle(
                         color: Colors.grey.withOpacity(.6),
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Container(
-                    height: 5.0,
-                  ),
+//                  Container(
+//                    height: 5.0,
+//                  ),
                   Text(
-                    "Not yet",
+                    date,
                     style: TextStyle(
                         color: Colors.grey.withOpacity(.6),
                         fontSize: 16,
@@ -396,7 +448,7 @@ class OrderDetailsScreen extends StatelessWidget {
     // end not active delivered
 
     // not active delivered
-    Widget _notOnTheWay() {
+    Widget _notOnTheWay(name,date) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -412,7 +464,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           ? 20.0
                           : 0,
                       right:
-                          locator<PrefsService>().appLanguage == "en" ? 0 : 20),
+                      locator<PrefsService>().appLanguage == "en" ? 0 : 20),
                   width: 70.0,
                   child: Container(
                     margin: EdgeInsets.only(top: 28.0),
@@ -438,7 +490,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         color: Colors.white,
                         border: Border.all(color: Colors.grey, width: 4),
                         borderRadius:
-                            new BorderRadius.all(Radius.circular(40.0)),
+                        new BorderRadius.all(Radius.circular(40.0)),
                       ),
                     ),
                   ),
@@ -453,17 +505,18 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).translate("On_the_way_str"),
+//                    AppLocalizations.of(context).translate("On_the_way_str")
+                    name,
                     style: TextStyle(
                         color: Colors.grey.withOpacity(.6),
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Container(
-                    height: 5.0,
-                  ),
+//                  Container(
+//                    height: 5.0,
+//                  ),
                   Text(
-                    "Not yet",
+                    date,
                     style: TextStyle(
                         color: Colors.grey.withOpacity(.6),
                         fontSize: 16,
@@ -479,7 +532,7 @@ class OrderDetailsScreen extends StatelessWidget {
     // end not active delivered
 
     // not active delivered
-    Widget _notPreparing() {
+    Widget _notPreparing(name,date) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -495,7 +548,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           ? 20.0
                           : 0,
                       right:
-                          locator<PrefsService>().appLanguage == "en" ? 0 : 20),
+                      locator<PrefsService>().appLanguage == "en" ? 0 : 20),
                   width: 70.0,
                   child: Container(
                     margin: EdgeInsets.only(top: 28.0),
@@ -521,7 +574,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         color: Colors.white,
                         border: Border.all(color: Colors.grey, width: 4),
                         borderRadius:
-                            new BorderRadius.all(Radius.circular(40.0)),
+                        new BorderRadius.all(Radius.circular(40.0)),
                       ),
                     ),
                   ),
@@ -536,17 +589,18 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).translate("Preparing_str"),
+//                    AppLocalizations.of(context).translate("Preparing_str")
+                    name,
                     style: TextStyle(
                         color: Colors.grey.withOpacity(.6),
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Container(
-                    height: 5.0,
-                  ),
+//                  Container(
+//                    height: 5.0,
+//                  ),
                   Text(
-                    "Not yet",
+                     date,
                     style: TextStyle(
                         color: Colors.grey.withOpacity(.6),
                         fontSize: 16,
@@ -563,212 +617,254 @@ class OrderDetailsScreen extends StatelessWidget {
 
     return MainBackground(
       height: MediaQuery.of(context).size.height * 0.2,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          centerTitle: true,
-          title: Text(
-            AppLocalizations.of(context).translate('Order_details_str'),
-            // AppLocalizations.of(context).translate('test'),
-            style: TextStyle(color: Colors.white),
-          ),
-          leading: InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  Icons.arrow_back_ios,
-                  size: 15,
-                ),
-                Text('Back'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            NotificationWidget(
-              onPressedNotifications: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Navigator.of(context).pushNamed('/notificationsScreen');
+      child: CustomObserver(
+          stream: locator<TrackOrderManager>().getData(args.id),
+          onSuccess: (_, TrackOrderModel model) {
+            for (int index = 0;index < model.data.order.steps.length;index++) {
 
-                locator<PrefsService>().notificationFlag = false;
-              },
-            )
-          ],
-        ),
-        body: ListView(
-          children: <Widget>[
-            SizedBox(
-              height: 10.0,
-            ),
-            Center(
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+              if(model.data.order.steps[index].id == 1 ){
+                firstTrackingController.add(model.data.order.steps[index]);
+              }
+              if(model.data.order.steps[index].id == 2 ){
+                secondTrackingController.add(model.data.order.steps[index]);
+              }
+              if(model.data.order.steps[index].id == 3 ){
+                thirdTrackingController.add(model.data.order.steps[index]);
+              }
+              if(model.data.order.steps[index].id == 4 ){
+                forthTrackingController.add(model.data.order.steps[index]);
+              }
+
+
+            }
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                centerTitle: true,
+                title: Text(
+                  AppLocalizations.of(context).translate('Track_your_order_str'),
+                  // AppLocalizations.of(context).translate('test'),
+                  style: TextStyle(color: Colors.white),
                 ),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 3.0),
-                  width: MediaQuery.of(context).size.width - 50,
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
-                  decoration: new BoxDecoration(
-                    borderRadius: new BorderRadius.all(Radius.circular(8.0)),
+                leading: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.arrow_back_ios,
+                        size: 15,
+                      ),
+                      Text('Back'),
+                    ],
                   ),
-                  child: Container(
-                    padding: EdgeInsets.all(15.0),
-                    child: Container(
-                      child: Column(
-                        children: <Widget>[
-                          // picture and other details
-                          Row(
-                            children: <Widget>[
-                              // the order image
-                              Container(
-                                height: 65.0,
-                                width: 65.0,
-                                child: Image.network(
-                                  'https://picsum.photos/250?image=9',
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              // end the order image
-                              SizedBox(
-                                width: 15.0,
-                              ),
-                              // order number & price & desc
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                actions: <Widget>[
+                  NotificationWidget(
+                    onPressedNotifications: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      Navigator.of(context).pushNamed('/notificationsScreen');
+
+                      locator<PrefsService>().notificationFlag = false;
+                    },
+                  )
+                ],
+              ),
+              body: ListView(
+                children: <Widget>[
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Center(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 3.0),
+                        width: MediaQuery.of(context).size.width - 50,
+                        margin:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
+                        decoration: new BoxDecoration(
+                          borderRadius: new BorderRadius.all(Radius.circular(8.0)),
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Container(
+                            child: Column(
+                              children: <Widget>[
+                                // picture and other details
+                                Row(
                                   children: <Widget>[
-                                    // order number
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          AppLocalizations.of(context)
-                                              .translate("Order_Number_str"),
-                                          style: TextStyle(
-                                              color: Colors.teal.shade900,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "# 2235",
-                                          style: TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
+                                    // the order image
+                                    Container(
+                                      height: 65.0,
+                                      width: 65.0,
+                                      child: Image.network(
+                                        model.data.order.logo,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
-                                    // end order number
-
+                                    // end the order image
                                     SizedBox(
-                                      height: 8.0,
+                                      width: 15.0,
                                     ),
+                                    // order number & price & desc
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          // order number
+                                          Row(
+                                            children: <Widget>[
+                                              Text(
+                                                AppLocalizations.of(context)
+                                                    .translate("Order_Number_str"),
+                                                style: TextStyle(
+                                                    color: Colors.teal.shade900,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600),
+                                              ),
+                                              SizedBox(
+                                                width: 15.0,
+                                              ),
+                                              Text(
+                                                "# ${model.data.order.id}",
+                                                style: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600),
+                                              ),
+                                            ],
+                                          ),
+                                          // end order number
+
+                                          SizedBox(
+                                            height: 8.0,
+                                          ),
 // desc of order
-                                    Text(
-                                      "2x tuna sahimi , 3x vegtables, 1x nudle",
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    // end desc of order
+                                          Text(
+                                            "${model.data.order.seller}",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          // end desc of order
 
-                                    SizedBox(
-                                      height: 8.0,
-                                    ),
+                                          SizedBox(
+                                            height: 8.0,
+                                          ),
 
-                                    // price
-                                    Text(
-                                      "18 KW",
-                                      style: TextStyle(
-                                          color: Colors.teal.shade900,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600),
+                                          // price
+                                          Text(
+                                            "${model.data.order.total}",
+                                            style: TextStyle(
+                                                color: Colors.teal.shade900,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          // end price
+                                        ],
+                                      ),
                                     ),
-                                    // end price
+                                    // order number & price & desc
                                   ],
                                 ),
-                              ),
-                              // order number & price & desc
-                            ],
+                                // end picture and other details
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                              ],
+                            ),
                           ),
-                          // end picture and other details
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 40.0,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height - 30,
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: 0,
-                    left: locator<PrefsService>().appLanguage == "en"
-                        ? 60.0
-                        : null,
-                    right:
-                        locator<PrefsService>().appLanguage == "en" ? null : 60,
-                    height: MediaQuery.of(context).size.height,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 3,
-                      width: 5.0,
-                      color: Colors.grey,
-                    ),
+                  SizedBox(
+                    height: 40.0,
                   ),
-                  Positioned(
-                    top: 0,
-                    left:
-                        locator<PrefsService>().appLanguage == "en" ? 35.0 : 0,
-                    right:
-                        locator<PrefsService>().appLanguage == "en" ? 0 : 35.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                    height: MediaQuery.of(context).size.height - 30,
+                    child: Stack(
                       children: <Widget>[
-                        _orderedSuccessfully(),
-                        SizedBox(
-                          height: 15.0,
+                        Positioned(
+                          top: 0,
+                          left: locator<PrefsService>().appLanguage == "en"
+                              ? 60.0
+                              : null,
+                          right:
+                          locator<PrefsService>().appLanguage == "en" ? null : 60,
+                          height: MediaQuery.of(context).size.height,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 3,
+                            width: 5.0,
+                            color: Colors.grey,
+                          ),
                         ),
-                        _notPreparing(),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        _notOnTheWay(),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        _delivered(),
+                        Positioned(
+                          top: 0,
+                          left:
+                          locator<PrefsService>().appLanguage == "en" ? 35.0 : 0,
+                          right:
+                          locator<PrefsService>().appLanguage == "en" ? 0 : 35.0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              StreamBuilder(
+                                stream: firstTrackingController.stream,
+                                builder: (context, firstTrackingControllerSnapshot) {
+                                  return firstTrackingControllerSnapshot.hasData ? _orderedSuccessfully(firstTrackingControllerSnapshot.data.name, firstTrackingControllerSnapshot.data.date):Container();
+                                }
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              StreamBuilder(
+                                stream: secondTrackingController.stream,
+                                builder: (context, secondTrackingControllerSnapshot) {
+                                  return secondTrackingControllerSnapshot.hasData? Container(child: secondTrackingControllerSnapshot.data.active == "yes" ? _preparing(secondTrackingControllerSnapshot.data.name, secondTrackingControllerSnapshot.data.date) : _notPreparing(secondTrackingControllerSnapshot.data.name, secondTrackingControllerSnapshot.data.date == "" ? AppLocalizations.of(context).translate('Not_yet_str') : secondTrackingControllerSnapshot.data.date)):Container();
+                                }
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              StreamBuilder(
+                                stream: thirdTrackingController.stream,
+                                builder: (context, thirdTrackingControllerSnapshot) {
+                                  return thirdTrackingControllerSnapshot.hasData ? Container(child: thirdTrackingControllerSnapshot.data.active == "yes" ? _onTheWay(thirdTrackingControllerSnapshot.data.name , thirdTrackingControllerSnapshot.data.date) : _notOnTheWay(thirdTrackingControllerSnapshot.data.name , thirdTrackingControllerSnapshot.data.date == "" ? AppLocalizations.of(context).translate('Not_yet_str'):thirdTrackingControllerSnapshot.data.date)):Container();
+                                }
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              StreamBuilder(
+                                stream: forthTrackingController.stream,
+                                builder: (context, forthTrackingControllerSnapshot) {
+                                  return forthTrackingControllerSnapshot.hasData ? Container(child: forthTrackingControllerSnapshot.data.active == "yes" ?  _delivered(forthTrackingControllerSnapshot.data.name , forthTrackingControllerSnapshot.data.date) : _notDelivered(forthTrackingControllerSnapshot.data.name , forthTrackingControllerSnapshot.data.date == "" ? AppLocalizations.of(context).translate('Not_yet_str'):forthTrackingControllerSnapshot.data.date )) : Container();
+                                }
+                              ),
 //                        SizedBox(
 //                          height: 65.0,
 //                        ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
+            );
+          }
       ),
     );
   }
@@ -842,4 +938,13 @@ class OrderDetailsScreen extends StatelessWidget {
       },
     );
   }
+  void dispose() {
+    firstTrackingController.close();
+    secondTrackingController.close();
+    thirdTrackingController.close();
+    forthTrackingController.close();
+
+    super.dispose();
+  }
 }
+
