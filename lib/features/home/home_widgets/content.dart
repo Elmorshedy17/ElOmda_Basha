@@ -220,47 +220,58 @@ class HomeContent extends StatelessWidget {
                                   size: 30,
                                 ),
                                 onPressed: () {
-
-                                  if(locator<PrefsService>()
-                                      .userObj  == null){
+                                  if (locator<PrefsService>().userObj == null) {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                          title: Text(AppLocalizations.of(
+                                                  context)
+                                              .translate("signToContinue_str")),
                                           content: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               FlatButton(
-                                                onPressed: (){
-                                                  Navigator.of(context).pushNamed('/signInScreen');
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          '/signInScreen');
                                                 },
-                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                                child: Text(AppLocalizations.of(
+                                                        context)
+                                                    .translate("signIn_str")),
                                               ),
                                               FlatButton(
-                                                onPressed:(){
+                                                onPressed: () {
                                                   Navigator.of(context).pop();
-
                                                 },
-                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                                child: Text(AppLocalizations.of(
+                                                        context)
+                                                    .translate("continue_str")),
                                               ),
                                             ],
                                           ),
                                         );
                                       },
                                     );
-                                  }else{
+                                  } else {
                                     sellersList[index].favourite == 'yes'
                                         ? locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite(
-                                        'seller',
-                                        'remove',
-                                        sellersList[index].id.toString())
+                                            .addOrRemoveFavorite(
+                                                'seller',
+                                                'remove',
+                                                sellersList[index]
+                                                    .id
+                                                    .toString())
                                         : locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite('seller', 'add',
-                                        sellersList[index].id.toString());
+                                            .addOrRemoveFavorite(
+                                                'seller',
+                                                'add',
+                                                sellersList[index]
+                                                    .id
+                                                    .toString());
                                     locator<HomeManager>().getData(categoryId);
-
                                   }
 
 //                                  sellersList[index].favourite == 'yes'
@@ -357,7 +368,8 @@ class HomeContent extends StatelessWidget {
                               Navigator.of(context).pushNamed(
                                 '/productDetailsScreen',
                                 arguments: ProductDetailsArguments(
-                                    // sellerId:trendingProductsList[index]. ,
+                                    sellerId:
+                                        trendingProductsList[index].seller_id,
                                     productId: trendingProductsList[index].id),
                               );
                             },
@@ -454,57 +466,60 @@ class HomeContent extends StatelessWidget {
                                   size: 30,
                                 ),
                                 onPressed: () {
-
-
-                                  if(locator<PrefsService>()
-                                      .userObj  == null){
+                                  if (locator<PrefsService>().userObj == null) {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                          title: Text(AppLocalizations.of(
+                                                  context)
+                                              .translate("signToContinue_str")),
                                           content: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               FlatButton(
-                                                onPressed: (){
-                                                  Navigator.of(context).pushNamed('/signInScreen');
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          '/signInScreen');
                                                 },
-                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                                child: Text(AppLocalizations.of(
+                                                        context)
+                                                    .translate("signIn_str")),
                                               ),
                                               FlatButton(
-                                                onPressed:(){
+                                                onPressed: () {
                                                   Navigator.of(context).pop();
-
                                                 },
-                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                                child: Text(AppLocalizations.of(
+                                                        context)
+                                                    .translate("continue_str")),
                                               ),
                                             ],
                                           ),
                                         );
                                       },
                                     );
-                                  }else{
-                                    trendingProductsList[index].favourite == 'yes'
+                                  } else {
+                                    trendingProductsList[index].favourite ==
+                                            'yes'
                                         ? locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite(
-                                        'product',
-                                        'remove',
-                                        trendingProductsList[index]
-                                            .id
-                                            .toString())
+                                            .addOrRemoveFavorite(
+                                                'product',
+                                                'remove',
+                                                trendingProductsList[index]
+                                                    .id
+                                                    .toString())
                                         : locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite(
-                                        'product',
-                                        'add',
-                                        trendingProductsList[index]
-                                            .id
-                                            .toString());
+                                            .addOrRemoveFavorite(
+                                                'product',
+                                                'add',
+                                                trendingProductsList[index]
+                                                    .id
+                                                    .toString());
                                     locator<HomeManager>().getData(categoryId);
-
                                   }
-
-
                                 }),
                           ),
                         ],
@@ -683,52 +698,59 @@ class HomeContent extends StatelessWidget {
                                   size: 30,
                                 ),
                                 onPressed: () {
-
-                                  if(locator<PrefsService>()
-                                      .userObj  == null){
+                                  if (locator<PrefsService>().userObj == null) {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
+                                          title: Text(AppLocalizations.of(
+                                                  context)
+                                              .translate("signToContinue_str")),
                                           content: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               FlatButton(
-                                                onPressed: (){
-                                                  Navigator.of(context).pushNamed('/signInScreen');
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          '/signInScreen');
                                                 },
-                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
+                                                child: Text(AppLocalizations.of(
+                                                        context)
+                                                    .translate("signIn_str")),
                                               ),
                                               FlatButton(
-                                                onPressed:(){
+                                                onPressed: () {
                                                   Navigator.of(context).pop();
-
                                                 },
-                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
+                                                child: Text(AppLocalizations.of(
+                                                        context)
+                                                    .translate("continue_str")),
                                               ),
                                             ],
                                           ),
                                         );
                                       },
                                     );
-                                  }else{
+                                  } else {
                                     sellersList[index].favourite == 'yes'
                                         ? locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite(
-                                        'seller',
-                                        'remove',
-                                        sellersList[index].id.toString())
+                                            .addOrRemoveFavorite(
+                                                'seller',
+                                                'remove',
+                                                sellersList[index]
+                                                    .id
+                                                    .toString())
                                         : locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite('seller', 'add',
-                                        sellersList[index].id.toString());
+                                            .addOrRemoveFavorite(
+                                                'seller',
+                                                'add',
+                                                sellersList[index]
+                                                    .id
+                                                    .toString());
                                     locator<HomeManager>().getData(categoryId);
-
                                   }
-
-
-
-
                                 }),
                           )
                         ],

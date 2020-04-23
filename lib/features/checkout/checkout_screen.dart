@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:momentoo/features/address_book/addressBook_model.dart';
 import 'package:momentoo/features/checkout/checkout_manager.dart';
 import 'package:momentoo/features/checkout/checkout_request/asUser_request.dart';
@@ -8,6 +10,7 @@ import 'package:momentoo/features/checkout/checkout_request/asVisitor_request.da
 import 'package:momentoo/features/checkout/checkout_validation.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
+import 'package:momentoo/features/checkout/paymentGateway/PaymentGateway.dart';
 import 'package:momentoo/features/new_address/dropdown_data.dart';
 import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/features/shopping_cart/cartActions_model.dart'
@@ -72,19 +75,19 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   int cityId = -1;
   String promoCode = '';
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController notesController = TextEditingController();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController blockController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController jaddaController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController flatController = TextEditingController();
-  TextEditingController floorController = TextEditingController();
-  TextEditingController streetController = TextEditingController();
-  TextEditingController street2Controller = TextEditingController();
-  TextEditingController buildingController = TextEditingController();
-  TextEditingController promoCodeController = TextEditingController();
+  String email = '';
+  String block = '';
+  String lastName = '';
+  String jadda = '';
+  String phone = '';
+  String flat = '';
+  String floor = '';
+  String notes = '';
+  String street2 = '';
+  String street = '';
+  String building = '';
+  String firstName = '';
+  String apartment = '';
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
   var returnDataFromNewAddress;
@@ -412,205 +415,106 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
                             locator<PrefsService>().userObj != null
                                 ? pickUpCheck == false
-                                    ? Row(
+                                    ? Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          Expanded(
-                                            child: Card(
-                                                elevation: 4.0,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                ),
-                                                child: FormField(
-                                                  builder:
-                                                      (FormFieldState state) {
-                                                    return DropdownButtonHideUnderline(
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: <Widget>[
-                                                          new InputDecorator(
-                                                            decoration:
-                                                                InputDecoration(
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide: BorderSide(
-                                                                    color: Colors
-                                                                        .transparent),
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .all(
-                                                                  const Radius
-                                                                          .circular(
-                                                                      10.0),
-                                                                ),
-                                                              ),
-                                                              filled: true,
-// hintText: 'Choose City',
-                                                              hintText: AppLocalizations
-                                                                      .of(
-                                                                          context)
-                                                                  .translate(
-                                                                      'selectAddress_str'),
-                                                              hintStyle:
-                                                                  TextStyle(
-                                                                fontFamily:
-                                                                    locator<PrefsService>().appLanguage ==
-                                                                            'en'
-                                                                        ? 'en'
-                                                                        : 'ar',
-                                                              ),
-                                                            ),
-                                                            isEmpty:
-                                                                _mySelection ==
-                                                                    null,
-                                                            child:
-                                                                DropdownButton(
-                                                              isDense: true,
-                                                              items: returnDataFromNewAddress ==
-                                                                      null
-                                                                  ? args
-                                                                      .addresses
-                                                                      .map<DropdownMenuItem<String>>(
-                                                                          (item) {
-                                                                      return new DropdownMenuItem(
-                                                                        child: new Text(
-                                                                            item.title),
-                                                                        value: item
-                                                                            .id
-                                                                            .toString(),
-                                                                      );
-                                                                    }).toList()
-                                                                  : returnDataFromNewAddress
-                                                                      .map<DropdownMenuItem<String>>(
-                                                                          (item) {
-                                                                      return new DropdownMenuItem(
-                                                                        child: new Text(
-                                                                            item.title),
-                                                                        value: item
-                                                                            .id
-                                                                            .toString(),
-                                                                      );
-                                                                    }).toList(),
-                                                              onChanged:
-                                                                  (newVal) {
-                                                                setState(() {
-                                                                  _mySelection =
-                                                                      newVal;
-                                                                });
-                                                                locator<DrobDownBloc>()
-                                                                    .DrobDownvalueSink
-                                                                    .add(
-                                                                        newVal);
-                                                              },
-                                                              value:
-                                                                  _mySelection,
+                                          Card(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                            child: FormField(
+                                              builder: (FormFieldState state) {
+                                                return DropdownButtonHideUnderline(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      new InputDecorator(
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              InputBorder.none,
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Colors
+                                                                    .transparent),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              const Radius
+                                                                      .circular(
+                                                                  10.0),
                                                             ),
                                                           ),
-                                                        ],
+                                                          filled: true,
+// hintText: 'Choose City',
+                                                          hintText: AppLocalizations
+                                                                  .of(context)
+                                                              .translate(
+                                                                  'selectAddress_str'),
+                                                          hintStyle: TextStyle(
+                                                            fontFamily:
+                                                                locator<PrefsService>()
+                                                                            .appLanguage ==
+                                                                        'en'
+                                                                    ? 'en'
+                                                                    : 'ar',
+                                                          ),
+                                                        ),
+                                                        isEmpty: _mySelection ==
+                                                            null,
+                                                        child: DropdownButton(
+                                                          isDense: true,
+                                                          items: returnDataFromNewAddress ==
+                                                                  null
+                                                              ? args.addresses.map<
+                                                                      DropdownMenuItem<
+                                                                          String>>(
+                                                                  (item) {
+                                                                  return new DropdownMenuItem(
+                                                                    child: new Text(
+                                                                        item.title),
+                                                                    value: item
+                                                                        .id
+                                                                        .toString(),
+                                                                  );
+                                                                }).toList()
+                                                              : returnDataFromNewAddress.map<
+                                                                  DropdownMenuItem<
+                                                                      String>>((item) {
+                                                                  return new DropdownMenuItem(
+                                                                    child: new Text(
+                                                                        item.title),
+                                                                    value: item
+                                                                        .id
+                                                                        .toString(),
+                                                                  );
+                                                                }).toList(),
+                                                          onChanged: (newVal) {
+                                                            addressId =
+                                                                int.parse(
+                                                                    newVal);
+                                                            setState(() {
+                                                              _mySelection =
+                                                                  newVal;
+                                                            });
+                                                            locator<DrobDownBloc>()
+                                                                .DrobDownvalueSink
+                                                                .add(newVal);
+                                                          },
+                                                          value: _mySelection,
+                                                        ),
                                                       ),
-                                                    );
-                                                  },
-                                                )
-//                                              child: ExpansionTile(
-//                                                title: Text(
-//                                                  AppLocalizations.of(context)
-//                                                      .translate(
-//                                                          'addresses_str'),
-//                                                  style: TextStyle(
-//                                                      color: Colors.grey,
-//                                                      fontSize: 21),
-//                                                ),
-//                                                children: <Widget>[
-//                                                  StreamBuilder<Object>(
-//                                                      stream:
-//                                                          addressesBehaviorSubject
-//                                                              .stream,
-//                                                      builder: (context,
-//                                                          addressesSnapshot) {
-//                                                        return Container(
-//                                                          height: MediaQuery.of(
-//                                                                      context)
-//                                                                  .size
-//                                                                  .height /
-//                                                              3,
-//                                                          child: ListView
-//                                                              .separated(
-//                                                                  shrinkWrap:
-//                                                                      true,
-//                                                                  separatorBuilder:
-//                                                                      (context,
-//                                                                              index) =>
-//                                                                          Divider(
-//                                                                            color:
-//                                                                                Colors.grey.withOpacity(0.5),
-//                                                                          ),
-//                                                                  itemCount: args
-//                                                                      .addresses
-//                                                                      .length,
-//                                                                  itemBuilder:
-//                                                                      (context,
-//                                                                          index) {
-//                                                                    return InkWell(
-//                                                                      onTap:
-//                                                                          () {
-//                                                                        addressesBehaviorSubject
-//                                                                            .sink
-//                                                                            .add(index);
-//                                                                        addressId = args
-//                                                                            .addresses[index]
-//                                                                            .id;
-//                                                                      },
-//                                                                      child:
-//                                                                          Padding(
-//                                                                        padding:
-//                                                                            EdgeInsets.all(8.0),
-//                                                                        child:
-//                                                                            Row(
-//                                                                          mainAxisAlignment:
-//                                                                              MainAxisAlignment.spaceBetween,
-//                                                                          children: <
-//                                                                              Widget>[
-//                                                                            Text(
-//                                                                              args.addresses[index].title,
-//                                                                              style: TextStyle(color: index == addressesBehaviorSubject.value ? Colors.teal.shade900 : Colors.black54, fontSize: 18, fontWeight: FontWeight.w600),
-//                                                                            ),
-//                                                                            index == addressesBehaviorSubject.value
-//                                                                                ? Container(
-//                                                                                    height: 28.0,
-//                                                                                    width: 28.0,
-//                                                                                    decoration: new BoxDecoration(
-//                                                                                      color: Colors.teal.shade800,
-//                                                                                      borderRadius: new BorderRadius.all(
-//                                                                                        Radius.circular(50.0),
-//                                                                                      ),
-//                                                                                    ),
-//                                                                                    child: Center(
-//                                                                                      child: Icon(
-//                                                                                        Icons.check,
-//                                                                                        size: 18,
-//                                                                                        color: Colors.white,
-//                                                                                      ),
-//                                                                                    ),
-//                                                                                  )
-//                                                                                : Container()
-//                                                                          ],
-//                                                                        ),
-//                                                                      ),
-//                                                                    );
-//                                                                  }),
-//                                                        );
-//                                                      }),
-//                                                ],
-//                                              ),
-                                                ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -704,10 +608,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   stream: validation.firstName$,
                                                   builder: (context, snapshot) {
                                                     return TextFormField(
-                                                      controller:
-                                                          firstNameController,
-                                                      onChanged: validation
-                                                          .inFirstName.add,
+                                                      onChanged: (v) {
+                                                        firstName = v;
+                                                        validation.inFirstName
+                                                            .add(v);
+                                                      },
                                                       focusNode:
                                                           firstNameFocusNode,
                                                       textInputAction:
@@ -754,10 +659,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   stream: validation.lastName$,
                                                   builder: (context, snapshot) {
                                                     return TextFormField(
-                                                      controller:
-                                                          lastNameController,
-                                                      onChanged: validation
-                                                          .inLastName.add,
+                                                      onChanged: (v) {
+                                                        lastName = v;
+                                                        validation.inLastName
+                                                            .add(v);
+                                                      },
                                                       focusNode:
                                                           lastNameFocusNode,
                                                       textInputAction:
@@ -804,10 +710,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   stream: validation.phone$,
                                                   builder: (context, snapshot) {
                                                     return TextFormField(
-                                                      controller:
-                                                          phoneController,
-                                                      onChanged: validation
-                                                          .inPhone.add,
+                                                      onChanged: (v) {
+                                                        validation.inPhone
+                                                            .add(v);
+                                                        if (v.length == 8) {
+                                                          phone = v;
+                                                        }
+                                                      },
                                                       keyboardType: TextInputType
                                                           .numberWithOptions(),
                                                       focusNode:
@@ -856,10 +765,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   stream: validation.email$,
                                                   builder: (context, snapshot) {
                                                     return TextFormField(
-                                                      controller:
-                                                          emailController,
-                                                      onChanged: validation
-                                                          .inEmail.add,
+                                                      onChanged: (v) {
+                                                        validation.inEmail
+                                                            .add(v);
+                                                        if (EmailValidator
+                                                            .validate(v)) {
+                                                          email = v;
+                                                        }
+                                                      },
                                                       focusNode: emailFocusNode,
                                                       keyboardType:
                                                           TextInputType
@@ -963,109 +876,89 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                               SizedBox(
                                                 height: 8.0,
                                               ),
-                                              ExpansionTile(
-                                                backgroundColor:
-                                                    Colors.grey[100],
-                                                title: Text(
-                                                  AppLocalizations.of(context)
-                                                      .translate('City_Str'),
-                                                  style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 21),
-                                                ),
-                                                children: <Widget>[
-                                                  StreamBuilder<Object>(
-                                                      stream:
-                                                          cityBehaviorSubject
-                                                              .stream,
-                                                      builder: (context,
-                                                          addressesSnapshot) {
-                                                        return Container(
-                                                          child: Container(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                3,
-                                                            child: ListView
-                                                                .separated(
-                                                                    primary:
-                                                                        false,
-                                                                    shrinkWrap:
-                                                                        true,
-                                                                    separatorBuilder:
-                                                                        (context,
-                                                                                index) =>
-                                                                            Divider(
-                                                                              color: Colors.grey.withOpacity(.5),
-                                                                            ),
-                                                                    itemCount: args
-                                                                            .cities
-                                                                            ?.length ??
-                                                                        0,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
-                                                                      return InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          cityBehaviorSubject
-                                                                              .sink
-                                                                              .add(index);
-                                                                          cityId = args
-                                                                              .cities[index]
-                                                                              .id;
-                                                                        },
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(8.0),
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
-                                                                            children: <Widget>[
-                                                                              Text(
-                                                                                args.cities[index].name,
-                                                                                style: TextStyle(color: index == cityBehaviorSubject.value ? Colors.teal.shade900 : Colors.black54, fontSize: 18, fontWeight: FontWeight.w600),
-                                                                              ),
-                                                                              index == cityBehaviorSubject.value
-                                                                                  ? Container(
-                                                                                      height: 28.0,
-                                                                                      width: 28.0,
-                                                                                      decoration: new BoxDecoration(
-                                                                                        color: Colors.teal.shade800,
-                                                                                        borderRadius: new BorderRadius.all(
-                                                                                          Radius.circular(50.0),
-                                                                                        ),
-                                                                                      ),
-                                                                                      child: Center(
-                                                                                        child: Icon(
-                                                                                          Icons.check,
-                                                                                          size: 18,
-                                                                                          color: Colors.white,
-                                                                                        ),
-                                                                                      ),
-                                                                                    )
-                                                                                  : Container()
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    }),
+                                              FormField(
+                                                builder:
+                                                    (FormFieldState state) {
+                                                  return DropdownButtonHideUnderline(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        new InputDecorator(
+                                                          decoration:
+                                                              InputDecoration(
+                                                            border: InputBorder
+                                                                .none,
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .transparent),
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                const Radius
+                                                                        .circular(
+                                                                    10.0),
+                                                              ),
+                                                            ),
+                                                            filled: true,
+                                                            hintText: AppLocalizations
+                                                                    .of(context)
+                                                                .translate(
+                                                                    'City_Str'),
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              fontFamily:
+                                                                  locator<PrefsService>()
+                                                                              .appLanguage ==
+                                                                          'en'
+                                                                      ? 'en'
+                                                                      : 'ar',
+                                                            ),
                                                           ),
-                                                        );
-                                                      }),
-                                                ],
+                                                          isEmpty:
+                                                              _mySelection ==
+                                                                  null,
+                                                          child: DropdownButton(
+                                                            isDense: true,
+                                                            items: args.cities.map<
+                                                                DropdownMenuItem<
+                                                                    String>>((item) {
+                                                              return new DropdownMenuItem(
+                                                                child: new Text(
+                                                                    item.name),
+                                                                value: item.id
+                                                                    .toString(),
+                                                              );
+                                                            }).toList(),
+                                                            onChanged:
+                                                                (newVal) {
+                                                              addressId =
+                                                                  int.parse(
+                                                                      newVal);
+                                                              setState(() {
+                                                                _mySelection =
+                                                                    newVal;
+                                                              });
+                                                              locator<DrobDownBloc>()
+                                                                  .DrobDownvalueSink
+                                                                  .add(newVal);
+                                                            },
+                                                            value: _mySelection,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                               SizedBox(
                                                 height: 8.0,
                                               ),
                                               Container(
-//                            color: Colors.grey[100],
                                                 child: Container(
-//                              margin:
-//                              const EdgeInsets.symmetric(horizontal: 15.0),
                                                   child: Row(
                                                     children: <Widget>[
                                                       Expanded(
@@ -1079,10 +972,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               builder: (context,
                                                                   snapshot) {
                                                                 return TextFormField(
-                                                                  controller:
-                                                                      blockController,
                                                                   onChanged:
                                                                       (value) {
+                                                                    block =
+                                                                        value;
                                                                     validation
                                                                         .inBlock
                                                                         .add(
@@ -1146,12 +1039,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               builder: (context,
                                                                   snapshot) {
                                                                 return TextFormField(
-                                                                  controller:
-                                                                      streetController,
                                                                   onChanged:
-                                                                      validation
-                                                                          .inStreet
-                                                                          .add,
+                                                                      (v) {
+                                                                    street = v;
+                                                                    validation
+                                                                        .inStreet
+                                                                        .add(v);
+                                                                  },
                                                                   textAlign:
                                                                       TextAlign
                                                                           .center,
@@ -1215,10 +1109,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                       builder:
                                                           (context, snapshot) {
                                                         return TextFormField(
-                                                          controller:
-                                                              street2Controller,
-                                                          onChanged: validation
-                                                              .inStreet2.add,
+                                                          onChanged: (v) {
+                                                            street2 = v;
+                                                            validation.inStreet2
+                                                                .add(v);
+                                                          },
                                                           focusNode:
                                                               streetTwoFocusNode,
                                                           textInputAction:
@@ -1270,10 +1165,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                       builder:
                                                           (context, snapshot) {
                                                         return TextFormField(
-                                                          controller:
-                                                              buildingController,
-                                                          onChanged: validation
-                                                              .iBuilding.add,
+                                                          onChanged: (v) {
+                                                            building = v;
+                                                            validation.iBuilding
+                                                                .add(v);
+                                                          },
                                                           focusNode:
                                                               houseFocusNode,
                                                           textInputAction:
@@ -1314,10 +1210,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                 height: 8.0,
                                               ),
                                               Container(
-//                            color: Colors.grey[100],
                                                 child: Container(
-//                              margin:
-//                              const EdgeInsets.symmetric(horizontal: 15.0),
                                                   child: Row(
                                                     children: <Widget>[
                                                       Expanded(
@@ -1331,12 +1224,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               builder: (context,
                                                                   snapshot) {
                                                                 return TextFormField(
-                                                                  controller:
-                                                                      floorController,
                                                                   onChanged:
-                                                                      validation
-                                                                          .inFloor
-                                                                          .add,
+                                                                      (v) {
+                                                                    floor = v;
+                                                                    validation
+                                                                        .inFloor
+                                                                        .add(v);
+                                                                  },
                                                                   textAlign:
                                                                       TextAlign
                                                                           .center,
@@ -1395,12 +1289,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               builder: (context,
                                                                   snapshot) {
                                                                 return TextFormField(
-                                                                  controller:
-                                                                      jaddaController,
                                                                   onChanged:
-                                                                      validation
-                                                                          .inJadda
-                                                                          .add,
+                                                                      (v) {
+                                                                    jadda = v;
+                                                                    validation
+                                                                        .inJadda
+                                                                        .add(v);
+                                                                  },
                                                                   textAlign:
                                                                       TextAlign
                                                                           .center,
@@ -1459,7 +1354,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                           .symmetric(
                                                       horizontal: 15.0),
                                                   child: TextFormField(
-                                                    controller: flatController,
+                                                    onChanged: (v) {
+                                                      apartment = v;
+                                                    },
                                                     focusNode:
                                                         instructionsFocusNode,
                                                     textInputAction:
@@ -1498,7 +1395,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                       horizontal: 15.0,
                                                       vertical: 8.0),
                                                   child: TextFormField(
-                                                    controller: notesController,
+                                                    onChanged: (v) {
+                                                      notes = v;
+                                                    },
                                                     maxLines: 8,
                                                     focusNode:
                                                         phoneNumberFocusNode,
@@ -1767,10 +1666,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       color: Colors.white, fontSize: 20.0),
                                 ),
                                 onPressed: () async {
-                                  isLoading.add(true);
                                   if (locator<PrefsService>().userObj != null) {
                                     // As User
-                                    if (addressId != -1) {
+
+                                    if (!deliveryChecked ||
+                                        (addressId != -1 && deliveryChecked)) {
+                                      isLoading.add(true);
                                       locator<AsUserRequest>()
                                         ..sellerId = locator<PrefsService>()
                                             .cartObj
@@ -1782,16 +1683,23 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                             ? 'delivery'
                                             : 'pickup'
                                         ..promoCode = promoCode
-                                        // ..promoCode = promoCodeController.value?.text ?? ''
                                         ..addressId = addressId
                                         ..notes = '';
-                                      // ..notes = notesController.value?.text ?? '';
 
                                       await locator<CheckoutManager>()
                                           .checkoutAsUserFuture()
                                           .then((value) {
                                         isLoading.add(false);
                                         if (value.status != 0) {
+                                          Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  PaymentGatewayScreen(
+                                                url: value.data.paymentLink,
+                                              ),
+                                            ),
+                                          );
                                         } else {
                                           checkoutDialog(value.message);
                                         }
@@ -1802,6 +1710,98 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                     }
                                   } else {
                                     // As Visitor
+                                    if (firstName.isEmpty) {
+                                      showToast(
+                                          locator<PrefsService>().appLanguage ==
+                                                  "en"
+                                              ? 'Enter first name'
+                                              : 'أدخل الإسم الأول');
+                                      return;
+                                    }
+                                    if (lastName.isEmpty) {
+                                      showToast(
+                                          locator<PrefsService>().appLanguage ==
+                                                  "en"
+                                              ? 'Enter last name'
+                                              : 'أدخل الأسم الأخير');
+                                      return;
+                                    }
+                                    if (phone.isEmpty) {
+                                      showToast(
+                                          locator<PrefsService>().appLanguage ==
+                                                  "en"
+                                              ? 'Enter phone'
+                                              : 'أدخل رقم الهاتف');
+                                      return;
+                                    }
+                                    if (email.isEmpty) {
+                                      showToast(
+                                          locator<PrefsService>().appLanguage ==
+                                                  "en"
+                                              ? 'Enter valid email'
+                                              : 'أدخل بريد إلكتروني صحيح');
+                                      return;
+                                    }
+                                    if (deliveryChecked) {
+                                      if (addressId == -1) {
+                                        showToast(locator<PrefsService>()
+                                                    .appLanguage ==
+                                                "en"
+                                            ? 'Select city'
+                                            : 'اختر مدينة');
+                                        return;
+                                      }
+                                      if (block.isEmpty) {
+                                        showToast(locator<PrefsService>()
+                                                    .appLanguage ==
+                                                "en"
+                                            ? 'Enter block'
+                                            : 'أدخل المنطقة');
+                                        return;
+                                      }
+                                      if (street.isEmpty) {
+                                        showToast(locator<PrefsService>()
+                                                    .appLanguage ==
+                                                "en"
+                                            ? 'Enter street'
+                                            : 'أدخل الشارع');
+                                        return;
+                                      }
+                                      if (street2.isEmpty) {
+                                        showToast(locator<PrefsService>()
+                                                    .appLanguage ==
+                                                "en"
+                                            ? 'Enter street 2'
+                                            : 'أدخل اسم الشارع');
+                                        return;
+                                      }
+                                      if (building.isEmpty) {
+                                        showToast(locator<PrefsService>()
+                                                    .appLanguage ==
+                                                "en"
+                                            ? 'Enter building'
+                                            : 'أدخل رقم البناية');
+                                        return;
+                                      }
+                                      if (floor.isEmpty) {
+                                        showToast(locator<PrefsService>()
+                                                    .appLanguage ==
+                                                "en"
+                                            ? 'Enter floor'
+                                            : 'أدخل رقم الطابق');
+                                        return;
+                                      }
+                                      if (jadda.isEmpty) {
+                                        showToast(locator<PrefsService>()
+                                                    .appLanguage ==
+                                                "en"
+                                            ? 'Enter jadda'
+                                            : 'أدخل الجادة');
+                                        return;
+                                      }
+                                    }
+
+                                    isLoading.add(true);
                                     locator<AsVisitorRequest>()
                                       ..sellerId = locator<PrefsService>()
                                           .cartObj
@@ -1813,7 +1813,38 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                           ? 'delivery'
                                           : 'pickup'
                                       ..promoCode = promoCode
-                                      ..notes = '';
+                                      ..notes = notes
+                                      ..firstName = firstName
+                                      ..lastName = lastName
+                                      ..phone = phone
+                                      ..email = email
+                                      ..cityId = addressId
+                                      ..block = block
+                                      ..street = street
+                                      ..street2 = street2
+                                      ..building = building
+                                      ..floor = floor
+                                      ..jadda = jadda
+                                      ..flat = apartment;
+
+                                    await locator<CheckoutManager>()
+                                        .checkoutAsVisitorFuture()
+                                        .then((value) {
+                                      isLoading.add(false);
+                                      if (value.status != 0) {
+                                        Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                PaymentGatewayScreen(
+                                              url: value.data.paymentLink,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        checkoutDialog(value.message);
+                                      }
+                                    });
                                   }
                                 },
                               ),
@@ -1888,6 +1919,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           ],
         );
       },
+    );
+  }
+
+  showToast(message) {
+    Fluttertoast.showToast(
+//      msg: "${locator<PrefsService>().appLanguage == "en" ? 'added successfully' : 'تم الاضافة بنجاح'}",
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.black.withOpacity(.6),
+      textColor: Colors.white,
+      fontSize: 14.0,
     );
   }
 }

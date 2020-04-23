@@ -203,6 +203,7 @@ class TrandingSellers {
 
 class TrandingProducts {
   int id;
+  int seller_id;
   String name;
   String image;
   String price;
@@ -212,6 +213,7 @@ class TrandingProducts {
 
   TrandingProducts(
       {this.id,
+      this.seller_id,
       this.name,
       this.image,
       this.price,
@@ -221,6 +223,7 @@ class TrandingProducts {
 
   TrandingProducts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    seller_id = json['seller_id'];
     name = json['name'];
     image = json['image'];
     price = json['price'];
@@ -232,6 +235,7 @@ class TrandingProducts {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['seller_id'] = this.seller_id;
     data['name'] = this.name;
     data['image'] = this.image;
     data['price'] = this.price;

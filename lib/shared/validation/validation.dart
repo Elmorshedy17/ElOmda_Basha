@@ -73,7 +73,7 @@ mixin Validation {
     if (value.toString().toLowerCase() == confirm.toLowerCase()) {
       sink.addError(locator<PrefsService>().appLanguage == 'en'
           ? 'Please enter the same password'
-          : 'تأكد منإدخال نفس كلمة السر');
+          : 'تأكد من إدخال نفس كلمة السر');
     } else {
       sink.add(value);
     }

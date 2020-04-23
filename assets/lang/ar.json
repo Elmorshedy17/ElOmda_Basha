@@ -199,5 +199,6 @@
   "DeliveryCheck_str": "توصيل",
   "reorder_order_str": "إعادة طلب",
   "Not_yet_str": "ليس حتي الان",
-  "delivery_Fees_str": "خدمة التوصيل"
+  "delivery_Fees_str": "خدمة التوصيل",
+  "Payment_Gateway_str": "بوابة الدفع"
 }

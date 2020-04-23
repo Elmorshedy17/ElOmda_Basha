@@ -104,9 +104,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   Navigator.of(context).pushNamed(
                     '/productDetailsScreen',
                     arguments: ProductDetailsArguments(
-                      productId: model.data.products[index].id,
-                      // sellerId: model.data.
-                    ),
+                        productId: model.data.products[index].id,
+                        sellerId: model.data.products[index].seller_id),
                   );
                 },
                 child: FittedBox(
