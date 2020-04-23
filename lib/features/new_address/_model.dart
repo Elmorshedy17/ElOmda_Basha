@@ -1,3 +1,5 @@
+import 'package:momentoo/features/address_book/addressBook_model.dart';
+
 class AddNewAddressModel {
   int status;
   String message;
@@ -52,21 +54,21 @@ class Data {
   }
 }
 
-class Addresses {
-  int id;
-  String title;
-
-  Addresses({this.id, this.title});
-
-  Addresses.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    return data;
-  }
-}
+//class Addresses {
+//  int id;
+//  String title;
+//
+//  Addresses({this.id, this.title});
+//
+//  Addresses.fromJson(Map<String, dynamic> json) {
+//    id = json['id'];
+//    title = json['title'];
+//  }
+//
+//  Map<String, dynamic> toJson() {
+//    final Map<String, dynamic> data = new Map<String, dynamic>();
+//    data['id'] = this.id;
+//    data['title'] = this.title;
+//    return data;
+//  }
+//}

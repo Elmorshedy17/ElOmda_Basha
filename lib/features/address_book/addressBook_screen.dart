@@ -16,15 +16,34 @@ import 'package:rxdart/rxdart.dart';
 
 BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
-
 class AddressBookScreen extends StatefulWidget {
   @override
   _AddressBookScreenState createState() => _AddressBookScreenState();
 }
 
 class _AddressBookScreenState extends State<AddressBookScreen> {
+  var returnDataFromNewAddress;
 
-  List<User> users = <User>[const User(1,'Foo'), const User(2,'Bar')];
+  // A method that launches the SelectionScreen and awaits the
+  // result from Navigator.pop.
+  _navigateAndRetrieveData(
+      BuildContext context, Country country, List<Cities> cities) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.push(
+      context,
+      // Create the SelectionScreen in the next step.
+      MaterialPageRoute(
+          builder: (context) => NewAddressScreen(
+                country: country,
+                cities: cities,
+              )),
+    );
+
+    returnDataFromNewAddress = result;
+  }
+
+  List<User> users = <User>[const User(1, 'Foo'), const User(2, 'Bar')];
 //List<List<User>> Users = [];
   @override
   Widget build(BuildContext context) {
@@ -63,18 +82,24 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
             ),
           ),
         ),
-        body:  Stack(
+        body: Stack(
           children: <Widget>[
             CustomObserver(
                 stream: locator<AddressesManager>().getData(),
                 onSuccess: (_, AddressesModel model) {
                   print("model$model");
-                  for (int index = 0;index < model.data.cities.length;index++) {
-                    users.add( User(model.data.cities[index].id,model.data.cities[index].name));
+                  for (int index = 0;
+                      index < model.data.cities.length;
+                      index++) {
+                    users.add(User(model.data.cities[index].id,
+                        model.data.cities[index].name));
                   }
-                  locator<DrobDownBloc>().DrobDownBlocSink.add(model.data.cities);
+                  locator<DrobDownBloc>()
+                      .DrobDownBlocSink
+                      .add(model.data.cities);
 
-                  print("locator<DrobDownBloc>().currentDrobDownBloc${locator<DrobDownBloc>().currentDrobDownBloc[0].name}");
+                  print(
+                      "locator<DrobDownBloc>().currentDrobDownBloc${locator<DrobDownBloc>().currentDrobDownBloc[0].name}");
                   return Stack(
                     children: <Widget>[
                       Column(
@@ -100,7 +125,6 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
 //              ),
 //            ),
 
-
                           Expanded(
                             child: Container(
                               width: MediaQuery.of(context).size.width,
@@ -108,11 +132,11 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   physics: BouncingScrollPhysics(),
-                                  itemCount:  model.data.addresses.length,
+                                  itemCount: model.data.addresses.length,
                                   itemBuilder: (context, index) {
                                     return AddressBookItem(
-                                   id: model.data.addresses[index].id ,
-                                   modelData: model,
+                                      id: model.data.addresses[index].id,
+                                      modelData: model,
 //                                deleteTag: 'd1',
 //                                editTag: 'e1',
                                       adress: model.data.addresses[index].title,
@@ -147,15 +171,22 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     fontFamily:
-                                    locator<PrefsService>().appLanguage == 'en'
-                                        ? 'en'
-                                        : 'ar'),
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar'),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => NewAddressScreen(model)),
-                                );
+                                _navigateAndRetrieveData(context,
+                                    model.data.country, model.data.cities);
+//                                Navigator.push(
+//                                  context,
+//                                  MaterialPageRoute(
+//                                      builder: (context) => NewAddressScreen(
+//                                            country: model.data.country,
+//                                            cities: model.data.cities,
+//                                          )),
+//                                );
 //                          model
 //                          Navigator.of(context).pushNamed('/newAddressScreen');
                               },
@@ -163,23 +194,22 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                           ),
                         ),
                       ),
-
                     ],
                   );
-                }
-            ),
+                }),
             isLoading.value == true
                 ? Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.black.withOpacity(0.5),
-              child: Center(child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                        child: Container(
 //                      color: mainColor,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )),
-            )
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )),
+                  )
                 : Container(),
           ],
         ),
@@ -209,10 +239,8 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
 //        ),
       ),
     );
-  }}
-
-
-
+  }
+}
 
 class AddressBookItem extends StatelessWidget {
 //  final String deleteTag;
@@ -221,9 +249,8 @@ class AddressBookItem extends StatelessWidget {
   final int id;
   final modelData;
 
-  AddressBookItem({this.adress,this.id,this.modelData});
+  AddressBookItem({this.adress, this.id, this.modelData});
 //    , this.editTag, this.adress
-
 
   @override
   Widget build(BuildContext context) {
@@ -273,16 +300,18 @@ class AddressBookItem extends StatelessWidget {
 
                       isLoading.add(true);
 
-
-                      AddressesInfoRepo.getAddressesInfoData(id).then((onValue){
+                      AddressesInfoRepo.getAddressesInfoData(id)
+                          .then((onValue) {
                         isLoading.add(false);
 
-                        if(onValue.status == 1){
+                        if (onValue.status == 1) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EditAddressScreen(onValue)),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditAddressScreen(onValue)),
                           );
-                        }else{
+                        } else {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -292,19 +321,15 @@ class AddressBookItem extends StatelessWidget {
                             },
                           );
                         }
-
-
                       });
-
-
-
                     },
                     child: Text(
                       AppLocalizations.of(context).translate('edit_str'),
                       style: TextStyle(
-                          fontFamily: locator<PrefsService>().appLanguage == 'en'
-                              ? 'en'
-                              : 'ar'),
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar'),
                     ),
                   ),
                 ),
@@ -318,7 +343,8 @@ class AddressBookItem extends StatelessWidget {
                     ),
                     onPressed: () {
                       isLoading.add(true);
-                      DeleteAddressRepo.postDeleteNewAddressData(id).then((onValue){
+                      DeleteAddressRepo.postDeleteNewAddressData(id)
+                          .then((onValue) {
                         isLoading.add(false);
                         showDialog(
                           context: context,
@@ -332,18 +358,18 @@ class AddressBookItem extends StatelessWidget {
 
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => AddressBookScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => AddressBookScreen()),
                         );
-
-
                       });
                     },
                     child: Text(
                       AppLocalizations.of(context).translate('delete_str'),
                       style: TextStyle(
-                          fontFamily: locator<PrefsService>().appLanguage == 'en'
-                              ? 'en'
-                              : 'ar'),
+                          fontFamily:
+                              locator<PrefsService>().appLanguage == 'en'
+                                  ? 'en'
+                                  : 'ar'),
                     ),
                   ),
                 ),
@@ -357,7 +383,7 @@ class AddressBookItem extends StatelessWidget {
 }
 
 class User {
-  const User(this.id,this.name);
+  const User(this.id, this.name);
 
   final String name;
   final int id;

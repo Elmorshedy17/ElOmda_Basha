@@ -29,23 +29,27 @@ class CheckoutValidationManager with Validation implements Manager {
   Sink<String> get inBlock => addressSubject.sink;
 
   final streetSubject = BehaviorSubject<String>();
-  Stream<String> get street$ => addressSubject.stream.transform(validateField);
+  Stream<String> get street$ =>
+      addressSubject.stream.transform(validateFieldIsRequired);
   Sink<String> get inStreet => addressSubject.sink;
 
   final street2Subject = BehaviorSubject<String>();
-  Stream<String> get street2$ => addressSubject.stream.transform(validateField);
+  Stream<String> get street2$ =>
+      addressSubject.stream.transform(validateFieldIsRequired);
   Sink<String> get inStreet2 => addressSubject.sink;
   final buildingSubject = BehaviorSubject<String>();
   Stream<String> get building$ =>
-      addressSubject.stream.transform(validateField);
+      addressSubject.stream.transform(validateFieldIsRequired);
   Sink<String> get iBuilding => addressSubject.sink;
 
   final floorSubject = BehaviorSubject<String>();
-  Stream<String> get floor$ => addressSubject.stream.transform(validateField);
+  Stream<String> get floor$ =>
+      addressSubject.stream.transform(validateFieldIsRequired);
   Sink<String> get inFloor => addressSubject.sink;
 
   final jaddaSubject = BehaviorSubject<String>();
-  Stream<String> get jadda$ => addressSubject.stream.transform(validateField);
+  Stream<String> get jadda$ =>
+      addressSubject.stream.transform(validateFieldIsRequired);
   Sink<String> get inJadda => addressSubject.sink;
 
   final phoneSubject = BehaviorSubject<String>();

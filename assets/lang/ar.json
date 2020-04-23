@@ -179,6 +179,7 @@
   "choose_your_location_str": "ادخل موقعك لبدء اختيار المطاعم القريبه منك .",
   "No_str": "لا",
   "Yes_Str": "حسنا",
+  "selectAddress_str": "اختر عنوان",
   "nice_to_meet_you_str": "مرحبا , سررت بلقائك",
   "Use_current_location_str": "استخدم موقعك الحاليي",
   "Select_it_manually_str": "اختار موقعك بنفسك",
@@ -194,6 +195,8 @@
   "Home_str": "الرئيسية",
   "CartNav_str": "سلة الشراء",
   "Nearby_str": "أماكن قريبة",
+  "NewAddress_str": "عنوان جديد",
+  "DeliveryCheck_str": "توصيل",
   "reorder_order_str": "إعادة طلب",
   "Not_yet_str": "ليس حتي الان",
   "delivery_Fees_str": "خدمة التوصيل"

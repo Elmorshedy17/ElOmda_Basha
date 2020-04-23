@@ -13,7 +13,9 @@ mixin Validation {
     if (isEmail(value)) {
       sink.add(value);
     } else {
-      sink.addError('Incorrect Email');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'Incorrect Email'
+          : 'بريد إلكتروني خاطئ');
     }
   });
 
@@ -21,10 +23,14 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      locator<PrefsService>().appLanguage == "en" ? sink.addError('* required') : sink.addError('* مطلوب');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? '* required'
+          : 'هذا الحقل مطلوب');
     } else if (length < 3) {
-      locator<PrefsService>().appLanguage == "en" ? sink.addError('The field must be longer than 3 characters') : sink.addError('لا يمكن ان تقل عدد الاحرف عن 3 احرف');
-    } else {
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'The field must be 3 characters at least'
+          : 'أدخل 3 رموز على الأقل');
+
       sink.add(value);
     }
   });
@@ -33,7 +39,10 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      locator<PrefsService>().appLanguage == "en" ? sink.addError('* required') : sink.addError('* مطلوب');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? '* required'
+          : 'هذا الحقل مطلوب');
+
       // } else if (length < 3) {
       //   sink.addError('The field must be longer than 3 characters');
     } else {
@@ -45,9 +54,11 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      locator<PrefsService>().appLanguage == "en" ? sink.addError('* required') : sink.addError('* مطلوب');
-    } else if (length < 8) {
-      locator<PrefsService>().appLanguage == "en" ? sink.addError('The field must be longer than 8 characters') : sink.addError('لا يمكن ان تقل عدد الاحرف عن 8 احرف');
+      sink.addError('* required ');
+    } else if (length != 8) {
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'The field must be 8 digits'
+          : 'رقم الهاتف يجب ان يكون 8 أرقام');
     } else {
       sink.add(value);
     }
@@ -60,7 +71,9 @@ mixin Validation {
       confirm = password.toString();
     });
     if (value.toString().toLowerCase() == confirm.toLowerCase()) {
-      locator<PrefsService>().appLanguage == "en" ? sink.addError('Please enter the same password') : sink.addError('برجاء ادخال نفس كلمة المرور');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'Please enter the same password'
+          : 'تأكد منإدخال نفس كلمة السر');
     } else {
       sink.add(value);
     }

@@ -22,9 +22,11 @@
   "Delivered_str": "Delivered",
   "Rate_vendor_str": "Rate Vendor",
   "Delivery_str": "Delivery",
+  "DeliveryCheck_str": "Delivery",
   "PickUp_str": "Pick Up",
   "Choose_Country_str": "Choose Country",
   "addresses_str": "addresses",
+  "selectAddress_str": "Select address",
   "first_name_str": "First Name",
   "last_name_str": "Last Name",
   "965_phone_number_str": "+965 |   Phone Number",
@@ -197,5 +199,6 @@
   "Home_str": "Home",
   "CartNav_str": "Cart",
   "Nearby_str": "Nearby",
+  "NewAddress_str": "New Address",
   "Not_yet_str": "Not yet"
 }
