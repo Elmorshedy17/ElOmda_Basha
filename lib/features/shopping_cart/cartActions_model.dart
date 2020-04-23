@@ -1,3 +1,4 @@
+import 'package:momentoo/features/address_book/addressBook_model.dart';
 import 'package:momentoo/shared/domain/cartRequest.dart';
 
 class CartActionsModel {
@@ -119,59 +120,59 @@ class Seller {
   }
 }
 
-class Cities {
-  int id;
-  String name;
+//class Cities {
+//  int id;
+//  String name;
+//
+//  Cities({this.id, this.name});
+//
+//  Cities.fromJson(Map<String, dynamic> json) {
+//    id = json['id'];
+//    name = json['name'];
+//  }
+//
+//  Map<String, dynamic> toJson() {
+//    final Map<String, dynamic> data = new Map<String, dynamic>();
+//    data['id'] = this.id;
+//    data['name'] = this.name;
+//    return data;
+//  }
+//}
+//
+//class Country {
+//  String name;
+//
+//  Country({this.name});
+//
+//  Country.fromJson(Map<String, dynamic> json) {
+//    name = json['name'];
+//  }
+//
+//  Map<String, dynamic> toJson() {
+//    final Map<String, dynamic> data = new Map<String, dynamic>();
+//    data['name'] = this.name;
+//    return data;
+//  }
+//}
 
-  Cities({this.id, this.name});
-
-  Cities.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    return data;
-  }
-}
-
-class Country {
-  String name;
-
-  Country({this.name});
-
-  Country.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    return data;
-  }
-}
-
-class Addresses {
-  int id;
-  String title;
-
-  Addresses({this.id, this.title});
-
-  Addresses.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    return data;
-  }
-}
+//class Addresses {
+//  int id;
+//  String title;
+//
+//  Addresses({this.id, this.title});
+//
+//  Addresses.fromJson(Map<String, dynamic> json) {
+//    id = json['id'];
+//    title = json['title'];
+//  }
+//
+//  Map<String, dynamic> toJson() {
+//    final Map<String, dynamic> data = new Map<String, dynamic>();
+//    data['id'] = this.id;
+//    data['title'] = this.title;
+//    return data;
+//  }
+//}
 
 class Products {
   int id;

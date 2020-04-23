@@ -580,12 +580,12 @@ class _CartScreenState extends State<CartScreen> {
                             Navigator.of(context).pushNamed(
                               '/checkOutScreen',
                               arguments: CheckOutScreenArguments(
-                                finalPrice: cartModel.data.getFinalPrice(),
-                                seller: cartModel.data.seller,
-                                products: cartModel.data.products,
-                                addresses: cartModel.data.addresses,
-                                cities: cartModel.data.cities,
-                              ),
+                                  finalPrice: cartModel.data.getFinalPrice(),
+                                  seller: cartModel.data.seller,
+                                  products: cartModel.data.products,
+                                  addresses: cartModel.data.addresses,
+                                  cities: cartModel.data.cities,
+                                  country: cartModel.data.country),
                             );
                           },
                         ),

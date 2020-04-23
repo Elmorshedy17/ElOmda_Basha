@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/prefs_service.dart';
 
 mixin Validation {
   static bool isEmail(String email) => EmailValidator.validate(email);
@@ -12,7 +13,9 @@ mixin Validation {
     if (isEmail(value)) {
       sink.add(value);
     } else {
-      sink.addError('Incorrect Email');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'Incorrect Email'
+          : 'بريد إلكتروني خاطئ');
     }
   });
 
@@ -20,9 +23,13 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      sink.addError('* required');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? '* required'
+          : 'هذا الحقل مطلوب');
     } else if (length < 3) {
-      sink.addError('The field must be longer than 3 characters');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'The field must be 3 characters at least'
+          : 'أدخل 3 رموز على الأقل');
     } else {
       sink.add(value);
     }
@@ -32,7 +39,9 @@ mixin Validation {
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     int length = value.length;
     if (length == 0) {
-      sink.addError('* required');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? '* required'
+          : 'هذا الحقل مطلوب');
       // } else if (length < 3) {
       //   sink.addError('The field must be longer than 3 characters');
     } else {
@@ -45,8 +54,10 @@ mixin Validation {
     int length = value.length;
     if (length == 0) {
       sink.addError('* required ');
-    } else if (length < 8) {
-      sink.addError('The field must be longer than 8 characters');
+    } else if (length != 8) {
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'The field must be 8 digits'
+          : 'رقم الهاتف يجب ان يكون 8 أرقام');
     } else {
       sink.add(value);
     }
@@ -59,7 +70,9 @@ mixin Validation {
       confirm = password.toString();
     });
     if (value.toString().toLowerCase() == confirm.toLowerCase()) {
-      sink.addError('Please enter the same password');
+      sink.addError(locator<PrefsService>().appLanguage == 'en'
+          ? 'Please enter the same password'
+          : 'تأكد منإدخال نفس كلمة السر');
     } else {
       sink.add(value);
     }
