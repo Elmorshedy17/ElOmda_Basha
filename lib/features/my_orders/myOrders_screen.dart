@@ -94,211 +94,225 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 //                    physics: NeverScrollableScrollPhysics(),
                                 itemCount: model.data.orders.length,
                                 itemBuilder: (context, index) {
-                                  return ListView.builder(
-                                    shrinkWrap: true,
+                                  return Wrap(
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Text(model.data.orders[index].date,style: TextStyle(
+                                              color: Colors.teal.shade900,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w900),),
+                                        ],
+                                      ),
+                                      ListView.builder(
+                                        shrinkWrap: true,
 //                          physics: BouncingScrollPhysics(),
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: model.data.orders[index].ordersInsider.length,
-                                    itemBuilder: (context, ind) {
-                                      return InkWell(
-                                        onTap: (){
-                                          Navigator.of(context).pushNamed(
-                                              '/invoiceScreen',
-                                              arguments: OrderDetailsArguments(
-                                                  id: model.data.orders[index].ordersInsider[ind].id));
-                                        },
-                                        child: Container(
-                                          child: Column(
-                                            children: <Widget>[
-                                              // order status
-                                              Row(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: model.data.orders[index].ordersInsider.length,
+                                        itemBuilder: (context, ind) {
+                                          return InkWell(
+                                            onTap: (){
+                                              Navigator.of(context).pushNamed(
+                                                  '/invoiceScreen',
+                                                  arguments: OrderDetailsArguments(
+                                                      id: model.data.orders[index].ordersInsider[ind].id));
+                                            },
+                                            child: Container(
+                                              child: Column(
                                                 children: <Widget>[
-                                                  Text(
-                                                    model.data.orders[index].ordersInsider[ind].status,
+                                                  // order status
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.end,
 
-                                                    style: TextStyle(
-                                                        color: Colors.redAccent,
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.w600),
+                                                    children: <Widget>[
+                                                      Text(
+                                                        model.data.orders[index].ordersInsider[ind].status,
+
+                                                        style: TextStyle(
+                                                            color: Colors.redAccent,
+                                                            fontSize: 20,
+                                                            fontWeight: FontWeight.w600),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
 // end order status
 
-                                              SizedBox(
-                                                height: 15.0,
-                                              ),
-                                              // picture and other details
-                                              Row(
-                                                children: <Widget>[
-                                                  // the order image
-                                                  Container(
-                                                    height: 65.0,
-                                                    width: 65.0,
-                                                    child: Image.network(
+                                                  SizedBox(
+                                                    height: 15.0,
+                                                  ),
+                                                  // picture and other details
+                                                  Row(
+                                                    children: <Widget>[
+                                                      // the order image
+                                                      Container(
+                                                        height: 65.0,
+                                                        width: 65.0,
+                                                        child: Image.network(
 //                                  "https://dynl.mktgcdn.com/p/d9AXTJEWMZ156q11dLLVRHsmufNu0K-ng4JYb_4WwRI/1900x1427.jpg",
 //                                          'https://picsum.photos/250?image=9',
-                                                      model.data.orders[index].ordersInsider[ind].logo,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
-                                                  // end the order image
-                                                  SizedBox(
-                                                    width: 15.0,
-                                                  ),
-                                                  // order number & price & desc
-                                                  Expanded(
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: <Widget>[
-                                                        // order number
-                                                        Row(
+                                                          model.data.orders[index].ordersInsider[ind].logo,
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ),
+                                                      // end the order image
+                                                      SizedBox(
+                                                        width: 15.0,
+                                                      ),
+                                                      // order number & price & desc
+                                                      Expanded(
+                                                        child: Column(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: <Widget>[
+                                                            // order number
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Text(
+                                                                  AppLocalizations.of(context)
+                                                                      .translate("Order_Number_str"),
+                                                                  style: TextStyle(
+                                                                      color: Colors.teal.shade900,
+                                                                      fontSize: 18,
+                                                                      fontWeight: FontWeight.w600),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 15.0,
+                                                                ),
+                                                                Text(
+                                                                  "# ${model.data.orders[index].ordersInsider[ind].id}",
+                                                                  style: TextStyle(
+                                                                      color: Colors.black87,
+                                                                      fontSize: 18,
+                                                                      fontWeight: FontWeight.w600),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            // end order number
+
+                                                            SizedBox(
+                                                              height: 8.0,
+                                                            ),
+// desc of order
                                                             Text(
-                                                              AppLocalizations.of(context)
-                                                                  .translate("Order_Number_str"),
+//                                              "2x tuna sahimi , 3x vegtables, 1x nudle",
+                                                              model.data.orders[index].ordersInsider[ind].seller ,
+                                                              textAlign: TextAlign.start,
+                                                              style: TextStyle(
+                                                                  color: Colors.grey,
+                                                                  fontSize: 14,
+                                                                  fontWeight: FontWeight.w600),
+                                                            ),
+                                                            // end desc of order
+
+                                                            SizedBox(
+                                                              height: 8.0,
+                                                            ),
+
+                                                            // price
+                                                            Text(
+                                                              "${model.data.orders[index].ordersInsider[ind].total}",
                                                               style: TextStyle(
                                                                   color: Colors.teal.shade900,
                                                                   fontSize: 18,
                                                                   fontWeight: FontWeight.w600),
                                                             ),
-                                                            SizedBox(
-                                                              width: 15.0,
-                                                            ),
-                                                            Text(
-                                                              "# ${model.data.orders[index].ordersInsider[ind].id}",
-                                                              style: TextStyle(
-                                                                  color: Colors.black87,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.w600),
-                                                            ),
+                                                            // end price
                                                           ],
                                                         ),
-                                                        // end order number
-
-                                                        SizedBox(
-                                                          height: 8.0,
-                                                        ),
-// desc of order
-                                                        Text(
-//                                              "2x tuna sahimi , 3x vegtables, 1x nudle",
-                                                          model.data.orders[index].ordersInsider[ind].seller ,
-                                                          textAlign: TextAlign.start,
-                                                          style: TextStyle(
-                                                              color: Colors.grey,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w600),
-                                                        ),
-                                                        // end desc of order
-
-                                                        SizedBox(
-                                                          height: 8.0,
-                                                        ),
-
-                                                        // price
-                                                        Text(
-                                                          "${model.data.orders[index].ordersInsider[ind].total}",
-                                                          style: TextStyle(
-                                                              color: Colors.teal.shade900,
-                                                              fontSize: 18,
-                                                              fontWeight: FontWeight.w600),
-                                                        ),
-                                                        // end price
-                                                      ],
-                                                    ),
+                                                      ),
+                                                      // order number & price & desc
+                                                    ],
                                                   ),
-                                                  // order number & price & desc
-                                                ],
-                                              ),
-                                              // end picture and other details
-                                              SizedBox(
-                                                height: 15.0,
-                                              ),
-                                              RaisedButton(
-                                                color: model.data.orders[index].ordersInsider[ind].track == "yes" ? Colors.teal.shade900 : Colors.redAccent,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: new BorderRadius.circular(18.0),
+                                                  // end picture and other details
+                                                  SizedBox(
+                                                    height: 15.0,
+                                                  ),
+                                                  RaisedButton(
+                                                    color: model.data.orders[index].ordersInsider[ind].track == "yes" ? Colors.teal.shade900 : Colors.redAccent,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: new BorderRadius.circular(18.0),
 //                                side: BorderSide(color: Colors.red)
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                                                  child:   model.data.orders[index].ordersInsider[ind].track == "yes" ?
-                                                  Text(
-                                                    AppLocalizations.of(context)
-                                                        .translate('Track_your_order_str')  ,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w600),
-                                                  ) : Row(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: <Widget>[
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.symmetric(horizontal: 15.0),
+                                                      child:   model.data.orders[index].ordersInsider[ind].track == "yes" ?
                                                       Text(
                                                         AppLocalizations.of(context)
-                                                            .translate('reorder_order_str')  ,
+                                                            .translate('Track_your_order_str')  ,
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 16,
                                                             fontWeight: FontWeight.w600),
+                                                      ) : Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            AppLocalizations.of(context)
+                                                                .translate('reorder_order_str')  ,
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 16,
+                                                                fontWeight: FontWeight.w600),
+                                                          ),
+                                                          SizedBox(width: 8.0,),
+                                                          Icon(Icons.autorenew ,color: Colors.white,size: 18.0,)
+                                                        ],
                                                       ),
-                                                      SizedBox(width: 8.0,),
-                                                      Icon(Icons.autorenew ,color: Colors.white,size: 18.0,)
-                                                    ],
-                                                  ),
-                                                ),
-                                                onPressed: () {
+                                                    ),
+                                                    onPressed: () {
 
-                                                  isLoading.add(true);
+                                                      isLoading.add(true);
 
 
-                                                  if(model.data.orders[index].ordersInsider[ind].track == "yes"){
-                                                    isLoading.add(false);
+                                                      if(model.data.orders[index].ordersInsider[ind].track == "yes"){
+                                                        isLoading.add(false);
 
-                                                    Navigator.of(context).pushNamed(
-                                                        '/TrackorderScreen',
-                                                        arguments: TrackOrderScreenArguments(
-                                                            id: model.data.orders[index].ordersInsider[ind].id));
+                                                        Navigator.of(context).pushNamed(
+                                                            '/TrackorderScreen',
+                                                            arguments: TrackOrderScreenArguments(
+                                                                id: model.data.orders[index].ordersInsider[ind].id));
 
 
 //                                                  Navigator.of(context)
 //                                                      .pushNamed('/TrackorderScreen');
-                                                  }else{
-
-                                                    ReOrderRepo.postReOrderData(model.data.orders[index].ordersInsider[ind].id).then((onValue){
-                                                      isLoading.add(false);
-
-                                                      if(onValue.status == 1){
-                                                        Navigator.of(context)
-                                                            .pushReplacementNamed('/myOrdersScreen');
                                                       }else{
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext context) {
-                                                            return AlertDialog(
-                                                              title: Text(onValue.message),
+
+                                                        ReOrderRepo.postReOrderData(model.data.orders[index].ordersInsider[ind].id).then((onValue){
+                                                          isLoading.add(false);
+
+                                                          if(onValue.status == 1){
+                                                            Navigator.of(context)
+                                                                .pushReplacementNamed('/myOrdersScreen');
+                                                          }else{
+                                                            showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext context) {
+                                                                return AlertDialog(
+                                                                  title: Text(onValue.message),
+                                                                );
+                                                              },
                                                             );
-                                                          },
-                                                        );
+                                                          }
+
+                                                        });
                                                       }
 
-                                                    });
-                                                  }
-
-                                                },
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
+                                                    height: 1.0,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    color: Colors.grey.withOpacity(.2),
+                                                  ),
+                                                ],
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
-                                                height: 1.0,
-                                                width: MediaQuery.of(context).size.width,
-                                                color: Colors.grey.withOpacity(.2),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   );
                                 },
                               ),

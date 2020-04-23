@@ -7,10 +7,12 @@ import 'package:momentoo/shared/services/networking/CustomException.dart';
 
 class MyOrdersRepo {
   static Future<MyOrdersModel> getMyOrdersData() async {
+
     try {
       final Response response = await locator<ApiService>().dioClient.get(
         '${locator<ApiService>().dioClient.options.baseUrl}orders',
       );
+      print(response.data.toString());
       return MyOrdersModel.fromJson(response.data);
     } on DioError {
       // throw FetchDataException('No Internet connection');
