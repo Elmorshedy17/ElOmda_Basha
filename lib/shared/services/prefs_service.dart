@@ -24,6 +24,7 @@ class PrefsService {
   static const String USER_PASSWORD = 'userPassword';
   static const String USER_LOCATION = 'userLocation';
   static const String HAS_WELCOME_SEEN = 'hasWelcomeSeen';
+  static const String HAS_SIGN_IN_SEEN = 'hasSignInSeen';
   // static const String HAS_SIGN_IN_SEEN = 'hasSignInSeen';
 
   static Future<PrefsService> getInstance() async {
@@ -121,8 +122,8 @@ class PrefsService {
   bool get hasWelcomeSeen => _getFromPrefs(HAS_WELCOME_SEEN) ?? false;
   set hasWelcomeSeen(bool value) => _saveToPrefs(HAS_WELCOME_SEEN, value);
   ////////////////////////////////////////////////////////////////////////////////
-  // bool get hasSignInSeen => _getFromPrefs(HAS_SIGN_IN_SEEN) ?? false;
-  // set hasSignInSeen(bool value) => _saveToPrefs(HAS_SIGN_IN_SEEN, value);
+  bool get hasSignInSeen => _getFromPrefs(HAS_SIGN_IN_SEEN) ?? false;
+  set hasSignInSeen(bool value) => _saveToPrefs(HAS_SIGN_IN_SEEN, value);
 ////////////////////////////////////////////////////////////////////////////////
   bool get isBackToOnline => _getFromPrefs(IS_BACK_TO_ONLINE) ?? false;
   set isBackToOnline(bool value) => _saveToPrefs(IS_BACK_TO_ONLINE, value);

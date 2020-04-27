@@ -4,6 +4,7 @@ import 'package:momentoo/features/near_by/manuallyMap_screen.dart';
 import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/location_service.dart';
 import 'package:momentoo/features/near_by/geo_code/repo.dart';
@@ -22,213 +23,247 @@ class _GetLocationScreenState extends State<GetLocationScreen> {
 
   var cityIdChosen;
 
-
   @override
   Widget build(BuildContext context) {
-    return MainBackground(
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.transparent,
-        body: StreamBuilder<Object>(
-            stream: isLoading.stream,
-            builder: (context, isLoadingSnapshot) {
-            return Stack(
-              children: <Widget>[
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset(
-                          'assets/images/location.png',
+    return NetworkSensitive(
+      child: MainBackground(
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.transparent,
+          body: StreamBuilder<Object>(
+              stream: isLoading.stream,
+              builder: (context, isLoadingSnapshot) {
+                return Stack(
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            height: 100,
+                            width: 100,
+                            child: Image.asset(
+                              'assets/images/location.png',
 //                  scale: 0.8,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
 //                  'Hi, nice to meet you!',
-                          AppLocalizations.of(context).translate('nice_to_meet_you_str'),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 30),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
+                              AppLocalizations.of(context)
+                                  .translate('nice_to_meet_you_str'),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 30),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
 //                  'Choose your location to start find restaurants around you.',
-                          AppLocalizations.of(context).translate('choose_your_location_str'),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: ButtonTheme(
-                          minWidth: MediaQuery.of(context).size.width * 0.8,
-                          child: FlatButton(
-                            color: Colors.transparent,
-                            highlightColor: Colors.teal,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              side: BorderSide(color: Colors.teal.shade900),
+                              AppLocalizations.of(context)
+                                  .translate('choose_your_location_str'),
+                              textAlign: TextAlign.center,
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.all(8),
-                                  child: Icon(
-                                    Icons.near_me,
-                                    color: Colors.teal.shade800,
-                                  ),
-                                ),
-                                Text(
-//                          'Use current location',
-                                  AppLocalizations.of(context).translate('Use_current_location_str'),
-                                  style: TextStyle(
-                                    color: Colors.teal.shade800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            onPressed: () {
-                              locationPermissionDialog(context);
-                              // showDialog(
-                              //     context: context,
-                              //     builder: (context) =>
-                              //         locationPermissionDialog(context));
-                            },
                           ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          // locator<LocationService>().location$.listen((value) {
-                          //   print('lat=> ${value.latitude} && lng=>${value.longitude}');
-                          //   Navigator.of(context).pushNamed(
-                          //     '/manuallyMapScreen',
-                          //     arguments: ManuallyMapScreenArguments(
-                          //       lat: 29.378586,
-                          //       lng: 47.990341,
-                          //     ),
-                          //   );
-                          // });
-                          Navigator.of(_scaffoldKey.currentContext).pushNamed(
-                            '/manuallyMapScreen',
-                            arguments: ManuallyMapScreenArguments(
-                              lat: 29.378586,
-                              lng: 47.990341,
-                            ),
-                          );
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 16),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-//                        'Select it manually',
-                                AppLocalizations.of(context).translate('Select_it_manually_str'),
-                                style: TextStyle(color: Colors.teal.shade800),
-                              ),
-                              Container(
-                                color: Colors.teal.shade900,
-                                height: 1,
-                                width: 110,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),    InkWell(
-                        onTap: () {
-
-                          isLoading.add(true);
-
-                          citiesRepo.getcitiesData().then((onValue){
-                            isLoading.add(false);
-
-                            if(onValue.status == 1){
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Container(
-                                      height: 400,
-                                      width: 300,
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: <Widget>[
-                                            ListView.builder(
-                                              shrinkWrap: true,
-                                              physics: NeverScrollableScrollPhysics(),
-                                              itemCount: onValue.data.cities.length,
-                                              itemBuilder: (context, index) {
-                                                return Container(
-                                                  height: 45.0,
-                                                  decoration: BoxDecoration(
-                                                    border: Border(
-                                                      bottom: BorderSide( //                   <--- left side
-                                                        color: Colors.grey.withOpacity(.6),
-                                                        width: 1.0,
-                                                      ),
-                                                    ),
-                                                  ),
-//                                                  padding: EdgeInsets.symmetric(vertical: 8.0),
-//                                          color: Colors.red,
-                                                  child:     Center(
-                                                    child: InkWell(
-                                                      onTap: (){
-                                                        cityIdChosen = onValue.data.cities[index].id;
-                                                        locator<PrefsService>().cityID = onValue.data.cities[index].id.toString();
-//                                                        Navigator.of(context).pushReplacementNamed('/nearByScreen');
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(builder: (context) => NearByScreen(cityIdChosen)),
-                                                        );
-
-                                                        print("cityIdChosen$cityIdChosen");
-                                                      },
-                                                      child: Text(onValue.data.cities[index].name,style: TextStyle(fontSize: 14),),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: ButtonTheme(
+                              minWidth: MediaQuery.of(context).size.width * 0.8,
+                              child: FlatButton(
+                                color: Colors.transparent,
+                                highlightColor: Colors.teal,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  side: BorderSide(color: Colors.teal.shade900),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.all(8),
+                                      child: Icon(
+                                        Icons.near_me,
+                                        color: Colors.teal.shade800,
                                       ),
                                     ),
-                                  );
+                                    Text(
+//                          'Use current location',
+                                      AppLocalizations.of(context).translate(
+                                          'Use_current_location_str'),
+                                      style: TextStyle(
+                                        color: Colors.teal.shade800,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  locationPermissionDialog(context);
+                                  // showDialog(
+                                  //     context: context,
+                                  //     builder: (context) =>
+                                  //         locationPermissionDialog(context));
                                 },
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              // locator<LocationService>().location$.listen((value) {
+                              //   print('lat=> ${value.latitude} && lng=>${value.longitude}');
+                              //   Navigator.of(context).pushNamed(
+                              //     '/manuallyMapScreen',
+                              //     arguments: ManuallyMapScreenArguments(
+                              //       lat: 29.378586,
+                              //       lng: 47.990341,
+                              //     ),
+                              //   );
+                              // });
+                              Navigator.of(_scaffoldKey.currentContext)
+                                  .pushNamed(
+                                '/manuallyMapScreen',
+                                arguments: ManuallyMapScreenArguments(
+                                  lat: 29.378586,
+                                  lng: 47.990341,
+                                ),
                               );
-                            }else{
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(onValue.message),
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 16),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+//                        'Select it manually',
+                                    AppLocalizations.of(context)
+                                        .translate('Select_it_manually_str'),
+                                    style:
+                                        TextStyle(color: Colors.teal.shade800),
+                                  ),
+                                  Container(
+                                    color: Colors.teal.shade900,
+                                    height: 1,
+                                    width: 110,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              isLoading.add(true);
+
+                              citiesRepo.getcitiesData().then((onValue) {
+                                isLoading.add(false);
+
+                                if (onValue.status == 1) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Container(
+                                          height: 400,
+                                          width: 300,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: <Widget>[
+                                                ListView.builder(
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  itemCount: onValue
+                                                      .data.cities.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Container(
+                                                      height: 45.0,
+                                                      decoration: BoxDecoration(
+                                                        border: Border(
+                                                          bottom: BorderSide(
+                                                            //                   <--- left side
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    .6),
+                                                            width: 1.0,
+                                                          ),
+                                                        ),
+                                                      ),
+//                                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+//                                          color: Colors.red,
+                                                      child: Center(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            cityIdChosen =
+                                                                onValue
+                                                                    .data
+                                                                    .cities[
+                                                                        index]
+                                                                    .id;
+                                                            locator<PrefsService>()
+                                                                    .cityID =
+                                                                onValue
+                                                                    .data
+                                                                    .cities[
+                                                                        index]
+                                                                    .id
+                                                                    .toString();
+//                                                        Navigator.of(context).pushReplacementNamed('/nearByScreen');
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      NearByScreen(
+                                                                          cityIdChosen)),
+                                                            );
+
+                                                            print(
+                                                                "cityIdChosen$cityIdChosen");
+                                                          },
+                                                          child: Text(
+                                                            onValue
+                                                                .data
+                                                                .cities[index]
+                                                                .name,
+                                                            style: TextStyle(
+                                                                fontSize: 14),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            }
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(onValue.message),
+                                      );
+                                    },
+                                  );
+                                }
+                              });
 
-                          });
-
-                          // locator<LocationService>().location$.listen((value) {
-                          //   print('lat=> ${value.latitude} && lng=>${value.longitude}');
-                          //   Navigator.of(context).pushNamed(
-                          //     '/manuallyMapScreen',
-                          //     arguments: ManuallyMapScreenArguments(
-                          //       lat: 29.378586,
-                          //       lng: 47.990341,
-                          //     ),
-                          //   );
-                          // });
+                              // locator<LocationService>().location$.listen((value) {
+                              //   print('lat=> ${value.latitude} && lng=>${value.longitude}');
+                              //   Navigator.of(context).pushNamed(
+                              //     '/manuallyMapScreen',
+                              //     arguments: ManuallyMapScreenArguments(
+                              //       lat: 29.378586,
+                              //       lng: 47.990341,
+                              //     ),
+                              //   );
+                              // });
 //                  Navigator.of(_scaffoldKey.currentContext).pushNamed(
 //                    '/manuallyMapScreen',
 //                    arguments: ManuallyMapScreenArguments(
@@ -236,49 +271,52 @@ class _GetLocationScreenState extends State<GetLocationScreen> {
 //                      lng: 47.990341,
 //                    ),
 //                  );
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 16),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 16),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
 //                        'Select it manually',
-                                AppLocalizations.of(context).translate('chooseCity_str'),
-                                style: TextStyle(color: Colors.teal.shade800),
+                                    AppLocalizations.of(context)
+                                        .translate('chooseCity_str'),
+                                    style:
+                                        TextStyle(color: Colors.teal.shade800),
+                                  ),
+                                  Container(
+                                    color: Colors.teal.shade900,
+                                    height: 1,
+                                    width: 70,
+                                  ),
+                                ],
                               ),
-                              Container(
-                                color: Colors.teal.shade900,
-                                height: 1,
-                                width: 70,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                isLoading.value == true
-                    ? Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.black.withOpacity(0.5),
-                  child: Center(child: Container(
-//                      color: mainColor,
-                    child: Center(
-                      child: CircularProgressIndicator(),
                     ),
-                  )),
-                )
-                    : Container(),
-
-              ],
-            );
-          }
+                    isLoading.value == true
+                        ? Container(
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.black.withOpacity(0.5),
+                            child: Center(
+                                child: Container(
+//                      color: mainColor,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )),
+                          )
+                        : Container(),
+                  ],
+                );
+              }),
         ),
       ),
     );
   }
+
   locationPermissionDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -356,7 +394,9 @@ class _GetLocationScreenState extends State<GetLocationScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.pop(_scaffoldKey.currentContext);
-                        locator<LocationService>().location$.listen((value) async{
+                        locator<LocationService>()
+                            .location$
+                            .listen((value) async {
 //                          await geoCodeRepo.geoCode(value.latitude,value.longitude).then((onValue){
 //
 //                            if(onValue.status == "OK"){
@@ -386,13 +426,8 @@ class _GetLocationScreenState extends State<GetLocationScreen> {
 //                            print("onValueonValueonValueonValueonValueonValue ${onValue.status}");
 //                          });
 
-
-
-
                           print(
                               'lat=> ${value.latitude} && lng=>${value.longitude}');
-
-
 
                           Navigator.of(_scaffoldKey.currentContext).pushNamed(
                             '/currentMapScreen',
@@ -431,10 +466,9 @@ class _GetLocationScreenState extends State<GetLocationScreen> {
       },
     );
   }
+
   @override
   void dispose() {
     isLoading.close();
   }
 }
-
-

@@ -4,6 +4,7 @@ import 'package:momentoo/features/near_by/geo_code/geo_code_model.dart';
 import 'dart:convert';
 import 'package:momentoo/features/near_by/cities/_repo.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 class codetest extends StatefulWidget {
@@ -18,7 +19,7 @@ class _codetestState extends State<codetest> {
 
   List adressesCity = [];
   List formattedAddress = [];
-var manualcityIdChosen;
+  var manualcityIdChosen;
 
   Future<GeoCodeModel> loadGeoCodeJson() async {
     String jsonString = await _loadGeoCodeJsonAsset();
@@ -537,68 +538,62 @@ var manualcityIdChosen;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(
-          child: RaisedButton(
-            child: Text("click"),
-            onPressed: () async {
-
-
-
+    return NetworkSensitive(
+      child: Scaffold(
+        body: Container(
+          child: Center(
+            child: RaisedButton(
+              child: Text("click"),
+              onPressed: () async {
 //            await geoCodeRepo.geoCode(29.382820,47.989191).then((onValue){
 //                print("onValueonValueonValueonValueonValueonValue ${onValue.status}");
 //              });
 
-
-    citiesRepo.getcitiesData().then((onCities) async {
-      await loadGeoCodeJson().then((onValue) {
+                citiesRepo.getcitiesData().then((onCities) async {
+                  await loadGeoCodeJson().then((onValue) {
 //               print("onValueonValue${onValue.results[0].addressComponents[1].longName}");
 
-
-        if(onValue.status == "OK"){
-
-          for (int i = 0; i < 2; i++) {
-            if (onValue.results.length == 0 ||
-                i > onValue.results.length - 1) {
-              print("hahahaho ");
-            } else {
-              var addressComponents =
-                  onValue.results[i].addressComponents;
-              addressComponents.forEach((f) {
-                if (f.types[0] == "locality" ||
-                    f.types[0] == "political") {
+                    if (onValue.status == "OK") {
+                      for (int i = 0; i < 2; i++) {
+                        if (onValue.results.length == 0 ||
+                            i > onValue.results.length - 1) {
+                          print("hahahaho ");
+                        } else {
+                          var addressComponents =
+                              onValue.results[i].addressComponents;
+                          addressComponents.forEach((f) {
+                            if (f.types[0] == "locality" ||
+                                f.types[0] == "political") {
 //                        Adresses.clear();
-                  print(f.longName[0]);
+                              print(f.longName[0]);
 //                        print(Adresses);
-                  adressesCity.remove(f.longName);
-                  adressesCity.add(f.longName);
-                }
-              });
-            }
-            formattedAddress.remove(onValue.results[i].formattedAddress);
-            formattedAddress.add(onValue.results[i].formattedAddress);
-          }
-          print(" Adresses  ${locator<PrefsService>().appLanguage == "ar" ? adressesCity[0] : adressesCity[1] }");
-          print("formatted_address ${formattedAddress[1]}");
+                              adressesCity.remove(f.longName);
+                              adressesCity.add(f.longName);
+                            }
+                          });
+                        }
+                        formattedAddress
+                            .remove(onValue.results[i].formattedAddress);
+                        formattedAddress
+                            .add(onValue.results[i].formattedAddress);
+                      }
+                      print(
+                          " Adresses  ${locator<PrefsService>().appLanguage == "ar" ? adressesCity[0] : adressesCity[1]}");
+                      print("formatted_address ${formattedAddress[1]}");
 
-    for (int index = 0;index < onCities.data.cities.length;index++) {
-      if(adressesCity[0] == onCities.data.cities[index].name ){
-        print("ya rab ya karim ${onCities.data.cities[index].id}");
-        manualcityIdChosen = onCities.data.cities[index].id;
-
-      }
-    }
-
-
-
-        }
-
-
-      });
-    });
-
-
+                      for (int index = 0;
+                          index < onCities.data.cities.length;
+                          index++) {
+                        if (adressesCity[0] ==
+                            onCities.data.cities[index].name) {
+                          print(
+                              "ya rab ya karim ${onCities.data.cities[index].id}");
+                          manualcityIdChosen = onCities.data.cities[index].id;
+                        }
+                      }
+                    }
+                  });
+                });
 
 //    print("hello ${hmm[].length}");
 
@@ -606,9 +601,9 @@ var manualcityIdChosen;
 //
 //    }
 
-
-            print("vip manualcityIdChosen $manualcityIdChosen");
-            },
+                print("vip manualcityIdChosen $manualcityIdChosen");
+              },
+            ),
           ),
         ),
       ),

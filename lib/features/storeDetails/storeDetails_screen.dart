@@ -7,14 +7,13 @@ import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:momentoo/shared/services/share_servce/shareService.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
-
-
 
 class StoreDetailsArguments {
   final int categoryId;
@@ -37,515 +36,543 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
   Widget build(BuildContext context) {
     StoreDetailsArguments args = ModalRoute.of(context).settings.arguments;
 
-    return MainBackground(
-      height: MediaQuery.of(context).size.height * 0.28,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          elevation: 0.0,
+    return NetworkSensitive(
+      child: MainBackground(
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Scaffold(
           backgroundColor: Colors.transparent,
-          leading: InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+          appBar: AppBar(
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+            leading: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.arrow_back_ios,
+                    size: 15,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('back_str'),
+                    style: TextStyle(
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              NotificationWidget(
+                onPressedNotifications: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  Navigator.of(context).pushNamed('/notificationsScreen');
+                  locator<PrefsService>().notificationFlag = false;
+                },
+              ),
+            ],
+          ),
+          body: CustomObserver(
+            stream: locator<StoreDetailsManager>().getData(args.sellerId),
+            onSuccess: (_, StoreDetailsModel model) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  Icons.arrow_back_ios,
-                  size: 15,
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.teal.shade900,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50.0),
+                    child: Image.network(
+                      model.data.seller.image,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
                 Text(
-                  AppLocalizations.of(context).translate('back_str'),
+                  model.data.seller.name,
                   style: TextStyle(
-                    fontFamily: locator<PrefsService>().appLanguage == 'en'
-                        ? 'en'
-                        : 'ar',
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  model.data.seller.address,
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List<Widget>.generate(
+                    5,
+                    (innerIndex) => Icon(
+                      Icons.star,
+                      color: innerIndex < model.data.seller.rate
+                          ? Colors.pink
+                          : Colors.grey,
+                      size: 18,
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            NotificationWidget(
-              onPressedNotifications: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Navigator.of(context).pushNamed('/notificationsScreen');
-                locator<PrefsService>().notificationFlag = false;
-              },
-            ),
-          ],
-        ),
-        body: CustomObserver(
-          stream: locator<StoreDetailsManager>().getData(args.sellerId),
-          onSuccess: (_, StoreDetailsModel model) => Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.teal.shade900,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50.0),
-                  child: Image.network(
-                    model.data.seller.image,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-              Text(
-                model.data.seller.name,
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontFamily: locator<PrefsService>().appLanguage == 'en'
-                        ? 'en'
-                        : 'ar',
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                model.data.seller.address,
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List<Widget>.generate(
-                  5,
-                  (innerIndex) => Icon(
-                    Icons.star,
-                    color: innerIndex < model.data.seller.rate
-                        ? Colors.pink
-                        : Colors.grey,
-                    size: 18,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(height: 50),
-                      SingleChildScrollView(
-                        primary: false,
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    AppLocalizations.of(context)
-                                        .translate('Delivery_str'),
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    model.data.seller.deliveryFee,
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        color: Colors.black54),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    AppLocalizations.of(context)
-                                        .translate('DeliveryTime_str'),
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    model.data.seller.deliveryTime,
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        color: Colors.black54),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    AppLocalizations.of(context)
-                                        .translate('status_str'),
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    model.data.seller.status,
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        color: Colors.black54),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    AppLocalizations.of(context)
-                                        .translate('workTime_str'),
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    model.data.seller.time,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        color: Colors.black54),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(right: 2, left: 4),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(1000))),
-                              child: IconButton(
-                                icon: Transform.rotate(
-                                    angle: 4.7,
-                                    child: Icon(FontAwesomeIcons.signOutAlt)),
-                                // icon: Icon(FontAwesomeIcons.shareSquare),
-                                onPressed: () {
-                                  ShareService.shareService(context , "${model.data.seller.name} \n\n  ${model.data.seller.share}" ,model.data.seller.share );
-                                },
-                              ),
-                            ),
-                            Container(
-                              height: 50,
-                              width: 50,
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 50),
+                        SingleChildScrollView(
+                          primary: false,
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate('Delivery_str'),
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      model.data.seller.deliveryFee,
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          color: Colors.black54),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Icon(
-                                model.data.seller.featured == 'yes'
-                                    ? Icons.star
-                                    : Icons.star_border,
-                                color: model.data.seller.featured == 'yes'
-                                    ? Colors.yellow[700]
-                                    : Colors.grey,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate('DeliveryTime_str'),
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      model.data.seller.deliveryTime,
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          color: Colors.black54),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(Icons.location_on),
-                                onPressed: () {
-                                  _launchMapsUrl(double.parse(model.data.seller.lat) ,double.parse(model.data.seller.lng) );
-                                },
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate('status_str'),
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      model.data.seller.status,
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          color: Colors.black54),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                  model.data.seller.favourite == 'yes'
-                                      ? Icons.star
-                                      : Icons.star_border,
-                                  color: model.data.seller.favourite == 'yes'
-                                      ? Colors.pink
-                                      : Colors.black,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate('workTime_str'),
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      model.data.seller.time,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          color: Colors.black54),
+                                    ),
+                                  ],
                                 ),
-                                onPressed: () {
-
-                                  if(locator<PrefsService>()
-                                      .userObj  == null){
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(AppLocalizations.of(context).translate("signToContinue_str")),
-                                          content: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              FlatButton(
-                                                onPressed: (){
-                                                  Navigator.of(context).pushNamed('/signInScreen');
-                                                },
-                                                child: Text(AppLocalizations.of(context).translate("signIn_str")),
-                                              ),
-                                              FlatButton(
-                                                onPressed:(){
-                                                  Navigator.of(context).pop();
-
-                                                },
-                                                child: Text(AppLocalizations.of(context).translate("continue_str")),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }else{
-                                    model.data.seller.favourite == 'yes'
-                                        ? locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite(
-                                        'seller',
-                                        'remove',
-                                        model.data.seller.id.toString())
-                                        : locator<FavoritesActionsManager>()
-                                        .addOrRemoveFavorite('seller', 'add',
-                                        model.data.seller.id.toString());
-                                  }
-
-
-                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 16.0, right: 16, left: 16),
-                        child: Text(
-                          AppLocalizations.of(context)
-                              .translate('featuredItems_str'),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
+                            ],
                           ),
                         ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 200,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          reverse: locator<PrefsService>().appLanguage == 'ar'
-                              ? true
-                              : false,
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                              model.data.seller.productsFeatured?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 3,
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                    '/productDetailsScreen',
-                                    arguments: ProductDetailsArguments(
-                                        sellerId: model.data.seller.id,
-                                        productId: model.data.seller
-                                            .productsFeatured[index].id),
-                                  );
-                                },
-                                child: FittedBox(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 160,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.99,
-                                        child: Card(
-                                          child: Image.network(
-                                            model.data.seller
-                                                .productsFeatured[index].image,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 8),
-                                        child: Text(
-                                          model.data.seller
-                                              .productsFeatured[index].name,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: locator<PrefsService>()
-                                                        .appLanguage ==
-                                                    'en'
-                                                ? 'en'
-                                                : 'ar',
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 8),
-                                        child: Text(
-                                          '${model.data.seller.productsFeatured[index].price} ${model.data.seller.productsFeatured[index].currency}',
-                                          style: TextStyle(
-                                            color: Colors.black54,
-                                            fontFamily: locator<PrefsService>()
-                                                        .appLanguage ==
-                                                    'en'
-                                                ? 'en'
-                                                : 'ar',
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Divider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(right: 2, left: 4),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(1000))),
+                                child: IconButton(
+                                  icon: Transform.rotate(
+                                      angle: 4.7,
+                                      child: Icon(FontAwesomeIcons.signOutAlt)),
+                                  // icon: Icon(FontAwesomeIcons.shareSquare),
+                                  onPressed: () {
+                                    ShareService.shareService(
+                                        context,
+                                        "${model.data.seller.name} \n\n  ${model.data.seller.share}",
+                                        model.data.seller.share);
+                                  },
                                 ),
                               ),
-                              // child: cardsList[index],
-                            );
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              AppLocalizations.of(context)
-                                  .translate('menu_str'),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily:
-                                    locator<PrefsService>().appLanguage == 'en'
-                                        ? 'en'
-                                        : 'ar',
+                              Container(
+                                height: 50,
+                                width: 50,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(50),
+                                  ),
+                                ),
+                                child: Icon(
+                                  model.data.seller.featured == 'yes'
+                                      ? Icons.star
+                                      : Icons.star_border,
+                                  color: model.data.seller.featured == 'yes'
+                                      ? Colors.yellow[700]
+                                      : Colors.grey,
+                                ),
                               ),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(50),
+                                  ),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.location_on),
+                                  onPressed: () {
+                                    _launchMapsUrl(
+                                        double.parse(model.data.seller.lat),
+                                        double.parse(model.data.seller.lng));
+                                  },
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(50),
+                                  ),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    model.data.seller.favourite == 'yes'
+                                        ? Icons.star
+                                        : Icons.star_border,
+                                    color: model.data.seller.favourite == 'yes'
+                                        ? Colors.pink
+                                        : Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    if (locator<PrefsService>().userObj ==
+                                        null) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                AppLocalizations.of(context)
+                                                    .translate(
+                                                        "signToContinue_str")),
+                                            content: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                            '/signInScreen');
+                                                  },
+                                                  child: Text(AppLocalizations
+                                                          .of(context)
+                                                      .translate("signIn_str")),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text(
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .translate(
+                                                              "continue_str")),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      model.data.seller.favourite == 'yes'
+                                          ? locator<FavoritesActionsManager>()
+                                              .addOrRemoveFavorite(
+                                                  'seller',
+                                                  'remove',
+                                                  model.data.seller.id
+                                                      .toString())
+                                          : locator<FavoritesActionsManager>()
+                                              .addOrRemoveFavorite(
+                                                  'seller',
+                                                  'add',
+                                                  model.data.seller.id
+                                                      .toString());
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Divider(),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 16.0, right: 16, left: 16),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('featuredItems_str'),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
                             ),
-                            Spacer(
-                              flex: 1,
-                            ),
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 200,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            reverse: locator<PrefsService>().appLanguage == 'ar'
+                                ? true
+                                : false,
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                model.data.seller.productsFeatured?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 3,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                      '/productDetailsScreen',
+                                      arguments: ProductDetailsArguments(
+                                          sellerId: model.data.seller.id,
+                                          productId: model.data.seller
+                                              .productsFeatured[index].id),
+                                    );
+                                  },
+                                  child: FittedBox(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          height: 160,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.99,
+                                          child: Card(
+                                            child: Image.network(
+                                              model
+                                                  .data
+                                                  .seller
+                                                  .productsFeatured[index]
+                                                  .image,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                          child: Text(
+                                            model.data.seller
+                                                .productsFeatured[index].name,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily:
+                                                  locator<PrefsService>()
+                                                              .appLanguage ==
+                                                          'en'
+                                                      ? 'en'
+                                                      : 'ar',
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                          child: Text(
+                                            '${model.data.seller.productsFeatured[index].price} ${model.data.seller.productsFeatured[index].currency}',
+                                            style: TextStyle(
+                                              color: Colors.black54,
+                                              fontFamily:
+                                                  locator<PrefsService>()
+                                                              .appLanguage ==
+                                                          'en'
+                                                      ? 'en'
+                                                      : 'ar',
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // child: cardsList[index],
+                              );
+                            },
+                          ),
+                        ),
+                        model.data.seller.menu?.length == 0
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate('menu_str'),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: locator<PrefsService>()
+                                                    .appLanguage ==
+                                                'en'
+                                            ? 'en'
+                                            : 'ar',
+                                      ),
+                                    ),
+                                    Spacer(
+                                      flex: 1,
+                                    ),
 //                            Text(
 //                              '${AppLocalizations.of(context).translate('viewAll_str')}>>',
 //                              style: TextStyle(
@@ -557,110 +584,112 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
 //                                          : 'ar',
 //                                  fontWeight: FontWeight.bold),
 //                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        // height: MediaQuery.of(context).size.height,
-                        // width: MediaQuery.of(context).size.width,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: model.data.seller.menu?.length ?? 0,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ExpansionTile(
-                              initiallyExpanded: false,
-                              onExpansionChanged: (bool isClicked) {
-                                isSelected = isClicked;
-                                mainIndex = index;
-                              },
-                              title: Row(
-                                children: <Widget>[
-                                  Text(
-                                    model.data.seller.menu[index].name,
-                                    // AppLocalizations.of(context)
-                                    //     .translate('popularItems_str'),
-                                    style: TextStyle(
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Spacer(
-                                    flex: 1,
-                                  ),
-                                  Text(
-                                    '${model.data.seller.menu[index].products?.length ?? 0}',
-                                    style: TextStyle(
-                                        color: Colors.black26, fontSize: 12),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              children: List<Widget>.generate(
-                                model.data.seller.menu[index].products
-                                        ?.length ??
-                                    0,
-                                (int internalIndex) {
-                                  return MyListTile(
-                                    isSelected: isSelected,
-                                    index: internalIndex,
-                                    title: Text(
-                                      '${model.data.seller.menu[index].products[internalIndex].name}',
-                                      style: TextStyle(
-                                          color: internalIndex == subIndex &&
-                                                  mainIndex == index
-                                              ? Colors.teal.shade900
-                                              : Colors.black45),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        mainIndex = index;
-                                        subIndex = internalIndex;
-                                        // isSelected = true;
-                                      });
-                                      Navigator.of(context).pushNamed(
-                                        '/productDetailsScreen',
-                                        arguments: ProductDetailsArguments(
-                                            sellerId: model.data.seller.id,
-                                            productId: model
-                                                .data
-                                                .seller
-                                                .menu[index]
-                                                .products[internalIndex]
-                                                .id),
-                                      );
-                                    },
-                                    trailing: internalIndex == subIndex &&
-                                            mainIndex == index
-                                        ? Icon(
-                                            Icons.check_circle,
-                                            color: Colors.teal.shade900,
-                                          )
-                                        : Container(
-                                            width: 1,
-                                            height: 1,
-                                          ),
-                                  );
+                        Container(
+                          // height: MediaQuery.of(context).size.height,
+                          // width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: model.data.seller.menu?.length ?? 0,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ExpansionTile(
+                                initiallyExpanded: false,
+                                onExpansionChanged: (bool isClicked) {
+                                  isSelected = isClicked;
+                                  mainIndex = index;
                                 },
-                              ),
-                            );
-                          },
+                                title: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      model.data.seller.menu[index].name,
+                                      // AppLocalizations.of(context)
+                                      //     .translate('popularItems_str'),
+                                      style: TextStyle(
+                                          fontFamily: locator<PrefsService>()
+                                                      .appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Spacer(
+                                      flex: 1,
+                                    ),
+                                    Text(
+                                      '${model.data.seller.menu[index].products?.length ?? 0}',
+                                      style: TextStyle(
+                                          color: Colors.black26, fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                                children: List<Widget>.generate(
+                                  model.data.seller.menu[index].products
+                                          ?.length ??
+                                      0,
+                                  (int internalIndex) {
+                                    return MyListTile(
+                                      isSelected: isSelected,
+                                      index: internalIndex,
+                                      title: Text(
+                                        '${model.data.seller.menu[index].products[internalIndex].name}',
+                                        style: TextStyle(
+                                            color: internalIndex == subIndex &&
+                                                    mainIndex == index
+                                                ? Colors.teal.shade900
+                                                : Colors.black45),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          mainIndex = index;
+                                          subIndex = internalIndex;
+                                          // isSelected = true;
+                                        });
+                                        Navigator.of(context).pushNamed(
+                                          '/productDetailsScreen',
+                                          arguments: ProductDetailsArguments(
+                                              sellerId: model.data.seller.id,
+                                              productId: model
+                                                  .data
+                                                  .seller
+                                                  .menu[index]
+                                                  .products[internalIndex]
+                                                  .id),
+                                        );
+                                      },
+                                      trailing: internalIndex == subIndex &&
+                                              mainIndex == index
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: Colors.teal.shade900,
+                                            )
+                                          : Container(
+                                              width: 1,
+                                              height: 1,
+                                            ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          bottomNavigationBar: CustomBottomNavigation(),
         ),
-        bottomNavigationBar: CustomBottomNavigation(),
       ),
     );
   }
+
   void _launchMapsUrl(double lat, double lon) async {
     final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
     if (await canLaunch(url)) {

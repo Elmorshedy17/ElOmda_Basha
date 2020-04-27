@@ -3,6 +3,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:momentoo/features/about_us/about_screen.dart';
 import 'package:momentoo/features/address_book/addressBook_screen.dart';
@@ -41,7 +42,9 @@ import 'package:momentoo/features/trending_products/trendingProducts_screen.dart
 import 'package:momentoo/features/trending_stores/trendingStores_screen.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
+import 'package:momentoo/shared/services/fcm/localNotificationService.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
@@ -93,6 +96,7 @@ class _MomentooAppState extends State<MomentooApp> {
   void initState() {
     super.initState();
     locator<PushNotificationService>().initialize();
+//    locator<LocalNotificationService>().initializeLocalNotification();
   }
 
   @override
@@ -104,6 +108,7 @@ class _MomentooAppState extends State<MomentooApp> {
         child: Consumer<AppLanguage>(
           builder: (context, model, child) {
             return MaterialApp(
+              navigatorKey: locator<NavigationService>().navigatorKey,
               title: 'Momento App',
               debugShowCheckedModeBanner: false,
               navigatorObservers: <NavigatorObserver>[observer],
@@ -176,10 +181,10 @@ class _MomentooAppState extends State<MomentooApp> {
       return LangScreen();
     }
     // if(!PrefsService.s)
-    if (locator<PrefsService>().userObj == null) {
-      return SignInScreen();
+    if (!locator<PrefsService>().hasWelcomeSeen) {
+      return WelcomeScreen();
     } else {
-      return HomeScreen();
+      return AdsScreen();
     }
   }
 }

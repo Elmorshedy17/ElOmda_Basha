@@ -22,15 +22,16 @@ class CartActionsRepo {
   }
 
   static Future<CartActionsModel> postCartData() async {
-    FormData formData = FormData.fromMap(myMap()
-        // locator<PrefsService>().cartObj.toJson()
-        );
+    FormData formData = FormData.fromMap(
+        // myMap()
+        locator<PrefsService>().cartObj.toJson());
 
     try {
       final Response response = await locator<ApiService>().dioClient.post(
             '${locator<ApiService>().dioClient.options.baseUrl}cart',
             data: formData,
           );
+      print(response);
       return CartActionsModel.fromJson(response.data);
     } on DioError {
       // throw FetchDataException('No Internet connection');

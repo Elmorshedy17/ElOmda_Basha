@@ -6,6 +6,7 @@ import 'package:momentoo/features/near_by/geo_code/repo.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
 import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -54,7 +55,9 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      Text(    AppLocalizations.of(context).translate('cant_regonize_city_str'),
+                      Text(
+                        AppLocalizations.of(context)
+                            .translate('cant_regonize_city_str'),
                       ),
                       ListView.builder(
                         shrinkWrap: true,
@@ -79,7 +82,8 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
                                   cityIdChosen = onValue.data.cities[index].id;
 //                                                        Navigator.of(context).pushReplacementNamed('/nearByScreen');
 
-                                  locator<PrefsService>().cityID = onValue.data.cities[index].id.toString();
+                                  locator<PrefsService>().cityID =
+                                      onValue.data.cities[index].id.toString();
 
                                   Navigator.push(
                                     context,
@@ -131,25 +135,21 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
 
     isLoading.add(true);
 
-
     citiesRepo.getcitiesData().then((onCities) async {
-
-      if(onCities.status == 1){
+      if (onCities.status == 1) {
         await geoCodeRepo.geoCode(lat, lng).then((onValue) {
-
           print("onValueonValueonValueonValueonValueonValue ${onValue.status}");
           print("onValueonValueonValueonValueonValueonValue $lat $lng");
 
           if (onValue.status == "OK") {
             setState(() {
-
               itsOk = true;
-
             });
             for (int i = 0; i < 2; i++) {
               isLoading.add(false);
 
-              if (onValue.results.length == 0 || i > onValue.results.length - 1) {
+              if (onValue.results.length == 0 ||
+                  i > onValue.results.length - 1) {
                 print("hahahaho ");
                 ChosenCity();
               } else {
@@ -161,7 +161,7 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
                     adressesCity.add(f.longName);
 
                     print(f);
-                  }else{
+                  } else {
                     isLoading.add(false);
                     ChosenCity();
                   }
@@ -170,31 +170,33 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
               formattedAddress.remove(onValue.results[i].formattedAddress);
               formattedAddress.add(onValue.results[i].formattedAddress);
             }
-            getAddressManager.inFeatureName.add(locator<PrefsService>().appLanguage == "en" ? adressesCity[0] : adressesCity[1]);
-            getAddressManager.inAddressLine.add(locator<PrefsService>().appLanguage == "en" ? formattedAddress[0]:formattedAddress[1]);
+            getAddressManager.inFeatureName.add(
+                locator<PrefsService>().appLanguage == "en"
+                    ? adressesCity[0]
+                    : adressesCity[1]);
+            getAddressManager.inAddressLine.add(
+                locator<PrefsService>().appLanguage == "en"
+                    ? formattedAddress[0]
+                    : formattedAddress[1]);
 
-
-            for (int index = 0;index < onCities.data.cities.length;index++) {
-              if(adressesCity[0] == onCities.data.cities[index].name ){
+            for (int index = 0; index < onCities.data.cities.length; index++) {
+              if (adressesCity[0] == onCities.data.cities[index].name) {
                 print("ya rab ya karim ${onCities.data.cities[index].id}");
                 manualcityIdChosen = onCities.data.cities[index].id;
-                locator<PrefsService>().cityID = onCities.data.cities[index].id.toString();
-
+                locator<PrefsService>().cityID =
+                    onCities.data.cities[index].id.toString();
               }
             }
-
           } else {
             isLoading.add(false);
             ChosenCity();
           }
         });
-      }else{
+      } else {
         isLoading.add(false);
         ChosenCity();
       }
-
     });
-
   }
 
   List<Marker> markers = <Marker>[];
@@ -215,84 +217,86 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
   @override
   Widget build(BuildContext context) {
     args = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      body: StreamBuilder(
-          stream: isLoading.stream,
-          builder: (context, isLoadingSnapshot) {
-            return Stack(
-              children: <Widget>[
-                _googleMap(context),
-                Positioned(
-                  top: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.13,
-                    color: Colors.transparent,
-                    child: Image.asset(
-                      'assets/images/home_header.png',
-                      fit: BoxFit.fill,
+    return NetworkSensitive(
+      child: Scaffold(
+        body: StreamBuilder(
+            stream: isLoading.stream,
+            builder: (context, isLoadingSnapshot) {
+              return Stack(
+                children: <Widget>[
+                  _googleMap(context),
+                  Positioned(
+                    top: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.13,
+                      color: Colors.transparent,
+                      child: Image.asset(
+                        'assets/images/home_header.png',
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 0.0,
-                  right: 0.0,
-                  bottom: 50.0,
-                  child: deliveryAddress(context),
-                ),
-            Positioned(
-                  left: 0.0,
-                  right: 0.0,
-                  bottom: 10.0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: RaisedButton(
-                      padding: EdgeInsets.all(16),
-                      color: Colors.teal.shade900,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        side: BorderSide(color: Colors.white24),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context).translate('Deliver_Here_str'),
-                        style: TextStyle(
-                          color: Colors.white,
+                  Positioned(
+                    left: 0.0,
+                    right: 0.0,
+                    bottom: 50.0,
+                    child: deliveryAddress(context),
+                  ),
+                  Positioned(
+                    left: 0.0,
+                    right: 0.0,
+                    bottom: 10.0,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: RaisedButton(
+                        padding: EdgeInsets.all(16),
+                        color: Colors.teal.shade900,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: BorderSide(color: Colors.white24),
                         ),
-                      ),
-                      onPressed: () {
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => NearByScreen(manualcityIdChosen)),
-                        );
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .translate('Deliver_Here_str'),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    NearByScreen(manualcityIdChosen)),
+                          );
 
 //                        Navigator.of(context).pushReplacementNamed('/nearByScreen');
-                      },
+                        },
+                      ),
                     ),
                   ),
-                ),
-
-                isLoading.value == true
-                    ? Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.black.withOpacity(0.5),
-                        child: Center(
-                            child: Container(
-//                      color: mainColor,
+                  isLoading.value == true
+                      ? Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.black.withOpacity(0.5),
                           child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )),
-                      )
-                    : Container(),
-              ],
-            );
-          }),
+                              child: Container(
+//                      color: mainColor,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )),
+                        )
+                      : Container(),
+                ],
+              );
+            }),
 //      bottomNavigationBar: Container(
 //        padding: EdgeInsets.symmetric(horizontal: 4),
 //        height: 50,
@@ -315,38 +319,41 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
 //          },
 //        ),
 //      ),
+      ),
     );
   }
 
   Widget _googleMap(BuildContext context) {
-    return itsOk == true ? Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GoogleMap(
-        onTap: (LatLng latLng) {
-          setState(() {
-            markers.add(Marker(
-              markerId: MarkerId('current'),
-              position: LatLng(latLng.latitude, latLng.longitude),
-              infoWindow: InfoWindow(title: 'Your Location'),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueViolet,
+    return itsOk == true
+        ? Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: GoogleMap(
+              onTap: (LatLng latLng) {
+                setState(() {
+                  markers.add(Marker(
+                    markerId: MarkerId('current'),
+                    position: LatLng(latLng.latitude, latLng.longitude),
+                    infoWindow: InfoWindow(title: 'Your Location'),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueViolet,
+                    ),
+                  ));
+                  getAddress(latLng.latitude, latLng.longitude);
+                });
+              },
+              mapType: MapType.normal,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(args.lat, args.lng),
+                zoom: 12,
               ),
-            ));
-            getAddress(latLng.latitude, latLng.longitude);
-          });
-        },
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(args.lat, args.lng),
-          zoom: 12,
-        ),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        markers: Set<Marker>.of(markers),
-      ),
-    ) : Container();
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              markers: Set<Marker>.of(markers),
+            ),
+          )
+        : Container();
   }
 
   Widget deliveryAddress(BuildContext context) {

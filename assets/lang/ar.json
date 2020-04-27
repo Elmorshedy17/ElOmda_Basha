@@ -181,7 +181,7 @@
   "Yes_Str": "حسنا",
   "selectAddress_str": "اختر عنوان",
   "nice_to_meet_you_str": "مرحبا , سررت بلقائك",
-  "Use_current_location_str": "استخدم موقعك الحاليي",
+  "Use_current_location_str": "استخدم موقعك الحالي",
   "Select_it_manually_str": "اختار موقعك بنفسك",
   "chooseCity_str": "اختر مدينة",
   "cant_regonize_city_str": "لا يمكننا التعرف على موقعك ، يرجى اختيار مدينتك",
@@ -200,5 +200,6 @@
   "reorder_order_str": "إعادة طلب",
   "Not_yet_str": "ليس حتي الان",
   "delivery_Fees_str": "خدمة التوصيل",
-  "Payment_Gateway_str": "بوابة الدفع"
+  "Payment_Gateway_str": "بوابة الدفع",
+  "NoItemsInCart_str": "سلة الشراء فارغة"
 }

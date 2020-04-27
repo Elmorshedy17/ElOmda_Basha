@@ -38,8 +38,10 @@ import 'package:momentoo/features/storeDetails/storeDetails_manager.dart';
 import 'package:momentoo/features/trending_products/trendinfProduct_manager.dart';
 import 'package:momentoo/features/trending_stores/trendingStore_manager.dart';
 import 'package:momentoo/shared/helper/cartItemsCount_manger.dart';
+import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
+import 'package:momentoo/shared/services/fcm/localNotificationService.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
 import 'package:momentoo/shared/services/location_service.dart';
@@ -72,6 +74,11 @@ Future<void> setupLocator() async {
   // PushNotificationService
   locator.registerLazySingleton<PushNotificationService>(
       () => PushNotificationService());
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // LocalNotificationService
+//  locator.registerLazySingleton<LocalNotificationService>(
+//      () => LocalNotificationService());
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Setup LocationService
   locator.registerLazySingleton<LocationService>(() => LocationService());
   // ManuallyMapManager
@@ -103,7 +110,8 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<NearByManager>(() => NearByManager());
   locator.registerLazySingleton<MyOrdersManager>(() => MyOrdersManager());
   locator.registerLazySingleton<TrackOrderManager>(() => TrackOrderManager());
-  locator.registerLazySingleton<OrderDetailsManager>(() => OrderDetailsManager());
+  locator
+      .registerLazySingleton<OrderDetailsManager>(() => OrderDetailsManager());
   // TrendingStoreManager
   locator.registerLazySingleton<TrendingStoreManager>(
       () => TrendingStoreManager());
@@ -157,4 +165,6 @@ Future<void> setupLocator() async {
   // CheckoutValidationManager
   locator.registerLazySingleton<CheckoutValidationManager>(
       () => CheckoutValidationManager());
+
+  locator.registerLazySingleton<NavigationService>(() => NavigationService());
 }

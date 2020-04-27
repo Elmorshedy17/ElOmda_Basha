@@ -5,7 +5,6 @@ import 'package:momentoo/features/checkout/paymentGateway/paymentResponse.dart';
 import 'package:momentoo/features/payment/failed_screen.dart';
 import 'package:momentoo/features/payment/successful_screen.dart';
 import 'package:momentoo/shared/helper/network_sensitive.dart';
-import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 
 class PaymentGatewayScreen extends StatelessWidget {

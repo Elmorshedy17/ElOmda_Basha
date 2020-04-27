@@ -5,6 +5,7 @@ import 'package:momentoo/features/favorites/favorites_widgets/favoritesContent.d
 import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
@@ -34,77 +35,79 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MainBackground(
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
+    return NetworkSensitive(
+      child: MainBackground(
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Scaffold(
           backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          centerTitle: true,
-          title: Text(
-            AppLocalizations.of(context).translate('favorites_str'),
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily:
-                  locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
-            ),
-          ),
-          leading: InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.arrow_back_ios,
-                  size: 15,
-                ),
-                Text(
-                  AppLocalizations.of(context).translate('back_str'),
-                  style: TextStyle(
-                    fontFamily: locator<PrefsService>().appLanguage == 'en'
-                        ? 'en'
-                        : 'ar',
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            NotificationWidget(
-              onPressedNotifications: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Navigator.of(context).pushNamed('/notificationsScreen');
-                locator<PrefsService>().notificationFlag = false;
-              },
-            )
-          ],
-        ),
-        body: Column(
-          children: <Widget>[
-            favoritesCategoryList(),
-            Expanded(
-              child: CustomObserver(
-                stream: locator<FavoritesManager>().getData(),
-                onSuccess: (_, FavoritesModel model) => PageView.builder(
-                    onPageChanged: (index) {
-                      pageIndex = index;
-                    },
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: _pageController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: model.data.categories?.length ?? 0,
-                    itemBuilder: (_, index) {
-                      return FavoritesContent(
-                        pageIndex: pageIndex,
-                        categories: model.data.categories,
-                      );
-                    }),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            centerTitle: true,
+            title: Text(
+              AppLocalizations.of(context).translate('favorites_str'),
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily:
+                    locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
               ),
             ),
-          ],
+            leading: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.arrow_back_ios,
+                    size: 15,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('back_str'),
+                    style: TextStyle(
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              NotificationWidget(
+                onPressedNotifications: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  Navigator.of(context).pushNamed('/notificationsScreen');
+                  locator<PrefsService>().notificationFlag = false;
+                },
+              )
+            ],
+          ),
+          body: Column(
+            children: <Widget>[
+              favoritesCategoryList(),
+              Expanded(
+                child: CustomObserver(
+                  stream: locator<FavoritesManager>().getData(),
+                  onSuccess: (_, FavoritesModel model) => PageView.builder(
+                      onPageChanged: (index) {
+                        pageIndex = index;
+                      },
+                      physics: NeverScrollableScrollPhysics(),
+                      controller: _pageController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: model.data.categories?.length ?? 0,
+                      itemBuilder: (_, index) {
+                        return FavoritesContent(
+                          pageIndex: pageIndex,
+                          categories: model.data.categories,
+                        );
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

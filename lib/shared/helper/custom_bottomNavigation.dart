@@ -122,6 +122,12 @@ class CustomBottomNavigation extends StatelessWidget {
                                   ? false
                                   : true
                               : true);
+
+                      // Navigator.of(context).pushNamedAndRemoveUntil(
+                      //     "/",
+                      //     (route) => route.isCurrent
+                      //         ? route.settings.name == "/" ? false : true
+                      //         : true);
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -131,6 +137,8 @@ class CustomBottomNavigation extends StatelessWidget {
                           Icons.home,
                           color: ModalRoute.of(context).settings.name ==
                                   '/homeScreen'
+                              //      ||
+                              // ModalRoute.of(context).settings.name == '/'
                               ? Colors.teal.shade900
                               : Colors.black12,
                         ),
@@ -147,6 +155,8 @@ class CustomBottomNavigation extends StatelessWidget {
                                     : 'ar',
                             color: ModalRoute.of(context).settings.name ==
                                     '/homeScreen'
+                                //     ||
+                                // ModalRoute.of(context).settings.name == '/'
                                 ? Colors.teal.shade900
                                 : Colors.black12,
                           ),

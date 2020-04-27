@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
@@ -52,63 +53,65 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     ];
 
-    return MainBackground(
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: Center(
-                child: Image.asset(
-              'assets/images/welcome_logo.png',
-              height: (MediaQuery.of(context).size.height * 0.3) - 40,
-              color: Colors.white,
-            )),
-          ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            // appBar: PreferredSize(
-            //   preferredSize:
-            //       Size.fromHeight(MediaQuery.of(context).size.height * 0.3),
-            //   child: Container(
-            //     height: MediaQuery.of(context).size.height * 0.3,
-            //     child: Center(
-            //         child: Image.asset(
-            //       'assets/images/welcome_logo.png',
-            //       height: (MediaQuery.of(context).size.height * 0.3) - 40,
-            //       color: Colors.white,
-            //     )),
-            //   ),
-            // ),
-            body: Center(
-              child: PageView.builder(
-                controller: _welcomePageController,
-                scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
-                onPageChanged: (index) {
-                  currentPageIndex = index;
-                },
-                itemCount: welcomeScreens.length,
-                itemBuilder: (_, index) {
-                  // currentPageIndex = index;
-                  return welcomeScreens[index];
-                },
+    return NetworkSensitive(
+      child: MainBackground(
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Center(
+                  child: Image.asset(
+                'assets/images/welcome_logo.png',
+                height: (MediaQuery.of(context).size.height * 0.3) - 40,
+                color: Colors.white,
+              )),
+            ),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              // appBar: PreferredSize(
+              //   preferredSize:
+              //       Size.fromHeight(MediaQuery.of(context).size.height * 0.3),
+              //   child: Container(
+              //     height: MediaQuery.of(context).size.height * 0.3,
+              //     child: Center(
+              //         child: Image.asset(
+              //       'assets/images/welcome_logo.png',
+              //       height: (MediaQuery.of(context).size.height * 0.3) - 40,
+              //       color: Colors.white,
+              //     )),
+              //   ),
+              // ),
+              body: Center(
+                child: PageView.builder(
+                  controller: _welcomePageController,
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  onPageChanged: (index) {
+                    currentPageIndex = index;
+                  },
+                  itemCount: welcomeScreens.length,
+                  itemBuilder: (_, index) {
+                    // currentPageIndex = index;
+                    return welcomeScreens[index];
+                  },
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 13,
-            right: 0,
-            left: 0,
-            child: Container(
-              color: Colors.transparent,
-              child: DotsIndicator(
-                controller: _welcomePageController,
-                itemCount: welcomeScreens.length,
+            Positioned(
+              bottom: 13,
+              right: 0,
+              left: 0,
+              child: Container(
+                color: Colors.transparent,
+                child: DotsIndicator(
+                  controller: _welcomePageController,
+                  itemCount: welcomeScreens.length,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -184,6 +187,10 @@ class _Welcome extends StatelessWidget {
                   ),
                   onTap: () {
                     locator<PrefsService>().hasWelcomeSeen = true;
+                    // locator<PrefsService>().hasSignInSeen
+                    // ? Navigator.of(context)
+                    //     .pushReplacementNamed('/homeScreen')
+                    // :
                     Navigator.of(context).pushReplacementNamed('/signInScreen');
                   },
                 ),

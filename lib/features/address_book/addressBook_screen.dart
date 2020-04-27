@@ -8,10 +8,10 @@ import 'package:momentoo/features/new_address/dropdown_data.dart';
 import 'package:momentoo/features/new_address/newAddress_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
-import 'package:momentoo/shared/theme_setting.dart';
 import 'package:rxdart/rxdart.dart';
 
 BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
@@ -47,64 +47,72 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
 //List<List<User>> Users = [];
   @override
   Widget build(BuildContext context) {
-    return MainBackground(
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).translate('addressBook_str'),
-            style: TextStyle(
-              color: Colors.white,
+    return NetworkSensitive(
+      child: MainBackground(
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: Text(
+              AppLocalizations.of(context).translate('addressBook_str'),
+              style: TextStyle(
+                fontFamily:
+                    locator<PrefsService>().appLanguage == 'en' ? 'en' : 'ar',
+                color: Colors.white,
 //              fontSize: 25,
 //              fontWeight: FontWeight.bold,
+              ),
+            ),
+            centerTitle: true,
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+            leading: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.arrow_back_ios,
+                    size: 15,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('back_str'),
+                    style: TextStyle(
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          centerTitle: true,
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leading: InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  Icons.arrow_back_ios,
-                  size: 15,
-                ),
-                Text(
-                  AppLocalizations.of(context).translate('back_str'),
-                ),
-              ],
-            ),
-          ),
-        ),
-        body: Stack(
-          children: <Widget>[
-            CustomObserver(
-                stream: locator<AddressesManager>().getData(),
-                onSuccess: (_, AddressesModel model) {
-                  print("model$model");
-                  for (int index = 0;
-                      index < model.data.cities.length;
-                      index++) {
-                    users.add(User(model.data.cities[index].id,
-                        model.data.cities[index].name));
-                  }
-                  locator<DrobDownBloc>()
-                      .DrobDownBlocSink
-                      .add(model.data.cities);
+          body: Stack(
+            children: <Widget>[
+              CustomObserver(
+                  stream: locator<AddressesManager>().getData(),
+                  onSuccess: (_, AddressesModel model) {
+                    print("model$model");
+                    for (int index = 0;
+                        index < model.data.cities.length;
+                        index++) {
+                      users.add(User(model.data.cities[index].id,
+                          model.data.cities[index].name));
+                    }
+                    locator<DrobDownBloc>()
+                        .DrobDownBlocSink
+                        .add(model.data.cities);
 
-                  print(
-                      "locator<DrobDownBloc>().currentDrobDownBloc${locator<DrobDownBloc>().currentDrobDownBloc[0].name}");
-                  return Stack(
-                    children: <Widget>[
-                      Column(
+                    print(
+                        "locator<DrobDownBloc>().currentDrobDownBloc${locator<DrobDownBloc>().currentDrobDownBloc[0].name}");
+                    return Stack(
+                      children: <Widget>[
+                        Column(
 //          crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
+                          children: <Widget>[
 //            Center(
 //              child: Container(
 ////                elevation: 5,
@@ -125,60 +133,61 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
 //              ),
 //            ),
 
-                          Expanded(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount: model.data.addresses.length,
-                                  itemBuilder: (context, index) {
-                                    return AddressBookItem(
-                                      id: model.data.addresses[index].id,
-                                      modelData: model,
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: model.data.addresses.length,
+                                    itemBuilder: (context, index) {
+                                      return AddressBookItem(
+                                        id: model.data.addresses[index].id,
+                                        modelData: model,
 //                                deleteTag: 'd1',
 //                                editTag: 'e1',
-                                      adress: model.data.addresses[index].title,
-                                    );
-                                  }),
+                                        adress:
+                                            model.data.addresses[index].title,
+                                      );
+                                    }),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 85.0,
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        bottom: 5.0,
-                        width: MediaQuery.of(context).size.width,
-                        child: Container(
-                          padding: EdgeInsets.all(15.0),
-                          child: ButtonTheme(
-                            height: 55,
-                            minWidth: MediaQuery.of(context).size.width * 0.8,
-                            child: RaisedButton(
-                              color: Colors.teal.shade900,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: Colors.white24),
-                              ),
-                              child: Text(
-                                AppLocalizations.of(context)
-                                    .translate('addNewAddress_str'),
-                                style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar'),
-                              ),
-                              onPressed: () {
-                                _navigateAndRetrieveData(context,
-                                    model.data.country, model.data.cities);
+                            SizedBox(
+                              height: 85.0,
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                          bottom: 5.0,
+                          width: MediaQuery.of(context).size.width,
+                          child: Container(
+                            padding: EdgeInsets.all(15.0),
+                            child: ButtonTheme(
+                              height: 55,
+                              minWidth: MediaQuery.of(context).size.width * 0.8,
+                              child: RaisedButton(
+                                color: Colors.teal.shade900,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  side: BorderSide(color: Colors.white24),
+                                ),
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('addNewAddress_str'),
+                                  style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar'),
+                                ),
+                                onPressed: () {
+                                  _navigateAndRetrieveData(context,
+                                      model.data.country, model.data.cities);
 //                                Navigator.push(
 //                                  context,
 //                                  MaterialPageRoute(
@@ -189,30 +198,30 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
 //                                );
 //                          model
 //                          Navigator.of(context).pushNamed('/newAddressScreen');
-                              },
+                                },
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }),
-            isLoading.value == true
-                ? Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black.withOpacity(0.5),
-                    child: Center(
-                        child: Container(
-//                      color: mainColor,
+                      ],
+                    );
+                  }),
+              isLoading.value == true
+                  ? Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black.withOpacity(0.5),
                       child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )),
-                  )
-                : Container(),
-          ],
-        ),
+                          child: Container(
+//                      color: mainColor,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )),
+                    )
+                  : Container(),
+            ],
+          ),
 //        bottomNavigationBar: ListTile(
 //          title: ButtonTheme(
 //            height: 45,
@@ -237,6 +246,7 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
 //            ),
 //          ),
 //        ),
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:momentoo/features/near_by/nearByMarkers.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
 import 'package:momentoo/shared/helper/custom_bottomNavigation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 
 class NearByScreen extends StatefulWidget {
@@ -29,104 +30,107 @@ class _NearByScreenState extends State<NearByScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: PreferredSize(
-          child: Container(
-            color: Colors.teal.shade900,
-            child: Center(
-              child: Container(
-                height: 55,
-                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                ),
-                child: TextField(
-                  controller: wordSearch,
-                  onSubmitted: (v) {
-                    setState(() {
-                      wordSearch.text;
-                    });
-                    print("wordSearch.text ${wordSearch.text}");
-                  },
-                  decoration: InputDecoration(
-                      alignLabelWithHint: true,
-                      filled: true,
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(10.0),
-                        ),
-                      ),
-                      hintStyle:
-                          TextStyle(color: Colors.grey[600], fontSize: 13),
-                      prefixIcon: Icon(
-                        Icons.location_on,
-                        color: Colors.black54,
-                      ),
-                      suffixIcon: InkWell(
-                        onTap: () {
-                          setState(() {
-                            wordSearch.clear();
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(9),
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade800,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(100)),
-                          ),
-                          child: new Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            // size: 35.0,
+    return NetworkSensitive(
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: PreferredSize(
+            child: Container(
+              color: Colors.teal.shade900,
+              child: Center(
+                child: Container(
+                  height: 55,
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(19.0)),
+                  ),
+                  child: TextField(
+                    controller: wordSearch,
+                    onSubmitted: (v) {
+                      setState(() {
+                        wordSearch.text;
+                      });
+                      print("wordSearch.text ${wordSearch.text}");
+                    },
+                    decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        filled: true,
+                        border: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
                           ),
                         ),
-                      ),
-                      hintText: "Search...",
-                      fillColor: Colors.white),
+                        hintStyle:
+                            TextStyle(color: Colors.grey[600], fontSize: 13),
+                        prefixIcon: Icon(
+                          Icons.location_on,
+                          color: Colors.black54,
+                        ),
+                        suffixIcon: InkWell(
+                          onTap: () {
+                            setState(() {
+                              wordSearch.clear();
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(9),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade800,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(100)),
+                            ),
+                            child: new Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              // size: 35.0,
+                            ),
+                          ),
+                        ),
+                        hintText: "Search...",
+                        fillColor: Colors.white),
+                  ),
                 ),
               ),
             ),
+            preferredSize: Size(MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height * 0.18),
           ),
-          preferredSize: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height * 0.18),
-        ),
-        body: CustomObserver(
-            stream: locator<NearByManager>().getData( locator<NearByManager>().catSubject.value,
-                wordSearch.text, widget.cityID, cusinId == null ? "" : cusinId),
-            onSuccess: (_, NearByModel model) {
-              print("NearByModel ${model}");
-              return Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  _googleMap(context , model),
-                  nearbyStoresList(model),
-                  Positioned(
-                    left: 0.0,
-                    right: 0.0,
-                    bottom: 0.0,
-                    child: CustomBottomNavigation(),
-                  ),
-                  filterList(model),
-                ],
-              );
-            }),
+          body: CustomObserver(
+              stream: locator<NearByManager>().getData(
+                  locator<NearByManager>().catSubject.value,
+                  wordSearch.text,
+                  widget.cityID,
+                  cusinId == null ? "" : cusinId),
+              onSuccess: (_, NearByModel model) {
+                print("NearByModel ${model}");
+                return Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    _googleMap(context, model),
+                    nearbyStoresList(model),
+                    Positioned(
+                      left: 0.0,
+                      right: 0.0,
+                      bottom: 0.0,
+                      child: CustomBottomNavigation(),
+                    ),
+                    filterList(model),
+                  ],
+                );
+              }),
 //        bottomNavigationBar: CustomBottomNavigation(),
+        ),
       ),
     );
   }
 
   Set<Marker> markers = Set();
 
-
-  Widget _googleMap(BuildContext context , model) {
-
-
-    for (int index = 0;index < model.data.sellers.length;index++) {
+  Widget _googleMap(BuildContext context, model) {
+    for (int index = 0; index < model.data.sellers.length; index++) {
       // Create a new marker
       Marker resultMarker = Marker(
         markerId: MarkerId(model.data.sellers[index].name),
@@ -158,9 +162,7 @@ class _NearByScreenState extends State<NearByScreen> {
         },
         // markers: {currentMarker(context)},
 
-          markers: markers,
-
-
+        markers: markers,
 
 //        markers:
 //        {
@@ -179,8 +181,6 @@ class _NearByScreenState extends State<NearByScreen> {
       ),
     );
   }
-
-
 
   Widget filterList(dataModel) {
     return Positioned(
@@ -252,7 +252,6 @@ class _NearByScreenState extends State<NearByScreen> {
                   restaurantName: dataModel.data.sellers[index].name,
                   rate: dataModel.data.sellers[index].rate,
                   favourite: dataModel.data.sellers[index].favourite,
-
                 ),
               );
             },
@@ -260,8 +259,8 @@ class _NearByScreenState extends State<NearByScreen> {
     );
   }
 
-  Widget _boxes({
-      int sellerId,
+  Widget _boxes(
+      {int sellerId,
       String image,
       double lat,
       double long,
@@ -301,16 +300,15 @@ class _NearByScreenState extends State<NearByScreen> {
                     child: Stack(
                       children: <Widget>[
                         InkWell(
-                          onTap: (){
-
+                          onTap: () {
                             Navigator.of(context).pushNamed(
                               '/StoreDetailsScreen',
                               arguments: StoreDetailsArguments(
-                                categoryId: locator<NearByManager>().catSubject.value,
+                                categoryId:
+                                    locator<NearByManager>().catSubject.value,
                                 sellerId: sellerId,
                               ),
                             );
-
                           },
                           child: Image(
                             width: double.maxFinite,
@@ -344,7 +342,8 @@ class _NearByScreenState extends State<NearByScreen> {
     );
   }
 
-  Widget myDetailsContainer1(String restaurantName, int rate, String favourite) {
+  Widget myDetailsContainer1(
+      String restaurantName, int rate, String favourite) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: Column(
@@ -391,23 +390,20 @@ class _NearByScreenState extends State<NearByScreen> {
 //                },
 //              )
 
-              RatingBar(
-                initialRating: rate.toDouble(),
-                minRating: 0,
-                direction: Axis.horizontal,ignoreGestures: true,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemSize: 24.0,
-                itemPadding: EdgeInsets.symmetric(horizontal: .4),
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                    color: Colors.red
-                ),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                },
-              ),
-
+                RatingBar(
+              initialRating: rate.toDouble(),
+              minRating: 0,
+              direction: Axis.horizontal,
+              ignoreGestures: true,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemSize: 24.0,
+              itemPadding: EdgeInsets.symmetric(horizontal: .4),
+              itemBuilder: (context, _) => Icon(Icons.star, color: Colors.red),
+              onRatingUpdate: (rating) {
+                print(rating);
+              },
+            ),
           ),
           SizedBox(height: 5.0),
         ],
@@ -429,4 +425,3 @@ class _NearByScreenState extends State<NearByScreen> {
     );
   }
 }
-

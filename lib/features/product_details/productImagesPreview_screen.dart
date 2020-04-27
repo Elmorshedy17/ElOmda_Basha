@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/product_details/productDetails_model.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 
 int currentPageIndex = 0;
@@ -35,44 +36,46 @@ class _ProductImagesScreenState extends State<ProductImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        PageView.builder(
-            itemCount: widget.images?.length ?? 0,
-            controller: _productImagesController,
-            scrollDirection: Axis.horizontal,
-            // physics: BouncingScrollPhysics(),
-            onPageChanged: (index) {
-              currentPageIndex = index;
-            },
-            itemBuilder: (_, index) {
-              return Scaffold(
-                body: Center(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.network(
-                      widget.images[index].image,
-                      fit: BoxFit.fill,
+    return NetworkSensitive(
+      child: Stack(
+        children: <Widget>[
+          PageView.builder(
+              itemCount: widget.images?.length ?? 0,
+              controller: _productImagesController,
+              scrollDirection: Axis.horizontal,
+              // physics: BouncingScrollPhysics(),
+              onPageChanged: (index) {
+                currentPageIndex = index;
+              },
+              itemBuilder: (_, index) {
+                return Scaffold(
+                  body: Center(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.network(
+                        widget.images[index].image,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-              );
-            }),
-        Positioned(
-          bottom: 13,
-          right: 0,
-          left: 0,
-          child: Container(
-            color: Colors.transparent,
-            child: DotsIndicator(
-              controller: _productImagesController,
-              itemCount:
-                  widget.images.length > 1 ? widget.images?.length ?? 0 : 0,
+                );
+              }),
+          Positioned(
+            bottom: 13,
+            right: 0,
+            left: 0,
+            child: Container(
+              color: Colors.transparent,
+              child: DotsIndicator(
+                controller: _productImagesController,
+                itemCount:
+                    widget.images.length > 1 ? widget.images?.length ?? 0 : 0,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

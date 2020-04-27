@@ -201,5 +201,6 @@
   "Nearby_str": "Nearby",
   "NewAddress_str": "New Address",
   "Not_yet_str": "Not yet",
-  "Payment_Gateway_str": "Payment Gateway"
+  "Payment_Gateway_str": "Payment Gateway",
+  "NoItemsInCart_str": "No items in Cart"
 }
