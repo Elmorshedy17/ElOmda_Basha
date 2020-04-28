@@ -650,6 +650,7 @@ class _CartScreenState extends State<CartScreen> {
                                   'addresses*******${cartModel.data.addresses}');
                               print(cartModel.data.country.name);
                               print('cities*******${cartModel.data.cities}');
+                              print('seller*******${cartModel.data.seller.id}');
                             },
                           ),
                         ),
