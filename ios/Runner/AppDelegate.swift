@@ -12,7 +12,7 @@ import UserNotificationsUI
     ) -> Bool {
         var flutter_native_splash = 1
         UIApplication.shared.isStatusBarHidden = false
-        GMSServices.provideAPIKey("AIzaSyAWxomwJys-vAXdtyrreAkGHTBJoZcWCt8")
+        GMSServices.provideAPIKey("AIzaSyAQtCUwljBw9A2av_wOdzmapMxAGDGmxIU")
         setUpRemoteNotification(application: application)
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)

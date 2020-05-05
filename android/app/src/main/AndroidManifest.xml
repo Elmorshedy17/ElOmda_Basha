@@ -36,7 +36,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBjzO55poKvqbwepgZK1wioHj0GOYcPZMM"/>
+            android:value="AIzaSyCFqwk6Y8Ztv-XsRnHL9aCjym3Rz3hMYUo"/>
 
 <!--        <service-->
 <!--            android:name=".java.MyFirebaseMessagingService"-->

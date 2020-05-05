@@ -21,10 +21,8 @@ class CustomInterceptor implements Interceptor {
       'Platform': Platform.isAndroid ? 'android' : 'ios',
       'FirebaseToken': locator<FcmTokenManager>().currentFcmToken,
     };
-    print(locator<PrefsService>().userObj?.authorization ?? '');
-    print(locator<FcmTokenManager>().currentFcmToken);
-    print(locator<PrefsService>().appLanguage);
-    print(Platform.isAndroid ? 'android' : 'ios');
+    // print(options.headers);
+    // print(options);
     return options;
   }
 

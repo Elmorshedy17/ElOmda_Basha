@@ -96,7 +96,10 @@ class _MomentooAppState extends State<MomentooApp> {
   void initState() {
     super.initState();
     locator<PushNotificationService>().initialize();
-//    locator<LocalNotificationService>().initializeLocalNotification();
+    ////////////////////////////////////////////////////////////////////////////
+    // LocalNotification
+    locator<LocalNotificationService>().initializeLocalNotification();
+    ////////////////////////////////////////////////////////////////////////////
   }
 
   @override

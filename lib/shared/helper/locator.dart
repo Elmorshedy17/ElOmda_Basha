@@ -76,8 +76,8 @@ Future<void> setupLocator() async {
       () => PushNotificationService());
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // LocalNotificationService
-//  locator.registerLazySingleton<LocalNotificationService>(
-//      () => LocalNotificationService());
+  locator.registerLazySingleton<LocalNotificationService>(
+      () => LocalNotificationService());
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Setup LocationService
   locator.registerLazySingleton<LocationService>(() => LocationService());

@@ -35,12 +35,12 @@ class SignUpValidationManager with Validation implements Manager {
   Sink<String> get inLastName => lastNameSubject.sink;
 
   final addressSubject = BehaviorSubject<String>();
-  Stream<String> get address$ =>
-      addressSubject.stream.transform(validateField);
+  Stream<String> get address$ => addressSubject.stream.transform(validateField);
   Sink<String> get inAddress => addressSubject.sink;
 
   final phoneSubject = BehaviorSubject<String>();
-  Stream<String> get phone$ => phoneSubject.stream.transform(validateField);
+  Stream<String> get phone$ =>
+      phoneSubject.stream.transform(validatePhoneField);
   Sink<String> get inPhone => phoneSubject.sink;
 
   final passwordConfirmationSubject = BehaviorSubject<String>();

@@ -11,9 +11,10 @@ class AdsRepo {
             '${locator<ApiService>().dioClient.options.baseUrl}ads',
           );
       return AdsModel.fromJson(response.data);
-    } on DioError {
+    } on DioError catch (e) {
       // throw FetchDataException('No Internet connection');
-      throw FetchDataException(DioError().error);
+      // throw FetchDataException(DioError().error);
+      throw (e.message);
     }
   }
 }

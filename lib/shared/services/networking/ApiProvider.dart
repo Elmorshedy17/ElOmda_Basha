@@ -3,17 +3,25 @@ import 'package:momentoo/shared/services/networking/CustomInterceptor.dart';
 import 'package:momentoo/shared/services/networking/DioConnectivityRequestRecall.dart';
 
 class ApiService {
+  static final interceptors = [
+    CustomInterceptor(
+      requestRecall: DioConnectivityRequestRecall(),
+    ),
+    LogInterceptor(
+      requestHeader: true,
+      request: true,
+      requestBody: true,
+      responseHeader: true,
+      responseBody: true,
+    )
+  ];
   final Dio dioClient = Dio(
     BaseOptions(
       baseUrl: 'http://momento.linekw.net/api/',
       connectTimeout: 60000,
       receiveTimeout: 60000,
     ),
-  )..interceptors.add(
-      CustomInterceptor(
-        requestRecall: DioConnectivityRequestRecall(),
-      ),
-    );
+  )..interceptors.addAll(interceptors);
 }
 
 //  interceptors.add(

@@ -2072,11 +2072,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   showToast(message) {
     Fluttertoast.showToast(
-//      msg: "${locator<PrefsService>().appLanguage == "en" ? 'added successfully' : 'تم الاضافة بنجاح'}",
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
-      backgroundColor: Colors.black.withOpacity(.6),
+      backgroundColor: Colors.black.withOpacity(0.6),
       textColor: Colors.white,
       fontSize: 14.0,
     );

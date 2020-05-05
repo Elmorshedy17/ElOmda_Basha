@@ -1,5 +1,7 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:momentoo/features/sign_up/signUp_repo.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
 import 'package:momentoo/shared/helper/locator.dart';
@@ -24,14 +26,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final passwordFocus = FocusNode();
   final confirmFocus = FocusNode();
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController middleNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmController = TextEditingController();
+  // TextEditingController emailController = TextEditingController();
+  // TextEditingController firstNameController = TextEditingController();
+  // TextEditingController middleNameController = TextEditingController();
+  // TextEditingController lastNameController = TextEditingController();
+  // TextEditingController addressController = TextEditingController();
+  // TextEditingController phoneController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
+  // TextEditingController confirmController = TextEditingController();
+  String email = '';
+  String firstName = '';
+  String middleName = '';
+  String lastName = '';
+  String address = '';
+  String phone = '';
+  String password = '';
+  String confirm = '';
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
   @override
@@ -82,13 +92,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.firstName$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: firstNameController,
+                                // controller: firstNameController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context)
                                       .requestFocus(middleNameFocus);
                                 },
                                 onChanged: (value) {
+                                  firstName = value;
                                   validationManager.inFirstName.add(value);
                                 },
                                 style: TextStyle(color: Colors.white),
@@ -116,14 +127,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.middleName$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: middleNameController,
+                                // controller: middleNameController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context)
                                       .requestFocus(lastNameFocus);
                                 },
                                 focusNode: middleNameFocus,
-                                onChanged: validationManager.inMiddleName.add,
+                                onChanged: (value) {
+                                  middleName = value;
+                                  validationManager.inMiddleName.add(value);
+                                },
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   suffixText: AppLocalizations.of(context)
@@ -159,14 +173,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.lastName$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: lastNameController,
+                                // controller: lastNameController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context)
                                       .requestFocus(addressFocus);
                                 },
                                 focusNode: lastNameFocus,
-                                onChanged: validationManager.inLastName.add,
+                                onChanged: (value) {
+                                  lastName = value;
+                                  validationManager.inLastName.add(value);
+                                },
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -192,14 +209,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.address$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: addressController,
+                                // controller: addressController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context)
                                       .requestFocus(phoneFocus);
                                 },
                                 focusNode: addressFocus,
-                                onChanged: validationManager.inAddress.add,
+                                onChanged: (value) {
+                                  address = value;
+                                  validationManager.inAddress.add(value);
+                                },
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -225,7 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.phone$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: phoneController,
+                                // controller: phoneController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context)
@@ -233,7 +253,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                                 focusNode: phoneFocus,
                                 keyboardType: TextInputType.number,
-                                onChanged: validationManager.inPhone.add,
+                                onChanged: (value) {
+                                  if (value.length == 8) {
+                                    phone = value;
+                                  }
+                                  validationManager.inPhone.add(value);
+                                },
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -259,7 +284,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.email$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: emailController,
+                                // controller: emailController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context)
@@ -267,7 +292,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                                 focusNode: emailFocus,
                                 keyboardType: TextInputType.emailAddress,
-                                onChanged: validationManager.inEmail.add,
+                                onChanged: (v) {
+                                  if (EmailValidator.validate(v)) {
+                                    email = v;
+                                  }
+                                  validationManager.inEmail.add(v);
+                                },
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -293,14 +323,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.password$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: passwordController,
+                                // controller: passwordController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context)
                                       .requestFocus(confirmFocus);
                                 },
                                 focusNode: passwordFocus,
-                                onChanged: validationManager.inPassword.add,
+                                onChanged: (v) {
+                                  password = v;
+                                  validationManager.inPassword.add(v);
+                                },
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -326,14 +359,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             stream: validationManager.passwordConfirmation$,
                             builder: (context, snapshot) {
                               return TextField(
-                                controller: confirmController,
+                                // controller: confirmController,
                                 textInputAction: TextInputAction.next,
                                 onSubmitted: (v) {
                                   FocusScope.of(context).requestFocus(btnFocus);
                                 },
                                 focusNode: confirmFocus,
-                                onChanged: validationManager
-                                    .inPasswordConfirmation.add,
+                                onChanged: (v) {
+                                  confirm = v;
+                                  validationManager.inPasswordConfirmation
+                                      .add(v);
+                                },
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -434,78 +470,144 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     stream: validationManager.isFormValid$,
                                     builder: (context, snapshot) {
                                       return RaisedButton(
-                                        focusNode: btnFocus,
-                                        color: Colors.teal.shade900,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                          side:
-                                              BorderSide(color: Colors.white24),
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.all(15.0),
-                                          child: Text(
-                                            AppLocalizations.of(context)
-                                                .translate('signUp_str'),
-                                            style: TextStyle(
-                                              color: Colors.white70,
-                                              fontFamily:
-                                                  locator<PrefsService>()
-                                                              .appLanguage ==
-                                                          'en'
-                                                      ? 'en'
-                                                      : 'ar',
+                                          focusNode: btnFocus,
+                                          color: Colors.teal.shade900,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            side: BorderSide(
+                                                color: Colors.white24),
+                                          ),
+                                          child: Container(
+                                            padding: EdgeInsets.all(15.0),
+                                            child: Text(
+                                              AppLocalizations.of(context)
+                                                  .translate('signUp_str'),
+                                              style: TextStyle(
+                                                color: Colors.white70,
+                                                fontFamily:
+                                                    locator<PrefsService>()
+                                                                .appLanguage ==
+                                                            'en'
+                                                        ? 'en'
+                                                        : 'ar',
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        onPressed: snapshot.hasData
-                                            ? () async {
-                                                isLoading.add(true);
+                                          onPressed:
+                                              //  snapshot.hasData
+                                              //     ?
+                                              () async {
+                                            // isLoading.add(true);
 //                                      await DataConnectionChecker().hasConnection;
 
-                                                print(
-                                                    "emailController.text,phoneController.text,passwordController.text,confirmController.text,firstNameController.text,middleNameController.text,lastNameController,addressController.text  ${emailController.text} , ${phoneController.text},${passwordController.text},${confirmController.text},${firstNameController.text},${middleNameController.text},${lastNameController.text},${addressController.text} }");
+                                            // print(
+                                            //     "emailController.text,phoneController.text,passwordController.text,confirmController.text,firstNameController.text,middleNameController.text,lastNameController,addressController.text  ${emailController.text} , ${phoneController.text},${passwordController.text},${confirmController.text},${firstNameController.text},${middleNameController.text},${lastNameController.text},${addressController.text} }");
 
-                                                RegisterRepo.postRegisterData(
-                                                        emailController.text,
-                                                        phoneController.text,
-                                                        passwordController.text,
-                                                        confirmController.text,
-                                                        firstNameController
-                                                            .text,
-                                                        middleNameController
-                                                            .text,
-                                                        lastNameController,
-                                                        addressController.text)
-                                                    .then((onValue) {
-                                                  isLoading.add(false);
-                                                  if (onValue.status == 1) {
-                                                    locator<PrefsService>()
-                                                            .userObj =
-                                                        onValue.data.user;
-                                                    Navigator.of(context)
-                                                        .pushReplacementNamed(
-                                                            '/homeScreen');
-                                                    locator<PrefsService>()
-                                                        .hasSignInSeen = true;
-                                                  } else {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          title: Text(
-                                                              onValue.message),
-                                                        );
-                                                      },
+                                            if (firstName.isEmpty) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Enter first name'
+                                                  : 'أدخل الإسم الأول');
+                                              return;
+                                            }
+                                            if (lastName.isEmpty) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Enter last name'
+                                                  : 'أدخل الأسم الأخير');
+                                              return;
+                                            }
+                                            if (address.isEmpty) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Enter address'
+                                                  : 'أدخل العنوان');
+                                              return;
+                                            }
+                                            if (phone.isEmpty) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Enter phone'
+                                                  : 'أدخل رقم الهاتف');
+                                              return;
+                                            }
+                                            if (email.isEmpty) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Enter valid email'
+                                                  : 'أدخل بريد إلكتروني صحيح');
+                                              return;
+                                            }
+                                            if (password.isEmpty) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Enter password'
+                                                  : 'أدخل كلمة السر');
+                                              return;
+                                            }
+                                            if (confirm.isEmpty) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Enter confirm password'
+                                                  : 'أدخل تأكيد كلمة السر');
+                                              return;
+                                            }
+                                            if (password != confirm) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'The password confirmation does not match'
+                                                  : 'تأكيد كلمة السر غير مطابق');
+                                              return;
+                                            }
+                                            isLoading.add(true);
+                                            RegisterRepo.postRegisterData(
+                                                    email,
+                                                    phone,
+                                                    password,
+                                                    confirm,
+                                                    firstName,
+                                                    middleName,
+                                                    lastName,
+                                                    address)
+                                                .then((onValue) {
+                                              isLoading.add(false);
+                                              if (onValue.status == 1) {
+                                                locator<PrefsService>()
+                                                        .userObj =
+                                                    onValue.data.user;
+                                                Navigator.of(context)
+                                                    .pushReplacementNamed(
+                                                        '/homeScreen');
+                                                locator<PrefsService>()
+                                                    .hasSignInSeen = true;
+                                              } else {
+                                                // isLoading.add(true);
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title:
+                                                          Text(onValue.message),
                                                     );
-                                                  }
-                                                });
+                                                  },
+                                                );
+                                              }
+                                            });
 
 //                                  _showMaterialDialog(context);
-                                              }
-                                            : null,
-                                      );
+                                          }
+                                          // : null,
+                                          );
                                     },
                                   ),
                                 ),
@@ -925,17 +1027,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //      }
 //    });
 //  }
+  showToast(message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.black.withOpacity(0.6),
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
 
   @override
   void dispose() {
-    emailController.dispose();
-    firstNameController.dispose();
-    middleNameController.dispose();
-    lastNameController.dispose();
-    addressController.dispose();
-    phoneController.dispose();
-    passwordController.dispose();
-    confirmController.dispose();
+    // emailController.dispose();
+    // firstNameController.dispose();
+    // middleNameController.dispose();
+    // lastNameController.dispose();
+    // addressController.dispose();
+    // phoneController.dispose();
+    // passwordController.dispose();
+    // confirmController.dispose();
     isLoading.close();
     super.dispose();
   }

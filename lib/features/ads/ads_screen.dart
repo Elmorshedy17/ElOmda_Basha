@@ -43,7 +43,9 @@ class AdsScreen extends StatelessWidget {
                     AppLocalizations.of(context).translate('skip_str'),
                     style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'en',
+                        fontFamily: locator<PrefsService>().appLanguage == 'en'
+                            ? 'en'
+                            : 'ar',
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {

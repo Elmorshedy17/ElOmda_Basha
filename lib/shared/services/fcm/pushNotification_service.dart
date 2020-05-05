@@ -4,7 +4,7 @@ import 'package:momentoo/features/invoice/invoice_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
-//import 'package:momentoo/shared/services/fcm/localNotificationService.dart';
+import 'package:momentoo/shared/services/fcm/localNotificationService.dart';
 
 class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -27,9 +27,10 @@ class PushNotificationService {
         var title = message['notification']['title'];
         var body = message['notification']['body'];
         var id = message['data']['order_id'];
-
-//        locator<LocalNotificationService>().showNotification(title, body, id);
-
+        /////////////////////////////////////////////////////////////////////////
+        // LocalNotification
+        locator<LocalNotificationService>().showNotification(title, body, id);
+        /////////////////////////////////////////////////////////////////////////
         // _serializeAndNavigate(message);
       },
       // Called when the app has been closed completely and it's opened

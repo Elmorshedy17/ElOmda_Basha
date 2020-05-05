@@ -100,8 +100,8 @@ class FavoritesContent extends StatelessWidget {
   }
 }
 
-List<Widget> favoritesContent = [
-  FavoritesContent(),
-  FavoritesContent(),
-  FavoritesContent(),
-];
+// List<Widget> favoritesContent = [
+//   FavoritesContent(),
+//   FavoritesContent(),
+//   FavoritesContent(),
+// ];
