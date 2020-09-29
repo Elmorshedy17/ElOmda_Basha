@@ -3,7 +3,6 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:momentoo/features/about_us/about_screen.dart';
 import 'package:momentoo/features/address_book/addressBook_screen.dart';
@@ -12,7 +11,6 @@ import 'package:momentoo/features/all_trending/allTrending_screen.dart';
 import 'package:momentoo/features/change_email/changeEmail_screen.dart';
 import 'package:momentoo/features/change_password/changePassword_screen.dart';
 import 'package:momentoo/features/checkout/checkout_screen.dart';
-import 'package:momentoo/features/edit_profile/editProfile_screen.dart';
 import 'package:momentoo/features/favorites/favorites_screen.dart';
 import 'package:momentoo/features/forget_password/forgetPassword_screen.dart';
 import 'package:momentoo/features/help_support/helpSupport_screen.dart';
@@ -25,26 +23,23 @@ import 'package:momentoo/features/my_orders/myOrders_screen.dart';
 import 'package:momentoo/features/near_by/currentMap_screen.dart';
 import 'package:momentoo/features/near_by/getLocation_screen.dart';
 import 'package:momentoo/features/near_by/manuallyMap_screen.dart';
-import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
-import 'package:momentoo/features/track_details/trackDetails_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
-//import 'package:momentoo/features/search/search_screen.dart';
 import 'package:momentoo/features/settings/settings_screen.dart';
 import 'package:momentoo/features/shopping_cart/cart_screen.dart';
 import 'package:momentoo/features/sign_in/signIn_screen.dart';
 import 'package:momentoo/features/sign_up/signUp_screen.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
 import 'package:momentoo/features/terms_conditions/termsConditions_screen.dart';
+import 'package:momentoo/features/track_details/trackDetails_screen.dart';
 import 'package:momentoo/features/trending_products/trendingProducts_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStores_screen.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
-import 'package:momentoo/shared/services/fcm/localNotificationService.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
@@ -67,8 +62,7 @@ It is not intended to be used for everyday development.*/
     await setupLocator().then((_) async {
       AppLanguage appLanguage = locator<AppLanguage>();
       await appLanguage.fetchLocale();
-      await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp]);
+      await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       runApp(MomentooApp(
         appLanguage: appLanguage,
       ));
@@ -89,8 +83,7 @@ class MomentooApp extends StatefulWidget {
 
 class _MomentooAppState extends State<MomentooApp> {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   void initState() {
@@ -98,7 +91,7 @@ class _MomentooAppState extends State<MomentooApp> {
     locator<PushNotificationService>().initialize();
     ////////////////////////////////////////////////////////////////////////////
     // LocalNotification
-    locator<LocalNotificationService>().initializeLocalNotification();
+    // locator<LocalNotificationService>().initializeLocalNotification();
     ////////////////////////////////////////////////////////////////////////////
   }
 
