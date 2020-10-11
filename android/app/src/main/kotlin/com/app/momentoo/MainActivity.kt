@@ -1,4 +1,4 @@
-package com.linekw.momentoo
+package com.app.momentoo
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

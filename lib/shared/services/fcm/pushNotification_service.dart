@@ -24,9 +24,9 @@ class PushNotificationService {
       // Called when the app is in the foreground and we receive a push notification
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
-        // var title = message['notification']['title'];
-        // var body = message['notification']['body'];
-        // var id = message['data']['order_id'];
+        var title = message['notification']['title'];
+        var body = message['notification']['body'];
+        var id = message['data']['order_id'];
         /////////////////////////////////////////////////////////////////////////
         // LocalNotification
         // locator<LocalNotificationService>().showNotification(title, body, id);

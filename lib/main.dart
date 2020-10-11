@@ -62,7 +62,8 @@ It is not intended to be used for everyday development.*/
     await setupLocator().then((_) async {
       AppLanguage appLanguage = locator<AppLanguage>();
       await appLanguage.fetchLocale();
-      await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp]);
       runApp(MomentooApp(
         appLanguage: appLanguage,
       ));
@@ -83,7 +84,8 @@ class MomentooApp extends StatefulWidget {
 
 class _MomentooAppState extends State<MomentooApp> {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   void initState() {

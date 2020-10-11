@@ -58,16 +58,21 @@ Future<void> setupLocator() async {
   // Setup PermissionsService.
   locator.registerLazySingleton<PermissionsService>(() => PermissionsService());
   // Setup ConnectionCheckerService.
-  locator.registerLazySingleton<ConnectionCheckerService>(() => ConnectionCheckerService());
+  locator.registerLazySingleton<ConnectionCheckerService>(
+      () => ConnectionCheckerService());
   // Setup LanguageManager
   locator.registerLazySingleton<AppLanguage>(() => AppLanguage());
   // SignInValidationManager
-  locator.registerLazySingleton<SignInValidationManager>(() => SignInValidationManager());
+  locator.registerLazySingleton<SignInValidationManager>(
+      () => SignInValidationManager());
   // SignUpValidationManager
-  locator.registerLazySingleton<SignUpValidationManager>(() => SignUpValidationManager());
-  locator.registerLazySingleton<AddAddressValidationManager>(() => AddAddressValidationManager());
+  locator.registerLazySingleton<SignUpValidationManager>(
+      () => SignUpValidationManager());
+  locator.registerLazySingleton<AddAddressValidationManager>(
+      () => AddAddressValidationManager());
   // PushNotificationService
-  locator.registerLazySingleton<PushNotificationService>(() => PushNotificationService());
+  locator.registerLazySingleton<PushNotificationService>(
+      () => PushNotificationService());
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // LocalNotificationService
   // locator.registerLazySingleton<LocalNotificationService>(
@@ -82,11 +87,14 @@ Future<void> setupLocator() async {
   // ApiService
   locator.registerLazySingleton<ApiService>(() => ApiService());
   // HelpSupportValidationManager
-  locator.registerLazySingleton<HelpSupportValidationManager>(() => HelpSupportValidationManager());
+  locator.registerLazySingleton<HelpSupportValidationManager>(
+      () => HelpSupportValidationManager());
   // ProductDetailsCounterManager
-  locator.registerLazySingleton<ProductDetailsCounterManager>(() => ProductDetailsCounterManager());
+  locator.registerLazySingleton<ProductDetailsCounterManager>(
+      () => ProductDetailsCounterManager());
   // NotificationSwitchManager
-  locator.registerLazySingleton<NotificationSwitchManager>(() => NotificationSwitchManager());
+  locator.registerLazySingleton<NotificationSwitchManager>(
+      () => NotificationSwitchManager());
   // AdsManager
   locator.registerLazySingleton<AdsManager>(() => AdsManager());
   // HomeManager
@@ -101,32 +109,41 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<NearByManager>(() => NearByManager());
   locator.registerLazySingleton<MyOrdersManager>(() => MyOrdersManager());
   locator.registerLazySingleton<TrackOrderManager>(() => TrackOrderManager());
-  locator.registerLazySingleton<OrderDetailsManager>(() => OrderDetailsManager());
+  locator
+      .registerLazySingleton<OrderDetailsManager>(() => OrderDetailsManager());
   // TrendingStoreManager
-  locator.registerLazySingleton<TrendingStoreManager>(() => TrendingStoreManager());
+  locator.registerLazySingleton<TrendingStoreManager>(
+      () => TrendingStoreManager());
   // TrendingProductsManager
-  locator.registerLazySingleton<TrendingProductsManager>(() => TrendingProductsManager());
+  locator.registerLazySingleton<TrendingProductsManager>(
+      () => TrendingProductsManager());
   // AutoCompleteManager
-  locator.registerLazySingleton<AutoCompleteManager>(() => AutoCompleteManager());
+  locator
+      .registerLazySingleton<AutoCompleteManager>(() => AutoCompleteManager());
   // TextEditingController Search
-  locator.registerLazySingleton<TextEditingController>(() => TextEditingController());
+  locator.registerLazySingleton<TextEditingController>(
+      () => TextEditingController());
   // SearchManager
   locator.registerLazySingleton<SearchManager>(() => SearchManager());
   // StoreDetailsManager
-  locator.registerLazySingleton<StoreDetailsManager>(() => StoreDetailsManager());
+  locator
+      .registerLazySingleton<StoreDetailsManager>(() => StoreDetailsManager());
   // ShareService
   locator.registerLazySingleton<ShareService>(() => ShareService());
   // ProductDetailsManager
-  locator.registerLazySingleton<ProductDetailsManager>(() => ProductDetailsManager());
+  locator.registerLazySingleton<ProductDetailsManager>(
+      () => ProductDetailsManager());
 
   // SettingsManager
   locator.registerLazySingleton<SettingsManager>(() => SettingsManager());
   // FavoritesManager
   locator.registerLazySingleton<FavoritesManager>(() => FavoritesManager());
   // FavoritesActionsManager
-  locator.registerLazySingleton<FavoritesActionsManager>(() => FavoritesActionsManager());
+  locator.registerLazySingleton<FavoritesActionsManager>(
+      () => FavoritesActionsManager());
   // NotificationsManager
-  locator.registerLazySingleton<NotificationsManager>(() => NotificationsManager());
+  locator.registerLazySingleton<NotificationsManager>(
+      () => NotificationsManager());
   // CartActionsManager
   locator.registerLazySingleton<CartActionsManager>(() => CartActionsManager());
 
@@ -142,9 +159,11 @@ Future<void> setupLocator() async {
   // CheckoutManager
   locator.registerLazySingleton<CheckoutManager>(() => CheckoutManager());
   //CartItemsCountManager
-  locator.registerLazySingleton<CartItemsCountManager>(() => CartItemsCountManager());
+  locator.registerLazySingleton<CartItemsCountManager>(
+      () => CartItemsCountManager());
   // CheckoutValidationManager
-  locator.registerLazySingleton<CheckoutValidationManager>(() => CheckoutValidationManager());
+  locator.registerLazySingleton<CheckoutValidationManager>(
+      () => CheckoutValidationManager());
 
   locator.registerLazySingleton<NavigationService>(() => NavigationService());
 }
