@@ -393,7 +393,8 @@ class _HomeScreenState extends State<HomeScreen> {
           return ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-            reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+            // reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+            reverse: false,
             scrollDirection: Axis.horizontal,
             itemCount: model.data.categories.length,
             itemBuilder: (context, index) {

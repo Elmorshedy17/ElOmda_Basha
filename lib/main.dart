@@ -29,6 +29,7 @@ import 'package:momentoo/features/search/filter_screen.dart';
 import 'package:momentoo/features/search/searchResult_screen.dart';
 import 'package:momentoo/features/settings/settings_screen.dart';
 import 'package:momentoo/features/shopping_cart/cart_screen.dart';
+import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
 import 'package:momentoo/features/sign_in/signIn_screen.dart';
 import 'package:momentoo/features/sign_up/signUp_screen.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
@@ -37,6 +38,7 @@ import 'package:momentoo/features/track_details/trackDetails_screen.dart';
 import 'package:momentoo/features/trending_products/trendingProducts_screen.dart';
 import 'package:momentoo/features/trending_stores/trendingStores_screen.dart';
 import 'package:momentoo/features/welcome/welcome_screen.dart';
+import 'package:momentoo/shared/helper/lifeCycle.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
@@ -95,6 +97,14 @@ class _MomentooAppState extends State<MomentooApp> {
     // LocalNotification
     // locator<LocalNotificationService>().initializeLocalNotification();
     ////////////////////////////////////////////////////////////////////////////
+    if (!locator<PrefsService>().rememberMeFlag) {
+      print('xXx rememberMeFlag ${locator<PrefsService>().rememberMeFlag}');
+      locator<PrefsService>().removeUserObj();
+      locator<PrefsService>().hasLoggedIn = false;
+      locator<PrefsService>().hasSignedUp = false;
+    }
+    print('xXx rememberMeFlag2 ${locator<PrefsService>().rememberMeFlag}');
+    print('xXx initState');
   }
 
   @override
@@ -109,6 +119,9 @@ class _MomentooAppState extends State<MomentooApp> {
               navigatorKey: locator<NavigationService>().navigatorKey,
               title: 'Momento App',
               debugShowCheckedModeBanner: false,
+              // builder: (context, widget) {
+              //   return AppLifeCycleWidget(child: widget);
+              // },
               navigatorObservers: <NavigatorObserver>[observer],
               locale: model.appLocal,
               supportedLocales: [

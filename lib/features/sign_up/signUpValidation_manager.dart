@@ -16,6 +16,7 @@ class SignUpValidationManager with Validation implements Manager {
 
   final _checkBoxSubject = BehaviorSubject<bool>.seeded(true);
   Stream<bool> get checkBoxValue$ => _checkBoxSubject.stream;
+  bool get checkBoxValue => _checkBoxSubject.value;
   void setCheckBoxValue(bool value) {
     _checkBoxSubject.sink.add(value);
   }

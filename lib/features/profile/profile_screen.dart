@@ -388,6 +388,8 @@ class ProfileScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                   onPressed: () {
+                                                    // locator<PrefsService>()
+                                                    //     .rememberMeFlag = true;
                                                     locator<PrefsService>()
                                                         .removeUserObj();
                                                     locator<PrefsService>()

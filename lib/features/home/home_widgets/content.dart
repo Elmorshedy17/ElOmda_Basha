@@ -119,9 +119,7 @@ class HomeContent extends StatelessWidget {
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  reverse: locator<PrefsService>().appLanguage == 'ar'
-                      ? true
-                      : false,
+                  reverse: false,
                   scrollDirection: Axis.horizontal,
                   itemCount: trendingSellersList?.length ?? 0,
                   itemBuilder: (context, index) {
@@ -209,7 +207,12 @@ class HomeContent extends StatelessWidget {
                             ),
                           ),
                           Positioned(
-                            right: 5,
+                            left: locator<PrefsService>().appLanguage == 'ar'
+                                ? 5
+                                : null,
+                            right: locator<PrefsService>().appLanguage == 'en'
+                                ? 5
+                                : null,
                             top: 5,
                             child: IconButton(
                                 icon: Icon(
@@ -351,9 +354,7 @@ class HomeContent extends StatelessWidget {
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  reverse: locator<PrefsService>().appLanguage == 'ar'
-                      ? true
-                      : false,
+                  reverse: false,
                   scrollDirection: Axis.horizontal,
                   itemCount: trendingProductsList.length,
                   itemBuilder: (context, index) {
@@ -453,7 +454,12 @@ class HomeContent extends StatelessWidget {
                             ),
                           ),
                           Positioned(
-                            right: 5,
+                            left: locator<PrefsService>().appLanguage == 'ar'
+                                ? 5
+                                : null,
+                            right: locator<PrefsService>().appLanguage == 'en'
+                                ? 5
+                                : null,
                             top: 5,
                             child: IconButton(
                                 icon: Icon(
@@ -585,9 +591,7 @@ class HomeContent extends StatelessWidget {
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  reverse: locator<PrefsService>().appLanguage == 'ar'
-                      ? true
-                      : false,
+                  reverse: false,
                   scrollDirection: Axis.horizontal,
                   itemCount: sellersList.length,
                   itemBuilder: (context, index) {
@@ -687,7 +691,12 @@ class HomeContent extends StatelessWidget {
                             ),
                           ),
                           Positioned(
-                            right: 5,
+                            left: locator<PrefsService>().appLanguage == 'ar'
+                                ? 5
+                                : null,
+                            right: locator<PrefsService>().appLanguage == 'en'
+                                ? 5
+                                : null,
                             top: 5,
                             child: IconButton(
                                 icon: Icon(

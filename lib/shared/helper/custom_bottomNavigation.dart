@@ -213,99 +213,51 @@ class CustomBottomNavigation extends StatelessWidget {
                 ),
 
           //! Cart
-          locator<PrefsService>().appLanguage == 'en'
-              ? Positioned(
-                  // height: 70,
-                  left: MediaQuery.of(context).size.width / 4,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/cartScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/cartScreen"
-                                  ? false
-                                  : true
-                              : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Icon(
-                          Icons.shopping_cart,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/cartScreen'
+          // locator<PrefsService>().appLanguage == 'en'
+          //     ?
+          Positioned(
+            // height: 70,
+            left: locator<PrefsService>().appLanguage == 'en'
+                ? MediaQuery.of(context).size.width / 4
+                : null,
+            right: locator<PrefsService>().appLanguage == 'ar'
+                ? MediaQuery.of(context).size.width / 4
+                : null,
+            bottom: 10,
+            child: InkWell(
+              onTap: () {
+                if (ModalRoute.of(context).settings.name != "/cartScreen") {
+                  Navigator.of(context).pushNamed('/cartScreen');
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Icon(
+                    Icons.shopping_cart,
+                    color: ModalRoute.of(context).settings.name == '/cartScreen'
+                        ? Colors.teal.shade900
+                        : Colors.black12,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('CartNav_str'),
+                    style: TextStyle(
+                      fontSize:
+                          locator<PrefsService>().appLanguage == 'en' ? 11 : 8,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      color:
+                          ModalRoute.of(context).settings.name == '/cartScreen'
                               ? Colors.teal.shade900
                               : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context).translate('CartNav_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/cartScreen'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                )
-              : Positioned(
-                  // height: 70,
-                  right: MediaQuery.of(context).size.width / 4,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/cartScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/cartScreen"
-                                  ? false
-                                  : true
-                              : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Icon(
-                          Icons.shopping_cart,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/cartScreen'
-                              ? Colors.teal.shade900
-                              : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context).translate('CartNav_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/cartScreen'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ],
+              ),
+            ),
+          ),
           locator<PrefsService>().appLanguage == 'en'
               ? Positioned(
                   left: MediaQuery.of(context).size.width / 4 + 18,
