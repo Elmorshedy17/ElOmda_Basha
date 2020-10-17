@@ -108,113 +108,51 @@ class CustomBottomNavigation extends StatelessWidget {
             ),
           ),
           //! Home
-          locator<PrefsService>().appLanguage == 'en'
-              ? Positioned(
-                  // height: 70,
-                  left: 10,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/homeScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/homeScreen"
-                                  ? false
-                                  : true
-                              : true);
-
-                      // Navigator.of(context).pushNamedAndRemoveUntil(
-                      //     "/",
-                      //     (route) => route.isCurrent
-                      //         ? route.settings.name == "/" ? false : true
-                      //         : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/homeScreen'
-                              //      ||
+          Positioned(
+            // height: 70,
+            left: locator<PrefsService>().appLanguage == 'en' ? 10 : null,
+            right: locator<PrefsService>().appLanguage == 'ar' ? 10 : null,
+            bottom: 10,
+            child: InkWell(
+              onTap: () {
+                if (ModalRoute.of(context).settings.name != "/homeScreen") {
+                  Navigator.of(context).pushNamed('/homeScreen');
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Icon(
+                    Icons.home,
+                    color: ModalRoute.of(context).settings.name == '/homeScreen'
+                        //      ||
+                        // ModalRoute.of(context).settings.name == '/'
+                        ? Colors.teal.shade900
+                        : Colors.black12,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('Home_str'),
+                    style: TextStyle(
+                      fontSize:
+                          locator<PrefsService>().appLanguage == 'en' ? 11 : 8,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      color:
+                          ModalRoute.of(context).settings.name == '/homeScreen'
+                              //     ||
                               // ModalRoute.of(context).settings.name == '/'
                               ? Colors.teal.shade900
                               : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context).translate('Home_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/homeScreen'
-                                //     ||
-                                // ModalRoute.of(context).settings.name == '/'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                )
-              : Positioned(
-                  // height: 70,
-                  right: 10,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/homeScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/homeScreen"
-                                  ? false
-                                  : true
-                              : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/homeScreen'
-                              ? Colors.teal.shade900
-                              : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context).translate('Home_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/homeScreen'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ],
+              ),
+            ),
+          ),
 
           //! Cart
-          // locator<PrefsService>().appLanguage == 'en'
-          //     ?
           Positioned(
             // height: 70,
             left: locator<PrefsService>().appLanguage == 'en'
@@ -258,251 +196,126 @@ class CustomBottomNavigation extends StatelessWidget {
               ),
             ),
           ),
-          locator<PrefsService>().appLanguage == 'en'
-              ? Positioned(
-                  left: MediaQuery.of(context).size.width / 4 + 18,
-                  bottom: 40,
-                  child: CustomObserver(
-                    stream: locator<CartItemsCountManager>().cartCount$(),
-                    onWaiting: (_) => Container(),
-                    onSuccess: (_, int count) {
-                      return count != 0
-                          ? Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2),
-                              decoration: BoxDecoration(
-                                // border: Border.all(color: Colors.teal),
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Text(
-                                '$count',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                          : Container();
-                    },
-                  ))
-              : Positioned(
-                  right: MediaQuery.of(context).size.width / 4,
-                  bottom: 40,
-                  child: CustomObserver(
-                    stream: locator<CartItemsCountManager>().cartCount$(),
-                    onWaiting: (_) => Container(),
-                    onSuccess: (_, int count) {
-                      return count != 0
-                          ? Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2),
-                              decoration: BoxDecoration(
-                                // border: Border.all(color: Colors.teal),
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Text(
-                                '$count',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                          : Container();
-                    },
-                  )),
+
+          Positioned(
+              left: locator<PrefsService>().appLanguage == 'en'
+                  ? MediaQuery.of(context).size.width / 4 + 18
+                  : null,
+              right: locator<PrefsService>().appLanguage == 'ar'
+                  ? MediaQuery.of(context).size.width / 4
+                  : null,
+              bottom: 40,
+              child: CustomObserver(
+                stream: locator<CartItemsCountManager>().cartCount$(),
+                onWaiting: (_) => Container(),
+                onSuccess: (_, int count) {
+                  return count != 0
+                      ? Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          decoration: BoxDecoration(
+                            // border: Border.all(color: Colors.teal),
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            '$count',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : Container();
+                },
+              )),
+
           //! Settings
-          locator<PrefsService>().appLanguage == 'en'
-              ? Positioned(
-                  // height: 70,
-                  right: MediaQuery.of(context).size.width / 4,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/settingsScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/settingsScreen"
-                                  ? false
-                                  : true
-                              : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.settings,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/settingsScreen'
-                              ? Colors.teal.shade900
-                              : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)
-                              .translate('sittings_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/settingsScreen'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
+          Positioned(
+            // height: 70,
+            left: locator<PrefsService>().appLanguage == 'ar'
+                ? MediaQuery.of(context).size.width / 4
+                : null,
+            right: locator<PrefsService>().appLanguage == 'en'
+                ? MediaQuery.of(context).size.width / 4
+                : null,
+            bottom: 10,
+            child: InkWell(
+              onTap: () {
+                if (ModalRoute.of(context).settings.name != "/settingsScreen") {
+                  Navigator.of(context).pushNamed('/settingsScreen');
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.settings,
+                    color: ModalRoute.of(context).settings.name ==
+                            '/settingsScreen'
+                        ? Colors.teal.shade900
+                        : Colors.black12,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('sittings_str'),
+                    style: TextStyle(
+                      fontSize:
+                          locator<PrefsService>().appLanguage == 'en' ? 11 : 8,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      color: ModalRoute.of(context).settings.name ==
+                              '/settingsScreen'
+                          ? Colors.teal.shade900
+                          : Colors.black12,
                     ),
                   ),
-                )
-              : Positioned(
-                  // height: 70,
-                  left: MediaQuery.of(context).size.width / 4,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/settingsScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/settingsScreen"
-                                  ? false
-                                  : true
-                              : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.settings,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/settingsScreen'
-                              ? Colors.teal.shade900
-                              : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)
-                              .translate('sittings_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/settingsScreen'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ],
+              ),
+            ),
+          ),
           //! Profile
-          locator<PrefsService>().appLanguage == 'en'
-              ? Positioned(
-                  // height: 70,
-                  right: 10,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/profileScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/profileScreen"
-                                  ? false
-                                  : true
-                              : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Icon(
-                          Icons.person,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/profileScreen'
-                              ? Colors.teal.shade900
-                              : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context).translate('profile_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/profileScreen'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
+          Positioned(
+            // height: 70,
+            right: locator<PrefsService>().appLanguage == 'en' ? 10 : null,
+            left: locator<PrefsService>().appLanguage == 'ar' ? 10 : null,
+            bottom: 10,
+            child: InkWell(
+              onTap: () {
+                if (ModalRoute.of(context).settings.name != "/profileScreen") {
+                  Navigator.of(context).pushNamed('/profileScreen');
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Icon(
+                    Icons.person,
+                    color:
+                        ModalRoute.of(context).settings.name == '/profileScreen'
+                            ? Colors.teal.shade900
+                            : Colors.black12,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('profile_str'),
+                    style: TextStyle(
+                      fontSize:
+                          locator<PrefsService>().appLanguage == 'en' ? 11 : 8,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                      color: ModalRoute.of(context).settings.name ==
+                              '/profileScreen'
+                          ? Colors.teal.shade900
+                          : Colors.black12,
                     ),
                   ),
-                )
-              : Positioned(
-                  // height: 70,
-                  left: 10,
-                  bottom: 10,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/profileScreen",
-                          (route) => route.isCurrent
-                              ? route.settings.name == "/profileScreen"
-                                  ? false
-                                  : true
-                              : true);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Icon(
-                          Icons.person,
-                          color: ModalRoute.of(context).settings.name ==
-                                  '/profileScreen'
-                              ? Colors.teal.shade900
-                              : Colors.black12,
-                        ),
-                        Text(
-                          AppLocalizations.of(context).translate('profile_str'),
-                          style: TextStyle(
-                            fontSize:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 11
-                                    : 8,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                            color: ModalRoute.of(context).settings.name ==
-                                    '/profileScreen'
-                                ? Colors.teal.shade900
-                                : Colors.black12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
