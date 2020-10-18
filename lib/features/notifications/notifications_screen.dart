@@ -57,48 +57,57 @@ class NotificationsScreen extends StatelessWidget {
             child: Card(
               child: CustomObserver(
                 stream: locator<NotificationsManager>().getData(),
-                onSuccess: (_, NotificationsModel model) => model.data.notifications.data.isNotEmpty ? ListView.separated(
-                  itemCount: model.data.notifications.data?.length ?? 0,
-                  separatorBuilder: (_, index) => Divider(
-                    height: 1,
-                    indent: 5,
-                    endIndent: 5,
-                  ),
-                  itemBuilder: (_, index) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: ListTile(
-                      leading: Transform.rotate(
-                        angle: 145,
-                        child: Icon(
-                          Icons.notifications,
-                          color: Colors.teal.shade900,
+                onSuccess: (_, NotificationsModel model) => model
+                        .data.notifications.data.isNotEmpty
+                    ? ListView.separated(
+                        itemCount: model.data.notifications.data?.length ?? 0,
+                        separatorBuilder: (_, index) => Divider(
+                          height: 1,
+                          indent: 5,
+                          endIndent: 5,
                         ),
-                      ),
-                      title: Text(
-                        model.data.notifications.data[index].message,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily:
-                              locator<PrefsService>().appLanguage == 'en'
-                                  ? 'en'
-                                  : 'ar',
+                        itemBuilder: (_, index) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ListTile(
+                            leading: Transform.rotate(
+                              angle: locator<PrefsService>().appLanguage == 'en'
+                                  ? 145
+                                  : -145,
+                              child: Icon(
+                                Icons.notifications,
+                                color: Colors.teal.shade900,
+                              ),
+                            ),
+                            title: Text(
+                              model.data.notifications.data[index].message,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
+                            trailing: Text(
+                              model.data.notifications.data[index].date,
+                              style: TextStyle(
+                                color: Colors.black45,
+                                fontSize: 14,
+                                fontFamily:
+                                    locator<PrefsService>().appLanguage == 'en'
+                                        ? 'en'
+                                        : 'ar',
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      trailing: Text(
-                        model.data.notifications.data[index].date,
-                        style: TextStyle(
-                          color: Colors.black45,
-                          fontSize: 14,
-                          fontFamily:
-                              locator<PrefsService>().appLanguage == 'en'
-                                  ? 'en'
-                                  : 'ar',
-                        ),
-                      ),
-                    ),
-                  ),
-                ):noAvailable(locator<PrefsService>().appLanguage == "en" ? "there are no notification" : "لا توجد اشعارات",Icons.notifications_active_outlined),
+                      )
+                    : noAvailable(
+                        locator<PrefsService>().appLanguage == "en"
+                            ? "there are no notification"
+                            : "لا توجد اشعارات",
+                        Icons.notifications_active_outlined),
               ),
             ),
           ),
