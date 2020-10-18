@@ -161,6 +161,7 @@ class _GetLocationScreenState extends State<GetLocationScreen> {
 
                                 if (onValue.status == 1) {
                                   showDialog(
+                                    barrierDismissible: false,
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(

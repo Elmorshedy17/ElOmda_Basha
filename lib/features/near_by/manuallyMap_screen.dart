@@ -46,6 +46,7 @@ class _ManuallyMapScreenState extends State<ManuallyMapScreen> {
 
       if (onValue.status == 1) {
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
