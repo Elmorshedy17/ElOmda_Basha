@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/no_available.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -24,40 +26,7 @@ class ProfileScreen extends StatelessWidget {
           body:
 //        locator<PrefsService>().hasSignedUp == false
               locator<PrefsService>().userObj == null
-                  ? Container(
-                      child: Center(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Center(
-                            child: Icon(
-                              Icons.lock,
-                              size: 150.0,
-                              color: Colors.teal.shade900,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          RaisedButton(
-                              color: Colors.teal.shade900,
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed('/signInScreen');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate("signToContinue_str"),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18.0),
-                                ),
-                              )),
-                        ],
-                      )),
-                    )
+                  ? needSignIn(context)
                   : Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: CustomObserver(
