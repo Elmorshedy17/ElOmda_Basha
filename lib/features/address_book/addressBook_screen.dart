@@ -12,6 +12,7 @@ import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/no_available.dart';
 import 'package:rxdart/rxdart.dart';
 
 BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
@@ -111,33 +112,12 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                     return Stack(
                       children: <Widget>[
                         Column(
-//          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-//            Center(
-//              child: Container(
-////                elevation: 5,
-//                child: Container(
-//                  width: MediaQuery.of(context).size.width * 0.90,
-//                  height: 60,
-//                  child: Center(
-//                    child: Text(
-//                      AppLocalizations.of(context).translate('addressBook_str'),
-//                      style: TextStyle(
-//                        color: Colors.white,
-//                        fontSize: 25,
-//                        fontWeight: FontWeight.bold,
-//                      ),
-//                    ),
-//                  ),
-//                ),
-//              ),
-//            ),
-
                             Expanded(
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,
-                                child: ListView.builder(
+                                child: model.data.addresses.isNotEmpty ? ListView.builder(
                                     shrinkWrap: true,
                                     physics: BouncingScrollPhysics(),
                                     itemCount: model.data.addresses.length,
@@ -145,12 +125,10 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                                       return AddressBookItem(
                                         id: model.data.addresses[index].id,
                                         modelData: model,
-//                                deleteTag: 'd1',
-//                                editTag: 'e1',
                                         adress:
                                             model.data.addresses[index].title,
                                       );
-                                    }),
+                                    }):noAvailable(locator<PrefsService>().appLanguage == "en"?"there are no saved addresses":"لا توجد عناووين مسجلة",Icons.location_disabled),
                               ),
                             ),
                             SizedBox(
@@ -188,16 +166,6 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                                 onPressed: () {
                                   _navigateAndRetrieveData(context,
                                       model.data.country, model.data.cities);
-//                                Navigator.push(
-//                                  context,
-//                                  MaterialPageRoute(
-//                                      builder: (context) => NewAddressScreen(
-//                                            country: model.data.country,
-//                                            cities: model.data.cities,
-//                                          )),
-//                                );
-//                          model
-//                          Navigator.of(context).pushNamed('/newAddressScreen');
                                 },
                               ),
                             ),
@@ -222,30 +190,7 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                   : Container(),
             ],
           ),
-//        bottomNavigationBar: ListTile(
-//          title: ButtonTheme(
-//            height: 45,
-//            minWidth: MediaQuery.of(context).size.width * 0.8,
-//            child: RaisedButton(
-//              color: Colors.teal.shade900,
-//              shape: RoundedRectangleBorder(
-//                borderRadius: BorderRadius.circular(5.0),
-//                side: BorderSide(color: Colors.white24),
-//              ),
-//              child: Text(
-//                AppLocalizations.of(context).translate('addNewAddress_str'),
-//                style: TextStyle(
-//                    color: Colors.white70,
-//                    fontFamily: locator<PrefsService>().appLanguage == 'en'
-//                        ? 'en'
-//                        : 'ar'),
-//              ),
-//              onPressed: () {
-//                Navigator.of(context).pushNamed('/newAddressScreen');
-//              },
-//            ),
-//          ),
-//        ),
+
         ),
       ),
     );
