@@ -73,21 +73,12 @@ class CustomBottomNavigation extends StatelessWidget {
                       locator<PrefsService>().isNearbyFirstTimeOpining = false;
                       Navigator.of(context).pushNamed('/getLocationScreen');
                     } else {
-//                      Navigator.of(context).pushNamedAndRemoveUntil(
-//                          "/nearByScreen",
-//                          (route) => route.isCurrent
-//                              ? route.settings.name == "/nearByScreen"
-//                                  ? false
-//                                  : true
-//                              : true);
-//                      Navigator.of(context).pushNamed('/getLocationScreen');
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                NearByScreen(locator<PrefsService>().cityID)),
-                      );
+                      if (ModalRoute.of(context).settings.name !=
+                          '/nearByScreen') {
+                        Navigator.of(context).pushNamed('/nearByScreen',
+                            arguments: NearByScreenargs(
+                                locator<PrefsService>().cityID));
+                      }
                     }
                   },
                 ),

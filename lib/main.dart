@@ -23,6 +23,7 @@ import 'package:momentoo/features/my_orders/myOrders_screen.dart';
 import 'package:momentoo/features/near_by/currentMap_screen.dart';
 import 'package:momentoo/features/near_by/getLocation_screen.dart';
 import 'package:momentoo/features/near_by/manuallyMap_screen.dart';
+import 'package:momentoo/features/near_by/nearBy_screen.dart';
 import 'package:momentoo/features/notifications/notifications_screen.dart';
 import 'package:momentoo/features/profile/profile_screen.dart';
 import 'package:momentoo/features/search/filter_screen.dart';
@@ -163,7 +164,7 @@ class _MomentooAppState extends State<MomentooApp> {
                 '/privacyScreen': (_) => PrivacyTermsScreen(),
                 '/profileScreen': (_) => ProfileScreen(),
                 '/termsConditionsScreen': (_) => TermsConditionsScreen(),
-//                '/nearByScreen': (_) => NearByScreen(),
+                '/nearByScreen': (_) => NearByScreen(),
                 '/cartScreen': (_) => CartScreen(),
                 '/settingsScreen': (_) => SettingsScreen(),
 //                '/editProfileScreen': (_) => EditProfileScreen(),

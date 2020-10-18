@@ -212,13 +212,18 @@ class _GetLocationScreenState extends State<GetLocationScreen> {
                                                                     .id
                                                                     .toString();
 //                                                        Navigator.of(context).pushReplacementNamed('/nearByScreen');
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      NearByScreen(
-                                                                          cityIdChosen)),
-                                                            );
+                                                            // Navigator.push(
+                                                            //   context,
+                                                            //   MaterialPageRoute(
+                                                            //       builder: (context) =>
+                                                            //           NearByScreen(
+                                                            //               cityIdChosen)),
+                                                            // );
+                                                            Navigator.of(context).pushNamed(
+                                                                '/nearByScreen',
+                                                                arguments:
+                                                                    NearByScreenargs(
+                                                                        cityIdChosen));
 
                                                             print(
                                                                 "cityIdChosen$cityIdChosen");
