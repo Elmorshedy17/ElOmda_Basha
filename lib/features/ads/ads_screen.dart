@@ -16,12 +16,16 @@ class AdsScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
+            color: Colors.teal[900],
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: CustomObserver(
                 stream: locator<AdsManager>().getData(),
                 onSuccess: (BuildContext context, AdsModel model) {
-                  return Image.network(model.data.ads.image);
+                  return Image.network(
+                    model.data.ads.image,
+                    fit: BoxFit.fill,
+                  );
                 }),
           ),
           Positioned(
