@@ -19,6 +19,7 @@ class FavoritesContent extends StatelessWidget {
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
+      reverse: false,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
       itemBuilder: (BuildContext context, int index) {
@@ -77,7 +78,8 @@ class FavoritesContent extends StatelessWidget {
               ),
               Positioned(
                 top: 15,
-                right: 5,
+                right: locator<PrefsService>().appLanguage == 'en' ? 5 : null,
+                left: locator<PrefsService>().appLanguage == 'ar' ? 5 : null,
                 child: IconButton(
                   icon: Icon(
                     Icons.star,

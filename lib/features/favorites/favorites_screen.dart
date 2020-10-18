@@ -122,7 +122,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           return ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-            reverse: locator<PrefsService>().appLanguage == 'ar' ? true : false,
+            reverse: false,
             scrollDirection: Axis.horizontal,
             itemCount: model.data.categories?.length ?? 0,
             itemBuilder: (context, index) {
