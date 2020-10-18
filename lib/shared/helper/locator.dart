@@ -170,4 +170,5 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<NavigationService>(() => NavigationService());
   locator.registerLazySingleton<EditProfileValidationManager>(() => EditProfileValidationManager());
   locator.registerLazySingleton<ChangeEmailValidationManager>(() => ChangeEmailValidationManager());
+
 }
