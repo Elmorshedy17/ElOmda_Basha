@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:momentoo/features/change_email/ValidationManger.dart';
 import 'package:momentoo/features/change_email/changeEmail_repo.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -13,10 +15,14 @@ class ChangeEmailScreen extends StatefulWidget {
 }
 
 class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
+
+  // pattern   if ()
+  //      return "Invalid Email";
+  // if(!(regex.hasMatch(emailController.text))){
   final oldEmailFocus = FocusNode();
   final newEmailFocus = FocusNode();
   final newConfirmEmailFocus = FocusNode();
-
+  final validationManager = locator<ChangeEmailValidationManager>();
   TextEditingController oldEmailController = TextEditingController();
   TextEditingController newEmailController = TextEditingController();
   TextEditingController confirmEmailController = TextEditingController();
@@ -25,6 +31,8 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
     return NetworkSensitive(
       child: MainBackground(
         height: MediaQuery.of(context).size.height * 0.3,
@@ -84,34 +92,44 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                           title: Card(
                             margin: EdgeInsets.only(top: 12),
                             elevation: 5,
-                            child: TextField(
-                              textInputAction: TextInputAction.next,
-                              focusNode: oldEmailFocus,
-                              controller: oldEmailController,
-                              onSubmitted: (v) {
-                                FocusScope.of(context)
-                                    .requestFocus(newEmailFocus);
-                              },
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.oldEmail$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (value) {
+                                    validationManager.inOldEmail.add(value);
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: oldEmailFocus,
+                                  controller: oldEmailController,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context)
+                                        .requestFocus(newEmailFocus);
+                                  },
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontFamily:
+                                              locator<PrefsService>().appLanguage ==
+                                                      'en'
+                                                  ? 'en'
+                                                  : 'ar'),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('currentEmail_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar'),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('currentEmail_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -119,34 +137,44 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                           title: Card(
                             margin: EdgeInsets.symmetric(vertical: 0.0),
                             elevation: 5,
-                            child: TextField(
-                              textInputAction: TextInputAction.next,
-                              focusNode: newEmailFocus,
-                              controller: newEmailController,
-                              onSubmitted: (v) {
-                                FocusScope.of(context)
-                                    .requestFocus(newConfirmEmailFocus);
-                              },
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.email$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (value) {
+                                    validationManager.inEmail.add(value);
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: newEmailFocus,
+                                  controller: newEmailController,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context)
+                                        .requestFocus(newConfirmEmailFocus);
+                                  },
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontFamily:
+                                              locator<PrefsService>().appLanguage ==
+                                                      'en'
+                                                  ? 'en'
+                                                  : 'ar'),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate("new_email_str"),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar'),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate("new_email_str"),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -154,30 +182,40 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                           title: Card(
                             margin: EdgeInsets.symmetric(vertical: 0.0),
                             elevation: 5,
-                            child: TextField(
-                              textInputAction: TextInputAction.done,
-                              focusNode: newConfirmEmailFocus,
-                              controller: confirmEmailController,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.newEmail$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (value) {
+                                    validationManager.inNewEmail.add(value);
+                                  },
+                                  textInputAction: TextInputAction.done,
+                                  focusNode: newConfirmEmailFocus,
+                                  controller: confirmEmailController,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontFamily:
+                                              locator<PrefsService>().appLanguage ==
+                                                      'en'
+                                                  ? 'en'
+                                                  : 'ar'),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('confirm_new_email_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar'),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('confirm_new_email_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -189,46 +227,67 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                       child: Center(
                         child: Container(
                           margin: EdgeInsets.all(15.0),
-                          child: ButtonTheme(
-                            height: 50,
-                            minWidth: MediaQuery.of(context).size.width * 0.8,
-                            child: RaisedButton(
-                              color: Colors.teal.shade900,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: Colors.white24),
-                              ),
-                              child: Text(
-                                AppLocalizations.of(context)
-                                    .translate('save_str'),
-                                style: TextStyle(
-                                    color: Colors.white70,
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar'),
-                              ),
-                              onPressed: () {
-                                isLoading.add(true);
+                          child: StreamBuilder(
+                              stream: validationManager.isFormValid$,
+                            builder: (context, snapshot) {
+                              return ButtonTheme(
+                                height: 50,
+                                minWidth: MediaQuery.of(context).size.width * 0.8,
+                                child: RaisedButton(
+                                  color: Colors.teal.shade900,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(color: Colors.white24),
+                                  ),
+                                  child: Text(
+                                    AppLocalizations.of(context)
+                                        .translate('save_str'),
+                                    style: TextStyle(
+                                        color: Colors.white70,
+                                        fontFamily:
+                                            locator<PrefsService>().appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar'),
+                                  ),
+                                  onPressed: snapshot.hasData ? () {
 
-                                ChangeEmailRepo.postChangeEmailData(
-                                        oldEmailController.text,
-                                        newEmailController.text,
-                                        confirmEmailController.text)
-                                    .then((onValue) {
-                                  isLoading.add(false);
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(onValue.message),
+                                    if(newEmailController.text != confirmEmailController.text){
+                                      Fluttertoast.showToast(
+                                        msg: locator<PrefsService>().appLanguage == 'en' ? "Email doesn't match": "البريد الالكتروني غير متطابق",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.black.withOpacity(0.6),
+                                        textColor: Colors.white,
+                                        fontSize: 14.0,
                                       );
-                                    },
-                                  );
-                                });
-                              },
-                            ),
+                                    }else{
+
+                                      isLoading.add(true);
+
+                                      ChangeEmailRepo.postChangeEmailData(
+                                          oldEmailController.text,
+                                          newEmailController.text,
+                                          confirmEmailController.text)
+                                          .then((onValue) {
+                                        isLoading.add(false);
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(onValue.message),
+                                            );
+                                          },
+                                        );
+                                      });
+
+                                    }
+
+
+                                  }:null,
+                                ),
+                              );
+                            }
                           ),
                         ),
                       ),

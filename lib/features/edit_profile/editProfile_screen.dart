@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/edit_profile/_repo.dart';
+import 'package:momentoo/features/edit_profile/edite_profile_validation_manger.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/network_sensitive.dart';
@@ -22,17 +23,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController middelNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  final validationManager = locator<EditProfileValidationManager>();
 
   @override
   void initState() {
     super.initState();
+
     firstNameController =
         new TextEditingController(text: widget.user.firstName);
     middelNameController =
         new TextEditingController(text: widget.user.middleName);
     lastNameController = new TextEditingController(text: widget.user.lastName);
     phoneController = new TextEditingController(text: widget.user.phone);
-  }
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -126,43 +129,53 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                             margin: EdgeInsets.only(top: 12),
                             elevation: 5,
-                            child: TextField(
-                              controller: firstNameController,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.firstName$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  controller: firstNameController,
+                                  onChanged: (v) {
+                                    validationManager.inFirstName.add(v);
+                                  },
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily:
+                                            locator<PrefsService>().appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                      ),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('firstName_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                  ),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('firstName_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -220,43 +233,53 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                             margin: EdgeInsets.symmetric(vertical: 0.0),
                             elevation: 5,
-                            child: TextField(
-                              controller: lastNameController,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.lastName$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (v) {
+                                    validationManager.inLastName.add(v);
+                                  },
+                                  controller: lastNameController,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily:
+                                            locator<PrefsService>().appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                      ),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('lastName_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                  ),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('lastName_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -267,43 +290,53 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                             margin: EdgeInsets.symmetric(vertical: 0.0),
                             elevation: 5,
-                            child: TextField(
-                              controller: phoneController,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.phone$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (v) {
+                                    validationManager.inPhone.add(v);
+                                  },
+                                  controller: phoneController,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily:
+                                            locator<PrefsService>().appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar',
+                                      ),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('phoneNumber_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                  ),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('phoneNumber_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -349,50 +382,70 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 //              height: MediaQuery.of(context).size.height,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ButtonTheme(
-                          height: 50,
-                          minWidth: MediaQuery.of(context).size.width * 0.8,
-                          child: RaisedButton(
-                            color: Colors.teal.shade900,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              side: BorderSide(color: Colors.white24),
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)
-                                  .translate('update_profile_str'),
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 18.0,
-                                fontFamily:
-                                    locator<PrefsService>().appLanguage == 'en'
-                                        ? 'en'
-                                        : 'ar',
-                              ),
-                            ),
-                            onPressed: () {
-                              isLoading.add(true);
+                        child: StreamBuilder(
+                            stream: null,
+                            builder: (context, snapshot) {
+                            return ButtonTheme(
+                              height: 50,
+                              minWidth: MediaQuery.of(context).size.width * 0.8,
+                              child: RaisedButton(
+                                color: Colors.teal.shade900,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  side: BorderSide(color: Colors.white24),
+                                ),
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('update_profile_str'),
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 18.0,
+                                    fontFamily:
+                                        locator<PrefsService>().appLanguage == 'en'
+                                            ? 'en'
+                                            : 'ar',
+                                  ),
+                                ),
+                                onPressed:() {
 
-                              EditProfileRepo.postEditProfileData(
-                                      firstNameController.text,
-                                      middelNameController.text,
-                                      lastNameController.text,
-                                      phoneController.text)
-                                  .then((onValue) {
-                                isLoading.add(false);
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text(onValue.message),
-                                    );
-                                  },
-                                );
-                              });
+                                  if(firstNameController.text == widget.user.firstName &&
+                                  middelNameController.text == widget.user.middleName &&
+                                  lastNameController.text == widget.user.lastName &&
+                                      phoneController.text == widget.user.phone ||
+                                      firstNameController.text.length < 3||
+                                      // middelNameController.text.length < 3 ||
+                                      lastNameController.text.length < 3 ||
+                                      phoneController.text.length < 3){
+
+
+                                  }else{
+                                    isLoading.add(true);
+
+                                    EditProfileRepo.postEditProfileData(
+                                        firstNameController.text,
+                                        middelNameController.text,
+                                        lastNameController.text,
+                                        phoneController.text)
+                                        .then((onValue) {
+                                      isLoading.add(false);
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(onValue.message),
+                                          );
+                                        },
+                                      );
+                                    });
+                                  }
+
+
 
 //                Navigator.of(context).pushNamed('/changePasswordScreen');
-                            },
-                          ),
+                                },
+                              ),
+                            );
+                          }
                         ),
                       ),
                     ),

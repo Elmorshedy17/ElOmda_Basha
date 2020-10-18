@@ -30,10 +30,11 @@ mixin Validation {
       sink.addError(locator<PrefsService>().appLanguage == 'en'
           ? 'The field must be 3 characters at least'
           : 'أدخل 3 رموز على الأقل');
-
+    }else{
       sink.add(value);
+
     }
-  });
+      });
 
   final validateFieldIsRequired =
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {

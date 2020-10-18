@@ -31,6 +31,16 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
   TextEditingController deliveryController = TextEditingController();
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
+
+  final blockFocus = FocusNode();
+  final streetFocus = FocusNode();
+  final streetTwoFocus = FocusNode();
+  final houseFocus = FocusNode();
+  final floorFocus = FocusNode();
+  final jaddaFocus = FocusNode();
+  final apartmentFocus = FocusNode();
+  final instructiosFocus = FocusNode();
+
   final validationManager = locator<AddAddressValidationManager>();
 
   @override
@@ -147,6 +157,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                           stream: validationManager.block$,
                                           builder: (context, snapshot) {
                                             return TextField(
+                                              textInputAction: TextInputAction.next,
+                                              focusNode: blockFocus,
+                                              onSubmitted: (v) {
+                                                FocusScope.of(context).requestFocus(streetFocus);
+                                              },
                                               onChanged: (value) {
                                                 validationManager.inblock
                                                     .add(value);
@@ -159,16 +174,13 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                                   enabledBorder:
                                                       OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color:
-                                                            Colors.transparent),
-                                                    borderRadius:
-                                                        const BorderRadius.all(
+                                                        color: Colors.transparent),
+                                                    borderRadius: const BorderRadius.all(
                                                       const Radius.circular(
                                                           10.0),
                                                     ),
                                                   ),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
+                                                  focusedBorder: OutlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color:
                                                             Colors.transparent),
@@ -214,6 +226,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                           stream: validationManager.street$,
                                           builder: (context, snapshot) {
                                             return TextField(
+                                              textInputAction: TextInputAction.next,
+                                              focusNode: streetFocus,
+                                              onSubmitted: (v) {
+                                                FocusScope.of(context).requestFocus(streetTwoFocus);
+                                              },
                                               controller: streetController,
                                               onChanged: (value) {
                                                 validationManager.instreet
@@ -281,6 +298,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                     stream: validationManager.streetTwo$,
                                     builder: (context, snapshot) {
                                       return TextField(
+                                        textInputAction: TextInputAction.next,
+                                        focusNode: streetTwoFocus,
+                                        onSubmitted: (v) {
+                                          FocusScope.of(context).requestFocus(houseFocus);
+                                        },
                                         controller: streetTwoController,
                                         onChanged: (value) {
                                           validationManager.instreetTwo
@@ -336,6 +358,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                     stream: validationManager.house$,
                                     builder: (context, snapshot) {
                                       return TextField(
+                                        textInputAction: TextInputAction.next,
+                                        focusNode: houseFocus,
+                                        onSubmitted: (v) {
+                                          FocusScope.of(context).requestFocus(floorFocus);
+                                        },
                                         controller: houseController,
                                         onChanged: (value) {
                                           validationManager.inhouse.add(value);
@@ -401,6 +428,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                           stream: validationManager.floor$,
                                           builder: (context, snapshot) {
                                             return TextField(
+                                              textInputAction: TextInputAction.next,
+                                              focusNode: floorFocus,
+                                              onSubmitted: (v) {
+                                                FocusScope.of(context).requestFocus(jaddaFocus);
+                                              },
                                               controller: floorController,
                                               onChanged: (value) {
                                                 validationManager.infloor
@@ -468,6 +500,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                           stream: validationManager.jadda$,
                                           builder: (context, snapshot) {
                                             return TextField(
+                                              textInputAction: TextInputAction.next,
+                                              focusNode: jaddaFocus,
+                                              onSubmitted: (v) {
+                                                FocusScope.of(context).requestFocus(apartmentFocus);
+                                              },
                                               controller: jaddaController,
                                               onChanged: (value) {
                                                 validationManager.injadda
@@ -532,6 +569,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                               Container(
                                 padding: EdgeInsets.all(4),
                                 child: TextField(
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: apartmentFocus,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context).requestFocus(instructiosFocus);
+                                  },
                                   controller: appartmentController,
                                   decoration: InputDecoration(
                                       suffixText: AppLocalizations.of(context)
@@ -582,6 +624,8 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                               Container(
                                 padding: EdgeInsets.all(4),
                                 child: TextField(
+                                  textInputAction: TextInputAction.done,
+                                  focusNode: instructiosFocus,
                                   controller: deliveryController,
                                   maxLines: 5,
                                   decoration: InputDecoration(

@@ -29,6 +29,17 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   TextEditingController deliveryController = TextEditingController();
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
+
+  final blockFocus = FocusNode();
+  final streetFocus = FocusNode();
+  final streetTwoFocus = FocusNode();
+  final houseFocus = FocusNode();
+  final floorFocus = FocusNode();
+  final jaddaFocus = FocusNode();
+  final apartmentFocus = FocusNode();
+  final instructiosFocus = FocusNode();
+
+
   @override
   void initState() {
     super.initState();
@@ -161,6 +172,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: TextField(
+                                        textInputAction: TextInputAction.next,
+                                        focusNode: blockFocus,
+                                        onSubmitted: (v) {
+                                          FocusScope.of(context).requestFocus(streetFocus);
+                                        },
                                         controller: blockController,
                                         decoration: InputDecoration(
                                             filled: true,
@@ -210,6 +226,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: TextField(
+                                        textInputAction: TextInputAction.next,
+                                        focusNode: streetFocus,
+                                        onSubmitted: (v) {
+                                          FocusScope.of(context).requestFocus(streetTwoFocus);
+                                        },
                                         controller: streetController,
                                         decoration: InputDecoration(
                                             filled: true,
@@ -259,6 +280,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                               Container(
                                 padding: EdgeInsets.all(4),
                                 child: TextField(
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: streetTwoFocus,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context).requestFocus(houseFocus);
+                                  },
                                   controller: streetTwoController,
                                   decoration: InputDecoration(
                                       filled: true,
@@ -300,6 +326,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                               Container(
                                 padding: EdgeInsets.all(4),
                                 child: TextField(
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: houseFocus,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context).requestFocus(floorFocus);
+                                  },
                                   controller: houseController,
                                   decoration: InputDecoration(
                                       filled: true,
@@ -351,6 +382,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: TextField(
+                                        textInputAction: TextInputAction.next,
+                                        focusNode: floorFocus,
+                                        onSubmitted: (v) {
+                                          FocusScope.of(context).requestFocus(jaddaFocus);
+                                        },
                                         controller: floorController,
                                         decoration: InputDecoration(
                                             filled: true,
@@ -400,6 +436,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: TextField(
+                                        textInputAction: TextInputAction.next,
+                                        focusNode: jaddaFocus,
+                                        onSubmitted: (v) {
+                                          FocusScope.of(context).requestFocus(apartmentFocus);
+                                        },
                                         controller: jaddaController,
                                         decoration: InputDecoration(
                                             filled: true,
@@ -449,6 +490,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                               Container(
                                 padding: EdgeInsets.all(4),
                                 child: TextField(
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: apartmentFocus,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context).requestFocus(instructiosFocus);
+                                  },
                                   controller: appartmentController,
                                   decoration: InputDecoration(
                                       suffixText: AppLocalizations.of(context)
@@ -499,6 +545,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                               Container(
                                 padding: EdgeInsets.all(4),
                                 child: TextField(
+                                  textInputAction: TextInputAction.done,
+                                  focusNode: instructiosFocus,
+                                  // onSubmitted: (v) {
+                                  //   FocusScope.of(context).requestFocus(instructiosFocus);
+                                  // },
                                   controller: deliveryController,
                                   maxLines: 5,
                                   decoration: InputDecoration(
@@ -577,7 +628,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           ),
                         ),
                         onPressed: () {
-                          isLoading.add(true);
+                          // isLoading.add(true);
 //                          NewAddressRepo.postAddNewAddressData(locator<DrobDownBloc>().currentDrobDownvalue ==  null ? "" : locator<DrobDownBloc>().currentDrobDownvalue ,blockController.text,streetController.text,streetTwoController.text,houseController.text,floorController.text,jaddaController.text,appartmentController.text,deliveryController.text).then((onValue){
 //                            isLoading.add(false);
 //                            showDialog(
@@ -593,15 +644,13 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           print(
                               "locator<DrobDownBloc>().currentDrobDownvalue ${locator<EditDrobDownBloc>().currentDrobDownvalue}");
 
-                          if (locator<EditDrobDownBloc>()
-                                      .currentDrobDownvalue ==
-                                  null ||
-                              blockController.text.length == 0 ||
-                              streetController.text.length == 0 ||
-                              streetTwoController.text.length == 0 ||
-                              houseController.text.length == 0 ||
-                              floorController.text.length == 0 ||
-                              jaddaController.text.length == 0) {
+                          if (locator<EditDrobDownBloc>().currentDrobDownvalue == null ||
+                              blockController.text.length < 1 ||
+                              streetController.text.length < 1 ||
+                              streetTwoController.text.length < 1 ||
+                              houseController.text.length < 1 ||
+                              floorController.text.length < 1 ||
+                              jaddaController.text.length < 1) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {

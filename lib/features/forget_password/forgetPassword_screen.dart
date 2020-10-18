@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:momentoo/features/forget_password/forgetPassword_repo.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -15,6 +16,7 @@ class ForgetPasswordScreen extends StatefulWidget {
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   TextEditingController emailController = TextEditingController();
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
+  // bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)email;
 
   @override
   Widget build(BuildContext context) {
@@ -189,21 +191,37 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             ),
                           ),
                           onPressed: () {
-                            isLoading.add(true);
-
-                            ForgetPasswordRepo.postForgetPasswordData(
-                                    emailController.text)
-                                .then((onValue) {
-                              isLoading.add(false);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(onValue.message),
-                                  );
-                                },
+                            Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                            RegExp regex = new RegExp(pattern);
+                         // pattern   if ()
+                         //      return "Invalid Email";
+                            if(!(regex.hasMatch(emailController.text))){
+                              Fluttertoast.showToast(
+                                msg: locator<PrefsService>().appLanguage == "en" ? 'Incorrect Email': 'بريد إلكتروني خاطئ',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                backgroundColor: Colors.black.withOpacity(0.6),
+                                textColor: Colors.white,
+                                fontSize: 14.0,
                               );
-                            });
+                            }else{
+                              isLoading.add(true);
+                              ForgetPasswordRepo.postForgetPasswordData(
+                                  emailController.text)
+                                  .then((onValue) {
+                                isLoading.add(false);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(onValue.message),
+                                    );
+                                  },
+                                );
+                              });
+                            }
+
+
                           },
                         ),
                       ),
