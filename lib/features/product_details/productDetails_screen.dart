@@ -571,31 +571,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       -1 ||
                                   locator<PrefsService>().cartObj.sellerId ==
                                       args.sellerId) {
-                                var cart = locator<PrefsService>().cartObj
-                                  ..sellerId = args.sellerId
-                                  ..products.add(Products(
-                                      productId: args.productId,
-                                      count: count,
-                                      options: selectedExtrasIds,
-                                      notes: note));
-                                locator<PrefsService>().cartObj = cart;
-                                locator<CartItemsCountManager>()
-                                    .inCartCount
-                                    .add(locator<PrefsService>()
-                                            .cartObj
-                                            .products
-                                            ?.length ??
-                                        0);
+                                addToCart(args);
+                                // var cart = locator<PrefsService>().cartObj
+                                //   ..sellerId = args.sellerId
+                                //   ..products.add(Products(
+                                //       productId: args.productId,
+                                //       count: count,
+                                //       options: selectedExtrasIds,
+                                //       notes: note));
+                                // locator<PrefsService>().cartObj = cart;
+                                // locator<CartItemsCountManager>()
+                                //     .inCartCount
+                                //     .add(locator<PrefsService>()
+                                //             .cartObj
+                                //             .products
+                                //             ?.length ??
+                                //         0);
 
-                                Fluttertoast.showToast(
-                                  msg:
-                                      "${locator<PrefsService>().appLanguage == "en" ? 'added successfully' : 'تم الاضافة بنجاح'}",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  backgroundColor: Colors.black.withOpacity(.6),
-                                  textColor: Colors.white,
-                                  fontSize: 14.0,
-                                );
+                                // Fluttertoast.showToast(
+                                //   msg:
+                                //       "${locator<PrefsService>().appLanguage == "en" ? 'added successfully' : 'تم الاضافة بنجاح'}",
+                                //   toastLength: Toast.LENGTH_SHORT,
+                                //   gravity: ToastGravity.CENTER,
+                                //   backgroundColor: Colors.black.withOpacity(.6),
+                                //   textColor: Colors.white,
+                                //   fontSize: 14.0,
+                                // );
                               } else {
                                 showDialog(
                                   barrierDismissible: false,
@@ -666,7 +667,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                                 .circular(25.0),
                                                       ),
                                                       child: Text(
-//                                                      'OK_str',
                                                         AppLocalizations.of(
                                                                 context)
                                                             .translate(
@@ -685,6 +685,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                         locator<PrefsService>()
                                                             .cartObj = cart;
                                                         Navigator.pop(context);
+                                                        addToCart(args);
                                                       },
                                                       // color: greyBlue,
                                                     ),
@@ -719,52 +720,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
     );
   }
-}
 
-//  Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                     children: <Widget>[
-//                       ButtonTheme(
-//                         minWidth: 100.0,
-//                         height: 30.0,
-//                         child: RaisedButton(
-//                           shape: RoundedRectangleBorder(
-//                             borderRadius: new BorderRadius.circular(25.0),
-//                           ),
-//                           child: Text(
-//                             AppLocalizations.of(context).translate('ok_str'),
-//                             style: TextStyle(
-//                                 color: Colors.white, fontSize: SecondaryFont),
-//                           ),
-//                           onPressed: () {
-//                             locator<TextEditingController>().clear();
-//                             Navigator.pop(context);
-//                             Navigator.pushReplacementNamed(
-//                                 context, '/logInScreen');
-//                           },
-//                           color: greyBlue,
-//                         ),
-//                       ),
-//                       ButtonTheme(
-//                         minWidth: 100.0,
-//                         height: 30.0,
-//                         child: RaisedButton(
-//                           shape: RoundedRectangleBorder(
-//                             borderRadius: new BorderRadius.circular(25.0),
-//                           ),
-//                           child: Text(
-//                             AppLocalizations.of(context)
-//                                 .translate('notNow_str'),
-//                             style: TextStyle(
-//                                 color: Colors.white, fontSize: SecondaryFont),
-//                           ),
-//                           onPressed: () {
-//                             FocusScope.of(context)
-//                                 .requestFocus(new FocusNode());
-//                             Navigator.pop(context);
-//                             // Navigator.pushReplacementNamed(Dia
-//                             //     context, '/logInScreen');
-//                           },
-//                           color: greyBlue,
-//                         ),
-//                       ),]})
+  void addToCart(ProductDetailsArguments args) {
+    var cart = locator<PrefsService>().cartObj
+      ..sellerId = args.sellerId
+      ..products.add(Products(
+          productId: args.productId,
+          count: count,
+          options: selectedExtrasIds,
+          notes: note));
+    locator<PrefsService>().cartObj = cart;
+    locator<CartItemsCountManager>()
+        .inCartCount
+        .add(locator<PrefsService>().cartObj.products?.length ?? 0);
+
+    Fluttertoast.showToast(
+      msg:
+          "${locator<PrefsService>().appLanguage == "en" ? 'added successfully' : 'تم الاضافة بنجاح'}",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.black.withOpacity(.6),
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
+}

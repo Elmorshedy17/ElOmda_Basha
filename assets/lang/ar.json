@@ -201,5 +201,6 @@
   "Not_yet_str": "ليس حتي الان",
   "delivery_Fees_str": "خدمة التوصيل",
   "Payment_Gateway_str": "بوابة الدفع",
-  "NoItemsInCart_str": "سلة الشراء فارغة"
+  "NoItemsInCart_str": "سلة الشراء فارغة",
+  "OK_str":"موافق"
 }
