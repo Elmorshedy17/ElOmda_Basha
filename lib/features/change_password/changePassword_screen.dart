@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:momentoo/features/change_password/changePassword_repo.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
@@ -6,6 +7,8 @@ import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'change_password_validation_manger.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   @override
@@ -22,6 +25,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   TextEditingController confirmPasswordController = TextEditingController();
 
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
+  final validationManager = locator<ChangePasswordValidationManager>();
 
   @override
   Widget build(BuildContext context) {
@@ -84,34 +88,44 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           title: Card(
                             margin: EdgeInsets.only(top: 12),
                             elevation: 5,
-                            child: TextField(
-                              textInputAction: TextInputAction.next,
-                              focusNode: oldPasswordFocus,
-                              controller: oldPasswordController,
-                              onSubmitted: (v) {
-                                FocusScope.of(context)
-                                    .requestFocus(newPasswordFocus);
-                              },
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.oldPassword$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (v){
+                                    validationManager.inOldPassword.add(v);
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: oldPasswordFocus,
+                                  controller: oldPasswordController,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context)
+                                        .requestFocus(newPasswordFocus);
+                                  },
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontFamily:
+                                              locator<PrefsService>().appLanguage ==
+                                                      'en'
+                                                  ? 'en'
+                                                  : 'ar'),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('old_password_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar'),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('old_password_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -119,34 +133,44 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           title: Card(
                             margin: EdgeInsets.symmetric(vertical: 0.0),
                             elevation: 5,
-                            child: TextField(
-                              textInputAction: TextInputAction.next,
-                              focusNode: newPasswordFocus,
-                              controller: newPasswordController,
-                              onSubmitted: (v) {
-                                FocusScope.of(context)
-                                    .requestFocus(newConfirmPasswordFocus);
-                              },
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.password$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (v){
+                                    validationManager.inPassword.add(v);
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  focusNode: newPasswordFocus,
+                                  controller: newPasswordController,
+                                  onSubmitted: (v) {
+                                    FocusScope.of(context)
+                                        .requestFocus(newConfirmPasswordFocus);
+                                  },
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontFamily:
+                                              locator<PrefsService>().appLanguage ==
+                                                      'en'
+                                                  ? 'en'
+                                                  : 'ar'),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('newPassword_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar'),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('newPassword_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -154,30 +178,40 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           title: Card(
                             margin: EdgeInsets.symmetric(vertical: 0.0),
                             elevation: 5,
-                            child: TextField(
-                              textInputAction: TextInputAction.done,
-                              focusNode: newConfirmPasswordFocus,
-                              controller: confirmPasswordController,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
+                            child: StreamBuilder(
+                                stream: validationManager.newPassword$,
+                                builder: (context, snapshot) {
+                                return TextField(
+                                  onChanged: (v){
+                                    validationManager.inNewPassword.add(v);
+                                  },
+                                  textInputAction: TextInputAction.done,
+                                  focusNode: newConfirmPasswordFocus,
+                                  controller: confirmPasswordController,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.transparent),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontFamily:
+                                              locator<PrefsService>().appLanguage ==
+                                                      'en'
+                                                  ? 'en'
+                                                  : 'ar'),
+                                      hintText: AppLocalizations.of(context)
+                                          .translate('retypeNewPassword_str'),
+                                      fillColor: Colors.white,
+                                    errorText: snapshot.error,
                                   ),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontFamily:
-                                          locator<PrefsService>().appLanguage ==
-                                                  'en'
-                                              ? 'en'
-                                              : 'ar'),
-                                  hintText: AppLocalizations.of(context)
-                                      .translate('retypeNewPassword_str'),
-                                  fillColor: Colors.white),
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -189,46 +223,61 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       child: Center(
                         child: Container(
                           margin: EdgeInsets.all(15.0),
-                          child: ButtonTheme(
-                            height: 50,
-                            minWidth: MediaQuery.of(context).size.width * 0.8,
-                            child: RaisedButton(
-                              color: Colors.teal.shade900,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: Colors.white24),
-                              ),
-                              child: Text(
-                                AppLocalizations.of(context)
-                                    .translate('save_str'),
-                                style: TextStyle(
-                                    color: Colors.white70,
-                                    fontFamily:
-                                        locator<PrefsService>().appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar'),
-                              ),
-                              onPressed: () {
-                                isLoading.add(true);
-
-                                ChangePasswordRepo.postChangePasswordData(
-                                        oldPasswordController.text,
-                                        newPasswordController.text,
-                                        confirmPasswordController.text)
-                                    .then((onValue) {
-                                  isLoading.add(false);
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(onValue.message),
+                          child: StreamBuilder(
+                              stream: validationManager.isFormValid$,
+                            builder: (context, snapshot) {
+                              return ButtonTheme(
+                                height: 50,
+                                minWidth: MediaQuery.of(context).size.width * 0.8,
+                                child: RaisedButton(
+                                  color: Colors.teal.shade900,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(color: Colors.white24),
+                                  ),
+                                  child: Text(
+                                    AppLocalizations.of(context)
+                                        .translate('save_str'),
+                                    style: TextStyle(
+                                        color: Colors.white70,
+                                        fontFamily:
+                                            locator<PrefsService>().appLanguage ==
+                                                    'en'
+                                                ? 'en'
+                                                : 'ar'),
+                                  ),
+                                  onPressed:snapshot.hasData ? () {
+                                    if(newPasswordController.text != confirmPasswordController.text){
+                                      Fluttertoast.showToast(
+                                        msg: locator<PrefsService>().appLanguage == "en" ? "password doesn't match": 'كلمة السر غير متطابقة',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.black.withOpacity(0.6),
+                                        textColor: Colors.white,
+                                        fontSize: 14.0,
                                       );
-                                    },
-                                  );
-                                });
-                              },
-                            ),
+                                    }else{
+                                      isLoading.add(true);
+                                      ChangePasswordRepo.postChangePasswordData(
+                                          oldPasswordController.text,
+                                          newPasswordController.text,
+                                          confirmPasswordController.text)
+                                          .then((onValue) {
+                                        isLoading.add(false);
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(onValue.message),
+                                            );
+                                          },
+                                        );
+                                      });
+                                    }
+                                  }:null,
+                                ),
+                              );
+                            }
                           ),
                         ),
                       ),

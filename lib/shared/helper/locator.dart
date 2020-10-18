@@ -51,6 +51,8 @@ import 'package:momentoo/shared/services/permission_service.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:momentoo/shared/services/share_servce/shareService.dart';
 
+import 'package:momentoo/features/change_password/change_password_validation_manger.dart';
+
 GetIt locator = GetIt.instance;
 
 Future<void> setupLocator() async {
@@ -170,5 +172,6 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<NavigationService>(() => NavigationService());
   locator.registerLazySingleton<EditProfileValidationManager>(() => EditProfileValidationManager());
   locator.registerLazySingleton<ChangeEmailValidationManager>(() => ChangeEmailValidationManager());
+  locator.registerLazySingleton<ChangePasswordValidationManager>(() => ChangePasswordValidationManager());
 
 }
