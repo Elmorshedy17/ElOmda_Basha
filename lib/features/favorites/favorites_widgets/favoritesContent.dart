@@ -3,7 +3,9 @@ import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
 import 'package:momentoo/features/favorites/favorites_manager.dart';
 import 'package:momentoo/features/favorites/favorites_model.dart';
 import 'package:momentoo/shared/helper/locator.dart';
+import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/no_available.dart';
 
 class FavoritesContent extends StatelessWidget {
   final int pageIndex;
@@ -14,7 +16,7 @@ class FavoritesContent extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
+    return categories[pageIndex].products.isNotEmpty ? GridView.builder(
       itemCount: categories[pageIndex].products?.length ?? 0,
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
@@ -98,7 +100,7 @@ class FavoritesContent extends StatelessWidget {
           ),
         );
       },
-    );
+    ):noAvailable(locator<PrefsService>().appLanguage == "en" ? "there are no favorite items " : "لا توجد منتجات مفضلة",Icons.favorite_border_outlined);
   }
 }
 

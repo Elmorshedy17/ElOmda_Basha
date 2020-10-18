@@ -12,6 +12,7 @@ import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:momentoo/features/my_orders/reorder/_repo.dart';
+import 'package:momentoo/shared/widgets/no_available.dart';
 import 'package:rxdart/subjects.dart';
 
 class MyOrdersScreen extends StatefulWidget {
@@ -101,7 +102,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                 ),
                                 child: Container(
                                   padding: EdgeInsets.all(15.0),
-                                  child: ListView.builder(
+                                  child: model.data.orders.isNotEmpty ? ListView.builder(
                                     shrinkWrap: true,
                                     physics: BouncingScrollPhysics(),
 //                    physics: NeverScrollableScrollPhysics(),
@@ -510,7 +511,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                         ],
                                       );
                                     },
-                                  ),
+                                  ):noAvailable(locator<PrefsService>().appLanguage == "en" ? "there are no orders" : "لا توجد طلبات",Icons.work_sharp),
                                 ),
                               ),
                             ),
