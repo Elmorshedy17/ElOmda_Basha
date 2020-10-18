@@ -1574,84 +1574,98 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       ),
                                       RaisedButton(
                                         onPressed: () async {
-                                          isLoading.add(true);
-                                          FocusScope.of(context)
-                                              .requestFocus(FocusNode());
 
-                                          locator<CouponRequest>()
-                                            ..sellerId = locator<PrefsService>()
-                                                .cartObj
-                                                .sellerId
-                                            ..products = locator<PrefsService>()
-                                                .cartObj
-                                                .products
-                                            ..orderType = deliveryChecked
-                                                ? 'delivery'
-                                                : 'pickup'
-                                            ..promoCode = promoCode;
-                                          // ..promoCode =
-                                          //     promoCodeController.value?.text ?? '';
+                                          if(promoCode == ''){
+                                            Fluttertoast.showToast(
+                                              msg: locator<PrefsService>().appLanguage == "en" ? 'enter coupon code':' '"أدخل رمز الخصم",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.CENTER,
+                                              backgroundColor: Colors.black.withOpacity(0.6),
+                                              textColor: Colors.white,
+                                              fontSize: 14.0,
+                                            );
+                                          }else{
+                                            isLoading.add(true);
+                                            FocusScope.of(context)
+                                                .requestFocus(FocusNode());
 
-                                          await locator<CouponManager>()
-                                              .getFutureData()
-                                              .then((value) {
-                                            isLoading.add(false);
-                                            if (value.status != 0) {
-                                              priceAfterDiscount = double.parse(
-                                                  value.data.total);
-                                            }
-                                            showDialog(
-                                              barrierDismissible: false,
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  elevation: 3,
-                                                  // contentPadding: const EdgeInsets.all(8.0),
-                                                  content: Container(
-                                                    // height: 90,
+                                            locator<CouponRequest>()
+                                              ..sellerId = locator<PrefsService>()
+                                                  .cartObj
+                                                  .sellerId
+                                              ..products = locator<PrefsService>()
+                                                  .cartObj
+                                                  .products
+                                              ..orderType = deliveryChecked
+                                                  ? 'delivery'
+                                                  : 'pickup'
+                                              ..promoCode = promoCode;
+                                            // ..promoCode =
+                                            //     promoCodeController.value?.text ?? '';
 
-                                                    padding: EdgeInsets.all(8),
-                                                    child: Text(
-                                                        '${value.message}'),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 1.0),
-                                                      child: ButtonTheme(
-                                                        minWidth: 70.0,
-                                                        height: 30.0,
-                                                        child: RaisedButton(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                new BorderRadius
-                                                                        .circular(
-                                                                    25.0),
+                                            await locator<CouponManager>()
+                                                .getFutureData()
+                                                .then((value) {
+                                              isLoading.add(false);
+                                              if (value.status != 0) {
+                                                priceAfterDiscount = double.parse(
+                                                    value.data.total);
+                                              }
+                                              showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    elevation: 3,
+                                                    // contentPadding: const EdgeInsets.all(8.0),
+                                                    content: Container(
+                                                      // height: 90,
+
+                                                      padding: EdgeInsets.all(8),
+                                                      child: Text(
+                                                          '${value.message}'),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal: 1.0),
+                                                        child: ButtonTheme(
+                                                          minWidth: 70.0,
+                                                          height: 30.0,
+                                                          child: RaisedButton(
+                                                            shape:
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              new BorderRadius
+                                                                  .circular(
+                                                                  25.0),
+                                                            ),
+                                                            child: Text(
+                                                              'OK',
+                                                              // AppLocalizations.of(context)
+                                                              //     .translate('notNow_str'),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 15),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            // color: greyBlue,
                                                           ),
-                                                          child: Text(
-                                                            'OK',
-                                                            // AppLocalizations.of(context)
-                                                            //     .translate('notNow_str'),
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 15),
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          // color: greyBlue,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          });
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            });
+                                          }
+
+
                                         },
                                         color: Colors.teal.shade900,
                                         shape: RoundedRectangleBorder(

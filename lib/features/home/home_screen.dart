@@ -385,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget categoryList() {
     return Container(
-      height: 75,
+      height: 78,
       child: CustomObserver(
         stream: locator<HomeManager>().getData(categoryId),
         onWaiting: (_) => Container(),
