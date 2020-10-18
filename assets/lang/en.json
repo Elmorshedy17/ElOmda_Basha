@@ -195,12 +195,13 @@
   "OK_str": "OK",
   "diffrent_sellers_str": "You can't add products from different sellers. Clear cart and add this product?",
   "image_joinus_erre": "please chose or pick image",
-  "continue_str": "continue",
+  "continue_str": "Continue",
   "Home_str": "Home",
   "CartNav_str": "Cart",
   "Nearby_str": "Nearby",
   "NewAddress_str": "New Address",
   "Not_yet_str": "Not yet",
   "Payment_Gateway_str": "Payment Gateway",
-  "NoItemsInCart_str": "No items in Cart"
+  "NoItemsInCart_str": "No items in Cart",
+  "please_login_first": "please login / signUp first"
 }

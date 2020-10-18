@@ -10,6 +10,7 @@ import 'package:momentoo/features/trending_stores/trendingStores_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/show_guest_login_dialog.dart';
 
 class HomeContent extends StatelessWidget {
   final int categoryId;
@@ -224,40 +225,7 @@ class HomeContent extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   if (locator<PrefsService>().userObj == null) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(AppLocalizations.of(
-                                                  context)
-                                              .translate("signToContinue_str")),
-                                          content: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          '/signInScreen');
-                                                },
-                                                child: Text(AppLocalizations.of(
-                                                        context)
-                                                    .translate("signIn_str")),
-                                              ),
-                                              FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text(AppLocalizations.of(
-                                                        context)
-                                                    .translate("continue_str")),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
+                                    showGuestLoginDialog(context);
                                   } else {
                                     sellersList[index].favourite == 'yes'
                                         ? locator<FavoritesActionsManager>()

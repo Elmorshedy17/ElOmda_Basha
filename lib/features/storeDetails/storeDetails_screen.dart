@@ -12,6 +12,7 @@ import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:momentoo/shared/services/share_servce/shareService.dart';
+import 'package:momentoo/shared/widgets/show_guest_login_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
 
@@ -392,48 +393,8 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                               : Colors.black,
                                     ),
                                     onPressed: () {
-                                      if (locator<PrefsService>().userObj ==
-                                          null) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text(AppLocalizations.of(
-                                                      context)
-                                                  .translate(
-                                                      "signToContinue_str")),
-                                              content: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pushNamed(
-                                                              '/signInScreen');
-                                                    },
-                                                    child: Text(
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .translate(
-                                                                "signIn_str")),
-                                                  ),
-                                                  FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: Text(AppLocalizations
-                                                            .of(context)
-                                                        .translate(
-                                                            "continue_str")),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
+                                      if (locator<PrefsService>().userObj == null) {
+                                        showGuestLoginDialog(context);
                                       } else {
                                         model.data.seller.favourite == 'yes'
                                             ? locator<FavoritesActionsManager>()

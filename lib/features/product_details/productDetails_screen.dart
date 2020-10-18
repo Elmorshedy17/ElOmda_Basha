@@ -12,6 +12,7 @@ import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/show_guest_login_dialog.dart';
 
 class ProductDetailsArguments {
   final int sellerId;
@@ -121,38 +122,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             onPressed: () {
                               if (locator<PrefsService>().userObj == null) {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text(AppLocalizations.of(context)
-                                          .translate("signToContinue_str")),
-                                      content: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          FlatButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushNamed('/signInScreen');
-                                            },
-                                            child: Text(
-                                                AppLocalizations.of(context)
-                                                    .translate("signIn_str")),
-                                          ),
-                                          FlatButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text(
-                                                AppLocalizations.of(context)
-                                                    .translate("continue_str")),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
+                                showGuestLoginDialog(context);
                               } else {
                                 model.data.product.favourite == 'yes'
                                     ? locator<FavoritesActionsManager>()
@@ -567,142 +537,126 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                             onPressed: () {
-                              if (locator<PrefsService>().cartObj.sellerId ==
-                                      -1 ||
-                                  locator<PrefsService>().cartObj.sellerId ==
-                                      args.sellerId) {
-                                addToCart(args);
-                                // var cart = locator<PrefsService>().cartObj
-                                //   ..sellerId = args.sellerId
-                                //   ..products.add(Products(
-                                //       productId: args.productId,
-                                //       count: count,
-                                //       options: selectedExtrasIds,
-                                //       notes: note));
-                                // locator<PrefsService>().cartObj = cart;
-                                // locator<CartItemsCountManager>()
-                                //     .inCartCount
-                                //     .add(locator<PrefsService>()
-                                //             .cartObj
-                                //             .products
-                                //             ?.length ??
-                                //         0);
 
-                                // Fluttertoast.showToast(
-                                //   msg:
-                                //       "${locator<PrefsService>().appLanguage == "en" ? 'added successfully' : 'تم الاضافة بنجاح'}",
-                                //   toastLength: Toast.LENGTH_SHORT,
-                                //   gravity: ToastGravity.CENTER,
-                                //   backgroundColor: Colors.black.withOpacity(.6),
-                                //   textColor: Colors.white,
-                                //   fontSize: 14.0,
-                                // );
-                              } else {
-                                showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      contentPadding: const EdgeInsets.all(8.0),
-                                      content: Container(
-                                        height: 130,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
+                              if(locator<PrefsService>().userObj == null){
+                                showGuestLoginDialog(context);
+                              }else{
+
+                                if (locator<PrefsService>().cartObj.sellerId ==
+                                    -1 ||
+                                    locator<PrefsService>().cartObj.sellerId ==
+                                        args.sellerId) {
+                                  addToCart(args);
+
+                                } else {
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        contentPadding: const EdgeInsets.all(8.0),
+                                        content: Container(
+                                          height: 130,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
 //                                              "diffrent_sellers_str"),
-                                              AppLocalizations.of(context)
-                                                  .translate(
-                                                      'diffrent_sellers_str'),
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: ButtonTheme(
-                                                    minWidth: 70.0,
-                                                    height: 30.0,
-                                                    child: RaisedButton(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            new BorderRadius
-                                                                .circular(25.0),
+                                                AppLocalizations.of(context)
+                                                    .translate(
+                                                    'diffrent_sellers_str'),
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(8.0),
+                                                    child: ButtonTheme(
+                                                      minWidth: 70.0,
+                                                      height: 30.0,
+                                                      child: RaisedButton(
+                                                        shape:
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          new BorderRadius
+                                                              .circular(25.0),
+                                                        ),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                              context)
+                                                              .translate(
+                                                              'No_str'),
+                                                          // AppLocalizations.of(context)
+                                                          //     .translate('ok_str'),
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 15),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        // color: greyBlue,
                                                       ),
-                                                      child: Text(
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .translate(
-                                                                'No_str'),
-                                                        // AppLocalizations.of(context)
-                                                        //     .translate('ok_str'),
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 15),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      // color: greyBlue,
                                                     ),
                                                   ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: ButtonTheme(
-                                                    minWidth: 70.0,
-                                                    height: 30.0,
-                                                    child: RaisedButton(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            new BorderRadius
-                                                                .circular(25.0),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(8.0),
+                                                    child: ButtonTheme(
+                                                      minWidth: 70.0,
+                                                      height: 30.0,
+                                                      child: RaisedButton(
+                                                        shape:
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          new BorderRadius
+                                                              .circular(25.0),
+                                                        ),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                              context)
+                                                              .translate(
+                                                              'OK_str'),
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 15),
+                                                        ),
+                                                        onPressed: () {
+                                                          var cart = locator<
+                                                              PrefsService>()
+                                                              .cartObj
+                                                            ..sellerId =
+                                                                args.sellerId
+                                                            ..products.clear();
+                                                          locator<PrefsService>()
+                                                              .cartObj = cart;
+                                                          Navigator.pop(context);
+                                                          addToCart(args);
+                                                        },
+                                                        // color: greyBlue,
                                                       ),
-                                                      child: Text(
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .translate(
-                                                                'OK_str'),
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 15),
-                                                      ),
-                                                      onPressed: () {
-                                                        var cart = locator<
-                                                                PrefsService>()
-                                                            .cartObj
-                                                          ..sellerId =
-                                                              args.sellerId
-                                                          ..products.clear();
-                                                        locator<PrefsService>()
-                                                            .cartObj = cart;
-                                                        Navigator.pop(context);
-                                                        addToCart(args);
-                                                      },
-                                                      // color: greyBlue,
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      // actions: <Widget>[
+                                        // actions: <Widget>[
 
-                                      // ],
-                                    );
-                                  },
-                                );
+                                        // ],
+                                      );
+                                    },
+                                  );
+                                }
+
                               }
+
                             },
                           ),
                         ),

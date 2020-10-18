@@ -202,5 +202,6 @@
   "delivery_Fees_str": "خدمة التوصيل",
   "Payment_Gateway_str": "بوابة الدفع",
   "NoItemsInCart_str": "سلة الشراء فارغة",
-  "OK_str":"موافق"
+  "OK_str":"موافق",
+  "please_login_first": "برجاء تسجيل الدخول / تسجيل جديد اولا"
 }

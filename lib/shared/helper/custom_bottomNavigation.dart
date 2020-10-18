@@ -6,6 +6,7 @@ import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/show_guest_login_dialog.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   @override
@@ -68,18 +69,25 @@ class CustomBottomNavigation extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    if (locator<PrefsService>().isNearbyFirstTimeOpining ==
-                        true) {
-                      locator<PrefsService>().isNearbyFirstTimeOpining = false;
-                      Navigator.of(context).pushNamed('/getLocationScreen');
-                    } else {
-                      if (ModalRoute.of(context).settings.name !=
-                          '/nearByScreen') {
-                        Navigator.of(context).pushNamed('/nearByScreen',
-                            arguments: NearByScreenargs(
-                                locator<PrefsService>().cityID));
+
+                    if(locator<PrefsService>().userObj == null){
+                      showGuestLoginDialog(context);
+                    }else{
+                      if (locator<PrefsService>().isNearbyFirstTimeOpining ==
+                          true) {
+                        locator<PrefsService>().isNearbyFirstTimeOpining = false;
+                        Navigator.of(context).pushNamed('/getLocationScreen');
+                      } else {
+                        if (ModalRoute.of(context).settings.name !=
+                            '/nearByScreen') {
+                          Navigator.of(context).pushNamed('/nearByScreen',
+                              arguments: NearByScreenargs(
+                                  locator<PrefsService>().cityID));
+                        }
                       }
                     }
+
+
                   },
                 ),
                 Text(
