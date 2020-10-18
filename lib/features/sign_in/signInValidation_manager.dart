@@ -14,7 +14,7 @@ class SignInValidationManager with Validation implements Manager {
       passwordSubject.stream.transform(validateField);
   Sink<String> get inPassword => passwordSubject.sink;
 
-  final _checkBoxSubject = BehaviorSubject<bool>.seeded(true);
+  final _checkBoxSubject = PublishSubject<bool>();
   Stream<bool> get checkBoxValue$ => _checkBoxSubject.stream;
   void setCheckBoxValue(bool value) {
     _checkBoxSubject.sink.add(value);

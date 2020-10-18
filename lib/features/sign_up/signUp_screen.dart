@@ -2,8 +2,10 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:momentoo/features/sign_up/signUp_repo.dart';
+import 'package:momentoo/features/privacyPolicy&Terms/privacy&terms_screen.dart';
+import 'package:momentoo/features/settings/settings_repo.dart';
 import 'package:momentoo/features/sign_up/signUpValidation_manager.dart';
+import 'package:momentoo/features/sign_up/signUp_repo.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
@@ -65,6 +67,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // resizeToAvoidBottomInset: false,
                   backgroundColor: Colors.transparent,
                   // resizeToAvoidBottomPadding: true,
+                  appBar: AppBar(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
                   body: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Container(
@@ -434,7 +446,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
                                         child: InkWell(
-                                          onTap: () {},
+                                          onTap: () async {
+                                            await SettingsRepo.getSettingsData()
+                                                .then((value) {
+                                              if (value.status == 1) {
+                                                int index = value.data.pages
+                                                    .indexWhere((element) =>
+                                                        element.title
+                                                            .contains('Terms'));
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  '/privacyScreen',
+                                                  arguments:
+                                                      PrivacyTermsScreenArguments(
+                                                          page: value.data
+                                                              .pages[index]),
+                                                );
+                                              }
+                                            });
+                                          },
                                           child: Column(
                                             children: <Widget>[
                                               Text(
@@ -566,6 +596,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                       "en"
                                                   ? 'The password confirmation does not match'
                                                   : 'تأكيد كلمة السر غير مطابق');
+                                              return;
+                                            }
+                                            if (validationManager
+                                                    .checkBoxValue ==
+                                                false) {
+                                              showToast(locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'Please accept Terms and conditions'
+                                                  : 'يجب الموافقة على الشروط واﻷحكام');
                                               return;
                                             }
                                             isLoading.add(true);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:momentoo/features/sign_in/signIn_repo.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
+import 'package:momentoo/features/sign_in/signIn_repo.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
@@ -134,7 +134,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               StreamBuilder(
-                                  initialData: true,
+                                  initialData:
+                                      locator<PrefsService>().rememberMeFlag,
                                   stream: validationManager.checkBoxValue$,
                                   builder: (context, snapshot) {
                                     return Checkbox(
@@ -146,6 +147,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                       onChanged: (value) {
                                         validationManager
                                             .setCheckBoxValue(value);
+                                        locator<PrefsService>().rememberMeFlag =
+                                            value;
                                       },
                                     );
                                   }),

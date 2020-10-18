@@ -26,6 +26,7 @@ class PrefsService {
   static const String HAS_WELCOME_SEEN = 'hasWelcomeSeen';
   static const String HAS_SIGN_IN_SEEN = 'hasSignInSeen';
   // static const String HAS_SIGN_IN_SEEN = 'hasSignInSeen';
+  static const String REMEMBER_ME_FLAG = 'rememberMeFlag';
 
   static Future<PrefsService> getInstance() async {
     if (_instance == null) {
@@ -72,6 +73,8 @@ class PrefsService {
     _preferences.clear();
   }
 
+  bool get rememberMeFlag => _getFromPrefs(REMEMBER_ME_FLAG) ?? true;
+  set rememberMeFlag(bool value) => _saveToPrefs(REMEMBER_ME_FLAG, value);
 /////////////////////////////////////////////////////////////////////////////////
   bool get notificationFlag => _getFromPrefs(NOTIFICATION_FlAG) ?? true;
   set notificationFlag(bool value) => _saveToPrefs(NOTIFICATION_FlAG, value);
