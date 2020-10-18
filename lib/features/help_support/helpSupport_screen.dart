@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/help_support/get_help_support/_manger.dart';
 import 'package:momentoo/features/help_support/get_help_support/_model.dart';
+import 'package:momentoo/features/help_support/helpSupportValidation_manager.dart';
 import 'package:momentoo/features/help_support/post_help_support/_repo.dart';
 import 'package:momentoo/shared/helper/customNotification_widget.dart';
 import 'package:momentoo/shared/helper/locator.dart';
@@ -17,6 +18,7 @@ class HelpSupportScreen extends StatefulWidget {
 }
 
 class _HelpSupportScreenState extends State<HelpSupportScreen> {
+
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
   BehaviorSubject typeComplain = new BehaviorSubject();
 //  BehaviorSubject complainId = new BehaviorSubject();
@@ -26,6 +28,10 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   TextEditingController messageController = TextEditingController();
 
   var complainId;
+
+
+  // final validationManager = ;
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,61 +120,72 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
-                                                TextField(
-                                                  controller: nameController,
-                                                  decoration: InputDecoration(
-                                                      filled: true,
-                                                      border: InputBorder.none,
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors
-                                                                .transparent),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          const Radius.circular(
-                                                              10.0),
-                                                        ),
+                                                StreamBuilder(
+                                                  stream: locator<HelpSupportValidationManager>().firstName$,
+                                                  builder: (context, snapshot) {
+                                                    return TextField(
+                                                      onChanged: (v){
+                                                        locator<HelpSupportValidationManager>().inFirstName.add(v);
+                                                      },
+                                                      controller: nameController,
+                                                      decoration: InputDecoration(
+                                                          filled: true,
+                                                          border: InputBorder.none,
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Colors
+                                                                    .transparent),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              const Radius.circular(
+                                                                  10.0),
+                                                            ),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Colors
+                                                                    .transparent),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              const Radius.circular(
+                                                                  10.0),
+                                                            ),
+                                                          ),
+                                                          disabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Colors
+                                                                    .transparent),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              const Radius.circular(
+                                                                  10.0),
+                                                            ),
+                                                          ),
+                                                          hintStyle: TextStyle(
+                                                            color: Colors.grey[600],
+                                                            fontFamily:
+                                                                locator<PrefsService>()
+                                                                            .appLanguage ==
+                                                                        'en'
+                                                                    ? 'en'
+                                                                    : 'ar',
+                                                          ),
+                                                          hintText: AppLocalizations
+                                                                  .of(context)
+                                                              .translate(
+                                                                  'yourName_str'),
+                                                          fillColor: Colors.white,
+                                                        errorText: snapshot.error,
                                                       ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors
-                                                                .transparent),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          const Radius.circular(
-                                                              10.0),
-                                                        ),
-                                                      ),
-                                                      disabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors
-                                                                .transparent),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          const Radius.circular(
-                                                              10.0),
-                                                        ),
-                                                      ),
-                                                      hintStyle: TextStyle(
-                                                        color: Colors.grey[600],
-                                                        fontFamily:
-                                                            locator<PrefsService>()
-                                                                        .appLanguage ==
-                                                                    'en'
-                                                                ? 'en'
-                                                                : 'ar',
-                                                      ),
-                                                      hintText: AppLocalizations
-                                                              .of(context)
-                                                          .translate(
-                                                              'yourName_str'),
-                                                      fillColor: Colors.white),
+
+                                                    );
+                                                  }
                                                 ),
                                                 Padding(
                                                   padding:
@@ -183,61 +200,71 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                                         .withOpacity(.5),
                                                   ),
                                                 ),
-                                                TextField(
-                                                  controller: emailController,
-                                                  decoration: InputDecoration(
-                                                      filled: true,
-                                                      border: InputBorder.none,
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors
-                                                                .transparent),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          const Radius.circular(
-                                                              10.0),
-                                                        ),
+                                                StreamBuilder(
+                                                    stream: locator<HelpSupportValidationManager>().email$,
+                                                    builder: (context, snapshot) {
+                                                    return TextField(
+                                                      onChanged: (v){
+                                                        locator<HelpSupportValidationManager>().inEmail.add(v);
+                                                      },
+                                                      controller: emailController,
+                                                      decoration: InputDecoration(
+                                                          filled: true,
+                                                          border: InputBorder.none,
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Colors
+                                                                    .transparent),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              const Radius.circular(
+                                                                  10.0),
+                                                            ),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Colors
+                                                                    .transparent),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              const Radius.circular(
+                                                                  10.0),
+                                                            ),
+                                                          ),
+                                                          disabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Colors
+                                                                    .transparent),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              const Radius.circular(
+                                                                  10.0),
+                                                            ),
+                                                          ),
+                                                          hintStyle: TextStyle(
+                                                            color: Colors.grey[600],
+                                                            fontFamily:
+                                                                locator<PrefsService>()
+                                                                            .appLanguage ==
+                                                                        'en'
+                                                                    ? 'en'
+                                                                    : 'ar',
+                                                          ),
+                                                          hintText: AppLocalizations
+                                                                  .of(context)
+                                                              .translate(
+                                                                  'yourEmail_str'),
+                                                          fillColor: Colors.white,
+                                                        errorText: snapshot.error,
                                                       ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors
-                                                                .transparent),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          const Radius.circular(
-                                                              10.0),
-                                                        ),
-                                                      ),
-                                                      disabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors
-                                                                .transparent),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          const Radius.circular(
-                                                              10.0),
-                                                        ),
-                                                      ),
-                                                      hintStyle: TextStyle(
-                                                        color: Colors.grey[600],
-                                                        fontFamily:
-                                                            locator<PrefsService>()
-                                                                        .appLanguage ==
-                                                                    'en'
-                                                                ? 'en'
-                                                                : 'ar',
-                                                      ),
-                                                      hintText: AppLocalizations
-                                                              .of(context)
-                                                          .translate(
-                                                              'yourEmail_str'),
-                                                      fillColor: Colors.white),
+                                                    );
+                                                  }
                                                 ),
                                               ],
                                             ),
@@ -247,57 +274,67 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                       Container(
                                         child: Card(
                                           elevation: 5,
-                                          child: TextField(
-                                            controller: phoneController,
-                                            keyboardType: TextInputType
-                                                .numberWithOptions(),
-                                            decoration: InputDecoration(
-                                                filled: true,
-                                                border: InputBorder.none,
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color:
-                                                          Colors.transparent),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    const Radius.circular(10.0),
-                                                  ),
+                                          child: StreamBuilder(
+                                              stream: locator<HelpSupportValidationManager>().phone$,
+                                              builder: (context, snapshot) {
+                                              return TextField(
+                                                onChanged: (v){
+                                                  locator<HelpSupportValidationManager>().inPhone.add(v);
+                                                },
+                                                controller: phoneController,
+                                                keyboardType: TextInputType
+                                                    .numberWithOptions(),
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color:
+                                                              Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color:
+                                                              Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color:
+                                                              Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                    ),
+                                                    hintText:
+                                                        AppLocalizations.of(context)
+                                                            .translate(
+                                                                'phoneNumber_str'),
+                                                    fillColor: Colors.white,
+                                                  errorText: snapshot.error,
                                                 ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color:
-                                                          Colors.transparent),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    const Radius.circular(10.0),
-                                                  ),
-                                                ),
-                                                disabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color:
-                                                          Colors.transparent),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    const Radius.circular(10.0),
-                                                  ),
-                                                ),
-                                                hintStyle: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontFamily:
-                                                      locator<PrefsService>()
-                                                                  .appLanguage ==
-                                                              'en'
-                                                          ? 'en'
-                                                          : 'ar',
-                                                ),
-                                                hintText:
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'phoneNumber_str'),
-                                                fillColor: Colors.white),
+                                              );
+                                            }
                                           ),
                                         ),
                                       ),
@@ -447,56 +484,66 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                                   .width *
                                               0.9,
 //                      height: 600,
-                                          child: TextField(
-                                            controller: messageController,
-                                            maxLines: 10,
-                                            decoration: InputDecoration(
-                                                filled: true,
-                                                border: InputBorder.none,
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color:
-                                                          Colors.transparent),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    const Radius.circular(10.0),
-                                                  ),
+                                          child: StreamBuilder(
+                                              stream: locator<HelpSupportValidationManager>().msg$,
+                                              builder: (context, snapshot) {
+                                              return TextField(
+                                                onChanged: (v){
+                                                  locator<HelpSupportValidationManager>().inMsg.add(v);
+                                                },
+                                                controller: messageController,
+                                                maxLines: 10,
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color:
+                                                              Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color:
+                                                              Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color:
+                                                              Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                    ),
+                                                    hintText:
+                                                        AppLocalizations.of(context)
+                                                            .translate(
+                                                                'yourMessage_str'),
+                                                    fillColor: Colors.white,
+                                                  errorText: snapshot.error,
                                                 ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color:
-                                                          Colors.transparent),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    const Radius.circular(10.0),
-                                                  ),
-                                                ),
-                                                disabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color:
-                                                          Colors.transparent),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    const Radius.circular(10.0),
-                                                  ),
-                                                ),
-                                                hintStyle: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontFamily:
-                                                      locator<PrefsService>()
-                                                                  .appLanguage ==
-                                                              'en'
-                                                          ? 'en'
-                                                          : 'ar',
-                                                ),
-                                                hintText:
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'yourMessage_str'),
-                                                fillColor: Colors.white),
+                                              );
+                                            }
                                           ),
                                         ),
                                       ),
@@ -568,59 +615,64 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 4.0, vertical: 2),
-                                        child: ButtonTheme(
-                                          height: 55,
-                                          minWidth: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.8,
-                                          child: RaisedButton(
-                                            color: Colors.teal.shade900,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                              side: BorderSide(
-                                                  color: Colors.white24),
-                                            ),
-                                            child: Text(
-                                              AppLocalizations.of(context)
-                                                  .translate('sendMessage_str'),
-                                              style: TextStyle(
-                                                  color: Colors.white70,
-                                                  fontFamily:
-                                                      locator<PrefsService>()
-                                                                  .appLanguage ==
-                                                              'en'
-                                                          ? 'en'
-                                                          : 'ar',
-                                                  fontSize: 18.0),
-                                            ),
-                                            onPressed: () {
-                                              isLoading.add(true);
+                                        child: StreamBuilder(
+                                          stream: locator<HelpSupportValidationManager>().isFormValid$,
+                                          builder: (context, snapshot) {
+                                            return ButtonTheme(
+                                              height: 55,
+                                              minWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.8,
+                                              child: RaisedButton(
+                                                color: Colors.teal.shade900,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5.0),
+                                                  side: BorderSide(
+                                                      color: Colors.white24),
+                                                ),
+                                                child: Text(
+                                                  AppLocalizations.of(context)
+                                                      .translate('sendMessage_str'),
+                                                  style: TextStyle(
+                                                      color: Colors.white70,
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                      fontSize: 18.0),
+                                                ),
+                                                onPressed: snapshot.hasData ? () {
+                                                  isLoading.add(true);
 
-                                              ContactUsPostRepo
-                                                      .postContactUsData(
-                                                          nameController.text,
-                                                          emailController.text,
-                                                          phoneController.text,
-                                                          complainId,
-                                                          messageController
-                                                              .text)
-                                                  .then((onValue) {
-                                                isLoading.add(false);
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title:
-                                                          Text(onValue.message),
+                                                  ContactUsPostRepo
+                                                          .postContactUsData(
+                                                              nameController.text,
+                                                              emailController.text,
+                                                              phoneController.text,
+                                                              complainId,
+                                                              messageController
+                                                                  .text)
+                                                      .then((onValue) {
+                                                    isLoading.add(false);
+                                                    showDialog(
+                                                      context: context,
+                                                      builder:
+                                                          (BuildContext context) {
+                                                        return AlertDialog(
+                                                          title:
+                                                              Text(onValue.message),
+                                                        );
+                                                      },
                                                     );
-                                                  },
-                                                );
-                                              });
-                                            },
-                                          ),
+                                                  });
+                                                }:null,
+                                              ),
+                                            );
+                                          }
                                         ),
                                       ),
                                     ],
