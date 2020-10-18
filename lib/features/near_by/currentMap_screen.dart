@@ -84,12 +84,16 @@ class _CurrentMapScreenState extends State<CurrentMapScreen> {
                                   locator<PrefsService>().cityID =
                                       onValue.data.cities[index].id.toString();
 
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            NearByScreen(cityIdChosen)),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           NearByScreen(cityIdChosen)),
+                                  // );
+                                  Navigator.of(context).pushNamed(
+                                      '/nearByScreen',
+                                      arguments:
+                                          NearByScreenargs(cityIdChosen));
 
                                   print("cityIdChosen$cityIdChosen");
                                 },
@@ -252,12 +256,14 @@ class _CurrentMapScreenState extends State<CurrentMapScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              NearByScreen(manualcityIdChosen)),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           NearByScreen(manualcityIdChosen)),
+                    // );
+                    Navigator.of(context).pushNamed('/nearByScreen',
+                        arguments: NearByScreenargs(manualcityIdChosen));
 
 //                        Navigator.of(context).pushReplacementNamed('/nearByScreen');
                   },

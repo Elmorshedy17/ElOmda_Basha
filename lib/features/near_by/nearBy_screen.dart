@@ -13,10 +13,16 @@ import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 
-class NearByScreen extends StatefulWidget {
-  var cityID;
+class NearByScreenargs {
+  final cityID;
 
-  NearByScreen(this.cityID);
+  NearByScreenargs(this.cityID);
+}
+
+class NearByScreen extends StatefulWidget {
+  // final cityID;
+
+  // NearByScreen(this.cityID);
 
   @override
   _NearByScreenState createState() => _NearByScreenState();
@@ -30,6 +36,7 @@ class _NearByScreenState extends State<NearByScreen> {
 
   @override
   Widget build(BuildContext context) {
+    NearByScreenargs args = ModalRoute.of(context).settings.arguments;
     return NetworkSensitive(
       child: WillPopScope(
         onWillPop: () async => false,
@@ -72,7 +79,8 @@ class _NearByScreenState extends State<NearByScreen> {
                         suffixIcon: InkWell(
                           onTap: () {
                             setState(() {
-                              wordSearch.clear();
+                              // wordSearch.clear();
+                              wordSearch.text = '';
                             });
                           },
                           child: Container(
@@ -102,7 +110,7 @@ class _NearByScreenState extends State<NearByScreen> {
               stream: locator<NearByManager>().getData(
                   locator<NearByManager>().catSubject.value,
                   wordSearch.text,
-                  widget.cityID,
+                  args.cityID,
                   cusinId == null ? "" : cusinId),
               onSuccess: (_, NearByModel model) {
                 print("NearByModel ${model}");
