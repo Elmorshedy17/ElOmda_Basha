@@ -32,6 +32,7 @@ import 'package:momentoo/features/shopping_cart/cart_screen.dart';
 import 'package:momentoo/features/sign_in/signInValidation_manager.dart';
 import 'package:momentoo/features/sign_in/signIn_screen.dart';
 import 'package:momentoo/features/sign_up/signUp_screen.dart';
+import 'package:momentoo/features/splash/splash.dart';
 import 'package:momentoo/features/storeDetails/storeDetails_screen.dart';
 import 'package:momentoo/features/terms_conditions/termsConditions_screen.dart';
 import 'package:momentoo/features/track_details/trackDetails_screen.dart';
@@ -136,7 +137,14 @@ class _MomentooAppState extends State<MomentooApp> {
               theme: ThemeData(
                 primarySwatch: Colors.teal,
               ),
-              home: _getStartupScreen(),
+              home: SplashScreen(
+                image: Image.asset(
+                  'assets/images/splash.png',
+                  fit: BoxFit.fill,
+                ),
+                mSeconds: 3500,
+                navigateAfterSeconds: _getStartupScreen(),
+              ),
               routes: {
                 '/langScreen': (_) => LangScreen(),
                 '/adsScreen': (_) => AdsScreen(),
