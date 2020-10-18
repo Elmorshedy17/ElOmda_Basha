@@ -7,6 +7,7 @@ import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/no_available.dart';
 
 class NotificationsScreen extends StatelessWidget {
   @override
@@ -56,7 +57,7 @@ class NotificationsScreen extends StatelessWidget {
             child: Card(
               child: CustomObserver(
                 stream: locator<NotificationsManager>().getData(),
-                onSuccess: (_, NotificationsModel model) => ListView.separated(
+                onSuccess: (_, NotificationsModel model) => model.data.notifications.data.isNotEmpty ? ListView.separated(
                   itemCount: model.data.notifications.data?.length ?? 0,
                   separatorBuilder: (_, index) => Divider(
                     height: 1,
@@ -97,7 +98,7 @@ class NotificationsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ):noAvailable(locator<PrefsService>().appLanguage == "en" ? "there are no notification" : "لا توجد اشعارات",Icons.notifications_active_outlined),
               ),
             ),
           ),

@@ -12,6 +12,7 @@ import 'package:momentoo/shared/helper/network_sensitive.dart';
 import 'package:momentoo/shared/helper/observer_widget.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
+import 'package:momentoo/shared/widgets/no_available.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -657,18 +658,17 @@ class _CartScreenState extends State<CartScreen> {
                       ],
                     ),
                   )
-                : Center(
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate('NoItemsInCart_str'),
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontFamily:
-                              locator<PrefsService>().appLanguage == 'en'
-                                  ? 'en'
-                                  : 'ar'),
-                    ),
-                  ),
+                : noAvailable(AppLocalizations.of(context).translate('NoItemsInCart_str'),Icons.shopping_basket_outlined),
+                // : noAvailable(AppLocalizations.of(context).translate('NoItemsInCart_str'),Icons.notifications_active_outlined),
+            // Center(
+            //         child: Text(
+            //           AppLocalizations.of(context)
+            //               .translate('NoItemsInCart_str'),
+            //           style: TextStyle(
+            //               fontSize: 40,
+            //               fontFamily: locator<PrefsService>().appLanguage == 'en'  ? 'en'  : 'ar'),
+            //         ),
+            //       ),
             bottomNavigationBar: CustomBottomNavigation(),
           ),
         ),
