@@ -19,6 +19,7 @@ import 'package:momentoo/features/help_support/helpSupportValidation_manager.dar
 import 'package:momentoo/features/home/autoComplete_manager.dart';
 import 'package:momentoo/features/home/home_manager.dart';
 import 'package:momentoo/features/invoice/_manager.dart';
+import 'package:momentoo/features/join_us/join_us_validation.dart';
 import 'package:momentoo/features/my_orders/_manager.dart';
 import 'package:momentoo/features/near_by/getAddress_manager.dart';
 import 'package:momentoo/features/near_by/manger.dart';
@@ -173,5 +174,6 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<EditProfileValidationManager>(() => EditProfileValidationManager());
   locator.registerLazySingleton<ChangeEmailValidationManager>(() => ChangeEmailValidationManager());
   locator.registerLazySingleton<ChangePasswordValidationManager>(() => ChangePasswordValidationManager());
+  locator.registerLazySingleton<JoinUsValidationManager>(() => JoinUsValidationManager());
 
 }

@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:momentoo/features/join_us/_repo.dart';
+import 'package:momentoo/features/join_us/join_us_validation.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/helper/main_background.dart';
 import 'package:momentoo/shared/helper/network_sensitive.dart';
@@ -34,6 +35,7 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
 
   Future getImageFromCam() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    locator<JoinUsValidationManager>().companyLogo.add("${image.path}");
 
     setState(() {
       _image = image;
@@ -43,7 +45,7 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
 
   Future getImageFromGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
+    locator<JoinUsValidationManager>().companyLogo.add("${image.path}");
     setState(() {
       _image = image;
       imago = image.path;
@@ -52,11 +54,14 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if(imago == null){    locator<JoinUsValidationManager>().companyLogo.add(null);
+    }
     return NetworkSensitive(
       child: MainBackground(
         height: MediaQuery.of(context).size.height * 0.3,
         child: Scaffold(
-          resizeToAvoidBottomInset: true,
+          // resizeToAvoidBottomInset : false,
+          // resizeToAvoidBottomInset: true,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0.0,
@@ -93,493 +98,569 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
             ),
             centerTitle: true,
           ),
-          body: AnimatedPadding(
-            padding: MediaQuery.of(context).viewInsets,
-            duration: const Duration(milliseconds: 100),
-            curve: Curves.decelerate,
-            child: StreamBuilder(
-                stream: isLoading.stream,
-                builder: (context, isLoadingSnapshot) {
-                  return Stack(
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(15.0),
-                            child: Card(
-                              elevation: 5,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          color:
-                                              Colors.black12.withOpacity(0.09),
-                                          borderRadius: const BorderRadius.all(
-                                            const Radius.circular(10.0),
+          body: SingleChildScrollView(
+            child: AnimatedPadding(
+              padding: MediaQuery.of(context).viewInsets,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.decelerate,
+              child: StreamBuilder(
+                  stream: isLoading.stream,
+                  builder: (context, isLoadingSnapshot) {
+                    return Stack(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(15.0),
+                              child: Card(
+                                elevation: 5,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: <Widget>[
+                                      StreamBuilder(
+                                        stream: locator<JoinUsValidationManager>().companyLogo.stream,
+                                        builder: (context, companyLogoSnapshot) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Column(mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(4),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        Colors.black12.withOpacity(0.09),
+                                                    borderRadius: const BorderRadius.all(
+                                                      const Radius.circular(10.0),
+                                                    ),
+                                                  ),
+                                                  child: ListTile(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) {
+                                                          return AlertDialog(
+                                                            title: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: <Widget>[
+                                                                FlatButton(
+                                                                  onPressed:
+                                                                      getImageFromCam,
+                                                                  child: Text(
+                                                                    AppLocalizations.of(
+                                                                            context)
+                                                                        .translate(
+                                                                            'camera_str'),
+                                                                  ),
+                                                                ),
+                                                                FlatButton(
+                                                                  onPressed:
+                                                                      getImageFromGallery,
+                                                                  child: Text(
+                                                                    AppLocalizations.of(
+                                                                            context)
+                                                                        .translate(
+                                                                            'gallery_str'),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+//                                  AppLocalizations.of(context)
+//                                      .translate('yourLOGO_str'),
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    leading: Icon(Icons.camera_alt),
+                                                    title: Text(
+                                                      AppLocalizations.of(context)
+                                                          .translate('yourLOGO_str'),
+                                                      style: TextStyle(
+                                                        color: Colors.black26,
+                                                        fontFamily:
+                                                            locator<PrefsService>()
+                                                                        .appLanguage ==
+                                                                    'en'
+                                                                ? 'en'
+                                                                : 'ar',
+                                                      ),
+                                                    ),
+                                                    trailing: FittedBox(
+                                                      child: _image == null
+                                                          ? Icon(Icons.add)
+                                                          : Image.file(_image),
+                                                    ),
+                                                  ),
+                                                ),
+                                                !companyLogoSnapshot.hasData ? Row(
+                                                  children: [
+                                                    SizedBox(width: 15,),
+                                                    Text("please choose or pick image",style: TextStyle(color: Colors.red,fontSize: 12),),
+                                                  ],
+                                                ):Container(),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                          right: 4,
+                                          left: 4,
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          child: StreamBuilder(
+                                            stream:  locator<JoinUsValidationManager>().companyName$,
+                                            builder: (context, snapshot) {
+                                              return TextField(
+                                                onChanged: (v){
+                                                  locator<JoinUsValidationManager>().inCompanyName.add(v);
+                                                },
+                                                textInputAction: TextInputAction.next,
+                                                focusNode: nameFocus,
+                                                controller: nameController,
+                                                onSubmitted: (v) {
+                                                  FocusScope.of(context)
+                                                      .requestFocus(addressFocus);
+                                                },
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                    ),
+                                                    hintText: AppLocalizations.of(
+                                                            context)
+                                                        .translate('companyName_str'),
+                                                    fillColor: Colors.grey[200],
+                                                  errorText: snapshot.error,
+                                                ),
+                                              );
+                                            }
                                           ),
                                         ),
-                                        child: ListTile(
-                                          onTap: () {
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                          right: 4,
+                                          left: 4,
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          child: StreamBuilder<Object>(
+                                              stream:  locator<JoinUsValidationManager>().address$,
+                                            builder: (context, snapshot) {
+                                              return TextField(
+                                                onChanged: (v){
+                                                  locator<JoinUsValidationManager>().inAddress.add(v);
+                                                },
+                                                textInputAction: TextInputAction.next,
+                                                focusNode: addressFocus,
+                                                controller: addressController,
+                                                onSubmitted: (v) {
+                                                  FocusScope.of(context)
+                                                      .requestFocus(phoneFocus);
+                                                },
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                    ),
+                                                    hintText:
+                                                        AppLocalizations.of(context)
+                                                            .translate('address_str'),
+                                                    fillColor: Colors.grey[200],
+                                                  errorText: snapshot.error,
+                                                ),
+                                              );
+                                            }
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                          right: 4,
+                                          left: 4,
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          child: StreamBuilder<Object>(
+                                            stream: locator<JoinUsValidationManager>().phone$,
+                                            builder: (context, snapshot) {
+                                              return TextField(
+                                                onChanged: (v){
+                                                  locator<JoinUsValidationManager>().inPhone.add(v);
+                                                },
+                                                textInputAction: TextInputAction.next,
+                                                focusNode: phoneFocus,
+                                                controller: phoneController,
+                                                onSubmitted: (v) {
+                                                  FocusScope.of(context)
+                                                      .requestFocus(emailFocus);
+                                                },
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                    ),
+                                                    hintText:
+                                                        AppLocalizations.of(context)
+                                                            .translate(
+                                                                'contactNumber_str'),
+                                                    fillColor: Colors.grey[200],
+                                                  errorText: snapshot.error,
+                                                ),
+                                              );
+                                            }
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                          right: 4,
+                                          left: 4,
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          child: StreamBuilder<Object>(
+                                            stream: locator<JoinUsValidationManager>().email$,
+                                            builder: (context, snapshot) {
+                                              return TextField(
+                                                onChanged: (v){
+                                                  locator<JoinUsValidationManager>().inEmail.add(v);
+                                                },
+                                                textInputAction: TextInputAction.next,
+                                                focusNode: emailFocus,
+                                                controller: emailController,
+                                                onSubmitted: (v) {
+                                                  FocusScope.of(context)
+                                                      .requestFocus(deliveryFocus);
+                                                },
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                    ),
+                                                    hintText:
+                                                        AppLocalizations.of(context)
+                                                            .translate('email_str'),
+                                                    fillColor: Colors.grey[200],
+                                                  errorText: snapshot.error,
+                                                ),
+                                              );
+                                            }
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                          right: 4,
+                                          left: 4,
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          child: StreamBuilder(
+                                            stream: locator<JoinUsValidationManager>().numberDelivers$,
+                                            builder: (context, snapshot) {
+                                              return TextField(
+                                                onChanged: (v){
+                                                  locator<JoinUsValidationManager>().inNumberDelivers.add(v);
+                                                },
+                                                textInputAction: TextInputAction.done,
+                                                focusNode: deliveryFocus,
+                                                controller: deliveryController,
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    border: InputBorder.none,
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.transparent),
+                                                      borderRadius:
+                                                          const BorderRadius.all(
+                                                        const Radius.circular(10.0),
+                                                      ),
+                                                    ),
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontFamily:
+                                                          locator<PrefsService>()
+                                                                      .appLanguage ==
+                                                                  'en'
+                                                              ? 'en'
+                                                              : 'ar',
+                                                    ),
+                                                    hintText: AppLocalizations.of(
+                                                            context)
+                                                        .translate(
+                                                            'number_delivery_str'),
+                                                    fillColor: Colors.grey[200],
+                                                  errorText: snapshot.error,
+                                                ),
+
+                                              );
+                                            }
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 25.0,
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 4),
+                              child: ListTile(
+                                title: StreamBuilder(
+                                  stream: locator<JoinUsValidationManager>().isFormValid$,
+                                  builder: (context, snapshot) {
+                                    return ButtonTheme(
+                                      height: 55.0,
+                                      minWidth:
+                                          MediaQuery.of(context).size.width * 0.8,
+                                      child: RaisedButton(
+                                        color: Colors.teal.shade900,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5.0),
+                                          side: BorderSide(color: Colors.white24),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)
+                                                .translate('send_str'),
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              color: Colors.white70,
+                                              fontFamily: locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      'en'
+                                                  ? 'en'
+                                                  : 'ar',
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: snapshot.hasData ? () {
+//                  Navigator.of(context).pushNamed('/joinUsSecondScreen');
+                                          if (imago == null) {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
-                                                  title: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: <Widget>[
-                                                      FlatButton(
-                                                        onPressed:
-                                                            getImageFromCam,
-                                                        child: Text(
-                                                          AppLocalizations.of(
-                                                                  context)
-                                                              .translate(
-                                                                  'camera_str'),
-                                                        ),
-                                                      ),
-                                                      FlatButton(
-                                                        onPressed:
-                                                            getImageFromGallery,
-                                                        child: Text(
-                                                          AppLocalizations.of(
-                                                                  context)
-                                                              .translate(
-                                                                  'gallery_str'),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-//                                  AppLocalizations.of(context)
-//                                      .translate('yourLOGO_str'),
+                                                  title: Text(
+                                                      AppLocalizations.of(context)
+                                                          .translate(
+                                                              'image_joinus_erre')),
                                                 );
                                               },
                                             );
-                                          },
-                                          leading: Icon(Icons.camera_alt),
-                                          title: Text(
-                                            AppLocalizations.of(context)
-                                                .translate('yourLOGO_str'),
-                                            style: TextStyle(
-                                              color: Colors.black26,
-                                              fontFamily:
-                                                  locator<PrefsService>()
-                                                              .appLanguage ==
-                                                          'en'
-                                                      ? 'en'
-                                                      : 'ar',
-                                            ),
-                                          ),
-                                          trailing: FittedBox(
-                                            child: _image == null
-                                                ? Icon(Icons.add)
-                                                : Image.file(_image),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 8.0,
-                                        right: 4,
-                                        left: 4,
-                                      ),
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        child: TextField(
-                                          textInputAction: TextInputAction.next,
-                                          focusNode: nameFocus,
-                                          controller: nameController,
-                                          onSubmitted: (v) {
-                                            FocusScope.of(context)
-                                                .requestFocus(addressFocus);
-                                          },
-                                          decoration: InputDecoration(
-                                              filled: true,
-                                              border: InputBorder.none,
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              disabledBorder:
-                                                  OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              hintStyle: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontFamily:
-                                                    locator<PrefsService>()
-                                                                .appLanguage ==
-                                                            'en'
-                                                        ? 'en'
-                                                        : 'ar',
-                                              ),
-                                              hintText: AppLocalizations.of(
-                                                      context)
-                                                  .translate('companyName_str'),
-                                              fillColor: Colors.grey[200]),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 8.0,
-                                        right: 4,
-                                        left: 4,
-                                      ),
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        child: TextField(
-                                          textInputAction: TextInputAction.next,
-                                          focusNode: addressFocus,
-                                          controller: addressController,
-                                          onSubmitted: (v) {
-                                            FocusScope.of(context)
-                                                .requestFocus(phoneFocus);
-                                          },
-                                          decoration: InputDecoration(
-                                              filled: true,
-                                              border: InputBorder.none,
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              disabledBorder:
-                                                  OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              hintStyle: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontFamily:
-                                                    locator<PrefsService>()
-                                                                .appLanguage ==
-                                                            'en'
-                                                        ? 'en'
-                                                        : 'ar',
-                                              ),
-                                              hintText:
-                                                  AppLocalizations.of(context)
-                                                      .translate('address_str'),
-                                              fillColor: Colors.grey[200]),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 8.0,
-                                        right: 4,
-                                        left: 4,
-                                      ),
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        child: TextField(
-                                          textInputAction: TextInputAction.next,
-                                          focusNode: phoneFocus,
-                                          controller: phoneController,
-                                          onSubmitted: (v) {
-                                            FocusScope.of(context)
-                                                .requestFocus(emailFocus);
-                                          },
-                                          decoration: InputDecoration(
-                                              filled: true,
-                                              border: InputBorder.none,
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              disabledBorder:
-                                                  OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              hintStyle: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontFamily:
-                                                    locator<PrefsService>()
-                                                                .appLanguage ==
-                                                            'en'
-                                                        ? 'en'
-                                                        : 'ar',
-                                              ),
-                                              hintText:
-                                                  AppLocalizations.of(context)
-                                                      .translate(
-                                                          'contactNumber_str'),
-                                              fillColor: Colors.grey[200]),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 8.0,
-                                        right: 4,
-                                        left: 4,
-                                      ),
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        child: TextField(
-                                          textInputAction: TextInputAction.next,
-                                          focusNode: emailFocus,
-                                          controller: emailController,
-                                          onSubmitted: (v) {
-                                            FocusScope.of(context)
-                                                .requestFocus(deliveryFocus);
-                                          },
-                                          decoration: InputDecoration(
-                                              filled: true,
-                                              border: InputBorder.none,
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              disabledBorder:
-                                                  OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              hintStyle: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontFamily:
-                                                    locator<PrefsService>()
-                                                                .appLanguage ==
-                                                            'en'
-                                                        ? 'en'
-                                                        : 'ar',
-                                              ),
-                                              hintText:
-                                                  AppLocalizations.of(context)
-                                                      .translate('email_str'),
-                                              fillColor: Colors.grey[200]),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 8.0,
-                                        right: 4,
-                                        left: 4,
-                                      ),
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        child: TextField(
-                                          textInputAction: TextInputAction.done,
-                                          focusNode: deliveryFocus,
-                                          controller: deliveryController,
-                                          decoration: InputDecoration(
-                                              filled: true,
-                                              border: InputBorder.none,
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              disabledBorder:
-                                                  OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(10.0),
-                                                ),
-                                              ),
-                                              hintStyle: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontFamily:
-                                                    locator<PrefsService>()
-                                                                .appLanguage ==
-                                                            'en'
-                                                        ? 'en'
-                                                        : 'ar',
-                                              ),
-                                              hintText: AppLocalizations.of(
-                                                      context)
-                                                  .translate(
-                                                      'number_delivery_str'),
-                                              fillColor: Colors.grey[200]),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 25.0,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 4),
-                            child: ListTile(
-                              title: ButtonTheme(
-                                height: 55.0,
-                                minWidth:
-                                    MediaQuery.of(context).size.width * 0.8,
-                                child: RaisedButton(
-                                  color: Colors.teal.shade900,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(color: Colors.white24),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      AppLocalizations.of(context)
-                                          .translate('send_str'),
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Colors.white70,
-                                        fontFamily: locator<PrefsService>()
-                                                    .appLanguage ==
-                                                'en'
-                                            ? 'en'
-                                            : 'ar',
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-//                  Navigator.of(context).pushNamed('/joinUsSecondScreen');
-                                    if (imago == null) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                                AppLocalizations.of(context)
-                                                    .translate(
-                                                        'image_joinus_erre')),
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      isLoading.add(true);
+                                          } else {
+                                            isLoading.add(true);
 
-                                      JoinUsRepo.postJoinUsData(
-                                              nameController.text,
-                                              addressController.text,
-                                              emailController.text,
-                                              phoneController.text,
-                                              imago,
-                                              int.parse(
-                                                  deliveryController.text))
-                                          .then((onValue) {
-                                        isLoading.add(false);
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text(onValue.message),
-                                            );
-                                          },
-                                        );
-                                      });
-                                    }
-                                  },
+                                            JoinUsRepo.postJoinUsData(
+                                                    nameController.text,
+                                                    addressController.text,
+                                                    emailController.text,
+                                                    phoneController.text,
+                                                    imago,
+                                                    int.parse(
+                                                        deliveryController.text))
+                                                .then((onValue) {
+                                              isLoading.add(false);
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text(onValue.message),
+                                                  );
+                                                },
+                                              );
+                                            });
+                                          }
+                                        }:null,
+                                      ),
+                                    );
+                                  }
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      isLoading.value == true
-                          ? Container(
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black.withOpacity(0.5),
-                              child: Center(
-                                  child: Container(
-//                      color: mainColor,
+                          ],
+                        ),
+                        isLoading.value == true
+                            ? Container(
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.black.withOpacity(0.5),
                                 child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )),
-                            )
-                          : Container(),
-                    ],
-                  );
-                }),
+                                    child: Container(
+//                      color: mainColor,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )),
+                              )
+                            : Container(),
+                      ],
+                    );
+                  }),
+            ),
           ),
 //        bottomNavigationBar: Container(
 //          margin: EdgeInsets.symmetric(vertical: 0, horizontal: 4),

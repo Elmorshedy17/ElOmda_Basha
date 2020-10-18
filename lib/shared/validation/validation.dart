@@ -65,6 +65,16 @@ mixin Validation {
     }
   });
 
+  final justValidatePhoneField =
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+    int length = value.length;
+    if (length == 0) {
+      sink.addError('* required ');
+    } else {
+      sink.add(value);
+    }
+  });
+
   final validateConfirmPassword =
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     String confirm;
