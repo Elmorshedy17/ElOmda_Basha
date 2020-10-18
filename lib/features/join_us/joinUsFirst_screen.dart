@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
@@ -54,8 +55,10 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(imago == null){    locator<JoinUsValidationManager>().companyLogo.add(null);
+    if(imago == null){ locator<JoinUsValidationManager>().companyLogo.add(null);
     }
+
+
     return NetworkSensitive(
       child: MainBackground(
         height: MediaQuery.of(context).size.height * 0.3,
@@ -611,7 +614,22 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                                                 );
                                               },
                                             );
-                                          } else {
+                                          } else if(nameController.text.isEmpty ||
+                                                    addressController.text.isEmpty ||
+                                                    emailController.text.isEmpty ||
+                                                    phoneController.text.isEmpty ||
+                                                    deliveryController.text.isEmpty
+                                          ){
+                                            Fluttertoast.showToast(
+                                              msg: locator<PrefsService>().appLanguage == 'en' ? "please fill required fields": "برجاء ملئ الحقول المطلوبة",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.CENTER,
+                                              backgroundColor: Colors.black.withOpacity(0.6),
+                                              textColor: Colors.white,
+                                              fontSize: 14.0,
+                                            );
+                                          }
+                                          else {
                                             isLoading.add(true);
 
                                             JoinUsRepo.postJoinUsData(
@@ -620,8 +638,8 @@ class _JoinUsFirstScreenState extends State<JoinUsFirstScreen> {
                                                     emailController.text,
                                                     phoneController.text,
                                                     imago,
-                                                    int.parse(
-                                                        deliveryController.text))
+                                                deliveryController.text)
+                                                    // int.parse(deliveryController.text))
                                                 .then((onValue) {
                                               isLoading.add(false);
                                               showDialog(
