@@ -441,40 +441,7 @@ class HomeContent extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   if (locator<PrefsService>().userObj == null) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(AppLocalizations.of(
-                                                  context)
-                                              .translate("signToContinue_str")),
-                                          content: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          '/signInScreen');
-                                                },
-                                                child: Text(AppLocalizations.of(
-                                                        context)
-                                                    .translate("signIn_str")),
-                                              ),
-                                              FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text(AppLocalizations.of(
-                                                        context)
-                                                    .translate("continue_str")),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
+                                    showGuestLoginDialog(context);
                                   } else {
                                     trendingProductsList[index].favourite ==
                                             'yes'

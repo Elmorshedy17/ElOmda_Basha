@@ -5,10 +5,10 @@ import 'package:momentoo/shared/services/networking/ApiProvider.dart';
 import 'package:momentoo/shared/services/networking/CustomException.dart';
 
 class NotificationsRepo {
-  static Future<NotificationsModel> getNotificationsData() async {
+  static Future<NotificationsModel> getNotificationsData(currentPage) async {
     try {
       final Response response = await locator<ApiService>().dioClient.get(
-            '${locator<ApiService>().dioClient.options.baseUrl}notifications',
+            '${locator<ApiService>().dioClient.options.baseUrl}notifications?page=$currentPage',
           );
       return NotificationsModel.fromJson(response.data);
     } on DioError {

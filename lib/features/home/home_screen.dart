@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController = PageController(
       initialPage: 0,
     );
-    locator<NotificationsManager>().getData();
+    locator<NotificationsManager>().getData(1);
     locator<CartItemsCountManager>().cartCount$();
   }
 
