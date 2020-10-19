@@ -15,8 +15,6 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-
-
   ScrollController _scrollController = ScrollController();
   int maxPage = 5;
   int currentPage = 1;
@@ -36,23 +34,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     super.initState();
   }
 
-
-
   void loadMore() {
     locator<NotificationsManager>().inIsLoadingNotifications.add(true);
-    if(maxPage >= currentPage){
+    if (maxPage >= currentPage) {
       NotificationsRepo.getNotificationsData(
-          locator<NotificationsManager>().currentPageControllerValue)
+              locator<NotificationsManager>().currentPageControllerValue)
           .then((onValue) {
-
         if (allNotification.length < onValue.data.notifications.total) {
-          // locator<NotificationsManager>().inMaxPageController.add(onValue.data.notifications.lastPage);
           currentPage++;
           maxPage = onValue.data.notifications.lastPage;
-          locator<NotificationsManager>().inCurrentPageController.add(currentPage);
+          locator<NotificationsManager>()
+              .inCurrentPageController
+              .add(currentPage);
 
           onValue.data.notifications.data.forEach((element) {
-            if(!allNotification.contains(element)){
+            if (!allNotification.contains(element)) {
               allNotification..add(element);
             }
           });
@@ -61,20 +57,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         locator<NotificationsManager>().inAllNotifications.add(allNotification);
       });
 
-      print("currentPage${currentPage}");
+      print("currentPage$currentPage");
     }
-    // else{
-    //   new Future.delayed( Duration(seconds: 1), () {
-    //     // deleayed code here
-    //     locator<NotificationsManager>().inIsLoadingNotifications.add(false);
-    //   });
-    // }
-        locator<NotificationsManager>().inIsLoadingNotifications.add(false);
-
-
+    locator<NotificationsManager>().inIsLoadingNotifications.add(false);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -119,96 +105,83 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             ),
           ),
           body: Container(
+            // height: MediaQuery.of(context).size.height,
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: StreamBuilder(
                 stream: locator<NotificationsManager>().allNotifications$,
                 builder: (context, allNotificationsSnapshot) {
                   return allNotificationsSnapshot.hasData
-                      ?  ListView(
-                    controller: _scrollController,
-
-                    // mainAxisSize: MainAxisSize.min,
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Card(
-                  child: ListView.separated(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: allNotificationsSnapshot.data?.length ?? 0,
-                    separatorBuilder: (_, index) => Divider(
-                          height: 1,
-                          indent: 5,
-                          endIndent: 5,
-                    ),
-                    itemBuilder: (_, index) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: ListTile(
-                            leading: Transform.rotate(
-                              angle: locator<PrefsService>().appLanguage == 'en'
-                                  ? 145
-                                  : -145,
-                              child: Icon(
-                                Icons.notifications,
-                                color: Colors.teal.shade900,
-                              ),
+                      ? Card(
+                          child: ListView.separated(
+                            controller: _scrollController,
+                            shrinkWrap: true,
+                            itemCount: maxPage >= currentPage
+                                ? allNotificationsSnapshot.data.length + 1
+                                : allNotificationsSnapshot.data?.length ?? 0,
+                            separatorBuilder: (_, index) => Divider(
+                              height: 1,
+                              indent: 5,
+                              endIndent: 5,
                             ),
-                            title: Text(
-                              allNotificationsSnapshot.data[index].message,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                              ),
-                            ),
-                            trailing: Text(
-                              allNotificationsSnapshot.data[index].date,
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 14,
-                                fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                              ),
-                            ),
-                          ),
-                    ),
-                  ),
-                ),
-
-                          StreamBuilder(
-                            initialData: false,
-                            stream: locator<NotificationsManager>().isLoadingNotifications$,
-                            builder: (context, indicatorSnapshot) {
-                              return indicatorSnapshot.data == true ? Container(
-                                height: 75,
-                                child: Center(
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(accentColor: Colors.teal.shade900),
-                                    child: new CupertinoActivityIndicator(),
-                                  )
-                                  // (),
+                            itemBuilder: (_, index) {
+                              if (index ==
+                                  allNotificationsSnapshot.data.length) {
+                                return CupertinoActivityIndicator();
+                              }
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: ListTile(
+                                  leading: Transform.rotate(
+                                    angle:
+                                        locator<PrefsService>().appLanguage ==
+                                                'en'
+                                            ? 145
+                                            : -145,
+                                    child: Icon(
+                                      Icons.notifications,
+                                      color: Colors.teal.shade900,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    allNotificationsSnapshot
+                                        .data[index].message,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    allNotificationsSnapshot.data[index].date,
+                                    style: TextStyle(
+                                      color: Colors.black45,
+                                      fontSize: 14,
+                                      fontFamily:
+                                          locator<PrefsService>().appLanguage ==
+                                                  'en'
+                                              ? 'en'
+                                              : 'ar',
+                                    ),
+                                  ),
                                 ),
-                              ):Container();
-                            }
-                          )
-
-                        ],
-                      ):noAvailable(
-                      locator<PrefsService>().appLanguage == "en"
-                          ? "there are no notification"
-                          : "لا توجد اشعارات",
-                      Icons.notifications_active_outlined);
-              }
-            ),
+                              );
+                            },
+                          ),
+                        )
+                      : noAvailable(
+                          locator<PrefsService>().appLanguage == "en"
+                              ? "there are no notification"
+                              : "لا توجد اشعارات",
+                          Icons.notifications_active_outlined);
+                }),
           ),
         ),
       ),
     );
   }
 }
-
