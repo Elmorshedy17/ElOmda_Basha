@@ -117,18 +117,25 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,
-                                child: model.data.addresses.isNotEmpty ? ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: BouncingScrollPhysics(),
-                                    itemCount: model.data.addresses.length,
-                                    itemBuilder: (context, index) {
-                                      return AddressBookItem(
-                                        id: model.data.addresses[index].id,
-                                        modelData: model,
-                                        adress:
-                                            model.data.addresses[index].title,
-                                      );
-                                    }):noAvailable(locator<PrefsService>().appLanguage == "en"?"there are no saved addresses":"لا توجد عناووين مسجلة",Icons.location_disabled),
+                                child: model.data.addresses.isNotEmpty
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: model.data.addresses.length,
+                                        itemBuilder: (context, index) {
+                                          return AddressBookItem(
+                                            id: model.data.addresses[index].id,
+                                            modelData: model,
+                                            adress: model
+                                                .data.addresses[index].title,
+                                          );
+                                        })
+                                    : noAvailable(
+                                        locator<PrefsService>().appLanguage ==
+                                                "en"
+                                            ? "there are no saved addresses"
+                                            : "لا توجد عناوين مسجلة",
+                                        Icons.location_disabled),
                               ),
                             ),
                             SizedBox(
@@ -190,7 +197,6 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                   : Container(),
             ],
           ),
-
         ),
       ),
     );
