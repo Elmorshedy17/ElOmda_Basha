@@ -26,9 +26,7 @@ class _CartScreenState extends State<CartScreen> {
     return NetworkSensitive(
       child: MainBackground(
         height: MediaQuery.of(context).size.height * 0.2,
-        child: SafeArea(
-          left: true,
-          right: true,
+
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -708,7 +706,7 @@ class _CartScreenState extends State<CartScreen> {
             bottomNavigationBar: CustomBottomNavigation(),
           ),
         ),
-      ),
+      
     );
   }
 
