@@ -706,8 +706,9 @@ class _CartScreenState extends State<CartScreen> {
           bottomNavigationBar: CustomBottomNavigation(),
         ),
       
-    );
+    ));
   }
+
 
   dispose() {
     super.dispose();
