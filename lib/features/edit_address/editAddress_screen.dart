@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/edit_address/cityDropdown.dart';
 import 'package:momentoo/features/edit_address/dropdown_data.dart';
 import 'package:momentoo/features/edit_address/editaddresses/_repo.dart';
@@ -29,7 +31,6 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   TextEditingController deliveryController = TextEditingController();
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
-
   final blockFocus = FocusNode();
   final streetFocus = FocusNode();
   final streetTwoFocus = FocusNode();
@@ -38,7 +39,6 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   final jaddaFocus = FocusNode();
   final apartmentFocus = FocusNode();
   final instructiosFocus = FocusNode();
-
 
   @override
   void initState() {
@@ -175,7 +175,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                         textInputAction: TextInputAction.next,
                                         focusNode: blockFocus,
                                         onSubmitted: (v) {
-                                          FocusScope.of(context).requestFocus(streetFocus);
+                                          FocusScope.of(context)
+                                              .requestFocus(streetFocus);
                                         },
                                         controller: blockController,
                                         decoration: InputDecoration(
@@ -229,7 +230,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                         textInputAction: TextInputAction.next,
                                         focusNode: streetFocus,
                                         onSubmitted: (v) {
-                                          FocusScope.of(context).requestFocus(streetTwoFocus);
+                                          FocusScope.of(context)
+                                              .requestFocus(streetTwoFocus);
                                         },
                                         controller: streetController,
                                         decoration: InputDecoration(
@@ -283,7 +285,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                   textInputAction: TextInputAction.next,
                                   focusNode: streetTwoFocus,
                                   onSubmitted: (v) {
-                                    FocusScope.of(context).requestFocus(houseFocus);
+                                    FocusScope.of(context)
+                                        .requestFocus(houseFocus);
                                   },
                                   controller: streetTwoController,
                                   decoration: InputDecoration(
@@ -329,7 +332,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                   textInputAction: TextInputAction.next,
                                   focusNode: houseFocus,
                                   onSubmitted: (v) {
-                                    FocusScope.of(context).requestFocus(floorFocus);
+                                    FocusScope.of(context)
+                                        .requestFocus(floorFocus);
                                   },
                                   controller: houseController,
                                   decoration: InputDecoration(
@@ -385,7 +389,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                         textInputAction: TextInputAction.next,
                                         focusNode: floorFocus,
                                         onSubmitted: (v) {
-                                          FocusScope.of(context).requestFocus(jaddaFocus);
+                                          FocusScope.of(context)
+                                              .requestFocus(jaddaFocus);
                                         },
                                         controller: floorController,
                                         decoration: InputDecoration(
@@ -439,7 +444,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                         textInputAction: TextInputAction.next,
                                         focusNode: jaddaFocus,
                                         onSubmitted: (v) {
-                                          FocusScope.of(context).requestFocus(apartmentFocus);
+                                          FocusScope.of(context)
+                                              .requestFocus(apartmentFocus);
                                         },
                                         controller: jaddaController,
                                         decoration: InputDecoration(
@@ -493,7 +499,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                   textInputAction: TextInputAction.next,
                                   focusNode: apartmentFocus,
                                   onSubmitted: (v) {
-                                    FocusScope.of(context).requestFocus(instructiosFocus);
+                                    FocusScope.of(context)
+                                        .requestFocus(instructiosFocus);
                                   },
                                   controller: appartmentController,
                                   decoration: InputDecoration(
@@ -644,7 +651,9 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           print(
                               "locator<DrobDownBloc>().currentDrobDownvalue ${locator<EditDrobDownBloc>().currentDrobDownvalue}");
 
-                          if (locator<EditDrobDownBloc>().currentDrobDownvalue == null ||
+                          if (locator<EditDrobDownBloc>()
+                                      .currentDrobDownvalue ==
+                                  null ||
                               blockController.text.length < 1 ||
                               streetController.text.length < 1 ||
                               streetTwoController.text.length < 1 ||
@@ -680,14 +689,24 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     widget.modelData.data.address.id)
                                 .then((onValue) {
                               isLoading.add(false);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(onValue.message),
-                                  );
-                                },
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (BuildContext context) {
+                              //     return AlertDialog(
+                              //       title: Text(onValue.message),
+                              //     );
+                              //   },
+                              // );
+                              locator<AddressesManager>().getData();
+                              Fluttertoast.showToast(
+                                msg: onValue.message,
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                backgroundColor: Colors.black.withOpacity(0.6),
+                                textColor: Colors.white,
+                                fontSize: 14.0,
                               );
+                              Navigator.of(context).pop();
                             });
                           }
                         },

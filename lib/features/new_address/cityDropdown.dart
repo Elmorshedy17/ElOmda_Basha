@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:momentoo/features/checkout/delivery_fee/delivery_fee_manager.dart';
 import 'package:momentoo/features/new_address/dropdown_data.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/localizations/app_localizations.dart';
@@ -10,12 +11,9 @@ class CityDropdown extends StatefulWidget {
 }
 
 class _CityDropDownState extends State<CityDropdown> {
-
-
   final formKey = new GlobalKey<FormState>();
 
   String _mySelection;
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class _CityDropDownState extends State<CityDropdown> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new  InputDecorator(
+                new InputDecorator(
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
@@ -38,8 +36,8 @@ class _CityDropDownState extends State<CityDropdown> {
                     ),
                     filled: true,
 // hintText: 'Choose City',
-                    hintText: AppLocalizations.of(context).translate(
-                        'City_Str'),
+                    hintText:
+                        AppLocalizations.of(context).translate('City_Str'),
                     hintStyle: TextStyle(
                       fontFamily: locator<PrefsService>().appLanguage == 'en'
                           ? 'en'
@@ -49,8 +47,9 @@ class _CityDropDownState extends State<CityDropdown> {
                   isEmpty: _mySelection == null,
                   child: DropdownButton(
                     isDense: true,
-                    items:
-                    locator<DrobDownBloc>().currentDrobDownBloc.map<DropdownMenuItem<String>>((item) {
+                    items: locator<DrobDownBloc>()
+                        .currentDrobDownBloc
+                        .map<DropdownMenuItem<String>>((item) {
                       return new DropdownMenuItem(
                         child: new Text(item.name),
                         value: item.id.toString(),
@@ -61,8 +60,9 @@ class _CityDropDownState extends State<CityDropdown> {
                         _mySelection = newVal;
                       });
                       locator<DrobDownBloc>().DrobDownvalueSink.add(newVal);
-
-                      print("${locator<DrobDownBloc>().currentDrobDownvalue} _mySelection");
+                      locator<DeliveryFeeManager>().inCityId.add(newVal);
+                      print(
+                          "xoXox ${locator<DrobDownBloc>().currentDrobDownvalue} _mySelection");
                     },
                     value: _mySelection,
                   ),

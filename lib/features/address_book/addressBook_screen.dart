@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/address_book/addressBook_model.dart';
 import 'package:momentoo/features/delete_addresses/delete_address_repo.dart';
@@ -307,21 +308,31 @@ class AddressBookItem extends StatelessWidget {
                       DeleteAddressRepo.postDeleteNewAddressData(id)
                           .then((onValue) {
                         isLoading.add(false);
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(onValue.message),
-                            );
-                          },
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return AlertDialog(
+                        //       title: Text(onValue.message),
+                        //     );
+                        //   },
+                        // );
+                        Fluttertoast.showToast(
+                          msg: onValue.message,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          backgroundColor: Colors.black.withOpacity(0.6),
+                          textColor: Colors.white,
+                          fontSize: 14.0,
                         );
+
+                        locator<AddressesManager>().getData();
 //                        Navigator.pushReplacementNamed(context, '/AddressBookScreen');
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddressBookScreen()),
-                        );
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => AddressBookScreen()),
+                        // );
                       });
                     },
                     child: Text(

@@ -8,9 +8,11 @@ import 'package:momentoo/features/checkout/checkout_request/asVisitor_request.da
 import 'package:momentoo/features/checkout/checkout_validation.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
+import 'package:momentoo/features/checkout/delivery_fee/delivery_fee_manager.dart';
 import 'package:momentoo/features/checkout/paymentGateway/PaymentGateway.dart';
 import 'package:momentoo/features/new_address/dropdown_data.dart';
 import 'package:momentoo/features/new_address/newAddress_screen.dart';
+import 'package:momentoo/features/shopping_cart/cartActions_manager.dart';
 import 'package:momentoo/features/shopping_cart/cartActions_model.dart'
     as cartActions;
 import 'package:momentoo/shared/helper/customNotification_widget.dart';
@@ -24,6 +26,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CheckOutScreenArguments {
   final double finalPrice;
+  final double subTotalPrice;
   final cartActions.Seller seller;
   final List<Addresses> addresses;
   final List<cartActions.Products> products;
@@ -36,6 +39,7 @@ class CheckOutScreenArguments {
     @required this.products,
     @required this.cities,
     @required this.finalPrice,
+    @required this.subTotalPrice,
     @required this.country,
   });
 }
@@ -89,12 +93,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   String apartment = '';
   BehaviorSubject isLoading = new BehaviorSubject.seeded(false);
 
-  var returnDataFromNewAddress;
+  String deliveryFee = '0.0';
+  int productsListLength = 0;
+
+  // List<Addresses> returnDataFromNewAddress;
 
   // A method that launches the SelectionScreen and awaits the
   // result from Navigator.pop.
-  _navigateAndRetrieveData(
-      BuildContext context, Country country, List<Cities> cities) async {
+  _navigateAndRetrieveData(BuildContext context, Country country,
+      List<Cities> cities, List<Addresses> addresses) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
     final result = await Navigator.push(
@@ -104,20 +111,39 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           builder: (context) => NewAddressScreen(
                 country: country,
                 cities: cities,
+                isComeFromCheckoutScreen: true,
               )),
     );
+    setState(() {
+      if (result != null) {
+        addresses.add(result);
+      }
+    });
+    // returnDataFromNewAddress = result;
+  }
 
-    returnDataFromNewAddress = result;
+  @override
+  void initState() {
+    super.initState();
+    locator<CartActionsManager>().inDeliveryFee.add('0');
+    locator<CartActionsManager>().products.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     CheckOutScreenArguments args = ModalRoute.of(context).settings.arguments;
-    print(args.addresses);
-    if (returnDataFromNewAddress != null) {
-//      args.addresses.add(returnDataFromNewAddress);
-
+    if (args.products.length != productsListLength) {
+      productsListLength = args.products.length;
+      args.products.forEach((element) {
+        locator<CartActionsManager>().products.add(element);
+      });
     }
+    locator<DeliveryFeeManager>().inSellerId.add(args.seller.id.toString());
+    print(args.addresses);
+//     if (returnDataFromNewAddress != null) {
+// //      args.addresses.add(returnDataFromNewAddress);
+
+//     }
     return NetworkSensitive(
       child: StreamBuilder<Object>(
           stream: isLoading.stream,
@@ -507,30 +533,31 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                                   null,
                                                           child: DropdownButton(
                                                             isDense: true,
-                                                            items: returnDataFromNewAddress ==
-                                                                    null
-                                                                ? args.addresses
-                                                                    .map<DropdownMenuItem<String>>(
-                                                                        (item) {
-                                                                    return new DropdownMenuItem(
-                                                                      child: new Text(
-                                                                          item.title),
-                                                                      value: item
-                                                                          .id
-                                                                          .toString(),
-                                                                    );
-                                                                  }).toList()
-                                                                : returnDataFromNewAddress
-                                                                    .map<DropdownMenuItem<String>>(
-                                                                        (item) {
-                                                                    return new DropdownMenuItem(
-                                                                      child: new Text(
-                                                                          item.title),
-                                                                      value: item
-                                                                          .id
-                                                                          .toString(),
-                                                                    );
-                                                                  }).toList(),
+                                                            items:
+                                                                //  returnDataFromNewAddress ==
+                                                                //         null
+                                                                //     ?
+                                                                args.addresses.map<
+                                                                    DropdownMenuItem<
+                                                                        String>>((item) {
+                                                              return new DropdownMenuItem(
+                                                                child: new Text(
+                                                                    item.title),
+                                                                value: item.id
+                                                                    .toString(),
+                                                              );
+                                                            }).toList(),
+                                                            // : returnDataFromNewAddress
+                                                            //     .map<DropdownMenuItem<String>>(
+                                                            //         (item) {
+                                                            //     return new DropdownMenuItem(
+                                                            //       child: new Text(
+                                                            //           item.title),
+                                                            //       value: item
+                                                            //           .id
+                                                            //           .toString(),
+                                                            //     );
+                                                            //   }).toList(),
                                                             onChanged:
                                                                 (newVal) {
                                                               addressId =
@@ -539,6 +566,44 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                               setState(() {
                                                                 _mySelection =
                                                                     newVal;
+                                                                print(
+                                                                    'xXx $newVal');
+
+                                                                // if (returnDataFromNewAddress !=
+                                                                //     null) {
+                                                                //   returnDataFromNewAddress
+                                                                //       .forEach(
+                                                                //           (v) {
+                                                                //     if (v.id ==
+                                                                //         int.parse(
+                                                                //             newVal)) {
+                                                                //       deliveryFee =
+                                                                //           v.deliveryFee;
+                                                                //     }
+                                                                //   });
+                                                                // } else {
+                                                                args.addresses
+                                                                    .forEach(
+                                                                        (v) {
+                                                                  if (v.id ==
+                                                                      int.parse(
+                                                                          newVal)) {
+                                                                    deliveryFee =
+                                                                        v.deliveryFee;
+                                                                    locator<CartActionsManager>()
+                                                                        .inDeliveryFee
+                                                                        .add(v
+                                                                            .deliveryFee);
+                                                                    print(
+                                                                        'xXx ${v.deliveryFee}');
+                                                                    print(
+                                                                        'xXx ${v.id}');
+                                                                  }
+                                                                });
+
+                                                                print(
+                                                                    'xXx $deliveryFee');
+                                                                // }
                                                               });
                                                               locator<DrobDownBloc>()
                                                                   .DrobDownvalueSink
@@ -586,7 +651,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                     _navigateAndRetrieveData(
                                                         context,
                                                         args.country,
-                                                        args.cities);
+                                                        args.cities,
+                                                        args.addresses);
 //                                                  Navigator.push(
 //                                                    context,
 //                                                    MaterialPageRoute(
@@ -1574,28 +1640,34 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       ),
                                       RaisedButton(
                                         onPressed: () async {
-
-                                          if(promoCode == ''){
+                                          if (promoCode == '') {
                                             Fluttertoast.showToast(
-                                              msg: locator<PrefsService>().appLanguage == "en" ? 'enter coupon code':' '"أدخل رمز الخصم",
+                                              msg: locator<PrefsService>()
+                                                          .appLanguage ==
+                                                      "en"
+                                                  ? 'enter coupon code'
+                                                  : ' ' "أدخل رمز الخصم",
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.CENTER,
-                                              backgroundColor: Colors.black.withOpacity(0.6),
+                                              backgroundColor:
+                                                  Colors.black.withOpacity(0.6),
                                               textColor: Colors.white,
                                               fontSize: 14.0,
                                             );
-                                          }else{
+                                          } else {
                                             isLoading.add(true);
                                             FocusScope.of(context)
                                                 .requestFocus(FocusNode());
 
                                             locator<CouponRequest>()
-                                              ..sellerId = locator<PrefsService>()
-                                                  .cartObj
-                                                  .sellerId
-                                              ..products = locator<PrefsService>()
-                                                  .cartObj
-                                                  .products
+                                              ..sellerId =
+                                                  locator<PrefsService>()
+                                                      .cartObj
+                                                      .sellerId
+                                              ..products =
+                                                  locator<PrefsService>()
+                                                      .cartObj
+                                                      .products
                                               ..orderType = deliveryChecked
                                                   ? 'delivery'
                                                   : 'pickup'
@@ -1608,38 +1680,43 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                 .then((value) {
                                               isLoading.add(false);
                                               if (value.status != 0) {
-                                                priceAfterDiscount = double.parse(
-                                                    value.data.total);
+                                                priceAfterDiscount =
+                                                    double.parse(
+                                                        value.data.total);
                                               }
                                               showDialog(
                                                 barrierDismissible: false,
                                                 context: context,
-                                                builder: (BuildContext context) {
+                                                builder:
+                                                    (BuildContext context) {
                                                   return AlertDialog(
                                                     elevation: 3,
                                                     // contentPadding: const EdgeInsets.all(8.0),
                                                     content: Container(
                                                       // height: 90,
 
-                                                      padding: EdgeInsets.all(8),
+                                                      padding:
+                                                          EdgeInsets.all(8),
                                                       child: Text(
                                                           '${value.message}'),
                                                     ),
                                                     actions: <Widget>[
                                                       Padding(
-                                                        padding: const EdgeInsets
-                                                            .symmetric(
-                                                            horizontal: 1.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    1.0),
                                                         child: ButtonTheme(
                                                           minWidth: 70.0,
                                                           height: 30.0,
                                                           child: RaisedButton(
                                                             shape:
-                                                            RoundedRectangleBorder(
+                                                                RoundedRectangleBorder(
                                                               borderRadius:
-                                                              new BorderRadius
-                                                                  .circular(
-                                                                  25.0),
+                                                                  new BorderRadius
+                                                                          .circular(
+                                                                      25.0),
                                                             ),
                                                             child: Text(
                                                               'OK',
@@ -1664,8 +1741,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                               );
                                             });
                                           }
-
-
                                         },
                                         color: Colors.teal.shade900,
                                         shape: RoundedRectangleBorder(
@@ -1707,7 +1782,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       ListTile(
                                         title: Text(
                                           AppLocalizations.of(context)
-                                              .translate("total_str"),
+                                              .translate("subtotal_str"),
                                           style: TextStyle(
                                               fontFamily:
                                                   locator<PrefsService>()
@@ -1720,7 +1795,37 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                               fontWeight: FontWeight.w900),
                                         ),
                                         trailing: Text(
-                                          '${args.finalPrice.toStringAsFixed(2)}',
+                                          '${args.subTotalPrice.toStringAsFixed(2)}',
+                                          style: TextStyle(
+                                              fontFamily:
+                                                  locator<PrefsService>()
+                                                              .appLanguage ==
+                                                          'en'
+                                                      ? 'en'
+                                                      : 'ar',
+                                              color: Colors.grey.shade500,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          AppLocalizations.of(context)
+                                              .translate('Delivery_str'),
+                                          style: TextStyle(
+                                              fontFamily:
+                                                  locator<PrefsService>()
+                                                              .appLanguage ==
+                                                          'en'
+                                                      ? 'en'
+                                                      : 'ar',
+                                              color: Colors.grey.shade600,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w900),
+                                        ),
+                                        trailing: Text(
+                                          // '${args.deliveryFee.toStringAsFixed(2)}',
+                                          deliveryFee,
                                           style: TextStyle(
                                               fontFamily:
                                                   locator<PrefsService>()
@@ -1768,7 +1873,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       ListTile(
                                         title: Text(
                                           AppLocalizations.of(context)
-                                              .translate("subtotal_str"),
+                                              .translate('total_Str'),
+                                          // AppLocalizations.of(context)
+                                          //     .translate("subtotal_str"),
                                           style: TextStyle(
                                               fontFamily:
                                                   locator<PrefsService>()
@@ -1781,7 +1888,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                               fontWeight: FontWeight.w600),
                                         ),
                                         trailing: Text(
-                                          '${priceAfterDiscount == 0.0 ? args.finalPrice.toStringAsFixed(2) : priceAfterDiscount.toStringAsFixed(2)}',
+                                          // '${priceAfterDiscount == 0.0 ? args.finalPrice.toStringAsFixed(2) : priceAfterDiscount.toStringAsFixed(2)}',
+                                          '${priceAfterDiscount == 0.0 ? locator<CartActionsManager>().getFinalPrice().toStringAsFixed(2) : priceAfterDiscount.toStringAsFixed(2)}',
                                           style: TextStyle(
                                               fontFamily:
                                                   locator<PrefsService>()

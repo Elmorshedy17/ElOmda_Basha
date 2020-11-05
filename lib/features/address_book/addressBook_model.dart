@@ -37,7 +37,7 @@ class Data {
       });
     }
     country =
-    json['country'] != null ? new Country.fromJson(json['country']) : null;
+        json['country'] != null ? new Country.fromJson(json['country']) : null;
     if (json['cities'] != null) {
       cities = new List<Cities>();
       json['cities'].forEach((v) {
@@ -64,18 +64,21 @@ class Data {
 class Addresses {
   int id;
   String title;
+  String deliveryFee;
 
-  Addresses({this.id, this.title});
+  Addresses({this.id, this.title, this.deliveryFee});
 
   Addresses.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
+    deliveryFee = json['delivery_fee'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
+    data['delivery_fee'] = this.deliveryFee;
     return data;
   }
 }
@@ -114,5 +117,3 @@ class Cities {
     return data;
   }
 }
-
-

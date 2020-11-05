@@ -10,6 +10,7 @@ import 'package:momentoo/features/checkout/checkout_request/asVisitor_request.da
 import 'package:momentoo/features/checkout/checkout_validation.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_manger.dart';
 import 'package:momentoo/features/checkout/coupon/coupon_request.dart';
+import 'package:momentoo/features/checkout/delivery_fee/delivery_fee_manager.dart';
 import 'package:momentoo/features/edit_address/dropdown_data.dart';
 import 'package:momentoo/features/edit_profile/edite_profile_validation_manger.dart';
 import 'package:momentoo/features/favorites/favoriteActions_manager.dart';
@@ -171,9 +172,15 @@ Future<void> setupLocator() async {
       () => CheckoutValidationManager());
 
   locator.registerLazySingleton<NavigationService>(() => NavigationService());
-  locator.registerLazySingleton<EditProfileValidationManager>(() => EditProfileValidationManager());
-  locator.registerLazySingleton<ChangeEmailValidationManager>(() => ChangeEmailValidationManager());
-  locator.registerLazySingleton<ChangePasswordValidationManager>(() => ChangePasswordValidationManager());
-  locator.registerLazySingleton<JoinUsValidationManager>(() => JoinUsValidationManager());
+  locator.registerLazySingleton<EditProfileValidationManager>(
+      () => EditProfileValidationManager());
+  locator.registerLazySingleton<ChangeEmailValidationManager>(
+      () => ChangeEmailValidationManager());
+  locator.registerLazySingleton<ChangePasswordValidationManager>(
+      () => ChangePasswordValidationManager());
+  locator.registerLazySingleton<JoinUsValidationManager>(
+      () => JoinUsValidationManager());
 
+  //DeliveryFeeManager
+  locator.registerLazySingleton<DeliveryFeeManager>(() => DeliveryFeeManager());
 }

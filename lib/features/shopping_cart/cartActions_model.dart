@@ -1,5 +1,6 @@
 import 'package:momentoo/features/address_book/addressBook_model.dart';
-import 'package:momentoo/shared/domain/cartRequest.dart';
+import 'package:momentoo/features/shopping_cart/cartActions_manager.dart';
+import 'package:momentoo/shared/helper/locator.dart';
 
 class CartActionsModel {
   int status;
@@ -39,11 +40,16 @@ class Data {
     products.forEach((product) {
       totalPrice += double.parse(product.price) * int.parse(product.count);
     });
+
     return totalPrice;
   }
 
   double getFinalPrice() {
-    return getTotalPrice() + double.parse(seller.deliveryFee);
+    // return getTotalPrice() + double.parse(seller.deliveryFee);
+    var finalPrice = getTotalPrice() +
+        double.parse(locator<CartActionsManager>().getDeliveryFeeValue);
+    locator<CartActionsManager>().inFinalPrice.add(finalPrice);
+    return finalPrice;
   }
 
   Data.fromJson(Map<String, dynamic> json) {
