@@ -9,7 +9,7 @@ class DeliveryFeeRepo {
   static Future<DeliveryFeeModel> apiPost(
       DeliveryFeeRequest deliveryFeeRequest) async {
     FormData formData = FormData.fromMap(deliveryFeeRequest.toJson());
-
+    print('FFF ${formData.fields}');
     try {
       final Response response = await locator<ApiService>().dioClient.post(
             '${locator<ApiService>().dioClient.options.baseUrl}delivery_fee',

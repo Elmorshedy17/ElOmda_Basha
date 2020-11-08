@@ -52,7 +52,6 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
   @override
   void initState() {
     super.initState();
-    locator<DeliveryFeeManager>().inSellerId.add('');
     locator<DeliveryFeeManager>().inCityId.add('');
   }
 

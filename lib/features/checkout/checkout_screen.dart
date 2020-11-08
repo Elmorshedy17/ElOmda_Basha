@@ -127,6 +127,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     super.initState();
     locator<CartActionsManager>().inDeliveryFee.add('0');
     locator<CartActionsManager>().products.clear();
+    locator<DeliveryFeeManager>().inSellerId.add('');
   }
 
   @override

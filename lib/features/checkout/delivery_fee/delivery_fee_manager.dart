@@ -10,8 +10,8 @@ class DeliveryFeeManager implements Manager {
   // City ID
   final BehaviorSubject<String> _cityIdSubject =
       BehaviorSubject<String>.seeded('');
-  Sink<String> get inCityId => _sellerIdSubject.sink;
-  String get cityIdValue => _sellerIdSubject.value;
+  Sink<String> get inCityId => _cityIdSubject.sink;
+  String get cityIdValue => _cityIdSubject.value;
 
   @override
   void dispose() {

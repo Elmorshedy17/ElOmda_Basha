@@ -15,11 +15,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -29,16 +29,28 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>App would like to access your media library , that wont be shared without your permission</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>App would like to access your calender to let you select date</string>
+	<key>NSCalendarsUsageDescription </key>
+	<string>App would like to access your calender to let you select date</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to the camera.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>App would like to access your contacts to let you choose a friend who you can send a safety sms.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Get your current location for delivery.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need current location access.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app does not require access to the microphone.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>App would like to access your motion .  that wont be shared without your permission.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires access to the photo library.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>App would like to access your Speech Recognition  .  that wont be shared without your permission.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
