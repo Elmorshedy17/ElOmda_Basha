@@ -87,299 +87,301 @@ class _HomeScreenState extends State<HomeScreen> {
             return false;
           }
         },
-        child: SafeArea(
+
           child: MainBackground(
             height: MediaQuery.of(context).size.height * 0.25,
-            child: Scaffold(
-              drawer: MainDrawer(),
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
+            child: SafeArea(
+              child: Scaffold(
+                drawer: MainDrawer(),
                 backgroundColor: Colors.transparent,
-                elevation: 0.0,
-                centerTitle: true,
-                title: Text(
-                  AppLocalizations.of(context).translate(
-                      isSearchQueryEmpty ? 'momentoo_str' : 'search_str'),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: locator<PrefsService>().appLanguage == 'en'
-                        ? 'en'
-                        : 'ar',
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  centerTitle: true,
+                  title: Text(
+                    AppLocalizations.of(context).translate(
+                        isSearchQueryEmpty ? 'momentoo_str' : 'search_str'),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: locator<PrefsService>().appLanguage == 'en'
+                          ? 'en'
+                          : 'ar',
+                    ),
                   ),
-                ),
-                leading: isSearchQueryEmpty
-                    ? Builder(
-                        builder: (context) => IconButton(
-                          icon: Icon(
-                            Icons.more_horiz,
-                            color: Colors.white,
+                  leading: isSearchQueryEmpty
+                      ? Builder(
+                          builder: (context) => IconButton(
+                            icon: Icon(
+                              Icons.more_horiz,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {});
+                              isSearchQueryEmpty = true;
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              // if (overlayEntry.opaque) {
+                              //   overlayEntry?.remove();
+                              // }
+                              locator<TextEditingController>().clear();
+                              Scaffold.of(context).openDrawer();
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {});
-                            isSearchQueryEmpty = true;
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            // if (overlayEntry.opaque) {
-                            //   overlayEntry?.remove();
-                            // }
+                        )
+                      : InkWell(
+                          onTap: () {
                             locator<TextEditingController>().clear();
-                            Scaffold.of(context).openDrawer();
+                            setState(() {
+                              isSearchQueryEmpty = true;
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            });
                           },
-                        ),
-                      )
-                    : InkWell(
-                        onTap: () {
-                          locator<TextEditingController>().clear();
-                          setState(() {
-                            isSearchQueryEmpty = true;
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          });
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.arrow_back_ios),
-                            Text(
-                              AppLocalizations.of(context)
-                                  .translate('back_str'),
-                              style: TextStyle(
-                                fontFamily:
-                                    locator<PrefsService>().appLanguage == 'en'
-                                        ? 'en'
-                                        : 'ar',
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.arrow_back_ios),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('back_str'),
+                                style: TextStyle(
+                                  fontFamily:
+                                      locator<PrefsService>().appLanguage == 'en'
+                                          ? 'en'
+                                          : 'ar',
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                actions: <Widget>[
-                  isSearchQueryEmpty
-                      ? NotificationWidget(
-                          onPressedNotifications: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            isSearchQueryEmpty = true;
-                            locator<TextEditingController>().clear();
-                            Navigator.of(context)
-                                .pushNamed('/notificationsScreen');
-                            locator<PrefsService>().notificationFlag = false;
-                          },
-                        )
-                      : Container(
-                          height: 1,
-                          width: 1,
-                        ),
-                ],
-              ),
-              body: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 55,
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                    ),
-                    child: TextField(
-                      controller: locator<TextEditingController>(),
-                      onChanged: (value) {
-                        setState(() {});
-                        locator<AutoCompleteManager>()
-                            .inQuery
-                            .add(locator<TextEditingController>().text);
-                        // locator<SearchManager>().inQuery.add(value);
-                        // print(value);
-                      },
-                      onTap: () {
-                        setState(() {
-                          isSearchQueryEmpty = false;
-                        });
-                        locator<AutoCompleteManager>()
-                            .inCategoryId
-                            .add(categoryId);
-                      },
-                      onSubmitted: (value) {
-                        locator<TextEditingController>().clear();
-                      },
-                      decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          filled: true,
-                          border: InputBorder.none,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: const BorderRadius.all(
-                              const Radius.circular(10.0),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: const BorderRadius.all(
-                              const Radius.circular(10.0),
-                            ),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: const BorderRadius.all(
-                              const Radius.circular(10.0),
-                            ),
-                          ),
-                          hintStyle: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 13,
-                            fontFamily:
-                                locator<PrefsService>().appLanguage == 'en'
-                                    ? 'en'
-                                    : 'ar',
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.teal[900],
-                          ),
-                          hintText: AppLocalizations.of(context)
-                              .translate('search..._str'),
-                          fillColor: Colors.white),
-                    ),
-                  ),
-                  // SizedBox.fromSize(
-                  //   size: Size.fromHeight(35),
-                  // ),
-                  MediaQuery.of(context).size.height != 569.3333333333334
-                      ? SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05,
-                        )
-                      : Container(),
-                  isSearchQueryEmpty ? categoryList() : Container(),
-                  isSearchQueryEmpty
-                      ? Expanded(
-                          child:
-                              // isSearchQueryEmpty
-                              //     ?
-                              CustomObserver(
-                          stream: locator<HomeManager>().getData(categoryId),
-                          onSuccess: (_, HomeModel model) {
-                            return PageView.builder(
-                                onPageChanged: (index) {
-                                  pageIndex = index;
-                                },
-                                physics: NeverScrollableScrollPhysics(),
-                                controller: _pageController,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: model.data.categories.length,
-                                itemBuilder: (_, index) {
-                                  return HomeContent(
-                                    categoryId: categoryId,
-                                    adsList: model.data.ads,
-                                    trendingSellersList:
-                                        model.data.trandingSellers,
-                                    trendingProductsList:
-                                        model.data.trandingProducts,
-                                    sellersList: model.data.sellers,
-                                    trendingSellersName: model.data
-                                        .activeCategory.trandingSellersName,
-                                    trendingProductName: model.data
-                                        .activeCategory.trandingProductName,
-                                    sellersName:
-                                        model.data.activeCategory.sellersName,
-                                  );
-                                });
-                          },
-                        )
-                          // : CustomObserver(
-                          //     stream: locator<SearchManager>().searchResult$,
-                          //     onSuccess: (_, SearchModel model) {
-                          //       return Card(
-                          //         elevation: 5,
-                          //         child: Container(
-                          //           width: MediaQuery.of(context).size.width * 0.95,
-                          //           height: MediaQuery.of(context).size.height / 2,
-                          //           child: ListView.separated(
-                          //             shrinkWrap: true,
-                          //             itemCount: model.data.words?.length ?? 0,
-                          //             separatorBuilder:
-                          //                 (BuildContext context, int index) {
-                          //               return Divider(
-                          //                 color: Colors.grey,
-                          //               );
-                          //             },
-                          //             itemBuilder: (context, index) {
-                          //               return ListTile(
-                          //                   onTap: () {
-                          //                     Navigator.of(context)
-                          //                         .pushNamed('/searchResultScreen');
-                          //                     locator<TextEditingController>()
-                          //                         .clear();
-                          //                     isSearchQueryEmpty = true;
-                          //                     FocusScope.of(context)
-                          //                         .requestFocus(FocusNode());
-                          //                   },
-                          //                   title: Text(model.data.words[index]));
-                          //             },
-                          //           ),
-                          //         ),
-                          //       );
-                          //     }),
+                  actions: <Widget>[
+                    isSearchQueryEmpty
+                        ? NotificationWidget(
+                            onPressedNotifications: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              isSearchQueryEmpty = true;
+                              locator<TextEditingController>().clear();
+                              Navigator.of(context)
+                                  .pushNamed('/notificationsScreen');
+                              locator<PrefsService>().notificationFlag = false;
+                            },
                           )
-                      : CustomObserver(
-                          stream: locator<AutoCompleteManager>().searchResult$,
-                          onWaiting: (_) => Container(),
-                          onSuccess: (_, AutoCompleteModel model) {
-                            return Card(
-                              elevation: 5,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.95,
-                                height: MediaQuery.of(context).size.height / 2,
-                                child: model.data.words.isNotEmpty
-                                    ? ListView.separated(
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            model.data.words?.length ?? 0,
-                                        separatorBuilder:
-                                            (BuildContext context, int index) {
-                                          return Divider(
-                                            color: Colors.grey,
-                                          );
-                                        },
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(
-                                                  '/searchResultScreen',
-                                                  arguments:
-                                                      SearchResultsScreenArguments(
-                                                    categoryId: categoryId,
-                                                    title:
-                                                        model.data.words[index],
-                                                  ),
-                                                );
-                                                locator<TextEditingController>()
-                                                        .text =
-                                                    model.data.words[index];
-                                                isSearchQueryEmpty = true;
-                                                FocusScope.of(context)
-                                                    .requestFocus(FocusNode());
-                                              },
-                                              title: Text(
-                                                  model.data.words[index]));
-                                        },
-                                      )
-                                    : Center(
-                                        child: Text(
-                                          AppLocalizations.of(context)
-                                              .translate('noSearchResult_str'),
-                                        ),
-                                      ),
+                        : Container(
+                            height: 1,
+                            width: 1,
+                          ),
+                  ],
+                ),
+                body: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: 55,
+                      padding:
+                          const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
+                      ),
+                      child: TextField(
+                        controller: locator<TextEditingController>(),
+                        onChanged: (value) {
+                          setState(() {});
+                          locator<AutoCompleteManager>()
+                              .inQuery
+                              .add(locator<TextEditingController>().text);
+                          // locator<SearchManager>().inQuery.add(value);
+                          // print(value);
+                        },
+                        onTap: () {
+                          setState(() {
+                            isSearchQueryEmpty = false;
+                          });
+                          locator<AutoCompleteManager>()
+                              .inCategoryId
+                              .add(categoryId);
+                        },
+                        onSubmitted: (value) {
+                          locator<TextEditingController>().clear();
+                        },
+                        decoration: InputDecoration(
+                            alignLabelWithHint: true,
+                            filled: true,
+                            border: InputBorder.none,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0),
                               ),
-                            );
-                          }),
-                ],
-              ),
-              bottomNavigationBar: isSearchQueryEmpty
-                  ? CustomBottomNavigation()
-                  : Container(
-                      height: 1,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0),
+                              ),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0),
+                              ),
+                            ),
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 13,
+                              fontFamily:
+                                  locator<PrefsService>().appLanguage == 'en'
+                                      ? 'en'
+                                      : 'ar',
+                            ),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.teal[900],
+                            ),
+                            hintText: AppLocalizations.of(context)
+                                .translate('search..._str'),
+                            fillColor: Colors.white),
+                      ),
                     ),
+                    // SizedBox.fromSize(
+                    //   size: Size.fromHeight(35),
+                    // ),
+                    MediaQuery.of(context).size.height != 569.3333333333334
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.05,
+                          )
+                        : Container(),
+                    isSearchQueryEmpty ? categoryList() : Container(),
+                    isSearchQueryEmpty
+                        ? Expanded(
+                            child:
+                                // isSearchQueryEmpty
+                                //     ?
+                                CustomObserver(
+                            stream: locator<HomeManager>().getData(categoryId),
+                            onSuccess: (_, HomeModel model) {
+                              return PageView.builder(
+                                  onPageChanged: (index) {
+                                    pageIndex = index;
+                                  },
+                                  physics: NeverScrollableScrollPhysics(),
+                                  controller: _pageController,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: model.data.categories.length,
+                                  itemBuilder: (_, index) {
+                                    return HomeContent(
+                                      categoryId: categoryId,
+                                      adsList: model.data.ads,
+                                      trendingSellersList:
+                                          model.data.trandingSellers,
+                                      trendingProductsList:
+                                          model.data.trandingProducts,
+                                      sellersList: model.data.sellers,
+                                      trendingSellersName: model.data
+                                          .activeCategory.trandingSellersName,
+                                      trendingProductName: model.data
+                                          .activeCategory.trandingProductName,
+                                      sellersName:
+                                          model.data.activeCategory.sellersName,
+                                    );
+                                  });
+                            },
+                          )
+                            // : CustomObserver(
+                            //     stream: locator<SearchManager>().searchResult$,
+                            //     onSuccess: (_, SearchModel model) {
+                            //       return Card(
+                            //         elevation: 5,
+                            //         child: Container(
+                            //           width: MediaQuery.of(context).size.width * 0.95,
+                            //           height: MediaQuery.of(context).size.height / 2,
+                            //           child: ListView.separated(
+                            //             shrinkWrap: true,
+                            //             itemCount: model.data.words?.length ?? 0,
+                            //             separatorBuilder:
+                            //                 (BuildContext context, int index) {
+                            //               return Divider(
+                            //                 color: Colors.grey,
+                            //               );
+                            //             },
+                            //             itemBuilder: (context, index) {
+                            //               return ListTile(
+                            //                   onTap: () {
+                            //                     Navigator.of(context)
+                            //                         .pushNamed('/searchResultScreen');
+                            //                     locator<TextEditingController>()
+                            //                         .clear();
+                            //                     isSearchQueryEmpty = true;
+                            //                     FocusScope.of(context)
+                            //                         .requestFocus(FocusNode());
+                            //                   },
+                            //                   title: Text(model.data.words[index]));
+                            //             },
+                            //           ),
+                            //         ),
+                            //       );
+                            //     }),
+                            )
+                        : CustomObserver(
+                            stream: locator<AutoCompleteManager>().searchResult$,
+                            onWaiting: (_) => Container(),
+                            onSuccess: (_, AutoCompleteModel model) {
+                              return Card(
+                                elevation: 5,
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.95,
+                                  height: MediaQuery.of(context).size.height / 2,
+                                  child: model.data.words.isNotEmpty
+                                      ? ListView.separated(
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              model.data.words?.length ?? 0,
+                                          separatorBuilder:
+                                              (BuildContext context, int index) {
+                                            return Divider(
+                                              color: Colors.grey,
+                                            );
+                                          },
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                                onTap: () {
+                                                  Navigator.of(context).pushNamed(
+                                                    '/searchResultScreen',
+                                                    arguments:
+                                                        SearchResultsScreenArguments(
+                                                      categoryId: categoryId,
+                                                      title:
+                                                          model.data.words[index],
+                                                    ),
+                                                  );
+                                                  locator<TextEditingController>()
+                                                          .text =
+                                                      model.data.words[index];
+                                                  isSearchQueryEmpty = true;
+                                                  FocusScope.of(context)
+                                                      .requestFocus(FocusNode());
+                                                },
+                                                title: Text(
+                                                    model.data.words[index]));
+                                          },
+                                        )
+                                      : Center(
+                                          child: Text(
+                                            AppLocalizations.of(context)
+                                                .translate('noSearchResult_str'),
+                                          ),
+                                        ),
+                                ),
+                              );
+                            }),
+                  ],
+                ),
+                bottomNavigationBar: isSearchQueryEmpty
+                    ? CustomBottomNavigation()
+                    : Container(
+                        height: 1,
+                      ),
+              ),
             ),
           ),
         ),
-      ),
+      
     );
   }
 
