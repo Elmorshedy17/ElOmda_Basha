@@ -3,14 +3,14 @@
 // import 'package:momentoo/features/invoice/invoice_screen.dart';
 // import 'package:momentoo/shared/helper/locator.dart';
 // import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
-//
+
 // ////////////////////////////////////////////////////////////////////////////////
 // // LocalNotification
 // ////////////////////////////////////////////////////////////////////////////////
-//
+
 // class LocalNotificationService {
 //   FlutterLocalNotificationsPlugin localNotifications;
-//
+
 //   initializeLocalNotification() {
 //     var initializationSettingsAndroid =
 //         new AndroidInitializationSettings("@drawable/ic_notifications");
@@ -21,7 +21,7 @@
 //     localNotifications.initialize(initializationSettings,
 //         onSelectNotification: onSelectNotification);
 //   }
-//
+
 //   void showNotification(title, body, id) async {
 //     var android = AndroidNotificationDetails(
 //         'channelId', 'channelName', 'channelDescription',
@@ -31,7 +31,7 @@
 //     await localNotifications.show(0, '$title', '$body', platform,
 //         payload: '$id');
 //   }
-//
+
 //   Future onSelectNotification(String payload) async {
 //     if (payload != null) {
 //       locator<NavigationService>().navigateTo(

@@ -40,96 +40,98 @@ class _NearByScreenState extends State<NearByScreen> {
     return NetworkSensitive(
       child: WillPopScope(
         onWillPop: () async => false,
-        child: Scaffold(
-          appBar: PreferredSize(
-            child: Container(
-              color: Colors.teal.shade900,
-              child: Center(
-                child: Container(
-                  height: 55,
-                  padding:
-                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                  ),
-                  child: TextField(
-                    controller: wordSearch,
-                    onSubmitted: (v) {
-                      setState(() {
-                        wordSearch.text;
-                      });
-                      print("wordSearch.text ${wordSearch.text}");
-                    },
-                    decoration: InputDecoration(
-                        alignLabelWithHint: true,
-                        filled: true,
-                        border: InputBorder.none,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(10.0),
-                          ),
-                        ),
-                        hintStyle:
-                            TextStyle(color: Colors.grey[600], fontSize: 13),
-                        prefixIcon: Icon(
-                          Icons.location_on,
-                          color: Colors.black54,
-                        ),
-                        suffixIcon: InkWell(
-                          onTap: () {
-                            setState(() {
-                              // wordSearch.clear();
-                              wordSearch.text = '';
-                            });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(9),
-                            decoration: BoxDecoration(
-                              color: Colors.red.shade800,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100)),
-                            ),
-                            child: new Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              // size: 35.0,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: PreferredSize(
+              child: Container(
+                color: Colors.teal.shade900,
+                child: Center(
+                  child: Container(
+                    height: 55,
+                    padding:
+                        const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(19.0)),
+                    ),
+                    child: TextField(
+                      controller: wordSearch,
+                      onSubmitted: (v) {
+                        setState(() {
+                          wordSearch.text;
+                        });
+                        print("wordSearch.text ${wordSearch.text}");
+                      },
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          filled: true,
+                          border: InputBorder.none,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(10.0),
                             ),
                           ),
-                        ),
-                        hintText: "Search...",
-                        fillColor: Colors.white),
+                          hintStyle:
+                              TextStyle(color: Colors.grey[600], fontSize: 13),
+                          prefixIcon: Icon(
+                            Icons.location_on,
+                            color: Colors.black54,
+                          ),
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              setState(() {
+                                // wordSearch.clear();
+                                wordSearch.text = '';
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(9),
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade800,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(100)),
+                              ),
+                              child: new Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                // size: 35.0,
+                              ),
+                            ),
+                          ),
+                          hintText: "Search...",
+                          fillColor: Colors.white),
+                    ),
                   ),
                 ),
               ),
+              preferredSize: Size(MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height * 0.18),
             ),
-            preferredSize: Size(MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height * 0.18),
-          ),
-          body: CustomObserver(
-              stream: locator<NearByManager>().getData(
-                  locator<NearByManager>().catSubject.value,
-                  wordSearch.text,
-                  args.cityID,
-                  cusinId == null ? "" : cusinId),
-              onSuccess: (_, NearByModel model) {
-                print("NearByModel ${model}");
-                return Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    _googleMap(context, model),
-                    nearbyStoresList(model),
-                    Positioned(
-                      left: 0.0,
-                      right: 0.0,
-                      bottom: 0.0,
-                      child: CustomBottomNavigation(),
-                    ),
-                    filterList(model),
-                  ],
-                );
-              }),
+            body: CustomObserver(
+                stream: locator<NearByManager>().getData(
+                    locator<NearByManager>().catSubject.value,
+                    wordSearch.text,
+                    args.cityID,
+                    cusinId == null ? "" : cusinId),
+                onSuccess: (_, NearByModel model) {
+                  print("NearByModel ${model}");
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      _googleMap(context, model),
+                      nearbyStoresList(model),
+                      Positioned(
+                        left: 0.0,
+                        right: 0.0,
+                        bottom: 0.0,
+                        child: CustomBottomNavigation(),
+                      ),
+                      filterList(model),
+                    ],
+                  );
+                }),
 //        bottomNavigationBar: CustomBottomNavigation(),
+          ),
         ),
       ),
     );

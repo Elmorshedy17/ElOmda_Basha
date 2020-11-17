@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return false;
           }
         },
-        child: NetworkSensitive(
+        child: SafeArea(
           child: MainBackground(
             height: MediaQuery.of(context).size.height * 0.25,
             child: Scaffold(

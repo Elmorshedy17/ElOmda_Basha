@@ -4,6 +4,7 @@ import 'package:momentoo/features/about_us/about_manager.dart';
 import 'package:momentoo/features/address_book/addressBook_manager.dart';
 import 'package:momentoo/features/ads/ads_manager.dart';
 import 'package:momentoo/features/change_email/ValidationManger.dart';
+import 'package:momentoo/features/change_password/change_password_validation_manger.dart';
 import 'package:momentoo/features/checkout/checkout_manager.dart';
 import 'package:momentoo/features/checkout/checkout_request/asUser_request.dart';
 import 'package:momentoo/features/checkout/checkout_request/asVisitor_request.dart';
@@ -45,6 +46,7 @@ import 'package:momentoo/shared/helper/cartItemsCount_manger.dart';
 import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
 import 'package:momentoo/shared/services/connection_service.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
+import 'package:momentoo/shared/services/fcm/localNotificationService.dart';
 import 'package:momentoo/shared/services/fcm/pushNotification_service.dart';
 import 'package:momentoo/shared/services/localizations/app_language.dart';
 import 'package:momentoo/shared/services/location_service.dart';
@@ -52,8 +54,6 @@ import 'package:momentoo/shared/services/networking/ApiProvider.dart';
 import 'package:momentoo/shared/services/permission_service.dart';
 import 'package:momentoo/shared/services/prefs_service.dart';
 import 'package:momentoo/shared/services/share_servce/shareService.dart';
-
-import 'package:momentoo/features/change_password/change_password_validation_manger.dart';
 
 GetIt locator = GetIt.instance;
 

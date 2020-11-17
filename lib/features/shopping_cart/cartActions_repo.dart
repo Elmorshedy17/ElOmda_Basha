@@ -26,6 +26,8 @@ class CartActionsRepo {
         // myMap()
         locator<PrefsService>().cartObj.toJson());
 
+    print('xXx${formData.fields}');
+
     try {
       final Response response = await locator<ApiService>().dioClient.post(
             '${locator<ApiService>().dioClient.options.baseUrl}cart',
