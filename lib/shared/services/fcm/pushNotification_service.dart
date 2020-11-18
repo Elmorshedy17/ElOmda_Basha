@@ -5,7 +5,6 @@ import 'package:momentoo/features/invoice/invoice_screen.dart';
 import 'package:momentoo/shared/helper/locator.dart';
 import 'package:momentoo/shared/services/NavigationService/NavigationService.dart';
 import 'package:momentoo/shared/services/fcm/FcmTokenManager.dart';
-import 'package:momentoo/shared/services/fcm/localNotificationService.dart';
 
 class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
