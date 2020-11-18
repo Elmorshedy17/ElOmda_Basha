@@ -40,7 +40,7 @@ class _NearByScreenState extends State<NearByScreen> {
     return NetworkSensitive(
       child: WillPopScope(
         onWillPop: () async => false,
-        child: SafeArea(
+        child: Container(
           child: Scaffold(
             appBar: PreferredSize(
               child: Container(
@@ -107,29 +107,31 @@ class _NearByScreenState extends State<NearByScreen> {
               preferredSize: Size(MediaQuery.of(context).size.width,
                   MediaQuery.of(context).size.height * 0.18),
             ),
-            body: CustomObserver(
-                stream: locator<NearByManager>().getData(
-                    locator<NearByManager>().catSubject.value,
-                    wordSearch.text,
-                    args.cityID,
-                    cusinId == null ? "" : cusinId),
-                onSuccess: (_, NearByModel model) {
-                  print("NearByModel ${model}");
-                  return Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      _googleMap(context, model),
-                      nearbyStoresList(model),
-                      Positioned(
-                        left: 0.0,
-                        right: 0.0,
-                        bottom: 0.0,
-                        child: CustomBottomNavigation(),
-                      ),
-                      filterList(model),
-                    ],
-                  );
-                }),
+            body: SafeArea(
+              child: CustomObserver(
+                  stream: locator<NearByManager>().getData(
+                      locator<NearByManager>().catSubject.value,
+                      wordSearch.text,
+                      args.cityID,
+                      cusinId == null ? "" : cusinId),
+                  onSuccess: (_, NearByModel model) {
+                    print("NearByModel ${model}");
+                    return Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        _googleMap(context, model),
+                        nearbyStoresList(model),
+                        Positioned(
+                          left: 0.0,
+                          right: 0.0,
+                          bottom: 0.0,
+                          child: CustomBottomNavigation(),
+                        ),
+                        filterList(model),
+                      ],
+                    );
+                  }),
+            ),
 //        bottomNavigationBar: CustomBottomNavigation(),
           ),
         ),
