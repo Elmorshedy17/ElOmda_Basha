@@ -1,94 +1,35 @@
 {
   "project_info": {
-    "project_number": "964859041472",
-    "firebase_url": "https://momentoo-891eb.firebaseio.com",
-    "project_id": "momentoo-891eb",
-    "storage_bucket": "momentoo-891eb.appspot.com"
+    "project_number": "312756082266",
+    "firebase_url": "https://alomda-basha-dcc91.firebaseio.com",
+    "project_id": "alomda-basha-dcc91",
+    "storage_bucket": "alomda-basha-dcc91.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:964859041472:android:3ee10c91c0a4c6fa267f25",
+        "mobilesdk_app_id": "1:312756082266:android:a23328fd3013277b5f6a63",
         "android_client_info": {
-          "package_name": "com.app.momentoo"
+          "package_name": "com.alomdaBasha.medicine"
         }
       },
       "oauth_client": [
         {
-          "client_id": "964859041472-se3bspptr4ag6rup9rqck4p2130cemp2.apps.googleusercontent.com",
+          "client_id": "312756082266-jd35vgjhml5ufdtvgpr94s0pg626ipua.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCFqwk6Y8Ztv-XsRnHL9aCjym3Rz3hMYUo"
+          "current_key": "AIzaSyAmIz0BGylDg4g7q07SDKMi5xsiLTlIIhI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "964859041472-se3bspptr4ag6rup9rqck4p2130cemp2.apps.googleusercontent.com",
+              "client_id": "312756082266-jd35vgjhml5ufdtvgpr94s0pg626ipua.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "964859041472-bucvm6blhugt7ep6mad5dvomcufm88an.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.linekw.momentoo"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:964859041472:android:e9c5fdf1e5da63ef267f25",
-        "android_client_info": {
-          "package_name": "com.spark.momentoodivers"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "964859041472-69s6i6g8s00ioic28qdfr5mlinq3jkdb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.spark.momentoodivers",
-            "certificate_hash": "26365c99dae5c6747fc2a65d6e8954472a6ab983"
-          }
-        },
-        {
-          "client_id": "964859041472-bnnolc9k8h311a00fp60bulh0egusuh7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.spark.momentoodivers",
-            "certificate_hash": "bff88b5fdc874cbc8c0712d0231ea14f69dce3fe"
-          }
-        },
-        {
-          "client_id": "964859041472-se3bspptr4ag6rup9rqck4p2130cemp2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCFqwk6Y8Ztv-XsRnHL9aCjym3Rz3hMYUo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "964859041472-se3bspptr4ag6rup9rqck4p2130cemp2.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "964859041472-bucvm6blhugt7ep6mad5dvomcufm88an.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.linekw.momentoo"
-              }
             }
           ]
         }
