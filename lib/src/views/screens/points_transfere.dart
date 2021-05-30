@@ -83,22 +83,29 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
             height: 35.0,
           ),
           CarouselSlider(
-          height: MediaQuery.of(context).size.height - MediaQuery.of(context).size.height / 2 ,
-          initialPage: 0,
-          enlargeCenterPage: true,
-          autoPlay: true,
-          reverse: false,
-          enableInfiniteScroll: true,
-          autoPlayInterval: Duration(seconds: 7),
-          autoPlayAnimationDuration: Duration(milliseconds: 2000),
-          pauseAutoPlayOnTouch: Duration(seconds: 10),
-          scrollDirection: Axis.horizontal,
-          onPageChanged: (index) {
-//        setState(() {
-//        });
-//        _current = index;
-            locator<CarouselIndicatorBloc>().carouselIndSink.add(index);
-          },
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height - MediaQuery.of(context).size.height / 2 ,
+              initialPage: 0,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              reverse: false,
+              enableInfiniteScroll: true,
+              autoPlayInterval: Duration(seconds: 7),
+              autoPlayAnimationDuration: Duration(milliseconds: 2000),
+              pauseAutoPlayOnTouch: true,
+              // pauseAutoPlayOnTouch: Duration(seconds: 10),
+              scrollDirection: Axis.horizontal,
+              onPageChanged: (index, reason){
+                locator<CarouselIndicatorBloc>().carouselIndSink.add(index);
+              }
+            ),
+
+//           onPageChanged: (index) {
+// //        setState(() {
+// //        });
+// //        _current = index;
+//             locator<CarouselIndicatorBloc>().carouselIndSink.add(index);
+//           },
           items: dataList.map((allData) {
             return Builder(
               builder: (BuildContext context) {

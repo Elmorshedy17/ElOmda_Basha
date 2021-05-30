@@ -23,9 +23,9 @@ class ShowOrderModel {
 }
 
 class Data {
-  int id;
-  int totalForCountry;
-  int currencyCode;
+  var id;
+  var totalForCountry;
+  var currencyCode;
   String status;
   String name;
   String phone;
@@ -37,8 +37,8 @@ class Data {
   String message;
 //  double lat;
 //  double lng;
-  int delivery;
-  int total;
+  var delivery;
+  var total;
   String newOrder;
   String cancel;
   String hasProvider;
@@ -50,14 +50,14 @@ class Data {
   String marketerPhone;
   String marketerAvatar;
   String marketerBenfitType;
-  int marketerCommission;
-  int marketerPoint;
+  var marketerCommission;
+  var marketerPoint;
   String delegateName;
   String delegatePhone;
   String delegateBenfitType;
   String delegateAvatar;
-  int delegateCommission;
-  int delegatePoint;
+  var delegateCommission;
+  var delegatePoint;
   List<OrderStatus> orderStatus;
   List<OrderItems> orderItems;
 
@@ -217,14 +217,14 @@ class OrderStatus {
 }
 
 class OrderItems {
-  int orderItemId;
-  int sectionId;
+  var orderItemId;
+  var sectionId;
   String sectionTitle;
   String sectionDesc;
-  int sectionPrice;
+  var sectionPrice;
   String sectionImage;
-  int quantity;
-  int total;
+  var quantity;
+  var total;
 
   OrderItems(
       {this.orderItemId,

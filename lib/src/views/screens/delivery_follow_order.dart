@@ -13,6 +13,7 @@ import 'package:medicine/src/blocs/status_message_bloc.dart';
 import 'package:medicine/src/blocs/stepper_bloc.dart';
 import 'package:medicine/src/blocs/user_id_bloc.dart';
 import 'package:medicine/src/models/delivery_models/show_delegate_order.dart';
+import 'package:medicine/src/models/super_visor_marketers/show_order_model.dart';
 import 'package:medicine/src/new_code/delivery_edit_cart/delivery_edit_cart.dart';
 import 'package:medicine/src/views/screens/delivery_home.dart';
 import 'package:medicine/theme_setting.dart';
@@ -343,6 +344,23 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                 SizedBox(
                   height: 30,
                 ),
+
+                Center(
+                  child: ElevatedButton(
+                    child: Text(AppLocalizations.of(context).translate("show_messages")),
+                    onPressed: (){
+                      ApiService.ShowOrder(widget.data.data.id).then((onValue){
+                        if(onValue.key == "1"){
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (BuildContext context) => MessagesWidget(data:onValue)));
+                        }
+                      });
+                    },
+                  ),
+                ),
+
 
                 Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -1225,3 +1243,56 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
     super.dispose();
   }
 }
+
+
+class MessagesWidget extends StatelessWidget {
+  final  data;
+  MessagesWidget({this.data});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).translate("show_messages")),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 25.0,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+
+      ),
+      body: Container(
+        padding: EdgeInsets.all(15),
+        child: ListView.builder(
+            physics: ScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: data.data.orderStatus.length,
+            itemBuilder: (context, index) {
+
+return Container(
+child: Card(
+
+  child: Container(
+    padding: EdgeInsets.all(15),
+    margin: EdgeInsets.symmetric(vertical: 12),
+    child: Column(
+      children: [
+        // Text(data.data.orderStatus[index].status),
+        Text(data.data.orderStatus[index].message),
+      ],
+    ),
+  )
+),
+);
+
+            }),
+      ),
+    );
+  }
+}
+

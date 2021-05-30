@@ -95,7 +95,7 @@
   "My_Acount":"My Account",
   "My_Orders":" My Orders",
   "My_Products":"My Products",
-  "The_Orders_str":"The Orders",
+  "The_Orders_str":"Orders",
   "Markters_str":"Markters",
   "Points_Transfere_str":"Points Transfer",
   "Money_Transfere_str":"Amount Transfer",
@@ -270,7 +270,8 @@
   "reorder_str": "Re-Order",
   "Details": "Details",
   "number_cash": "Cash Number Transfer",
-  "cities_delegates": "Cities & delegates"
+  "cities_delegates": "Cities & delegates",
+  "show_messages": "Show Messages"
 
 
 

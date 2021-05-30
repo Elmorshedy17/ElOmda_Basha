@@ -35,7 +35,7 @@ dependencies:
   #  flutter_open_whatsapp: ^0.1.2
   #  google_maps_flutter: ^0.5.21+15
   #  geolocator:
-  carousel_slider: ^1.4.1
+  carousel_slider: ^3.0.0
   firebase_messaging: ^7.0.3
   firebase_core:
   flutter_local_notifications:

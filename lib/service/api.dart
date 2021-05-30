@@ -1748,6 +1748,7 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
       Response response = await dio.post(
         '$BASE_URL$Packages_Markters_Show',
         data: {
+          "user_id":GlobalUserId,
           "lang":locator<PrefsService>().appLanguage,
           "package_id": "$id",
           "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
