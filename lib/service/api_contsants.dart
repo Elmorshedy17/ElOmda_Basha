@@ -30,7 +30,7 @@ const Send_Transfer = "send-transfer";
 const Show_Services = "show-services";
 const Send_Service_Request = "send-service-request";
 const Show_Delegate_Order = "show-delegate_order";
-const Update_Order = "update-order";
+// const Update_Order = "update-order";
 const Change_Order_Status = "change-order-status";
 const Show_All_Delegates_Orders = "show-all-delegates-orders";
 const Delegate_Finish_Order = "delegate-finish-order";
@@ -45,6 +45,7 @@ const UpdateOrder = "update-order";
 const SHOWSERVICE = "show-services";
 const UPDATEORDERMarkter = "update-order";
 const RESENDORDER = "resend-order";
+const SHOWCITIESDELGATES = "show-cities-delegates";
 // const Delegate_Finish_Order = "delegate-finish-order";
 
 

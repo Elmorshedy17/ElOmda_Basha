@@ -31,7 +31,7 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Text(AppLocalizations.of(context).translate("Order_Details_str") ),
+          title: Text(AppLocalizations.of(context).translate("Order_Details_str")),
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
@@ -264,7 +264,7 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          widget.data.total.toString(),
+                                          widget.data.totalForCountry.toString(),
                                           style: TextStyle(
                                               fontWeight: semiFont,
                                               fontSize: MainFont,
@@ -275,7 +275,8 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
                                           width: 5.0,
                                         ),
                                         Text(
-                                          AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                                          widget.data.currencyCode.toString(),
+                                          // AppLocalizations.of(context).translate("real_suadi_shortcut"),
 
 
                                           style: TextStyle(

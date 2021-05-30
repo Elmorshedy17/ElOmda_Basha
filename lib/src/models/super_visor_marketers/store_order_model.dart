@@ -232,11 +232,13 @@ class Data {
   String inWay;
   String finish;
   String countryTitle;
+  String currencyCode;
   String cityTitle;
   String delegateName;
   String delegatePhone;
   String delegateWhatsapp;
   String delegateAvatar;
+  String totalForCountry;
   List<OrderItems> orderItems;
 
   Data(
@@ -250,6 +252,7 @@ class Data {
         this.address,
         this.lat,
         this.lng,
+        this.totalForCountry,
         this.delivery,
         this.total,
         this.marketerBenfit,
@@ -264,6 +267,7 @@ class Data {
         this.cityTitle,
         this.delegateName,
         this.delegatePhone,
+        this.currencyCode,
         this.delegateWhatsapp,
         this.delegateAvatar,
         this.orderItems});
@@ -277,6 +281,7 @@ class Data {
     date = json['date'];
     time = json['time'];
     address = json['address'];
+    totalForCountry = json['total_for_country'];
     lat = json['lat'];
     lng = json['lng'];
     delivery = json['delivery'];
@@ -292,6 +297,7 @@ class Data {
     countryTitle = json['country_title'];
     cityTitle = json['city_title'];
     delegateName = json['delegate_name'];
+    currencyCode = json['currency_code'];
     delegatePhone = json['delegate_phone'];
     delegateWhatsapp = json['delegate_whatsapp'];
     delegateAvatar = json['delegate_avatar'];
@@ -313,6 +319,8 @@ class Data {
     data['date'] = this.date;
     data['time'] = this.time;
     data['address'] = this.address;
+    data['total_for_country'] = this.totalForCountry;
+    data['currency_code'] = this.currencyCode;
     data['lat'] = this.lat;
     data['lng'] = this.lng;
     data['delivery'] = this.delivery;

@@ -93,7 +93,7 @@ class _DelivereyFollowOrderState extends State<DelivereyFollowOrder> {
     List itemsDetails = [];
     itemsDetails.clear();
     for (int index = 0; index < widget.data.data.orderItems.length; index++) {
-      itemsDetails.add("${widget.data.data.orderItems[index].sectionTitle} * ${widget.data.data.orderItems[index].quantity} = ${widget.data.data.orderItems[index].total}");
+      itemsDetails.add("${widget.data.data.orderItems[index].sectionTitle} * ${widget.data.data.orderItems[index].quantity} = ${widget.data.data.orderItems[index].totalForCountry} ${widget.data.data.currencyCode}");
     }
 
 
@@ -195,10 +195,10 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                         child: Icon(Icons.share)),
                     onTap: () {
                       Share.share(
-                          "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}/""\n"
-                              "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}/""\n"
-                              "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}/""\n"
-                              "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}/""\n"
+                          "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
+                              "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
+                              "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
+                              "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                               "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
 
                     },
@@ -217,7 +217,7 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                   ApiService.ShowCart().then((value) {
                     if(value.key == "1"){
                       Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) =>
-                          DeliveryEditCart(value.variableRate,snapshotFuture.data.data.id)));
+                          DeliveryEditCart(value.variableRate,snapshotFuture.data.data.id,snapshotFuture.data.data)));
                     }else{
                       Fluttertoast.showToast(
                           msg: value.msg,
@@ -419,10 +419,10 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                  onTap: (){
                                    // _launchURL("https://wa.me/${widget.data.data.phone}/?text=Hello");
                                    launchWhatsApp(phone: "${widget.data.data.phone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                                   "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}/""\n"
-                                   "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}/""\n"
-                                   "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}/""\n"
-                                   "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}/""\n"
+                                   "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
+                                   "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
+                                   "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
+                                   "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                    "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
 
                                  },
@@ -481,10 +481,10 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                   onTap: (){
                                     // _launchURL("https://wa.me/${widget.data.data.whatsapp}/?text=Hello");
                                     launchWhatsApp(phone: "${widget.data.data.whatsapp.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                                    "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}/""\n"
-                                        "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}/""\n"
-                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}/""\n"
-                                        "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}/""\n"
+                                    "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
+                                        "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
+                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
+                                        "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
@@ -524,10 +524,10 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                           trailing: MaterialButton(
                             onPressed: ()  {
                               launchWhatsApp(phone: "${widget.data.data.marketerPhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                              "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}/""\n"
-                                  "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}/""\n"
-                                  "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}/""\n"
-                                  "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}/""\n"
+                              "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
+                                  "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
+                                  "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
+                                  "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                   "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                             },
                             child: Image.asset(

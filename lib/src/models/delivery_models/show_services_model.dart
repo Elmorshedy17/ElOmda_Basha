@@ -32,20 +32,30 @@ class Data {
   String title;
   String desc;
   int price;
+  int totalForCountry;
+  int solidTotal;
   int quantity;
   String image;
-  var solidTotal;
 
-  Data({this.id, this.title, this.desc, this.price, this.quantity, this.image,this.solidTotal});
+  Data(
+      {this.id,
+        this.title,
+        this.desc,
+        this.price,
+        this.totalForCountry,
+        this.solidTotal,
+        this.quantity,
+        this.image});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     desc = json['desc'];
     price = json['price'];
+    totalForCountry = json['total_for_country'];
+    solidTotal = json['solid_total'];
     quantity = json['quantity'];
     image = json['image'];
-    solidTotal = json['solid_total'];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,9 +64,10 @@ class Data {
     data['title'] = this.title;
     data['desc'] = this.desc;
     data['price'] = this.price;
+    data['total_for_country'] = this.totalForCountry;
+    data['solid_total'] = this.solidTotal;
     data['quantity'] = this.quantity;
     data['image'] = this.image;
-    data['solid_total'] = this.solidTotal;
     return data;
   }
 }

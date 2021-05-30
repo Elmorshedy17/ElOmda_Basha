@@ -24,6 +24,8 @@ class ShowOrderModel {
 
 class Data {
   int id;
+  int totalForCountry;
+  int currencyCode;
   String status;
   String name;
   String phone;
@@ -62,6 +64,8 @@ class Data {
   Data(
       {this.id,
         this.status,
+        this.totalForCountry,
+        this.currencyCode,
         this.name,
         this.phone,
         this.whatsapp,
@@ -98,6 +102,8 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    totalForCountry = json['total_for_country'];
+    currencyCode = json['currency_code'];
     status = json['status'];
     name = json['name'];
     phone = json['phone'];
@@ -147,6 +153,8 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['total_for_country'] = this.totalForCountry;
+    data['currency_code'] = this.currencyCode;
     data['status'] = this.status;
     data['name'] = this.name;
     data['phone'] = this.phone;

@@ -88,6 +88,7 @@ class UpdateProfileBloc {
   final BehaviorSubject<String> _secondName = BehaviorSubject<String>();
   final BehaviorSubject<String> _confirmPassword = BehaviorSubject<String>();
   final BehaviorSubject<String> _mobile = BehaviorSubject<String>();
+  final BehaviorSubject<String> cash = BehaviorSubject<String>();
   final BehaviorSubject<String> _whatsapp = BehaviorSubject<String>();
   final BehaviorSubject<String> _password = BehaviorSubject<String>();
   final BehaviorSubject<String> _email = BehaviorSubject<String>();
@@ -133,6 +134,7 @@ class UpdateProfileBloc {
   Function(String) get changeSecondName => _secondName.sink.add;
 
   Function(String) get changeMobile => _mobile.sink.add;
+  Function(String) get changeCash => cash.sink.add;
 
   Function(String) get changeWhatsapp => _whatsapp.sink.add;
 

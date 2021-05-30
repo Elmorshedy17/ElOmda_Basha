@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -94,7 +93,7 @@ class _OrderDetailsDeliveryUpdateState
             itemsDetails.clear();
             if(snapshot.hasData ){
               for (int index = 0; index < snapshot.data.data.orderItems.length; index++) {
-                itemsDetails.add("${snapshot.data.data.orderItems[index].sectionTitle} * ${snapshot.data.data.orderItems[index].quantity} = ${snapshot.data.data.orderItems[index].total}");}
+                itemsDetails.add("${snapshot.data.data.orderItems[index].sectionTitle} * ${snapshot.data.data.orderItems[index].quantity} = ${snapshot.data.data.orderItems[index].totalForCountry} ${snapshot.data.data.currencyCode}");}
             }
           return Scaffold(
             appBar: AppBar(
@@ -114,10 +113,10 @@ class _OrderDetailsDeliveryUpdateState
                           child: Icon(Icons.share)),
                       onTap: () {
                         Share.share(
-                            "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}/""\n"
-                                "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}/""\n"
-                                "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}/""\n"
-                                "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}/""\n"
+                            "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}""\n"
+                                "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
+                                "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
+                                "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                                 "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
 
                       },
@@ -134,7 +133,7 @@ class _OrderDetailsDeliveryUpdateState
                         ApiService.ShowCart().then((value) {
                           if(value.key == "1"){
                             Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) =>
-                                DeliveryEditCart(value.variableRate,widget.id)));
+                                DeliveryEditCart(value.variableRate,widget.id,snapshot.data.data)));
                           }else{
                             Fluttertoast.showToast(
                                 msg: value.msg,
@@ -250,8 +249,7 @@ class _OrderDetailsDeliveryUpdateState
                                                           width: 5.0,
                                                         ),
                                                         Text(
-                                                          snapshot.data.data
-                                                              .orderItems[index]
+                                                          snapshot.data.data.orderItems[index]
                                                               .quantity
                                                               .toString(),
                                                           style: TextStyle(
@@ -267,7 +265,7 @@ class _OrderDetailsDeliveryUpdateState
                                                     Row(
                                                       children: <Widget>[
                                                         Text(
-                                                          snapshot.data.data.orderItems[index].sectionPrice
+                                                          snapshot.data.data.orderItems[index].sectionPriceForCountry
                                                               .toString(),
                                                           style: TextStyle(
                                                               fontWeight: semiFont,
@@ -280,7 +278,8 @@ class _OrderDetailsDeliveryUpdateState
                                                           width: 5.0,
                                                         ),
                                                         Text(
-                                                          AppLocalizations.of(context).translate("real_suadi_shortcut")  ,
+                                                          snapshot.data.data.currencyCode.toString(),
+                                                          // AppLocalizations.of(context).translate("real_suadi_shortcut")  ,
                                                           style: TextStyle(
                                                               fontWeight: regFont,
                                                               fontSize: SecondaryFont,
@@ -423,7 +422,7 @@ class _OrderDetailsDeliveryUpdateState
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        snapshot.data.data.total.toString(),
+                                        snapshot.data.data.totalForCountry.toString(),
                                         style: TextStyle(
                                             fontWeight: semiFont,
                                             fontSize: MainFont,
@@ -433,7 +432,8 @@ class _OrderDetailsDeliveryUpdateState
                                         width: 5.0,
                                       ),
                                       Text(
-                                        AppLocalizations.of(context).translate("real_suadi_shortcut") ,
+                                        snapshot.data.data.currencyCode.toString(),
+                                        // AppLocalizations.of(context).translate("real_suadi_shortcut") ,
                                         style: TextStyle(
                                             fontWeight: regFont,
                                             fontSize: SecondaryFont,
@@ -522,10 +522,10 @@ class _OrderDetailsDeliveryUpdateState
                                     onTap: (){
                                       // _launchURL("https://wa.me/${widget.data.data.phone}/?text=Hello");
                                       launchWhatsApp(phone: "${snapshot.data.data.phone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                                      "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}/""\n"
-                                          "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}/""\n"
-                                          "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}/""\n"
-                                          "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}/""\n"
+                                      "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}""\n"
+                                          "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
+                                          "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
+                                          "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                                           "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                                     },
                                     child: Image.asset("assets/images/whatsapp.png",width: 20,),
@@ -581,10 +581,10 @@ class _OrderDetailsDeliveryUpdateState
                                     onTap: (){
                                       // _launchURL("https://wa.me/${widget.data.data.whatsapp}/?text=Hello");
                                       launchWhatsApp(phone: "${snapshot.data.data.whatsapp.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                                      "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}/""\n"
-                                          "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}/""\n"
-                                          "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}/""\n"
-                                          "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}/""\n"
+                                      "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}""\n"
+                                          "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
+                                          "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
+                                          "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                                           "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                                     },
                                     child: Image.asset("assets/images/whatsapp.png",width: 20,),
@@ -699,10 +699,10 @@ class _OrderDetailsDeliveryUpdateState
                         trailing:
                         MaterialButton(onPressed: () {
                           launchWhatsApp(phone: "${snapshot.data.data.marketerPhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                          "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}/""\n"
-                              "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}/""\n"
-                              "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}/""\n"
-                              "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}/""\n"
+                          "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${snapshot.data.data.id}""\n"
+                              "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
+                              "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
+                              "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                               "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                           // FlutterOpenWhatsapp.sendSingleMessage(
                           //     "${snapshot.data.data.marketerPhone}", "Hello");

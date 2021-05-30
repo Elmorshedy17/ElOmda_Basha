@@ -1,7 +1,7 @@
 class DeliveryUpdateOrderModel {
   String key;
   String msg;
-  int variableRate;
+  var variableRate;
   Data data;
 
   DeliveryUpdateOrderModel({this.key, this.msg, this.variableRate, this.data});
@@ -38,30 +38,35 @@ class Data {
   String message;
   int lat;
   int lng;
-  int delivery;
-  int total;
+  var currencyCode;
+  var totalForCountry;
+  var delivery;
+  var total;
   String newOrder;
   String cancel;
   String hasProvider;
   String inWay;
   String finish;
   String countryTitle;
+  var countryId;
+  var cityId;
+
   String cityTitle;
   String marketerName;
   String marketerPhone;
   String marketerWhatsapp;
   String marketerAvatar;
   String marketerBenfitType;
-  int marketerBenfit;
-  int marketerCommission;
-  int marketerPoint;
+  var marketerBenfit;
+  var marketerCommission;
+  var marketerPoint;
   String delegateName;
   String delegatePhone;
   String delegateWhatsapp;
   String delegateBenfitType;
   String delegateAvatar;
-  int delegateCommission;
-  int delegatePoint;
+  var delegateCommission;
+  var delegatePoint;
   List<OrderItems> orderItems;
 
   Data(
@@ -69,6 +74,8 @@ class Data {
         this.status,
         this.name,
         this.phone,
+        this.currencyCode,
+        this.totalForCountry,
         this.whatsapp,
         this.date,
         this.time,
@@ -86,6 +93,8 @@ class Data {
         this.finish,
         this.countryTitle,
         this.cityTitle,
+        this.countryId,
+        this.cityId,
         this.marketerName,
         this.marketerPhone,
         this.marketerWhatsapp,
@@ -108,6 +117,8 @@ class Data {
     status = json['status'];
     name = json['name'];
     phone = json['phone'];
+    currencyCode = json['currency_code'];
+    totalForCountry = json['total_for_country'];
     whatsapp = json['whatsapp'];
     date = json['date'];
     time = json['time'];
@@ -124,6 +135,9 @@ class Data {
     inWay = json['in_way'];
     finish = json['finish'];
     countryTitle = json['country_title'];
+    countryId = json['country_id'];
+    cityId = json['city_id'];
+
     cityTitle = json['city_title'];
     marketerName = json['marketer_name'];
     marketerPhone = json['marketer_phone'];
@@ -154,6 +168,8 @@ class Data {
     data['status'] = this.status;
     data['name'] = this.name;
     data['phone'] = this.phone;
+    data['currency_code'] = this.currencyCode;
+    data['total_for_country'] = this.totalForCountry;
     data['whatsapp'] = this.whatsapp;
     data['date'] = this.date;
     data['time'] = this.time;
@@ -194,20 +210,20 @@ class Data {
 }
 
 class OrderItems {
-  int orderItemId;
-  int sectionId;
+  var orderItemId;
+  var sectionId;
   String sectionTitle;
   String sectionDesc;
-  int sectionPrice;
+  var sectionPrice;
   String sectionImage;
-  int total;
-  int buyTotal;
-  int giftTotal;
-  int giftCount;
-  int commission;
-  int point;
-  int benfit;
-  int quantity;
+  var total;
+  var buyTotal;
+  var giftTotal;
+  var giftCount;
+  var commission;
+  var point;
+  var benfit;
+  var quantity;
 
   OrderItems(
       {this.orderItemId,

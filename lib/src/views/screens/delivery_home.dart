@@ -7,24 +7,16 @@ import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
 import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
+import 'package:medicine/src/blocs/api_blocs/currenct_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/delivery_coasts_bloc.dart';
-import 'package:medicine/src/blocs/filter_screen_bloc.dart';
 import 'package:medicine/src/blocs/firebase_token_bloc.dart';
-import 'package:medicine/src/blocs/home_page_bloc.dart';
-import 'package:medicine/src/blocs/loading_manger.dart';
 import 'package:medicine/src/blocs/local_firebase_bloc.dart';
-import 'package:medicine/src/models/super_visor_marketers/home_model.dart';
-import 'package:medicine/src/views/screens/delivery_follow_order.dart';
 import 'package:medicine/src/views/screens/delivery_order_details.dart';
-import 'package:medicine/src/views/screens/filtered_screen.dart';
-import 'package:medicine/src/views/screens/my_orders.dart';
 import 'package:medicine/src/views/screens/notifications.dart';
-import 'package:medicine/src/views/screens/single_product.dart';
 import 'package:medicine/src/views/widgets/drawer.dart';
 import 'package:medicine/src/views/widgets/shimmer_placeholders.dart';
 import 'package:medicine/theme_setting.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 
 class DeliveyHomePage extends StatefulWidget {
@@ -279,39 +271,55 @@ setState(() {
             Positioned(
               top: 85.0,
               child: Container(
+                // color: Colors.red,
                 padding: EdgeInsets.symmetric(horizontal: 30.0),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height - 100,
                 // color: Colors.red,
                 child: FutureBuilder(
                     future: ApiService.ShowNewDelegatesOrders(
-                        widget.UserId.toString()),
+                    widget.UserId.toString()),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return snapshot.hasData
-                          ? Container(
-                        child: snapshot.data.data.length > 0
-                            ? RefreshIndicator(
-                          onRefresh: _refresh,
-                          child: ListView.builder(
-                              reverse: true,
 
-                              itemCount: snapshot.data.data.length,
-                              physics: ScrollPhysics(),
-                              //  shrinkWrap: true,
-                              itemBuilder: (context, int index) {
-                                return _singleProduct(
-                                    snapshot.data.data[index]);
-                              }),
+                      if(snapshot.hasData){
+                        if(snapshot.data.data.isNotEmpty){
+                          locator<CurrencyBloc>().CurrencySubject.sink.add(snapshot.data.data[0].currencyCode);
+                        }else{
+                          locator<CurrencyBloc>().CurrencySubject.sink.add("");
+                        }
+                      }
+
+                      return snapshot.hasData
+                          ? RefreshIndicator(
+                        onRefresh: _refresh,
+                        child:  ListView(
+                          reverse: true,
+                          padding: EdgeInsets.zero,
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height - 100,
+                              width: double.infinity,
+                              // color: Colors.blueAccent,
+                              child: snapshot.data.data.length > 0 ?  ListView.builder(
+                                  reverse: true,
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.data.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, int index) {
+                                    return _singleProduct(
+                                        snapshot.data.data[index]);
+                                  }):Center(
+                                child: Text(
+                                  AppLocalizations.of(context).translate(
+                                      "There are no new orders on your area"),
+                                  style: TextStyle(
+                                      color: lightText,
+                                      fontSize: PrimaryFont),
+                                ),
+                              ),
+                            ),
+                          ],
                         )
-                            : Center(
-                          child: Text(
-                            AppLocalizations.of(context).translate(
-                                "There are no new orders on your area"),
-                            style: TextStyle(
-                                color: lightText,
-                                fontSize: PrimaryFont),
-                          ),
-                        ),
                       )
                           : HomePageItemShimmer();
                     }),
@@ -446,7 +454,6 @@ setState(() {
                               Text(
                                 AppLocalizations.of(context)
                                     .translate("Tottal_Price_str"),
-
                                 // "Product Name",
                                 style: TextStyle(
                                   fontWeight: semiFont,
@@ -457,7 +464,7 @@ setState(() {
                                 width: 8.0,
                               ),
                               Text(
-                                data.total.toString(),
+                                data.totalForCountry.toString(),
                                 style: TextStyle(
                                     fontWeight: semiFont,
                                     fontSize: PrimaryFont,
@@ -467,9 +474,10 @@ setState(() {
                                 width: 5.0,
                               ),
                               Text(
+                                data.currencyCode.toString(),
 //                          "ريال سغودي",
-                                AppLocalizations.of(context)
-                                    .translate("real_suadi_shortcut"),
+//                                 AppLocalizations.of(context)
+//                                     .translate("real_suadi_shortcut"),
 
                                 style: TextStyle(
                                     fontWeight: regFont,
@@ -497,8 +505,7 @@ setState(() {
                           ),
 
                           onPressed: () {
-                            locator<DeliveryCostaBloc>()
-                                .deliveryCostsSink
+                            locator<DeliveryCostaBloc>().deliveryCostsSink
                                 .add("");
                             locator<DeliveryCostaBloc>().deliveryCostsSink.add(
                                 AppLocalizations.of(context)

@@ -281,6 +281,8 @@ class DataInner {
   String delegateWhatsapp;
   String delegateAvatar;
   List<OrderItems> orderItems;
+  var cityId;
+  var countryId;
 
   DataInner(
       {this.id,
@@ -313,6 +315,9 @@ class DataInner {
         this.delegateAvatar,
         this.notes,
         this.message,
+        this.cityId,
+        this.countryId,
+
         this.orderItems});
 
   DataInner.fromJson(Map<String, dynamic> json) {
@@ -341,7 +346,9 @@ class DataInner {
     inWay = json['in_way'];
     finish = json['finish'];
     countryTitle = json['country_title'];
+    countryId = json['country_id'];
     cityTitle = json['city_title'];
+    cityId = json['city_id'];
     delegateName = json['delegate_name'];
     delegatePhone = json['delegate_phone'];
     delegateWhatsapp = json['delegate_whatsapp'];

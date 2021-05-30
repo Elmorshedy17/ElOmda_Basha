@@ -7,7 +7,11 @@ import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/blocs/api_blocs/show_service_bloc.dart';
 import 'package:medicine/theme_setting.dart';
-
+void main() {
+  int a;
+  a = null;
+  print('a is $a.');
+}
 
 DateTime fromDate ;
 
@@ -18,6 +22,10 @@ final yesterday = DateTime(now.year, now.month, now.day - 1);
 final prefs = locator<PrefsService>();
 
 class ShowServiceScreen extends StatefulWidget {
+
+
+
+
   @override
   _ShowServiceScreenState createState() => _ShowServiceScreenState();
 }
@@ -39,6 +47,7 @@ class _ShowServiceScreenState extends State<ShowServiceScreen> {
                   children: [
                     InkWell(
                       onTap: (){
+                        main();
                         locator<ShowServiceBloc>().showServiceClear();
                       },
                       child: Container(

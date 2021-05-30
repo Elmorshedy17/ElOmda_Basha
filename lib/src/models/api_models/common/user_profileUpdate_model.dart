@@ -41,6 +41,7 @@ class Data {
   bool isActive;
   bool isBlocked;
   String avatar;
+  var accountNumber;
 
   Data(
       {this.id,
@@ -60,6 +61,7 @@ class Data {
         this.isConfirm,
         this.isActive,
         this.isBlocked,
+        this.accountNumber,
         this.avatar});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -81,6 +83,7 @@ class Data {
     isActive = json['is_active'];
     isBlocked = json['is_blocked'];
     avatar = json['avatar'];
+    accountNumber = json['account_number'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +106,7 @@ class Data {
     data['is_active'] = this.isActive;
     data['is_blocked'] = this.isBlocked;
     data['avatar'] = this.avatar;
+    data['account_number'] = this.accountNumber;
     return data;
   }
 }

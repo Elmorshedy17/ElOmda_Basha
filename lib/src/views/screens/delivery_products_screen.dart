@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
 import 'package:medicine/service/service_locator.dart';
+import 'package:medicine/src/blocs/api_blocs/currenct_bloc.dart';
 import 'package:medicine/src/blocs/delivery_orders_list.dart';
 import 'package:medicine/src/blocs/filter_screen_bloc.dart';
 import 'package:medicine/src/blocs/home_page_bloc.dart';
@@ -108,7 +109,7 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
               height: _isSwitch ?  MediaQuery.of(context).size.height -  100 : MediaQuery.of(context).size.height -  50,
               // color: Colors.red,
               child: FutureBuilder(
-                  future: ApiService.ShowServices(widget.UserId.toString()),
+                  future: ApiService.ShowServices(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     return snapshot.hasData
                         ? ListView.builder(
@@ -299,7 +300,7 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
                         width: 10.0,
                       ),
                       Text(
-                        sectionDataContent.price.toString(),
+                        sectionDataContent.totalForCountry.toString(),
                         //"100",
                         style: TextStyle(
                             fontWeight: semiFont,
@@ -310,7 +311,8 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
                         width: 5.0,
                       ),
                       Text(
-                        AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                        locator<CurrencyBloc>().CurrencySubject.value,
+                        // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                         style: TextStyle(
                             fontWeight: regFont,
                             fontSize: SecondaryFont,
@@ -526,7 +528,7 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
                               width: 10.0,
                             ),
                             Text(
-                              widget.sectionDataContent.price.toString(),
+                              widget.sectionDataContent.totalForCountry.toString(),
                               //"100",
                               style: TextStyle(
                                   fontWeight: semiFont,
@@ -537,7 +539,8 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
                               width: 5.0,
                             ),
                             Text(
-                              AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                              locator<CurrencyBloc>().CurrencySubject.value,
+                              // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                               style: TextStyle(
                                   fontWeight: regFont,
                                   fontSize: SecondaryFont,

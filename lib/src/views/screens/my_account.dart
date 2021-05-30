@@ -39,6 +39,7 @@ class _MyAccountState extends State<MyAccount> {
   TextEditingController whatsAppCodeController = TextEditingController();
 
   TextEditingController emailController = TextEditingController();
+  TextEditingController cashNumber = TextEditingController();
 
   // locator<PrefsService>().userNameProfile = snapshot.data.data.firstName;
   //
@@ -137,6 +138,10 @@ class _MyAccountState extends State<MyAccount> {
       body: FutureBuilder<Object>(
           future: ApiService.UserProfile(), //returns bool
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if(snapshot.hasData){
+              cashNumber = new TextEditingController(text: snapshot.data.data.accountNumber);
+
+            }
             return snapshot.hasData? SingleChildScrollView(
               child: Stack(
                 children: <Widget>[
@@ -334,7 +339,11 @@ class _MyAccountState extends State<MyAccount> {
                                               ),
                                               _whatsappFiled(),
                                               Container(
-                                                height: 35.0,
+                                                height: 15.0,
+                                              ),
+                                              _numberCashFiled(snapshot),
+                                              Container(
+                                                height: 15.0,
                                               ),
                                               Center(
                                                 child: ButtonTheme(
@@ -370,7 +379,13 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                                                             secondNameController.text,
                                                             PhoneController.text,
                                                             wharsAppController.text,
-                                                            SelectedImage,locator<UpdateProfileBloc>().currentimagePath,emailController.text,first.value,second.value).then((onValue){
+                                                            SelectedImage,
+                                                            locator<UpdateProfileBloc>().currentimagePath,
+                                                            emailController.text,
+                                                            first.value,
+                                                            second.value,
+                                                            cashNumber.text
+                                                        ).then((onValue){
                                                           if (onValue.key == "1") {
                                                             isDialogAdd.add(false);
 
@@ -425,6 +440,12 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                                                                 textColor: Colors.white,
                                                                 fontSize: 16.0
                                                             );
+
+
+                                                            setState(() {
+
+                                                            });
+
                                                           } else {
                                                             isDialogAdd.add(false);
 
@@ -642,6 +663,42 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                   height: 100.0,
                 ),
                 _emailUser(snapshot),
+            Divider(),
+
+                Container(
+                  height: 50,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.money_sharp, color: Colors.blue.withOpacity(.6),),
+                          Container(
+                            width: 8,
+                          ),
+                          Text(
+                            AppLocalizations.of(context).translate('number_cash'),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,),
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Text(
+                            snapshot.data.data.accountNumber,
+                            style: TextStyle(
+                                fontSize: PrimaryFont,
+                                fontWeight: semiFont,
+                                color: lightText),
+                          ),
+                        ],
+                      ),
+
+                    ],
+                  ),
+                ),
                 Divider(
                   //  color: Colors.blueGrey,
                   indent: 5.0,
@@ -1054,6 +1111,29 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
       ],
     );
   }
+
+
+  Widget _numberCashFiled(cashSnapshot) {
+    return StreamBuilder<Object>(
+        stream: locator<UpdateProfileBloc>().cash.stream,
+        builder: (context, snapshot) {
+          return TextField(
+            controller: cashNumber,
+            onChanged: locator<UpdateProfileBloc>().changeCash,
+            // keyboardType: TextInputType.number,
+            //  onChanged: UpdateProfileBloc.changeName,
+            decoration: InputDecoration(
+                errorText: snapshot.error,
+                hintText:
+                AppLocalizations.of(context).translate('number_cash'),
+                labelText:
+                AppLocalizations.of(context).translate('number_cash'),
+                //errorText: snapshot.error,
+                border: OutlineInputBorder()),
+          );
+        });
+  }
+
 
   Widget _whatsappFiled() {
     return Row(

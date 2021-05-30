@@ -53,6 +53,7 @@ import 'package:medicine/src/models/super_visor_marketers/home_model.dart';
 import 'package:medicine/src/models/super_visor_marketers/money_request_model.dart';
 import 'package:medicine/src/models/super_visor_marketers/show_all_marketer_orders_model.dart';
 import 'package:medicine/src/models/super_visor_marketers/show_all_markters_model.dart';
+import 'package:medicine/src/models/super_visor_marketers/show_cities_delgates.dart';
 import 'package:medicine/src/models/super_visor_marketers/show_order_model.dart';
 import 'package:medicine/src/models/super_visor_marketers/show_package_marketers.dart';
 import 'package:medicine/src/models/super_visor_marketers/store_order_model.dart';
@@ -553,7 +554,7 @@ class ApiService {
       secondName,
       phone,
       whatsapp,
-      SelectedImage,SelectedImagePath,email,dropFirstVal,dropSecVal) async {
+      SelectedImage,SelectedImagePath,email,dropFirstVal,dropSecVal,accountNumber) async {
     final dio = Dio();
 
     String platform;
@@ -590,7 +591,8 @@ class ApiService {
       //      "avatar": "$SelectedImage",
       "avatar": await MultipartFile.fromFile("$SelectedImagePath",filename: "$SelectedImagePath"),
       "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
-      "notify_send":locator<PrefsService>().notifySend
+      "notify_send":locator<PrefsService>().notifySend,
+      "account_number":"$accountNumber"
     }):
     FormData.fromMap({
       "lang":locator<PrefsService>().appLanguage,
@@ -614,7 +616,9 @@ class ApiService {
       //      "avatar": "$SelectedImage",
 //      "avatar": await MultipartFile.fromFile("$SelectedImagePath",filename: "$SelectedImagePath"),
       "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
-      "notify_send":locator<PrefsService>().notifySend
+      "notify_send":locator<PrefsService>().notifySend,
+      "account_number":"$accountNumber"
+
     });
 //     FormData formData = SelectedImagePath != null? FormData.fromMap({
 //       "lang":locator<PrefsService>().appLanguage,
@@ -1329,7 +1333,7 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
 /////////////////////////////////////////////////////////////////////////////////////
   ////////// Show Services ////////////
 
-  static Future<ShowServicesModel> ShowServices(UserId) async {
+  static Future<ShowServicesModel> ShowServices() async {
     final dio = Dio();
 
     String platform;
@@ -1461,40 +1465,40 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
 /////////////////////////////////////////////////////////////////////////////////////
   ////////// update-order  for delivery ////////////
 
-  static Future<UpdateOrderModel> UpdateOrderDelivery(itemId , quantity,tottalIncreasedQuantity) async {
-    final dio = Dio();
-    String platform;
-    if (Platform.isAndroid) {
-      platform = 'android';
-    } else if (Platform.isIOS) {
-      platform = 'ios';
-    }
-    dio.interceptors.add(LogInterceptor(
-      responseBody: true,
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-    ));
-    try {
-      Response response = await dio.post(
-        '$BASE_URL$Update_Order',
-        data: {
-          "order_item_id": itemId,
-          "count": int.parse(quantity),
-          "tottal": tottalIncreasedQuantity,
-          "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
-
-//          "order_item_id": 25,
-//          "count":6,
-        },
-      );
-      return UpdateOrderModel.fromJson(response.data);
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return null;
-    }
-  }
+//   static Future<UpdateOrderModel> UpdateOrderDelivery(itemId , quantity,tottalIncreasedQuantity) async {
+//     final dio = Dio();
+//     String platform;
+//     if (Platform.isAndroid) {
+//       platform = 'android';
+//     } else if (Platform.isIOS) {
+//       platform = 'ios';
+//     }
+//     dio.interceptors.add(LogInterceptor(
+//       responseBody: true,
+//       request: true,
+//       requestHeader: true,
+//       requestBody: true,
+//       responseHeader: true,
+//     ));
+//     try {
+//       Response response = await dio.post(
+//         '$BASE_URL$Update_Order',
+//         data: {
+//           "order_item_id": itemId,
+//           "count": int.parse(quantity),
+//           "tottal": tottalIncreasedQuantity,
+//           "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
+//
+// //          "order_item_id": 25,
+// //          "count":6,
+//         },
+//       );
+//       return UpdateOrderModel.fromJson(response.data);
+//     } catch (error, stacktrace) {
+//       print("Exception occured: $error stackTrace: $stacktrace");
+//       return null;
+//     }
+//   }
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -1558,15 +1562,46 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
       responseHeader: true,
     ));
     try {
+
+
+    //   user_id:
+    //   type:   => cancel,has_provider,in_way,finish,current_order,finish_order
+    // filter:
+    // order_id:
+    // country_id:
+    // city_id:
+    // market_id:
+    // phone:
+    // start_date:
+    // end_date:
+
       Response response = await dio.post(
         '$BASE_URL$Show_All_Delegates_Orders',
         data: {
-          "user_id":GlobalUserId,
           "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
-          // locator<AllOrdersFilterBloc>().currentAllOrdersFilter
-          "filter":"${locator<AllOrdersFilterBloc>().currentAllOrdersFilter}",
-//          "user_id": 176,
-         "type": "${locator<AllOrdersFilterBloc>().currentAllTypsOrdersFilter}",
+          "lang":locator<PrefsService>().appLanguage,
+          "user_id":GlobalUserId,
+         // "filter":"${locator<AllOrdersFilterBloc>().currentAllOrdersFilter}",
+         // "type": "${locator<AllOrdersFilterBloc>().currentAllTypsOrdersFilter}",
+         // "order_id":"",
+         // "country_id":"country_id",
+         // "city_id":"city_id",
+         // "market_id":"market_id",
+         // "phone":"phone",
+         // "start_date":"start_date",
+         // "end_date":"end_date"
+          "type": "${locator<AllOrdersFilterBloc>().currentAllOrdersFilter}",
+          "order_id": locator<AllOrdersFilterBloc>().orderIdFilterBloc.value,
+          "country_id": locator<AllOrdersFilterBloc>().currentCounteryId,
+          "city_id": locator<AllOrdersFilterBloc>().currentCityId,
+          // "provider_id": locator<AllOrdersFilterBloc>().providerIdFilterBloc.value,
+          "phone": locator<AllOrdersFilterBloc>().phoneFilterBloc.value,
+          "start_date": locator<AllOrdersFilterBloc>().startDateFilterBloc.value,
+          "end_date": locator<AllOrdersFilterBloc>().endDateFilterBloc.value,
+
+
+
+
         },
       );
       return ShowAllDelegatesOrdersModel.fromJson(response.data);
@@ -1939,7 +1974,18 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
 
 
 
-  static Future<DeliveryUpdateOrderModel> DeliveryUpdateOrder(orderId,items) async {
+  static Future<DeliveryUpdateOrderModel> DeliveryUpdateOrder(
+      orderId,
+      items,
+      countryId,
+      cityId,
+      name,
+      phone,
+      whatsapp,
+      // email,
+      address,
+      total
+      ) async {
     final dio = Dio();
 
     String platform;
@@ -1966,6 +2012,14 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
           "order_id": "$orderId",
           "items": "$items",
           "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
+          "country_id":"$countryId",
+          "city_id":"$cityId",
+          "name":"$name",
+          "phone":"$phone",
+          "whatsapp":"$whatsapp",
+          // "email":"$email",
+          "address": "$address",
+          "total":"$total",
 
         },
       );
@@ -2216,7 +2270,7 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
   ///////////////
 
 
-  static Future<DeliveryUpdateOrderModel> UpdateMarkterOrder(orderId,items) async {
+  static Future<DeliveryUpdateOrderModel> UpdateMarkterOrder(orderId,items,countryId,cityId,name,phone,whatsapp,email,address,total) async {
     final dio = Dio();
 
     String platform;
@@ -2243,6 +2297,14 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
           "order_id": "$orderId",
           "items": "$items",
           "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
+          "country_id":"$countryId",
+          "city_id":"$cityId",
+          "name":"$name",
+          "phone":"$phone",
+          "whatsapp":"$whatsapp",
+          "email":"$email",
+          "address": "$address",
+          "total":"$total",
 
         },
       );
@@ -2253,7 +2315,7 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
     }
   }
 
-  static Future<DeliveryUpdateOrderModel> ResendCanceledORder(orderId) async {
+  static Future<DeliveryUpdateOrderModel> ResendCanceledORder(orderId,countryId,cityId,name,phone,whatsapp,email,address,total) async {
     final dio = Dio();
 
     String platform;
@@ -2276,13 +2338,60 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
       Response response = await dio.post(
         '$BASE_URL$RESENDORDER',
         data: {
-          "lang":locator<PrefsService>().appLanguage,
-          "order_id": "$orderId",
-          "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
+      "lang":locator<PrefsService>().appLanguage,
+      "order_id": "$orderId",
+      "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
+      "country_id":"$countryId",
+      "city_id":"$cityId",
+      "name":"$name",
+      "phone":"$phone",
+      "whatsapp":"$whatsapp",
+      "email":"$email",
+      "address": "$address",
+      "total":"$total",
 
         },
       );
       return DeliveryUpdateOrderModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+
+
+  //////////////////////
+  static Future<ShowCitiesDelegatesModel> ShowCitiesDelegatesApi() async {
+    final dio = Dio();
+
+    String platform;
+
+    if (Platform.isAndroid) {
+      platform = 'android';
+    } else if (Platform.isIOS) {
+      platform = 'ios';
+    }
+
+    dio.interceptors.add(LogInterceptor(
+      responseBody: true,
+      request: true,
+      requestHeader: true,
+      requestBody: true,
+      responseHeader: true,
+    ));
+
+    try {
+      Response response = await dio.post(
+        '$BASE_URL$SHOWCITIESDELGATES',
+        data: {
+          "lang":locator<PrefsService>().appLanguage,
+          "user_id": "$GlobalUserId",
+          "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
+
+        },
+      );
+      return ShowCitiesDelegatesModel.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return null;

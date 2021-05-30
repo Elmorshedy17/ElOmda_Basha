@@ -35,7 +35,7 @@
   "signup_str": "تسجيل",
   "name_str": "اﻹسم",
   "mail_str": "البريد اﻹلكتروني",
-  "mobileNumber_str": "رقم الهاتف",
+  "mobileNumber_str": "رقم الجوال",
   "confirmPassword_str": "تأكيد كلمة المرور",
   "byAccept_str": "قبول",
   "login_str": "تسجيل الدخول",
@@ -192,7 +192,7 @@
   "Order Time": "وقت الطلب",
   "Tottal": "الاجمالي",
   "Customer_Name_:": "اسم العميل :",
-  "Phone Number": "رقم الهاتف",
+  "Phone Number": "رقم الجوال",
   "WhatsApp Number : ": "رقم الواتس اب",
   "Delivery Steps": "خطوات التوصيل",
   "Expired": "منتهي",
@@ -260,7 +260,15 @@
   "if_count_less_than":"اذا كان عدد العناصر اقل من ١",
   "Delete_str": "حذف",
   "Cancel_str": "الغاء",
-  "are_reorder": "اعاده طلب هذا الطلب"
+  "are_reorder": "اعاده طلب هذا الطلب",
+  "reorder_str": "اعاده طلب",
+  "Details": "التفاصيل",
+  "number_cash": "رقم الكاش للتحويل",
+  "cities_delegates": "المدن والمناديب"
+
+
+
+
 
 
 

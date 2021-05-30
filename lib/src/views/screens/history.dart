@@ -12,6 +12,7 @@ import 'package:medicine/src/views/screens/follow_order.dart';
 import 'package:medicine/src/views/screens/home_page.dart';
 import 'package:medicine/src/views/screens/markter_edit_cart.dart';
 import 'package:medicine/src/views/screens/receipt.dart';
+import 'package:medicine/src/views/screens/resend_canceled_details_edit.dart';
 import 'package:medicine/theme_setting.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -246,7 +247,7 @@ class _HistoryState extends State<History> {
                                                           context,
                                                           new MaterialPageRoute(
                                                               builder: (BuildContext context) =>
-                                                                  MarketerEditCart(variableRate,dataSnapshot.data[index].id)));
+                                                                  MarketerEditCart(variableRate,dataSnapshot.data[index].id,data: dataSnapshot.data[index],)));
                                                     },
                                                     child: Icon(Icons.edit),
                                                   ):Container(),
@@ -264,38 +265,48 @@ class _HistoryState extends State<History> {
                                                                   children: [
                                                                     InkWell(
                                                                       onTap: (){
-                                                                        ApiService.ResendCanceledORder(dataSnapshot.data[index].id).then((onValue){
-                                                                          locator<IsLoadingManager>().isLoading.add(false);
+                                                                        // Here We Are
 
-                                                                          if(onValue.key == "1"){
-                                                                            Fluttertoast.showToast(
-                                                                                msg: onValue.msg,
-                                                                                toastLength: Toast.LENGTH_SHORT,
-                                                                                gravity: ToastGravity.CENTER,
-                                                                                timeInSecForIosWeb: 1,
-                                                                                backgroundColor: Colors.red,
-                                                                                textColor: Colors.white,
-                                                                                fontSize: 16.0
-                                                                            );
+
                                                                             Navigator.pushReplacement(
                                                                                 context,
                                                                                 new MaterialPageRoute(
                                                                                     builder: (BuildContext context) =>
-                                                                                        HomePage(
-                                                                                            locator<UserIdBloc>().currentUserId.toString()
-                                                                                                .toString())));
-                                                                          }else{
-                                                                            Fluttertoast.showToast(
-                                                                                msg: onValue.msg,
-                                                                                toastLength: Toast.LENGTH_SHORT,
-                                                                                gravity: ToastGravity.CENTER,
-                                                                                timeInSecForIosWeb: 1,
-                                                                                backgroundColor: Colors.red,
-                                                                                textColor: Colors.white,
-                                                                                fontSize: 16.0
-                                                                            );
-                                                                          }
-                                                                        });
+                                                                                        ResendOrderDetailsOrder(data: dataSnapshot.data[index],)));
+
+
+                                                                        // ApiService.ResendCanceledORder(dataSnapshot.data[index].id).then((onValue){
+                                                                        //   locator<IsLoadingManager>().isLoading.add(false);
+                                                                        //
+                                                                        //   if(onValue.key == "1"){
+                                                                        //     Fluttertoast.showToast(
+                                                                        //         msg: onValue.msg,
+                                                                        //         toastLength: Toast.LENGTH_SHORT,
+                                                                        //         gravity: ToastGravity.CENTER,
+                                                                        //         timeInSecForIosWeb: 1,
+                                                                        //         backgroundColor: Colors.red,
+                                                                        //         textColor: Colors.white,
+                                                                        //         fontSize: 16.0
+                                                                        //     );
+                                                                        //     Navigator.pushReplacement(
+                                                                        //         context,
+                                                                        //         new MaterialPageRoute(
+                                                                        //             builder: (BuildContext context) =>
+                                                                        //                 HomePage(
+                                                                        //                     locator<UserIdBloc>().currentUserId.toString()
+                                                                        //                         .toString())));
+                                                                        //   }else{
+                                                                        //     Fluttertoast.showToast(
+                                                                        //         msg: onValue.msg,
+                                                                        //         toastLength: Toast.LENGTH_SHORT,
+                                                                        //         gravity: ToastGravity.CENTER,
+                                                                        //         timeInSecForIosWeb: 1,
+                                                                        //         backgroundColor: Colors.red,
+                                                                        //         textColor: Colors.white,
+                                                                        //         fontSize: 16.0
+                                                                        //     );
+                                                                        //   }
+                                                                        // });
 
                                                                       },
                                                                       child: Container(

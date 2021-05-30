@@ -737,7 +737,7 @@ print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
                             ),
                             Text(
                               AppLocalizations.of(context)
-                                  .translate('home_str'),
+                                  .translate('real_suadi_shortcut'),
                               style: TextStyle(
                                   fontWeight: regFont,
                                   fontSize: SecondaryFont,

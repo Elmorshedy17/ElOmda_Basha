@@ -6,8 +6,10 @@ import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
 import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
+import 'package:medicine/src/blocs/api_blocs/currenct_bloc.dart';
 import 'package:medicine/src/blocs/loading_manger.dart';
 import 'package:medicine/src/blocs/user_id_bloc.dart';
+import 'package:medicine/src/models/delivery_models/show_delegate_order.dart';
 import 'package:medicine/src/views/screens/delivery_home.dart';
 import 'package:medicine/src/views/widgets/shimmer_placeholders.dart';
 import 'package:medicine/theme_setting.dart';
@@ -17,11 +19,17 @@ import 'package:rxdart/rxdart.dart';
 
 List all = [];
 
-class DeliveryEditCart extends StatelessWidget {
+class DeliveryEditCart extends StatefulWidget {
   final varuableDiscountRate;
   final orderID;
-  DeliveryEditCart(this.varuableDiscountRate,this.orderID);
+  var data;
+  DeliveryEditCart(this.varuableDiscountRate,this.orderID,this.data);
 
+  @override
+  _DeliveryEditCartState createState() => _DeliveryEditCartState();
+}
+
+class _DeliveryEditCartState extends State<DeliveryEditCart> {
   @override
   Widget build(BuildContext context) {
     List<List> singleAll = new List();
@@ -43,18 +51,18 @@ all.clear();
         ),
       ),
       body: FutureBuilder(
-          future: ApiService.HomePageApi(),
+          future: ApiService.ShowServices(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
           return snapshot.hasData ? Stack(
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 60,right: 10,left: 10,top: 10),
                 child: ListView.builder(
-                    itemCount: snapshot.data.data.sectionData.length,
+                    itemCount: snapshot.data.data.length,
                     itemBuilder: (BuildContext context, int index){
                       singleAll.add(new List<String>());
 
-                      return SingleItem(snapshot.data.data.sectionData[index],varuableDiscountRate,singleAll[index]);
+                      return SingleItem(snapshot.data.data[index],widget.varuableDiscountRate,singleAll[index]);
                     }
                 ),
               ),
@@ -81,8 +89,29 @@ all.clear();
                             fontSize: 16.0
                         );
                       }else{
+
+                      //   "country_id":"$countryId",
+                      // "city_id":"$cityId",
+                      // "name":"$name",
+                      // "phone":"$phone",
+                      // "whatsapp":"$whatsapp",
+                      // "email":"$email",
+                      // "address": "$address",
+                      // "total":"$total",
+
                         locator<IsLoadingManager>().isLoading.add(true);
-                        ApiService.DeliveryUpdateOrder(orderID,how).then((onValue){
+                        ApiService.DeliveryUpdateOrder(
+                            widget.orderID,
+                            how,
+                            widget.data.countryId,
+                            widget.data.cityId,
+                            widget.data.name,
+                            widget.data.phone,
+                            widget.data.whatsapp,
+                            // "",
+                            widget.data.address,
+                            widget.data.total
+                        ).then((onValue){
                           locator<IsLoadingManager>().isLoading.add(false);
 
                           if(onValue.key == "1"){
@@ -187,7 +216,7 @@ class _SingleItemState extends State<SingleItem> {
               initialData: 0,
               stream: quantityController.stream,
               builder: (context, updatedCountSnapshot) {
-                total = (widget.data.price * quantity) + changePriceSnapshot.data;
+                total = (widget.data.totalForCountry * quantity) + changePriceSnapshot.data;
                 // all.add(SingleItemService(widget.data.id,updatedCountSnapshot.data,total));
 
 
@@ -249,15 +278,43 @@ if(quantity > 0){
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InkWell(
-                          onTap: (){
-                            print("widget.singleAll${widget.singleAll}");
-                          },
-                          child: Image.network(
-                            widget.data.image,
-                            height: 110.0,
-                            width: 110.0,
-                          ),
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: (){
+                                print("widget.singleAll${widget.singleAll}");
+                              },
+                              child: Image.network(
+                                widget.data.image,
+                                height: 110.0,
+                                width: 110.0,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "${widget.data.totalForCountry} ",
+                                  // "${widget.data.totalForCountry} ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: PrimaryFont,
+                                      fontWeight: semiFont),
+                                ),
+                                Text(
+                                  "${locator<CurrencyBloc>().CurrencySubject.value}",
+                                  // "${widget.data.totalForCountry} ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 14,
+                                      fontWeight: semiFont),
+                                ),
+
+                              ],
+                            ),
+                          ],
                         ),
                         Expanded(
                           child: Padding(
@@ -298,64 +355,76 @@ if(quantity > 0){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "${widget.data.price} ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: PrimaryFont,
-                              fontWeight: semiFont),
+
+
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              InkWell(
+                                onTap: (){
+                                  changePrice.add(0);
+
+                                  setState(() {
+                                    quantity ++;
+                                  });
+                                  // total = widget.data.price * quantity;
+                                },
+                                child: Text("+",style: TextStyle(fontSize: 28,color: Colors.blueAccent),),
+                              ),
+                              SizedBox(width: 15,),
+                              Text("$quantity",style: TextStyle(fontSize: 21),),
+                              SizedBox(width: 15,),
+
+                              InkWell(
+                                onTap: (){
+                                  if(!quantity.isNegative){
+                                    changePrice.add(0);
+                                    setState(() {
+                                      quantity --;
+                                    });
+
+
+                                  }else{
+                                    setState(() {
+                                      quantity = 0;
+                                    });
+                                    // setState(() {
+                                    //
+                                    // });
+                                  }
+
+                                },
+                                child: Text("-",style: TextStyle(fontSize: 35,color: Colors.redAccent),),
+                              ),
+                            ],
+                          ),
                         ),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
+                        Column(
                           children: [
-                            InkWell(
-                              onTap: (){
-                                changePrice.add(0);
-
-                                setState(() {
-                                  quantity ++;
-                                });
-                                // total = widget.data.price * quantity;
-                              },
-                              child: Text("+",style: TextStyle(fontSize: 28,color: Colors.blueAccent),),
+                            Text(
+                              "$total",
+                              // "$total ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: MainFont,
+                                  fontWeight: semiFont),
                             ),
-                            SizedBox(width: 15,),
-                            Text("$quantity",style: TextStyle(fontSize: 21),),
-                            SizedBox(width: 15,),
-
-                            InkWell(
-                              onTap: (){
-                                if(!quantity.isNegative){
-                                  changePrice.add(0);
-                                  setState(() {
-                                    quantity --;
-                                  });
-
-
-                                }else{
-                                  setState(() {
-                                    quantity = 0;
-                                  });
-                                  // setState(() {
-                                  //
-                                  // });
-                                }
-
-                              },
-                              child: Text("-",style: TextStyle(fontSize: 35,color: Colors.redAccent),),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                "${locator<CurrencyBloc>().CurrencySubject.value}",
+                                // "$total ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 14,
+                                    fontWeight: semiFont),
+                              ),
                             ),
                           ],
-                        ),
-
-                        Text(
-                          "$total ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: MainFont,
-                              fontWeight: semiFont),
                         ),
 
 
@@ -384,8 +453,8 @@ if(quantity > 0){
                                         height: 100,
                                         child: new NumberPicker.integer(
                                             initialValue: 0,
-                                            minValue: -(((quantity * widget.data.price) * widget.varuableDiscountRate) / 100).round(),
-                                            maxValue: (((quantity * widget.data.price) * widget.varuableDiscountRate) / 100).round(),
+                                            minValue: -(((quantity * widget.data.totalForCountry) * widget.varuableDiscountRate) / 100).round(),
+                                            maxValue: (((quantity * widget.data.totalForCountry) * widget.varuableDiscountRate) / 100).round(),
                                             onChanged: (newValue) {
                                               changePrice.add(newValue);
                                               // print("tottalDiscount $tottalDiscount");

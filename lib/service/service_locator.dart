@@ -3,6 +3,7 @@ import 'package:medicine/localizations/app_language.dart';
 import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/src/blocs/all_orders_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/check_code_bloc.dart';
+import 'package:medicine/src/blocs/api_blocs/currenct_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/delivery_coasts_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/show_service_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/update_cart_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:medicine/src/blocs/local_firebase_bloc.dart';
 import 'package:medicine/src/blocs/my_account_switch_bloc.dart';
 import 'package:medicine/src/blocs/my_orders_blocs.dart';
 import 'package:medicine/src/blocs/new_order_bloc.dart';
+import 'package:medicine/src/blocs/resend_canceled_details_edit.dart';
 import 'package:medicine/src/blocs/signIn_bloc.dart';
 import 'package:medicine/src/blocs/signUp_bloc.dart';
 import 'package:medicine/src/blocs/status_message_bloc.dart';
@@ -58,6 +60,7 @@ void setupLocator() async {
   locator.registerLazySingleton<HomePageBloc>(() => HomePageBloc());
   locator.registerLazySingleton<FilterScreenBloc>(() => FilterScreenBloc());
   locator.registerLazySingleton<UpdateCartModel>(() => UpdateCartModel());
+  locator.registerLazySingleton<CurrencyBloc>(() => CurrencyBloc());
   locator.registerLazySingleton<UserIdBloc>(() => UserIdBloc());
   locator.registerLazySingleton<NewOrderBloc>(() => NewOrderBloc());
   locator.registerLazySingleton<SumPricesBloc>(() => SumPricesBloc());
@@ -72,4 +75,5 @@ void setupLocator() async {
   locator.registerLazySingleton<LocalFirebaseBloc>(() => LocalFirebaseBloc());
   locator.registerLazySingleton<FirebaseTokenBloc>(() => FirebaseTokenBloc());
   locator.registerLazySingleton<IsLoadingManager>(() => IsLoadingManager());
+  locator.registerLazySingleton<ResendOrderDetailsBloc>(() => ResendOrderDetailsBloc());
 }

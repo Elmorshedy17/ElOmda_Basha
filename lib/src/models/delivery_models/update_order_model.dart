@@ -25,6 +25,8 @@ class UpdateOrderModel {
 class Data {
   int id;
   String status;
+  String totalForCountry;
+  String currencyCode;
   String name;
   String phone;
   String whatsapp;
@@ -62,6 +64,8 @@ class Data {
   Data(
       {this.id,
         this.status,
+        this.totalForCountry,
+        this.currencyCode,
         this.name,
         this.phone,
         this.whatsapp,
@@ -99,6 +103,8 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
+    totalForCountry = json['total_for_country'];
+    currencyCode = json['currency_code'];
     name = json['name'];
     phone = json['phone'];
     whatsapp = json['whatsapp'];
@@ -148,6 +154,8 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['status'] = this.status;
+    data['total_for_country'] = this.totalForCountry;
+    data['currency_code'] = this.currencyCode;
     data['name'] = this.name;
     data['phone'] = this.phone;
     data['whatsapp'] = this.whatsapp;

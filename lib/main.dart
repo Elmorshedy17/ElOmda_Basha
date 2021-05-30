@@ -105,6 +105,7 @@ MyApp({this.appLanguage});
             );
           },
           home: (locator<PrefsService>().userType == null || locator<PrefsService>().userType == "")? FirstLangScreen():mainPago,
+          // home: (locator<PrefsService>().userType == null || locator<PrefsService>().userType == "")? FirstLangScreen():mainPago,
 //          locator<PrefsService>().saveUserId == null ? PreRegistration():,
         );
       }),

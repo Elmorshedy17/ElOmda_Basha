@@ -23,6 +23,7 @@ import 'package:medicine/src/views/screens/my_account.dart';
 import 'package:medicine/src/views/screens/my_orders.dart';
 import 'package:medicine/src/views/screens/points_transfere.dart';
 import 'package:medicine/src/views/screens/pre_reg.dart';
+import 'package:medicine/src/views/screens/show_cities_delegate.dart';
 import 'package:medicine/src/views/screens/show_service.dart';
 import 'package:medicine/theme_setting.dart';
 //import 'package:auto_size_text/auto_size_text.dart';
@@ -57,13 +58,7 @@ class MyDrawer extends StatelessWidget {
 //                  new MaterialPageRoute(
 //                      builder: (BuildContext context) => GlobalUserType!= "delegate"? HomePage(locator<UserIdBloc>().currentUserId.toString()):DeliveyHomePage(locator<UserIdBloc>().currentUserId.toString())));
             }),
-            DrawerItem("assets/images/profile.png", AppLocalizations.of(context).translate("My_Acount") , () {
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (BuildContext context) => MyAccount()));
-            }),
+
             GlobalUserType !="delegate"?   DrawerItem("assets/images/cart.png", AppLocalizations.of(context).translate("My_Orders"), () {
               Navigator.pop(context);
               Navigator.push(
@@ -78,29 +73,13 @@ class MyDrawer extends StatelessWidget {
                   new MaterialPageRoute(
                       builder: (BuildContext context) => DeliveryProductsScreen(locator<UserIdBloc>().currentUserId.toString())));
             }),
-            GlobalUserType !="delegate"?
-            DrawerItem("assets/images/history.png", AppLocalizations.of(context).translate("history_filter") , () {
-              locator<AllOrdersFilterBloc>().clearFilter();
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (BuildContext context) => HistoryFilter()));
-            }):Container(),
 
 
 
-            GlobalUserType =="delegate"?
-            DrawerItem("assets/images/history.png", AppLocalizations.of(context).translate("soled_packages") , () {
-              // locator<AllOrdersFilterBloc>().clearFilter();
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (BuildContext context) => ShowServiceScreen()));
 
-              
-            }):Container(),
+
+
+
             GlobalUserType !="delegate"?
             DrawerItem("assets/images/history.png", AppLocalizations.of(context).translate("history_str"), () {
               locator<AllOrdersFilterBloc>().allOrdersFilterSink.add("");
@@ -118,6 +97,44 @@ class MyDrawer extends StatelessWidget {
                   context,
                   new MaterialPageRoute(
                       builder: (BuildContext context) => DeliveryHistory()));
+            }),
+
+
+            GlobalUserType !="delegate"?
+            DrawerItem("assets/images/history.png", AppLocalizations.of(context).translate("history_filter") , () {
+              locator<AllOrdersFilterBloc>().clearFilter();
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => HistoryFilter()));
+            }):Container(),
+
+            GlobalUserType =="delegate"?
+            DrawerItem("assets/images/history.png", AppLocalizations.of(context).translate("soled_packages") , () {
+              // locator<AllOrdersFilterBloc>().clearFilter();
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => ShowServiceScreen()));
+            }):Container(),
+
+            DrawerItem("assets/images/profile.png", AppLocalizations.of(context).translate("My_Acount") , () {
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => MyAccount()));
+            }),
+
+            // GlobalUserType !="delegate"?
+            DrawerItem("assets/images/cityscape.png", AppLocalizations.of(context).translate("cities_delegates") , () {
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => ShowCitiesDelegates()));
             }),
             GlobalUserType =="supervisor_marketer"? DrawerItem("assets/images/users.png", AppLocalizations.of(context).translate("Markters_str"), () {
     Navigator.pop(context);
@@ -339,6 +356,7 @@ Widget DrawerItem(imgUrl, title, voidOnTap) {
         imgUrl,
         height: 25.0,
         width: 25.0,
+        color: Colors.white,
       ),
       title: Text(
         title,

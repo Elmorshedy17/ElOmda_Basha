@@ -418,10 +418,10 @@ class _FollowOrderState extends State<FollowOrder> {
                                   onTap: (){
                                     // _launchURL("https://wa.me/${widget.data.data.phone}/?text=Hello");
                                     launchWhatsApp(phone: "${widget.data.phone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                                    "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}/""\n"
-                                        "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}/""\n"
-                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}/""\n"
-                                        "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}/""\n"
+                                    "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
+                                        "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
+                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
+                                        "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
@@ -468,10 +468,10 @@ class _FollowOrderState extends State<FollowOrder> {
                                   onTap: (){
                                     // _launchURL("https://wa.me/${widget.data.data.whatsapp}/?text=Hello");
                                     launchWhatsApp(phone: "${widget.data.whatsapp.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                                    "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}/""\n"
-                                        "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}/""\n"
-                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}/""\n"
-                                        "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}/""\n"
+                                    "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
+                                        "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
+                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
+                                        "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
@@ -511,10 +511,10 @@ class _FollowOrderState extends State<FollowOrder> {
                           trailing: MaterialButton(
                             onPressed: ()  {
                               launchWhatsApp(phone: "${widget.data.delegatePhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                              "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}/""\n"
-                                  "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}/""\n"
-                                  "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}/""\n"
-                                  "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}/""\n"
+                              "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
+                                  "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
+                                  "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
+                                  "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                   "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
                             },
                             child: Image.asset(

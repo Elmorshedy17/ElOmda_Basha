@@ -266,7 +266,11 @@
   "if_count_less_than":"if items count less than 1",
   "Delete_str": "Delete",
   "Cancel_str": "Cancel",
-  "are_reorder": "Re-Order this Order"
+  "are_reorder": "Re-Order this Order",
+  "reorder_str": "Re-Order",
+  "Details": "Details",
+  "number_cash": "Cash Number Transfer",
+  "cities_delegates": "Cities & delegates"
 
 
 
