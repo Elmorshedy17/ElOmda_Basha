@@ -50,12 +50,12 @@ class _OrderDetailsDeliveryUpdateState
       }) async {
     String url() {
       if (Platform.isIOS) {
-        return "whatsapp://wa.me/+$phone/?text=${Uri.parse(message)}";
+        return "whatsapp://wa.me/+$phone/?text=$message";
         return "https://wa.me/$phone/?text=${Uri.parse(message)}";
       } else {
         // return "whatsapp://send?   phone=$phone&text=${Uri.parse(message)}";
         // return "https://wa.me/$phone/?text=${Uri.parse(message)}";
-        return "https://wa.me/+$phone?text=${Uri.parse(message)}";
+        return "https://wa.me/+$phone?text=$message";
 
       }
     }
@@ -117,7 +117,8 @@ class _OrderDetailsDeliveryUpdateState
                                 "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
                                 "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                                 "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
-                                "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                                "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
 
                       },
                     ),
@@ -526,7 +527,8 @@ class _OrderDetailsDeliveryUpdateState
                                           "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
                                           "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                                           "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
-                                          "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                                          "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                          "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
                                     },
                                     child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                   ),
@@ -585,7 +587,8 @@ class _OrderDetailsDeliveryUpdateState
                                           "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
                                           "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                                           "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
-                                          "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                                          "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                          "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
                                     },
                                     child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                   ),
@@ -703,7 +706,8 @@ class _OrderDetailsDeliveryUpdateState
                               "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${snapshot.data.data.name}""\n"
                               "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                               "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
-                              "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                              "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                              "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
                           // FlutterOpenWhatsapp.sendSingleMessage(
                           //     "${snapshot.data.data.marketerPhone}", "Hello");
                         },

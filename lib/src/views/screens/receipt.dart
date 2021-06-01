@@ -404,12 +404,17 @@ class _ReceiptState extends State<Receipt> {
                       child: Column(
                         children: [
                           ListTile(
-                            leading:  ClipRRect(
-                              borderRadius: new BorderRadius.circular(3.0),
-                              child: Image.network(
-                                widget.data.delegateAvatar,
-                                height: 50.0,
-                                width: 50.0,
+                            leading:  Container(
+                              height: 50.0,
+                              width: 50.0,
+                              child: ClipRRect(
+                                borderRadius: new BorderRadius.circular(3.0),
+                                child: Image.network(
+                                  widget.data.delegateAvatar,
+                                  height: 50.0,
+                                  width: 50.0,
+                                  // fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             title: Text(

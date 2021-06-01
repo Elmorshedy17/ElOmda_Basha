@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
+import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/blocs/api_blocs/currenct_bloc.dart';
 import 'package:medicine/src/blocs/delivery_orders_list.dart';
@@ -36,97 +37,72 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            //     color: Colors.yellow,
-          ),
-          Positioned(
-            top: 0,
-            child: Container(
-              height: 80.0,
-              width: MediaQuery.of(context).size.width,
-              color: Theme.of(context).primaryColor,
-              child: Center(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.white,
-                              size: 25.0,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          Text(
-                            AppLocalizations.of(context).translate("My_Products") ,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: MainFont,
-                                fontWeight: bolFont),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          FlatButton(
-                            child: Text(
-                              AppLocalizations.of(context).translate("Order_str") ,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: PrimaryFont,
-                                  fontWeight: semiFont),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isSwitch = !_isSwitch;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      appBar: AppBar(
+          elevation: 0,
+          title: Text(AppLocalizations.of(context).translate('My_Products')),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 25.0,
             ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          Positioned(
-            top: 70.0,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
-              width: MediaQuery.of(context).size.width,
-              height: _isSwitch ?  MediaQuery.of(context).size.height -  100 : MediaQuery.of(context).size.height -  50,
-              // color: Colors.red,
-              child: FutureBuilder(
-                  future: ApiService.ShowServices(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    return snapshot.hasData
-                        ? ListView.builder(
+      actions: [
+        FlatButton(
+          child: Text(
+            AppLocalizations.of(context).translate("Order_str") ,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: PrimaryFont,
+                fontWeight: semiFont),
+          ),
+          onPressed: () {
+            setState(() {
+              _isSwitch = !_isSwitch;
+            });
+          },
+        )
+      ],),
+      body:   Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 15),
+            child: ListView(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  width: MediaQuery.of(context).size.width,
+                  // height: _isSwitch ?  MediaQuery.of(context).size.height -  100 : MediaQuery.of(context).size.height -  50,
+                  // color: Colors.red,
+                  child: FutureBuilder(
+                      future: ApiService.ShowServices(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return snapshot.hasData
+                            ? ListView.builder(
                             itemCount: snapshot.data.data.length,
                             physics: ScrollPhysics(),
-                            //  shrinkWrap: true,
+                            shrinkWrap: true,
                             itemBuilder: (context, int index) {
                               return _switcherProduct(
                                   snapshot.data.data[index]);
                             })
-                        : HomePageItemShimmer();
-                  }),
+                            : Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: HomePageItemShimmer());
+                      }),
+                ),
+                SizedBox(
+                  height: 75,
+                ),
+
+              ],
             ),
           ),
-          _isSwitch ?   Positioned(
-            bottom: 0.0,
-            height: 85.0,
+          _isSwitch ?
+          Positioned(
+            bottom: 0,
             child: Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(10.0),color: Colors.white,
@@ -214,9 +190,9 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
             elevation: 3.0,
             child: Container(
               height: 190.0,
-              width: MediaQuery.of(context).size.width - 100.0,
+              width: MediaQuery.of(context).size.width - 50.0,
               padding: EdgeInsets.only(
-                  top: 7.0, right: 70.0, bottom: 0.0, left: 15.0),
+                  top: 7.0, right: locator<PrefsService>().appLanguage == "en" ? 70.0 : 15, bottom: 0.0, left: locator<PrefsService>().appLanguage == "en" ?  15.0 : 70.0),
               child: Wrap(
                 children: <Widget>[
                   Row(
@@ -250,14 +226,17 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
                   Container(
                     height: 10.0,
                   ),
-                  Text(
-                    //  "This text is an example of text that can be replaced in the same space",
-                    sectionDataContent.desc,
-                    style: TextStyle(
-                        fontWeight: semiFont,
-                        fontSize: PrimaryFont,
-                        color: littleGrey),
-                    maxLines: 2,
+                  Container(
+                    width: MediaQuery.of(context).size.width - 75.0,
+                    child: Text(
+                      //  "This text is an example of text that can be replaced in the same space",
+                      sectionDataContent.desc,
+                      style: TextStyle(
+                          fontWeight: semiFont,
+                          fontSize: PrimaryFont,
+                          color: littleGrey),
+                      maxLines: 2,
+                    ),
                   ),
                   Container(
                     height: 5.0,
@@ -332,7 +311,8 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
           ),
           Positioned(
               top: 40,
-              right: 0.0,
+              right: locator<PrefsService>().appLanguage == "en" ? 0.0 : null,
+              left: locator<PrefsService>().appLanguage == "en" ? null : 0.0,
               child: InkWell(
 //                onTap: () {
 //                  Navigator.push(
@@ -343,8 +323,8 @@ class _DeliveryProductsScreenState extends State<DeliveryProductsScreen> {
 //                },
                 child: Image.network(
                   sectionDataContent.image,
-                  height: 110.0,
-                  width: 110.0,
+                  height: 75.0,
+                  width: 75.0,
                 ),
               )),
         ],
@@ -374,25 +354,26 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         InkWell(
-          onTap: widget.sectionDataContent.quantity != 0
-              ? () {
+          onTap:
+          // widget.sectionDataContent.quantity != 0 ?
+              () {
 
 
 
                 if (checked == false) {
-                  if (widget.sectionDataContent.quantity > 0) {
+                  // if (widget.sectionDataContent.quantity > 0) {
 
                     if(updateCount.text.length > 0){
                       _allOrders.add("{\"service_id\":\"${widget.sectionDataContent.id}\",\"quantity\":\"${updateCount.text}\"}");
 
-                    }
+                    // }
                   }
                 } else if (checked == true) {
-                  if (widget.sectionDataContent.quantity > 0) {
+                  // if (widget.sectionDataContent.quantity > 0) {
                     _allOrders.remove(
                         "{\"service_id\":\"${widget.sectionDataContent.id}\",\"quantity\":\"${updateCount.text}\"}");
                     updateCount.clear();
-                  }
+                  // }
                 }
 
 
@@ -403,7 +384,8 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
                     checked = !checked;
                   });
                 }
-              : null,
+              // : null
+          ,
           child: checked
               ? Container(
                   height: 30.0,
@@ -437,7 +419,7 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
         Expanded(
           child: Container(
             margin: EdgeInsets.only(bottom: 10.0),
-            height: 200.0,
+            height: 250.0,
             width: MediaQuery.of(context).size.width,
             //    color: Colors.green,
             child: Stack(
@@ -448,21 +430,38 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
                   ),
                   elevation: 3.0,
                   child: Container(
-                    height: 190.0,
+                    height: 250.0,
                     width: MediaQuery.of(context).size.width - 100.0,
                     padding: EdgeInsets.only(
-                        top: 7.0, right: 70.0, bottom: 0.0, left: 15.0),
-                    child: Wrap(
+                        top: 7.0, right: 7.0, bottom: 0.0, left: 15.0),
+                    child: Column(
                       children: <Widget>[
-                        Row(
-//                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                   Row(
+                         crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              widget.sectionDataContent.title,
-                              // "Product Name",
-                              style: TextStyle(
-                                fontWeight: bolFont,
-                                fontSize: MediumFont,
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    widget.sectionDataContent.title,
+                                    // "Product Name",
+                                    style: TextStyle(
+                                      fontWeight: bolFont,
+                                      fontSize: MediumFont,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 10.0,
+                                  ),
+                                  Center(
+                                    child: Image.network(
+                                      widget.sectionDataContent.image,
+                                      height: 75.0,
+                                      width: 75.0,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             widget.sectionDataContent.quantity == 0
@@ -484,9 +483,7 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
                                 : Container(),
                           ],
                         ),
-                        Container(
-                          height: 10.0,
-                        ),
+
                         Container(
                           height: 5.0,
                         ),
@@ -558,23 +555,23 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
                     ),
                   ),
                 ),
-                Positioned(
-                    top: 40,
-                    right: 0.0,
-                    child: InkWell(
-                      onTap: () {
-//                        Navigator.push(
-//                            context,
-//                            new MaterialPageRoute(
-//                                builder: (BuildContext context) =>
-//                                    SingleProduct(widget.sectionDataContent)));
-                      },
-                      child: Image.network(
-                        widget.sectionDataContent.image,
-                        height: 110.0,
-                        width: 110.0,
-                      ),
-                    )),
+//                 Positioned(
+//                     top: 40,
+//                     right: 0.0,
+//                     child: InkWell(
+//                       onTap: () {
+// //                        Navigator.push(
+// //                            context,
+// //                            new MaterialPageRoute(
+// //                                builder: (BuildContext context) =>
+// //                                    SingleProduct(widget.sectionDataContent)));
+//                       },
+//                       child: Image.network(
+//                         widget.sectionDataContent.image,
+//                         height: 110.0,
+//                         width: 110.0,
+//                       ),
+//                     )),
               ],
             ),
           ),
@@ -584,20 +581,13 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
         ),
         Container(
           width: 65.0,
-          child: widget.sectionDataContent.quantity > 0
-              ? TextField(
-                  enabled: checked ? false : true,
-                  controller: updateCount,
-                  keyboardType: TextInputType.number,
-                  //  onChanged: signupBloc.changeName,
-                  decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate("count"),
-//                labelText: "Amount",
-                      //errorText: snapshot.error,
-                      border: OutlineInputBorder()),
-                )
-              : TextField(
-                  enabled: false,
+          child:
+
+          // widget.sectionDataContent.quantity > 0?
+                  TextField(
+                  enabled: checked == true ? true :false
+                    // false : true
+                    ,
                   controller: updateCount,
                   keyboardType: TextInputType.number,
                   //  onChanged: signupBloc.changeName,
@@ -607,6 +597,17 @@ class _SingleChooseProductState extends State<SingleChooseProduct> {
                       //errorText: snapshot.error,
                       border: OutlineInputBorder()),
                 ),
+//               : TextField(
+//                   enabled: false,
+//                   controller: updateCount,
+//                   keyboardType: TextInputType.number,
+//                   //  onChanged: signupBloc.changeName,
+//                   decoration: InputDecoration(
+//                       hintText: AppLocalizations.of(context).translate("count"),
+// //                labelText: "Amount",
+//                       //errorText: snapshot.error,
+//                       border: OutlineInputBorder()),
+//                 ),
         ),
       ],
     );

@@ -162,7 +162,12 @@ class _ShowServiceScreenState extends State<ShowServiceScreen> {
                             SizedBox(
                               width: 15,
                             ),
-                            Text("X ${snapshot.data.data[index].solidTotal}",style: TextStyle(fontSize: 18),)
+                            Row(
+                              children: [
+                                Text(" ${snapshot.data.data[index].solidTotal} ",style: TextStyle(fontSize: 18),),
+                                Text(" ${AppLocalizations.of(context).translate("soled_packages") }",style: TextStyle(fontSize: 15,color: Colors.blueGrey),),
+                              ],
+                            )
 
                           ],
                         )

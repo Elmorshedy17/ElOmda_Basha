@@ -60,12 +60,12 @@ class _DelivereyFollowOrderState extends State<DelivereyFollowOrder> {
       }) async {
     String url() {
       if (Platform.isIOS) {
-        return "whatsapp://wa.me/+$phone/?text=${Uri.parse(message)}";
+        return "whatsapp://wa.me/+$phone/?text=$message";
         return "https://wa.me/$phone/?text=${Uri.parse(message)}";
       } else {
         // return "whatsapp://send?   phone=$phone&text=${Uri.parse(message)}";
         // return "https://wa.me/$phone/?text=${Uri.parse(message)}";
-        return "https://wa.me/+$phone?text=${Uri.parse(message)}";
+        return "https://wa.me/+$phone?text=$message";
 
       }
     }
@@ -200,7 +200,8 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                               "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
                               "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                               "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
-                              "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                              "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                              "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}");
 
                     },
                   ),
@@ -441,7 +442,9 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                    "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
                                    "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                                    "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
-                                   "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                                   "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                   "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}"
+                                   );
 
                                  },
                                  child: Image.asset("assets/images/whatsapp.png",width: 20,),
@@ -503,7 +506,8 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                         "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
                                         "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                                         "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
-                                        "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                                        "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                        "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                 ),
@@ -546,7 +550,8 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                   "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
                                   "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                                   "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
-                                  "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}");
+                                  "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                  "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}");
                             },
                             child: Image.asset(
                               "assets/images/whatsapp.png",

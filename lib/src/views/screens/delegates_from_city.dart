@@ -21,12 +21,12 @@ class _CityDelegatesState extends State<CityDelegates> {
       }) async {
     String url() {
       if (Platform.isIOS) {
-        return "whatsapp://wa.me/+$phone/?text=${Uri.parse(message)}";
+        return "whatsapp://wa.me/+$phone/?text=$message";
         return "https://wa.me/$phone/?text=${Uri.parse(message)}";
       } else {
         // return "whatsapp://send?   phone=$phone&text=${Uri.parse(message)}";
         // return "https://wa.me/$phone/?text=${Uri.parse(message)}";
-        return "https://wa.me/+$phone?text=${Uri.parse(message)}";
+        return "https://wa.me/+$phone?text=$message";
 
       }
     }
