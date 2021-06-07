@@ -118,7 +118,7 @@ class _OrderDetailsDeliveryUpdateState
                                 "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                                 "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                                 "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
+                                "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.totalForCountry} ${snapshot.data.data.currencyCode}");
 
                       },
                     ),
@@ -132,7 +132,7 @@ class _OrderDetailsDeliveryUpdateState
                       onPressed: () {
 
                         ApiService.ShowCart().then((value) {
-                          if(value.key == "1"){
+                          if(value.key.toString() == "1"){
                             Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) =>
                                 DeliveryEditCart(value.variableRate,widget.id,snapshot.data.data)));
                           }else{
@@ -528,7 +528,7 @@ class _OrderDetailsDeliveryUpdateState
                                           "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                                           "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                                           "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                          "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
+                                          "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.totalForCountry} ${snapshot.data.data.currencyCode}");
                                     },
                                     child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                   ),
@@ -588,7 +588,7 @@ class _OrderDetailsDeliveryUpdateState
                                           "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                                           "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                                           "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                          "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
+                                          "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.totalForCountry} ${snapshot.data.data.currencyCode}");
                                     },
                                     child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                   ),
@@ -707,7 +707,7 @@ class _OrderDetailsDeliveryUpdateState
                               "${AppLocalizations.of(context).translate("Phone Number")}  ${snapshot.data.data.phone}""\n"
                               "${AppLocalizations.of(context).translate("Adress_str")}  ${snapshot.data.data.address}""\n"
                               "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                              "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.total} ${snapshot.data.data.currencyCode}");
+                              "${AppLocalizations.of(context).translate("total")} ${snapshot.data.data.totalForCountry} ${snapshot.data.data.currencyCode}");
                           // FlutterOpenWhatsapp.sendSingleMessage(
                           //     "${snapshot.data.data.marketerPhone}", "Hello");
                         },
@@ -754,7 +754,7 @@ class _OrderDetailsDeliveryUpdateState
                                   onPressed: () {
                                     ApiService.ShowDelegateOrder(
                                         snapshot.data.data.id).then((onValue) {
-                                      if (onValue.key == "1") {
+                                      if (onValue.key.toString() == "1") {
                                         Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) =>
                                             DelivereyFollowOrder(snapshot.data,onValue)));
                                       } else {

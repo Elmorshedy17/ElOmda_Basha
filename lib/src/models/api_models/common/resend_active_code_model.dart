@@ -26,7 +26,7 @@ class ResendActiveCodeModel {
 }
 
 class Data {
-  int id;
+  var id;
   String name;
   String firstName;
   String lastName;
@@ -37,18 +37,18 @@ class Data {
   String whatsappCode;
   String userType;
   String benfitType;
-  int totalCommission;
-  int doneCommission;
-  int needCommission;
-  int totalPoint;
-  int donePoint;
-  int needPoint;
-  int totalGifts;
-  int doneGifts;
-  int needGifts;
-  int countryId;
+  var totalCommission;
+  var doneCommission;
+  var needCommission;
+  var totalPoint;
+  var donePoint;
+  var needPoint;
+  var totalGifts;
+  var doneGifts;
+  var needGifts;
+  var countryId;
   String countryTitle;
-  int cityId;
+  var cityId;
   String cityTitle;
   String lang;
   bool isConfirm;

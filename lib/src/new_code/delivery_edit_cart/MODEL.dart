@@ -68,6 +68,8 @@ class Data {
   var delegateCommission;
   var delegatePoint;
   List<OrderItems> orderItems;
+  List<OrderStatus> orderStatus;
+
 
   Data(
       {this.id,
@@ -110,6 +112,7 @@ class Data {
         this.delegateAvatar,
         this.delegateCommission,
         this.delegatePoint,
+        this.orderStatus,
         this.orderItems});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -160,6 +163,12 @@ class Data {
         orderItems.add(new OrderItems.fromJson(v));
       });
     }
+    if (json['order_status'] != null) {
+      orderStatus = new List<OrderStatus>();
+      json['order_status'].forEach((v) {
+        orderStatus.add(new OrderStatus.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -204,6 +213,9 @@ class Data {
     data['delegate_point'] = this.delegatePoint;
     if (this.orderItems != null) {
       data['order_items'] = this.orderItems.map((v) => v.toJson()).toList();
+    }
+    if (this.orderStatus != null) {
+      data['order_status'] = this.orderStatus.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -274,6 +286,26 @@ class OrderItems {
     data['point'] = this.point;
     data['benfit'] = this.benfit;
     data['quantity'] = this.quantity;
+    return data;
+  }
+}
+
+
+class OrderStatus {
+  String status;
+  String message;
+
+  OrderStatus({this.status, this.message});
+
+  OrderStatus.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
     return data;
   }
 }

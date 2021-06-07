@@ -281,6 +281,8 @@ class DataInner {
   String delegateWhatsapp;
   String delegateAvatar;
   List<OrderItems> orderItems;
+  List<OrderStatus> orderStatus;
+
   var cityId;
   var countryId;
 
@@ -317,7 +319,7 @@ class DataInner {
         this.message,
         this.cityId,
         this.countryId,
-
+        this.orderStatus,
         this.orderItems});
 
   DataInner.fromJson(Map<String, dynamic> json) {
@@ -359,6 +361,12 @@ class DataInner {
         orderItems.add(new OrderItems.fromJson(v));
       });
     }
+    if (json['order_status'] != null) {
+      orderStatus = new List<OrderStatus>();
+      json['order_status'].forEach((v) {
+        orderStatus.add(new OrderStatus.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -395,6 +403,9 @@ class DataInner {
     data['delegate_avatar'] = this.delegateAvatar;
     if (this.orderItems != null) {
       data['order_items'] = this.orderItems.map((v) => v.toJson()).toList();
+    }
+    if (this.orderStatus != null) {
+      data['order_status'] = this.orderStatus.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -506,6 +517,25 @@ class Pagination {
     data['last_page'] = this.lastPage;
     data['next_page_url'] = this.nextPageUrl;
     data['previous_page_url'] = this.previousPageUrl;
+    return data;
+  }
+}
+
+class OrderStatus {
+  String status;
+  String message;
+
+  OrderStatus({this.status, this.message});
+
+  OrderStatus.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
     return data;
   }
 }

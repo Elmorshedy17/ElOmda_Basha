@@ -119,6 +119,8 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
         currentPage++;
         locator<AllOrdersFilterBloc>().inCurrentPageController.add(currentPage);
         locator<AllOrdersFilterBloc>().downloadUrlSubject.add(onValue.download);
+        print("onValue.data.pagination${onValue.data.pagination.currentPage}");
+
         onValue.data.dataInner.forEach((e) {
           allOrdersList.add(e);
         });
@@ -192,8 +194,10 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
           context: context,
           builder: (BuildContext bc){
             return Container(
+              padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom,top: 15,left: 15,right: 15),
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(15),
+              // padding: EdgeInsets.all(15),
               child: new ListView(
                 children: <Widget>[
                   Row(

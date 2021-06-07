@@ -661,7 +661,7 @@ class _NewOrderState extends State<NewOrder> {
                 ApiService.StoreOrder(
                     // dropFirstVal,dropSecVal,
                     name.text,phoneNumber.text,whatsAppNumber.text,email.text,adrLocation.text,notesController.text).then((data) {
-                  if(data.key == "1"){
+                  if(data.key.toString() == "1"){
                     isNewOrder.add(false);
 
                     Navigator.push(

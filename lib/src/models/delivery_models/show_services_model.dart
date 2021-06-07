@@ -31,10 +31,10 @@ class Data {
   int id;
   String title;
   String desc;
-  int price;
-  int totalForCountry;
-  int solidTotal;
-  int quantity;
+  var price;
+  var totalForCountry;
+  var solidTotal;
+  var quantity;
   String image;
 
   Data(

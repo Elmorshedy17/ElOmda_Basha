@@ -592,7 +592,8 @@ class ApiService {
       "avatar": await MultipartFile.fromFile("$SelectedImagePath",filename: "$SelectedImagePath"),
       "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
       "notify_send":locator<PrefsService>().notifySend,
-      "account_number":"$accountNumber"
+      "account_number":"$accountNumber",
+      "country_id": locator<AllOrdersFilterBloc>().currentCounteryId,
     }):
     FormData.fromMap({
       "lang":locator<PrefsService>().appLanguage,
@@ -1574,9 +1575,11 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
     // phone:
     // start_date:
     // end_date:
+      var showUrl = "show-all-delegates-orders?page=${locator<AllOrdersFilterBloc>().currentPageControllerValue}";
 
       Response response = await dio.post(
-        '$BASE_URL$Show_All_Delegates_Orders',
+        '$BASE_URL$showUrl',
+        // '$BASE_URL$Show_All_Delegates_Orders',
         data: {
           "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
           "lang":locator<PrefsService>().appLanguage,

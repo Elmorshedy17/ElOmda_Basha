@@ -52,8 +52,8 @@ class SectionData {
   int id;
   String title;
   String desc;
-  int price;
-  int quantity;
+  var price;
+  var quantity;
   String image;
 
   SectionData(

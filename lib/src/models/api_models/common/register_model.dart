@@ -34,8 +34,8 @@ class Data {
   String whatsappCode;
   String userType;
   String benfitType;
-  int commission;
-  int point;
+  var commission;
+  var point;
   String lang;
   bool isConfirm;
   bool isActive;
@@ -107,21 +107,3 @@ class Data {
   }
 }
 
-//class RegisterModel {
-//  String key;
-//  String msg;
-//
-//  RegisterModel({this.key, this.msg});
-//
-//  RegisterModel.fromJson(Map<String, dynamic> json) {
-//    key = json['key'];
-//    msg = json['msg'];
-//  }
-//
-//  Map<String, dynamic> toJson() {
-//    final Map<String, dynamic> data = new Map<String, dynamic>();
-//    data['key'] = this.key;
-//    data['msg'] = this.msg;
-//    return data;
-//  }
-//}

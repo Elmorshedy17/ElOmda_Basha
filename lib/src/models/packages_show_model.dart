@@ -30,8 +30,8 @@ class PackagesShowModel {
 class Data {
   int id;
   String title;
-  int count;
-  int point;
+  var count;
+  var point;
 
   Data({this.id, this.title, this.count, this.point});
 

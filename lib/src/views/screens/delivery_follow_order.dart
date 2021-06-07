@@ -201,7 +201,7 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                               "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                               "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                               "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                              "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}");
+                              "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}");
 
                     },
                   ),
@@ -443,7 +443,7 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                    "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                                    "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                    "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                   "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}"
+                                   "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}"
                                    );
 
                                  },
@@ -507,7 +507,7 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                         "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                                         "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                        "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}");
+                                        "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                 ),
@@ -551,7 +551,7 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                   "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
                                   "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                   "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                  "${AppLocalizations.of(context).translate("total")} ${widget.data.data.total} ${widget.data.data.currencyCode}");
+                                  "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}");
                             },
                             child: Image.asset(
                               "assets/images/whatsapp.png",

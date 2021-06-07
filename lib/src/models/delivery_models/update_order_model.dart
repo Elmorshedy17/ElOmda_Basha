@@ -25,7 +25,7 @@ class UpdateOrderModel {
 class Data {
   int id;
   String status;
-  String totalForCountry;
+  var totalForCountry;
   String currencyCode;
   String name;
   String phone;
@@ -37,8 +37,8 @@ class Data {
   String message;
 //  double lat;
 //  double lng;
-  int delivery;
-  int total;
+  var delivery;
+  var total;
   String newOrder;
   String cancel;
   String hasProvider;
@@ -50,15 +50,15 @@ class Data {
   String marketerPhone;
   String marketerAvatar;
   String marketerBenfitType;
-  int marketerCommission;
-  int marketerPoint;
+  var marketerCommission;
+  var marketerPoint;
   String delegateName;
   String delegatePhone;
   String delegateBenfitType;
   String delegateAvatar;
-  int delegateCommission;
-  int delegatePoint;
-  List<Null> orderStatus;
+  var delegateCommission;
+  var delegatePoint;
+  List<OrderStatus> orderStatus;
   List<OrderItems> orderItems;
 
   Data(
@@ -137,10 +137,10 @@ class Data {
     delegateCommission = json['delegate_commission'];
     delegatePoint = json['delegate_point'];
     if (json['order_status'] != null) {
-      orderStatus = new List<Null>();
-//      json['order_status'].forEach((v) {
-//        orderStatus.add(new Null.fromJson(v));
-//      });
+      orderStatus = new List<OrderStatus>();
+      json['order_status'].forEach((v) {
+        orderStatus.add(new OrderStatus.fromJson(v));
+      });
     }
     if (json['order_items'] != null) {
       orderItems = new List<OrderItems>();
@@ -193,19 +193,23 @@ class Data {
     if (this.orderItems != null) {
       data['order_items'] = this.orderItems.map((v) => v.toJson()).toList();
     }
+    if (this.orderStatus != null) {
+      data['order_status'] = this.orderStatus.map((v) => v.toJson()).toList();
+    }
+
     return data;
   }
 }
 
 class OrderItems {
-  int orderItemId;
-  int sectionId;
+  var orderItemId;
+  var sectionId;
   String sectionTitle;
   String sectionDesc;
-  int sectionPrice;
+  var sectionPrice;
   String sectionImage;
-  int quantity;
-  int total;
+  var quantity;
+  var total;
 
   OrderItems(
       {this.orderItemId,
@@ -238,6 +242,24 @@ class OrderItems {
     data['section_image'] = this.sectionImage;
     data['quantity'] = this.quantity;
     data['total'] = this.total;
+    return data;
+  }
+}
+class OrderStatus {
+  String status;
+  String message;
+
+  OrderStatus({this.status, this.message});
+
+  OrderStatus.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
     return data;
   }
 }

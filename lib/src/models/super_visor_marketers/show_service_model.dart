@@ -26,8 +26,8 @@ class Data {
   int id;
   String title;
   String desc;
-  int price;
-  int quantity;
+  var price;
+  var quantity;
   String image;
 
   Data({this.id, this.title, this.desc, this.price, this.quantity, this.image});

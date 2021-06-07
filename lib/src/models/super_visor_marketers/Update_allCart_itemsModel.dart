@@ -64,11 +64,11 @@ class CartData {
   int sectionId;
   String sectionTitle;
   String sectionDesc;
-  int sectionPrice;
-  int sectionQuantity;
+  var sectionPrice;
+  var sectionQuantity;
   String sectionImage;
-  int quantity;
-  int total;
+  var quantity;
+  var total;
 
   CartData(
       {this.id,

@@ -7,6 +7,7 @@ import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
 import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
+import 'package:medicine/src/blocs/all_orders_bloc.dart';
 import 'package:medicine/src/blocs/loading_manger.dart';
 import 'package:medicine/src/blocs/my_account_switch_bloc.dart';
 import 'package:medicine/src/blocs/update_profile.dart';
@@ -342,6 +343,10 @@ class _MyAccountState extends State<MyAccount> {
                                                 height: 15.0,
                                               ),
                                               _numberCashFiled(snapshot),
+                                              Container(
+                                                height: 15.0,
+                                              ),
+                                              _counteryCity(context),
                                               Container(
                                                 height: 15.0,
                                               ),
@@ -710,7 +715,13 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                   indent: 5.0,
                   endIndent: 5.0,
                 ),
-                _changePassword(snapshot)
+                _changePassword(snapshot),
+                // Divider(
+                //   color: Colors.blueGrey,
+                //   indent: 5.0,
+                //   endIndent: 5.0,
+                // ),
+               // ,
               ],
             ),
           ),
@@ -1234,3 +1245,194 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
 }
 
 
+
+Widget _counteryCity(context) {
+  return Row(
+    children: <Widget>[
+      FutureBuilder(
+          future: ApiService.AllCountriesAndCities(),
+          builder: (context, snapshot) {
+            var countries = [];
+            var countryId = [];
+            // var cities = [];
+            // var citiesIdTitle = [];
+            // var citiesId = [];
+            if (snapshot.hasData) {
+              for (int index = 0;
+              index < snapshot.data.data.length;
+              index++) {
+                countries.add(snapshot.data.data[index].title);
+              }
+            } else {
+              var countries = ["السعوديه"];
+            }
+            return Expanded(
+              child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        // return object of type Dialog
+                        return AlertDialog(
+                          content: Container(
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                            child: Scrollbar(
+                              child: GridView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: countries.length,
+                                  gridDelegate:
+                                  new SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio:
+                                      MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4)),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        locator<AllOrdersFilterBloc>().counterySink.add(countries[index]);
+                                        print("locator<AllOrdersFilterBloc>().counterySink.add(countries[index])${locator<AllOrdersFilterBloc>().currentCountery}");
+                                        Navigator.pop(context);
+                                        // locator<AllOrdersFilterBloc>().chosenCitySink.add("");
+                                        // cities.clear();
+
+
+                                        for (int index = 0; index < snapshot.data.data.length; index++) {
+                                          if (snapshot.data.data[index].title.contains(locator<AllOrdersFilterBloc>().currentCountery)) {
+                                            countryId.add(snapshot.data.data[index].id);
+
+                                            // for (int ind = 0; ind < snapshot.data.data[index].cities.length; ind++) {
+                                            //   cities.add(snapshot.data.data[index].cities[ind].title);
+                                            //   citiesIdTitle.add(snapshot.data.data[index].cities[ind]);
+                                            // }
+                                          }
+                                        }
+                                        // locator<AllOrdersFilterBloc>().cityIdTitleSink.add(citiesIdTitle);
+
+//                                          print("------------------------------------------------------- ${citiesId[0].id} ------------------------");
+
+                                        //
+                                        locator<AllOrdersFilterBloc>().counteryIdSink.add(snapshot.data.data[index].id);
+                                        print("locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId ${locator<AllOrdersFilterBloc>().currentCounteryId}");
+//
+//                                         locator<AllOrdersFilterBloc>()
+//                                             .citiesSink
+//                                             .add(cities);
+                                      },
+                                      child: Center(
+                                          child: Text(
+                                            countries[index],
+                                            textAlign: TextAlign.center,
+                                          )),
+                                    );
+                                  }),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    height: 60.0,
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      border: Border.all(
+                          color: Colors.grey,
+                          style: BorderStyle.solid,
+                          width: 0.80),
+                    ),
+                    child: Center(
+                        child: StreamBuilder(
+                            initialData: "",
+                            stream: locator<AllOrdersFilterBloc>().counteryStream$,
+                            builder: (context, snapshot) {
+                              return Text(snapshot.data);
+                            })),
+                  )),
+            );
+          }),
+//       SizedBox(
+//         width: 5.0,
+//       ),
+//       Expanded(
+//         child: InkWell(
+//             onTap: () {
+//               showDialog(
+//                 context: context,
+//                 builder: (BuildContext context) {
+//                   // return object of type Dialog
+//                   return StreamBuilder(
+//                       initialData: "",
+//                       stream: locator<AllOrdersFilterBloc>().citiesStream$,
+//                       builder: (context, snapshot) {
+//                         return AlertDialog(
+//                           content: Container(
+//                             height: MediaQuery.of(context).size.height,
+//                             width: MediaQuery.of(context).size.width,
+//                             child: Scrollbar(
+//                               child: GridView.builder(
+//                                   shrinkWrap: true,
+//                                   itemCount: snapshot.data.length,
+//                                   gridDelegate:
+//                                   new SliverGridDelegateWithFixedCrossAxisCount(
+//                                       crossAxisCount: 2,
+//                                       childAspectRatio:
+//                                       MediaQuery.of(context)
+//                                           .size
+//                                           .width /
+//                                           (MediaQuery.of(context)
+//                                               .size
+//                                               .height /
+//                                               4)),
+//                                   itemBuilder:
+//                                       (BuildContext context, int index) {
+//                                     return InkWell(
+//                                       onTap: () {
+//                                         locator<AllOrdersFilterBloc>().chosenCitySink.add(locator<AllOrdersFilterBloc>().currentcities[index]);
+//
+//                                         for(int ind = 0 ; ind < locator<AllOrdersFilterBloc>().currentCityIdTitle.length; ind ++){
+//                                           if(locator<AllOrdersFilterBloc>().currentCityIdTitle[ind].title.contains(locator<AllOrdersFilterBloc>()
+//                                               .currentChosenCity)){
+//                                             locator<AllOrdersFilterBloc>().cityIdSink.add(locator<AllOrdersFilterBloc>().currentCityIdTitle[ind].id);
+//                                           }
+//                                         }
+//
+//                                         print(
+//                                             "locator<AllOrdersFilterBloc>().counterySink.add(countries[index])${locator<AllOrdersFilterBloc>().currentCityId} h hahah ------------");
+//                                         Navigator.pop(context);
+// //                                        Navigator.of(context);
+//                                       },
+//                                       child: Center(
+//                                           child: Text(snapshot.data[index])),
+//                                     );
+//                                   }),
+//                             ),
+//                           ),
+//                         );
+//                       });
+//                 },
+//               );
+//             },
+//             child: Container(
+//               height: 60.0,
+//               padding: EdgeInsets.symmetric(horizontal: 10.0),
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(5.0),
+//                 border: Border.all(
+//                     color: Colors.grey,
+//                     style: BorderStyle.solid,
+//                     width: 0.80),
+//               ),
+//               child: Center(
+//                   child: StreamBuilder(
+//                       initialData: "",
+//                       stream: locator<AllOrdersFilterBloc>().chosenCityStream$,
+//                       builder: (context, snapshot) {
+//                         return Text(snapshot.data);
+//                       })),
+//             )),
+//       )
+    ],
+  );
+}

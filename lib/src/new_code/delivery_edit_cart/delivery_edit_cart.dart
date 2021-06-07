@@ -23,7 +23,9 @@ class DeliveryEditCart extends StatefulWidget {
   final varuableDiscountRate;
   final orderID;
   var data;
-  DeliveryEditCart(this.varuableDiscountRate,this.orderID,this.data);
+  DeliveryEditCart(this.varuableDiscountRate,this.orderID
+      , this.data
+      );
 
   @override
   _DeliveryEditCartState createState() => _DeliveryEditCartState();

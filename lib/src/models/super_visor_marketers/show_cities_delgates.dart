@@ -71,9 +71,9 @@ class Delegates {
   String whatsappCode;
   String accountNumber;
   String userType;
-  int countryId;
+  var countryId;
   String countryTitle;
-  int cityId;
+  var cityId;
   String cityTitle;
   String avatar;
 

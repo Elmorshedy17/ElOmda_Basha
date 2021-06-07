@@ -128,7 +128,8 @@ class _HistoryFilterState extends State<HistoryFilter> {
           builder: (BuildContext bc){
             return Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom,top: 15,left: 15,right: 15),
+
               child: new ListView(
                 children: <Widget>[
                   Row(

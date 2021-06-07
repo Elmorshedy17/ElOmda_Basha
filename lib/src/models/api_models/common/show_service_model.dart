@@ -31,9 +31,9 @@ class Data {
   int id;
   String title;
   String desc;
-  int price;
-  int solidTotal;
-  int quantity;
+  var price;
+  var solidTotal;
+  var quantity;
   String image;
 
   Data(

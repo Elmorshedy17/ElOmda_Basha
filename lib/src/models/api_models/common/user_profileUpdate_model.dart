@@ -34,8 +34,8 @@ class Data {
   String whatsappCode;
   String userType;
   String benfitType;
-  int commission;
-  int point;
+  var commission;
+  var point;
   String lang;
   bool isConfirm;
   bool isActive;

@@ -147,35 +147,7 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
                                                   SizedBox(
                                                     height: 8.0,
                                                   ),
-                                                  // Row(
-                                                  //   children: <Widget>[
-                                                  //     Text(
-                                                  //       widget
-                                                  //           .data
-                                                  //           .orderItems[index]
-                                                  //           .sectionPrice
-                                                  //           .toString(),
-                                                  //       style: TextStyle(
-                                                  //           fontWeight: semiFont,
-                                                  //           fontSize: MediumFont,
-                                                  //           color:
-                                                  //           accentColor),
-                                                  //     ),
-                                                  //     SizedBox(
-                                                  //       width: 5.0,
-                                                  //     ),
-                                                  //     Text(
-                                                  //       AppLocalizations.of(context).translate("real_suadi"),
-                                                  //
-                                                  //
-                                                  //       style: TextStyle(
-                                                  //           fontWeight: regFont,
-                                                  //           fontSize:
-                                                  //               SecondaryFont,
-                                                  //           color: littleGrey),
-                                                  //     ),
-                                                  //   ],
-                                                  // ),
+
                                                 ],
                                               ),
                                             ),
@@ -187,33 +159,7 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
                                 },
                               ),
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.all(15.0),
-                            //   child: Row(
-                            //     children: <Widget>[
-                            //       Text(
-                            //           AppLocalizations.of(context).translate("Adress_str"),
-                            //
-                            //           style: TextStyle(
-                            //             fontWeight: bolFont,
-                            //             fontSize: MainFont,
-                            //           )),
-                            //       SizedBox(
-                            //         width: 5.0,
-                            //       ),
-                            //       Text(
-                            //         widget.data.address,
-                            //         style: TextStyle(
-                            //             fontWeight: semiFont,
-                            //             fontSize: MainFont,
-                            //             color: littleGrey),
-                            //       ),
-                            //       SizedBox(
-                            //         height: 10.0,
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
+
                             Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Row(
@@ -318,99 +264,7 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
                         ),
                       ),
 
-//                       Container(
-//                         margin: EdgeInsets.symmetric(vertical: 15.0,horizontal: 10.0),
-//                         child: Row(
-//                           children: <Widget>[
-//                             FutureBuilder(
-//                                 future: ApiService.ShowDelegateOrder(widget.data.id),
-//                                 builder: (context, snapshot) {
-//                                   locator<DliveryUpdateDetailsBloc>()
-//                                   .DliveryUpdateDetailsSink.add(snapshot.data);
-//
-//                                   var dliveryCoasts = [];
-//
-//                                   if (snapshot.hasData) {
-//                                     for (int index = 0;
-//                                         index < snapshot.data.deliverys.length;
-//                                         index++) {
-//                                       dliveryCoasts
-//                                           .add(snapshot.data.deliverys[index]);
-//                                     }
-//                                   } else {
-//                                     var dliveryCoasts = ["0"];
-//                                   }
-//                                   return Expanded(
-//                                     child: InkWell(
-//                                         onTap: () {
-//                                           showDialog(
-//                                             context: context,
-//                                             builder: (BuildContext context) {
-//                                               // return object of type Dialog
-//                                               return AlertDialog(
-//                                                 content: Container(
-//                                                   height: MediaQuery.of(context).size.height,
-//                                                   width: MediaQuery.of(context).size.width,
-//                                                   child: Scrollbar(
-//                                                     child: GridView.builder(
-//                                                         shrinkWrap: true,
-//                                                         itemCount:
-//                                                             dliveryCoasts.length,
-//                                                         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-//                                                             crossAxisCount: 2,
-//                                                             childAspectRatio: MediaQuery.of(context).size.width /
-//                                                                 (MediaQuery.of(context).size.height / 4)),
-//                                                         itemBuilder:
-//                                                             (BuildContext context,
-//                                                                 int index) {
-//                                                           return InkWell(
-//                                                             onTap: () {
-//                                                               locator<DeliveryCostaBloc>().deliveryCostsSink.add(snapshot.data.deliverys[index]);
-// //                                                            Navigator.of(context);
-// //                                                            Navigator.of(context);
-//                                                               Navigator.pop(context);
-//
-//                                                             },
-//                                                             child: Center(
-//                                                                 child: Text(dliveryCoasts[index],
-//                                                               textAlign: TextAlign.center,
-//                                                             )),
-//                                                           );
-//                                                         }),
-//                                                   ),
-//                                                 ),
-//                                               );
-//                                             },
-//                                           );
-//                                         },
-//                                         child: Container(
-//                                           height: 60.0,
-//                                           padding: EdgeInsets.symmetric(
-//                                               horizontal: 10.0),
-//                                           decoration: BoxDecoration(
-//                                             borderRadius:
-//                                                 BorderRadius.circular(5.0),
-//                                             border: Border.all(
-//                                                 color: Colors.grey,
-//                                                 style: BorderStyle.solid,
-//                                                 width: 0.80),
-//                                           ),
-//                                           child: Center(
-//                                               child: StreamBuilder(
-//                                                   initialData:AppLocalizations.of(context).translate("Deliver_Coasts_str"),
-//                                                   stream: locator<DeliveryCostaBloc>().deliveryCostsApiStream$,
-//                                                   builder: (context, snapshot) {
-//                                                     return Text(snapshot.data);
-//                                                   })),
-//                                         )),
-//                                   );
-//                                 }),
-//                             SizedBox(
-//                               width: 5.0,
-//                             ),
-//                           ],
-//                         ),
-//                       ),
+
                     Container(
                       height: 25,
                     ),
@@ -478,6 +332,9 @@ onPressed: (){
 },
                         ),
                       ),
+              Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom)* 1.5),
                     ],
                   ),
                 ),

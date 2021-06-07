@@ -31,7 +31,7 @@ class Data {
   int id;
   String title;
   String desc;
-  int price;
+  var price;
   int quantity;
   String image;
 
