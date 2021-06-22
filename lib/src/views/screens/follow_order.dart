@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:medicine/localizations/app_localizations.dart';
+import 'package:medicine/service/prefs_Service.dart';
+import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/theme_setting.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -75,7 +77,7 @@ class _FollowOrderState extends State<FollowOrder> {
     List itemsDetails = [];
     itemsDetails.clear();
     for (int index = 0; index < widget.data.orderItems.length; index++) {
-      itemsDetails.add("${widget.data.orderItems[index].sectionTitle} * ${widget.data.orderItems[index].quantity} = ${widget.data.orderItems[index].total}");
+      itemsDetails.add("${widget.data.orderItems[index].sectionTitle} * ${widget.data.orderItems[index].quantity} = ${(widget.data.orderItems[index].total * double.parse(locator<PrefsService>().rateToSar.toString()))}");
     }
 
     return Scaffold(
@@ -113,7 +115,7 @@ class _FollowOrderState extends State<FollowOrder> {
                           "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
                           "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                           "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                          "${AppLocalizations.of(context).translate("total")} ${widget.data.total} ${widget.data.currencyCode}");
+                          "${AppLocalizations.of(context).translate("total")} ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
 
                 },
               ),
@@ -424,7 +426,7 @@ class _FollowOrderState extends State<FollowOrder> {
                                         "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
                                         "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                        "${AppLocalizations.of(context).translate("total")} ${widget.data.total} ${widget.data.currencyCode}");
+                                        "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                 ),
@@ -475,7 +477,7 @@ class _FollowOrderState extends State<FollowOrder> {
                                         "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
                                         "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                        "${AppLocalizations.of(context).translate("total")} ${widget.data.total} ${widget.data.currencyCode}");
+                                        "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                 ),
@@ -519,7 +521,7 @@ class _FollowOrderState extends State<FollowOrder> {
                                   "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
                                   "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                   "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                  "${AppLocalizations.of(context).translate("total")} ${widget.data.total} ${widget.data.currencyCode}");
+                                  "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
                             },
                             child: Image.asset(
                               "assets/images/whatsapp.png",

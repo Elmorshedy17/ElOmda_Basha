@@ -725,7 +725,7 @@ print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
                               width: 10.0,
                             ),
                             Text(
-                              sectionDataContent.price.toString(),
+                              sectionDataContent.totalForCountry.toString(),
                               //"100",
                               style: TextStyle(
                                   fontWeight: semiFont,
@@ -736,8 +736,7 @@ print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
                               width: 5.0,
                             ),
                             Text(
-                              AppLocalizations.of(context)
-                                  .translate('real_suadi_shortcut'),
+                              sectionDataContent.currencyCode.toString(),
                               style: TextStyle(
                                   fontWeight: regFont,
                                   fontSize: SecondaryFont,

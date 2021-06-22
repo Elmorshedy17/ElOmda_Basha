@@ -224,7 +224,7 @@ class _SingleItemState extends State<SingleItem> {
 
 
 
-                Map<String, dynamic> items = {'section_id':"${widget.data.id}",'count':"${quantity}",'total':"$total"};
+                Map<String, dynamic> items = {'section_id':"${widget.data.id}",'count':"${quantity}",'total':"${(total / double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}"};
 
 
 
@@ -233,12 +233,6 @@ class _SingleItemState extends State<SingleItem> {
                   quantity,
                   total
                 ];
-
-               // var items = {};
-               //
-               //  items["section_id"] = "${widget.data.id}";
-               //  items["count"] = "${updatedCountSnapshot.data}";
-               //  items["total"] = "$total";
 
 
 
@@ -250,22 +244,6 @@ if(quantity > 0){
   widget.singleAll.clear();
 
 }
-
-
-
-                // singleAll.clear();
-                // singleAll.add(items);
-                // all.addAll(singleAll);
-                // all.clear();
-                // // singleAll.add(items);
-                // all.add(items);
-                // if(items[0] == all[0] ){
-                //   print("yayayaya");
-                // }else{
-                //   print("yayayayanonono");
-                //
-                // }
-
 
 
 
@@ -455,7 +433,7 @@ if(quantity > 0){
                                         height: 100,
                                         child: new NumberPicker.integer(
                                             initialValue: 0,
-                                            minValue: -(((quantity * widget.data.totalForCountry) * widget.varuableDiscountRate) / 100).round(),
+                                            minValue: -(((quantity * widget.data.totalForCountry) * widget.varuableDiscountRate)  / 100).round(),
                                             maxValue: (((quantity * widget.data.totalForCountry) * widget.varuableDiscountRate) / 100).round(),
                                             onChanged: (newValue) {
                                               changePrice.add(newValue);

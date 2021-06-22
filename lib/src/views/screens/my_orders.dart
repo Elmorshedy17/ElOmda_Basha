@@ -169,65 +169,33 @@ class MyOrdersScreen extends StatelessWidget {
                                         margin:
                                         EdgeInsets.only(bottom: 10.0),
                                         child: StreamBuilder(
-                                            initialData:
-                                            countWithIndex[index]
-                                                .value *
-                                                showCartSnapshot
-                                                    .data
-                                                    .data
-                                                    .cartData[index]
-                                                    .sectionPrice,
-                                            stream: countWithIndex[index]
-                                                .stream,
-                                            builder: (context,
-                                                countWithIndexSnapshot) {
-                                              tottalWithoutDiscountList[
-                                              index]
-                                                  .clear();
-                                              tottalWithoutDiscountList[
-                                              index]
-                                                  .add(countWithIndex[
-                                              index]
-                                                  .value *
-                                                  showCartSnapshot
-                                                      .data
-                                                      .data
-                                                      .cartData[index]
-                                                      .sectionPrice);
+                                            initialData: countWithIndex[index].value *
+                                                showCartSnapshot.data.data.cartData[index].sectionPrice ,
+
+                                            stream: countWithIndex[index].stream,
+                                            builder: (context, countWithIndexSnapshot) {
+
+                                              tottalWithoutDiscountList[index].clear();
+                                              tottalWithoutDiscountList[index].add((countWithIndex[index].value * showCartSnapshot.data.data.cartData[index].sectionPrice * double.parse(locator<PrefsService>().rateToSar.toString())));
 
                                               return Card(
-                                                  shape:
-                                                  RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius
-                                                        .circular(
-                                                        15.0),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(15.0),
                                                   ),
                                                   elevation: 3.0,
                                                   child: Container(
+
                                                     child: Column(
                                                       children: <Widget>[
                                                         Row(
-                                                          children: <
-                                                              Widget>[
-                                                            Flexible(
-                                                              flex: 3,
+                                                          children: <Widget>[
+                                                            Flexible(flex: 3,
                                                               child:
                                                               Container(
-                                                                padding: const EdgeInsets
-                                                                    .all(
-                                                                    12.0),
-                                                                child: Image
-                                                                    .network(
-                                                                  showCartSnapshot
-                                                                      .data
-                                                                      .data
-                                                                      .cartData[index]
-                                                                      .sectionImage,
-                                                                  height:
-                                                                  110.0,
-                                                                  width:
-                                                                  110.0,
+                                                                padding: const EdgeInsets.all(12.0),
+                                                                child: Image.network(showCartSnapshot.data.data.cartData[index].sectionImage,
+                                                                  height: 110.0,
+                                                                  width: 110.0,
                                                                 ),
                                                               ),
                                                             ),
@@ -237,8 +205,7 @@ class MyOrdersScreen extends StatelessWidget {
                                                               Container(
                                                                 child:
                                                                 Column(
-                                                                  children: <
-                                                                      Widget>[
+                                                                  children: <Widget>[
                                                                     Row(
                                                                       children: <Widget>[
                                                                         Text(
@@ -264,27 +231,15 @@ class MyOrdersScreen extends StatelessWidget {
                                                           ],
                                                         ),
                                                         Padding(
-                                                          padding:
-                                                          const EdgeInsets
-                                                              .only(
-                                                              top: 0,
-                                                              right:
-                                                              20,
-                                                              left:
-                                                              20.0),
+                                                          padding: const EdgeInsets.only(top: 0, right: 20,left: 20.0),
                                                           child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                            children: <
-                                                                Widget>[
-                                                              Container(
-                                                                child:
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: <Widget>[
+                                                              Container(child:
                                                                 Row(
-                                                                  children: <
-                                                                      Widget>[
+                                                                  children: <Widget>[
                                                                     Text(
-                                                                      showCartSnapshot.data.data.cartData[index].sectionPrice.toString(),
+                                                                      (showCartSnapshot.data.data.cartData[index].sectionPrice * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2),
                                                                       style: TextStyle(
                                                                           fontWeight: semiFont,
                                                                           fontSize: MediumFont,
@@ -295,7 +250,8 @@ class MyOrdersScreen extends StatelessWidget {
                                                                       5.0,
                                                                     ),
                                                                     Text(
-                                                                      AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                                                                      locator<PrefsService>().currencyCode,
+                                                                      // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                                                                       style: TextStyle(
                                                                           fontWeight: regFont,
                                                                           fontSize: SecondaryFont,
@@ -403,7 +359,8 @@ class MyOrdersScreen extends StatelessWidget {
 //                                                                  print("fold1 ${tottalWithoutDiscountList[index].fold(0, (previous, current) => previous + current)}");
 
                                                                         return Text(
-                                                                          tottalWithoutDiscountSnapshot.data.toString(),
+                                                                            (tottalWithoutDiscountSnapshot.data * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2),
+                                                                          // tottalWithoutDiscountSnapshot.data.toString(),
                                                                           style: TextStyle(fontWeight: bolFont, fontSize: MainFont, color: Theme.of(context).accentColor),
                                                                         );
                                                                       }),
@@ -469,8 +426,8 @@ class MyOrdersScreen extends StatelessWidget {
                                                                                   height: 100,
                                                                                   child: new NumberPicker.integer(
                                                                                       initialValue: _currentValue,
-                                                                                      minValue: -(((countWithIndex[index].value * showCartSnapshot.data.data.cartData[index].sectionPrice) * variableRateBehaviorSubject.value) / 100).round(),
-                                                                                      maxValue: (((countWithIndex[index].value * showCartSnapshot.data.data.cartData[index].sectionPrice) * variableRateBehaviorSubject.value) / 100).round(),
+                                                                                      minValue: -((((countWithIndex[index].value * showCartSnapshot.data.data.cartData[index].sectionPrice) * variableRateBehaviorSubject.value) * double.parse(locator<PrefsService>().rateToSar.toString())) / 100).round(),
+                                                                                      maxValue: ((((countWithIndex[index].value * showCartSnapshot.data.data.cartData[index].sectionPrice) * variableRateBehaviorSubject.value) * double.parse(locator<PrefsService>().rateToSar.toString()))/ 100).round(),
                                                                                       onChanged: (newValue) {
                                                                                         changePrice[index].add(newValue);
                                                                                         print("tottalDiscount $tottalDiscount");
@@ -774,7 +731,7 @@ class MyOrdersScreen extends StatelessWidget {
                                                       changePrice[index]
                                                           .value);
                                               all.add(
-                                                  "{ \"section_id\" :\"${productsId[index]}\" , \"count\" :\"${productsCount[index]}\" , \"total\" :\"${productsTotal[index]}\"}");
+                                                  "{ \"section_id\" :\"${productsId[index]}\" , \"count\" :\"${productsCount[index]}\" , \"total\" :\"${(productsTotal[index] / double.parse(locator<PrefsService>().rateToSar.toString()))}\"}");
                                             }
 
                                             ApiService.UpdateAllCartItems(

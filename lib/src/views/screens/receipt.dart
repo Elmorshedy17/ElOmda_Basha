@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine/localizations/app_localizations.dart';
+import 'package:medicine/service/prefs_Service.dart';
+import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/views/screens/follow_order.dart';
 import 'package:medicine/theme_setting.dart';
 
@@ -102,11 +104,7 @@ class _ReceiptState extends State<Receipt> {
                                                 Row(
                                                   children: <Widget>[
                                                     Text(
-                                                      widget
-//                                                          .data
-                                                          .data
-                                                          .orderItems[index]
-                                                          .sectionTitle,
+                                                      widget.data.orderItems[index].sectionTitle,
                                                       style: TextStyle(
                                                         fontWeight: bolFont,
                                                         fontSize: MediumFont,
@@ -229,7 +227,7 @@ class _ReceiptState extends State<Receipt> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        widget.data.delivery.toString(),
+                                        "${(widget.data.delivery * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}" ,
                                         style: TextStyle(
                                             fontWeight: semiFont,
                                             fontSize: MainFont,
@@ -240,7 +238,8 @@ class _ReceiptState extends State<Receipt> {
                                         width: 5.0,
                                       ),
                                       Text(
-                                        AppLocalizations.of(context).translate("real_suadi_shortcut") ,
+                                       locator<PrefsService>().currencyCode,
+                                         // AppLocalizations.of(context).translate("real_suadi_shortcut") ,
                                         style: TextStyle(
                                             fontWeight: regFont,
                                             fontSize: SecondaryFont,
@@ -272,7 +271,7 @@ class _ReceiptState extends State<Receipt> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        widget.data.total.toString(),
+                                        "${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}",
                                         style: TextStyle(
                                             fontWeight: semiFont,
                                             fontSize: MainFont,
@@ -283,7 +282,8 @@ class _ReceiptState extends State<Receipt> {
                                         width: 5.0,
                                       ),
                                       Text(
-                                        AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                                        locator<PrefsService>().currencyCode,
+                                        // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                                         style: TextStyle(
                                             fontWeight: regFont,
                                             fontSize: SecondaryFont,
@@ -325,8 +325,8 @@ class _ReceiptState extends State<Receipt> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        widget.data.marketerCommission
-                                            .toString(),
+                                       "${(widget.data.marketerCommission * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}"
+                                            ,
                                         style: TextStyle(
                                             fontWeight: semiFont,
                                             fontSize: MainFont,
@@ -337,7 +337,8 @@ class _ReceiptState extends State<Receipt> {
                                         width: 5.0,
                                       ),
                                       Text(
-                                        AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                                        locator<PrefsService>().currencyCode,
+                                        // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                                         style: TextStyle(
                                             fontWeight: regFont,
                                             fontSize: SecondaryFont,

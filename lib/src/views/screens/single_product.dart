@@ -259,29 +259,28 @@ class _SingleProductState extends State<SingleProduct> {
             ],
           ),
         ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0),
-                child: Text(
-                  widget.sectionDataContent.price.toString(),
-                  //"100",
-                  style: TextStyle(
-                      fontSize: MainFont,
-                      fontWeight: bolFont,
-                      color: Theme.of(context).accentColor),
-                ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25.0),
+              child: Text(
+                widget.sectionDataContent.totalForCountry.toString(),
+                //"100",
+                style: TextStyle(
+                    fontSize: MainFont,
+                    fontWeight: bolFont,
+                    color: Theme.of(context).accentColor),
               ),
-              Text(AppLocalizations.of(context).translate("Suadi_Reyals_str"),
-                  style: TextStyle(
-                      fontSize: PrimaryFont,
-                      fontWeight: regFont,
-                      color: littleGrey)),
-            ],
-          ),
-        ),
+            ),
+            Text(widget.sectionDataContent.currencyCode.toString(),
+                style: TextStyle(
+                    fontSize: PrimaryFont,
+                    fontWeight: regFont,
+                    color: littleGrey)),
+          ],
+        )
       ],
     );
   }

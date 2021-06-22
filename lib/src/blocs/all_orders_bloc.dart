@@ -99,6 +99,18 @@ class AllOrdersFilterBloc {
   Sink get counterySink => _counterySubject.sink;
 
   get currentCountery => _counterySubject.value;
+//
+
+
+/////////////// counteries currency choosen
+  final BehaviorSubject _counteryCurrnecySubject =
+  BehaviorSubject();
+
+  Stream get counteryCurrencyStream$ => _counteryCurrnecySubject.stream;
+
+  Sink get counteryCurrencySink => _counteryCurrnecySubject.sink;
+
+  get counteryCurrencyCountery => _counteryCurrnecySubject.value;
 ////
 
 
@@ -318,6 +330,7 @@ class AllOrdersFilterBloc {
     _citiesSubject.close();
     allOrdersFilterBlocName.close();
     downloadUrlSubject.close();
+    _counteryCurrnecySubject.close();
   }
 
 }

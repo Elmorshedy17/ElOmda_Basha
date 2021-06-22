@@ -94,15 +94,30 @@ class _MoneyTransformState extends State<MoneyTransform> {
   }
 
   Widget _moeneyTransFiled() {
-    return TextField(
-      controller: moneyController,
-      keyboardType: TextInputType.number,
-      //  onChanged: signupBloc.changeName,
-      decoration: InputDecoration(
-          hintText: AppLocalizations.of(context).translate("Amount_of_money_str") ,
-          labelText: AppLocalizations.of(context).translate("Amount_of_money_str") ,
-          //errorText: snapshot.error,
-          border: OutlineInputBorder()),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "${AppLocalizations.of(context).translate("currency_in_real")}",
+          style: TextStyle(
+            color: Colors.redAccent
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        TextField(
+          controller: moneyController,
+          keyboardType: TextInputType.number,
+          //  onChanged: signupBloc.changeName,
+          decoration: InputDecoration(
+              hintText: AppLocalizations.of(context).translate("Amount_of_money_str") ,
+              labelText: AppLocalizations.of(context).translate("Amount_of_money_str") ,
+              //errorText: snapshot.error,
+              border: OutlineInputBorder()),
+        ),
+      ],
     );
   }
 

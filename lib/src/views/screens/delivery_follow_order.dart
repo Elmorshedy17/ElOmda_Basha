@@ -45,15 +45,7 @@ class _DelivereyFollowOrderState extends State<DelivereyFollowOrder> {
   final BehaviorSubject deliverySubject = BehaviorSubject();
   final BehaviorSubject showDelivery = BehaviorSubject();
 
-  // var firstNumberwhatsapp ;
-  //
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   firstNumberwhatsapp = "https://wa.me/${widget.data.data.marketerPhone}/?text=Hello";
-  //
-  //   super.initState();
-  // }
+
   void launchWhatsApp(
       {@required String phone,
         @required String message,
@@ -61,10 +53,7 @@ class _DelivereyFollowOrderState extends State<DelivereyFollowOrder> {
     String url() {
       if (Platform.isIOS) {
         return "whatsapp://wa.me/+$phone/?text=$message";
-        return "https://wa.me/$phone/?text=${Uri.parse(message)}";
       } else {
-        // return "whatsapp://send?   phone=$phone&text=${Uri.parse(message)}";
-        // return "https://wa.me/$phone/?text=${Uri.parse(message)}";
         return "https://wa.me/+$phone?text=$message";
 
       }
@@ -79,7 +68,6 @@ class _DelivereyFollowOrderState extends State<DelivereyFollowOrder> {
 
   @override
   Widget build(BuildContext context) {
-    // var second = data.data.whatsapp;
     _launchURL(urlLink) async {
       var url = urlLink;
       if (await canLaunch(url)) {
@@ -88,7 +76,6 @@ class _DelivereyFollowOrderState extends State<DelivereyFollowOrder> {
         throw 'Could not launch $url';
       }
     }
-    // _launchURL("https://wa.me/$second/?text=Hello");
 
 
     List itemsDetails = [];
@@ -673,26 +660,6 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                               return AlertDialog(
                                                 title: Column(
                                                   children: <Widget>[
-                                                    // Text(
-                                                    //     AppLocalizations.of(context).translate("Do you want cancel Order ?")  ),
-                                                    // Container(
-                                                    //   height: 25.0,
-                                                    // ),
-                                                    // TextField(
-                                                    //   controller:
-                                                    //   statusMessage,
-                                                    //   maxLines: 3,
-                                                    //   decoration:
-                                                    //   InputDecoration(
-                                                    //       hintText:
-                                                    //       AppLocalizations.of(context).translate("Reason of Cancelation")
-                                                    //       ,
-                                                    //       labelText:
-                                                    //       AppLocalizations.of(context).translate("Reason of Cancelation"),
-                                                    //       //errorText: snapshot.error,
-                                                    //       border:
-                                                    //       OutlineInputBorder()),
-                                                    // ),
                                                     Container(height: 10,),
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -751,7 +718,7 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
 
                                                                                   },
                                                                                   child: Center(
-                                                                                      child: Text(dliveryCoasts[index],
+                                                                                      child: Text("${(double.parse(dliveryCoasts[index].toString()) * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}",
                                                                                         textAlign: TextAlign.center,
                                                                                       )),
                                                                                 );
@@ -1005,7 +972,7 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
 
                                                                                 },
                                                                                 child: Center(
-                                                                                    child: Text(dliveryCoasts[index],
+                                                                                    child: Text("${(double.parse(dliveryCoasts[index].toString()) * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}",
                                                                                       textAlign: TextAlign.center,
                                                                                     )),
                                                                               );

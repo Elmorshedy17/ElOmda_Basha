@@ -346,10 +346,10 @@ class _MyAccountState extends State<MyAccount> {
                                               Container(
                                                 height: 15.0,
                                               ),
-                                              _counteryCity(context),
-                                              Container(
-                                                height: 15.0,
-                                              ),
+                                              // _counteryCity(context),
+                                              // Container(
+                                              //   height: 15.0,
+                                              // ),
                                               Center(
                                                 child: ButtonTheme(
                                                   height: 60.0,
@@ -394,7 +394,8 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                                                           if (onValue.key == "1") {
                                                             isDialogAdd.add(false);
 
-
+                                                            locator<PrefsService>().rateToSar = onValue.data.rateToSar.toString() ;
+                                                            locator<PrefsService>().currencyCode = onValue.data.currencyCode.toString() ;
 
                                                             locator<PrefsService>().userImageProfile = onValue.data.avatar;
                                                             locator<PrefsService>().userNameProfile = onValue.data.firstName;
@@ -750,6 +751,20 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                   height: 1.0,
                 ),
                 _notifications(snapshot.data.data),
+
+
+
+                _counteryCity(context,
+                    firstNameController.text,
+                    secondNameController.text,
+                    PhoneController.text,
+                    wharsAppController.text,
+                    SelectedImage,
+                    emailController.text,
+                    first.value,
+                    second.value,
+                    cashNumber.text
+                ),
                 Divider(
                   color: Colors.blueGrey.withOpacity(.3),
                   indent: 5.0,
@@ -868,6 +883,7 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                           onChanged: (bool flag) {
                             locator<SwitchNotyBloc>().onSwitchLangChanged();
                             print(locator<SwitchNotyBloc>().currentLang);
+                            locator<AllOrdersFilterBloc>().counteryCurrencySink.add("");
 
                             setState(() {
                               // Localizations.localeOf(context).languageCode == 'en'
@@ -877,9 +893,15 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                           if(Localizations.localeOf(context).languageCode == 'en'){
                             appLanguage.changeLanguage(Locale('ar'));
                             prefs.appLanguage ='ar';
+                            // if(locator<AllOrdersFilterBloc>().counteryCurrencyCountery != ""){
+                            //   locator<AllOrdersFilterBloc>().counteryCurrencySink.add("اختر العملة");
+                            // }
                           }else{
                             appLanguage.changeLanguage(Locale('en'));
                             prefs.appLanguage ='en';
+                            // if(locator<AllOrdersFilterBloc>().counteryCurrencyCountery != ""){
+                            //   locator<AllOrdersFilterBloc>().counteryCurrencySink.add("Chose Currency");
+                            // }
                           }
 
 
@@ -1246,14 +1268,26 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
 
 
 
-Widget _counteryCity(context) {
+Widget _counteryCity(context,
+    firstNameController,
+    secondNameController,
+    PhoneController,
+    wharsAppController,
+    SelectedImage,
+    emailController,
+    first,
+    second,
+    cashNumber
+
+
+    ) {
   return Row(
     children: <Widget>[
       FutureBuilder(
           future: ApiService.AllCountriesAndCities(),
           builder: (context, snapshot) {
             var countries = [];
-            var countryId = [];
+            // var countryId = [];
             // var cities = [];
             // var citiesIdTitle = [];
             // var citiesId = [];
@@ -1261,7 +1295,7 @@ Widget _counteryCity(context) {
               for (int index = 0;
               index < snapshot.data.data.length;
               index++) {
-                countries.add(snapshot.data.data[index].title);
+                countries.add("${snapshot.data.data[index].currencyCode} ( ${snapshot.data.data[index].title} )");
               }
             } else {
               var countries = ["السعوديه"];
@@ -1278,35 +1312,38 @@ Widget _counteryCity(context) {
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
                             child: Scrollbar(
-                              child: GridView.builder(
+                              child: ListView.separated(
                                   shrinkWrap: true,
                                   itemCount: countries.length,
-                                  gridDelegate:
-                                  new SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio:
-                                      MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4)),
+                                  separatorBuilder: (context, index) {
+                                    return Divider();
+                                  },
+                                  // gridDelegate:
+                                  // new SliverGridDelegateWithFixedCrossAxisCount(
+                                  //     crossAxisCount: 2,
+                                  //     childAspectRatio:
+                                  //     MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4)),
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return InkWell(
                                       onTap: () {
-                                        locator<AllOrdersFilterBloc>().counterySink.add(countries[index]);
-                                        print("locator<AllOrdersFilterBloc>().counterySink.add(countries[index])${locator<AllOrdersFilterBloc>().currentCountery}");
+                                        locator<AllOrdersFilterBloc>().counteryCurrencySink.add(countries[index]);
+                                        print("locator<AllOrdersFilterBloc>().counterySink.add(countries[index])${locator<AllOrdersFilterBloc>().counteryCurrencyCountery}");
                                         Navigator.pop(context);
                                         // locator<AllOrdersFilterBloc>().chosenCitySink.add("");
                                         // cities.clear();
 
 
-                                        for (int index = 0; index < snapshot.data.data.length; index++) {
-                                          if (snapshot.data.data[index].title.contains(locator<AllOrdersFilterBloc>().currentCountery)) {
-                                            countryId.add(snapshot.data.data[index].id);
-
-                                            // for (int ind = 0; ind < snapshot.data.data[index].cities.length; ind++) {
-                                            //   cities.add(snapshot.data.data[index].cities[ind].title);
-                                            //   citiesIdTitle.add(snapshot.data.data[index].cities[ind]);
-                                            // }
-                                          }
-                                        }
+                                        // for (int index = 0; index < snapshot.data.data.length; index++) {
+                                        //   if (snapshot.data.data[index].title.contains(locator<AllOrdersFilterBloc>().currentCountery)) {
+                                        //     countryId.add(snapshot.data.data[index].id);
+                                        //
+                                        //     // for (int ind = 0; ind < snapshot.data.data[index].cities.length; ind++) {
+                                        //     //   cities.add(snapshot.data.data[index].cities[ind].title);
+                                        //     //   citiesIdTitle.add(snapshot.data.data[index].cities[ind]);
+                                        //     // }
+                                        //   }
+                                        // }
                                         // locator<AllOrdersFilterBloc>().cityIdTitleSink.add(citiesIdTitle);
 
 //                                          print("------------------------------------------------------- ${citiesId[0].id} ------------------------");
@@ -1314,16 +1351,108 @@ Widget _counteryCity(context) {
                                         //
                                         locator<AllOrdersFilterBloc>().counteryIdSink.add(snapshot.data.data[index].id);
                                         print("locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId locator<AllOrdersFilterBloc>().currentCounteryId ${locator<AllOrdersFilterBloc>().currentCounteryId}");
+                                        locator<IsLoadingManager>().isLoading.add(true);
+                                        ApiService.UserProfileUpdate(
+                                            firstNameController,
+                                            secondNameController,
+                                            PhoneController,
+                                            wharsAppController,
+                                            SelectedImage,
+                                            locator<UpdateProfileBloc>().currentimagePath,
+                                            emailController,
+                                            first,
+                                            second,
+                                            cashNumber
+                                        ).then((onValue){
+                                          if (onValue.key == "1") {
+                                            locator<IsLoadingManager>().isLoading.add(false);
+                                            locator<PrefsService>().rateToSar = onValue.data.rateToSar.toString() ;
+                                            locator<PrefsService>().currencyCode = onValue.data.currencyCode.toString() ;
+
+
+                                            locator<PrefsService>().userImageProfile = onValue.data.avatar;
+                                            locator<PrefsService>().userNameProfile = onValue.data.firstName;
+                                            locator<PrefsService>().userEmailProfile = onValue.data.email;
+                                            locator<PrefsService>().userLastName = onValue.data.lastName;
+                                            locator<PrefsService>().userPhoneProfile = onValue.data.phone;
+                                            locator<PrefsService>().userPhoneCodeProfile = onValue.data.phoneCode;
+                                            locator<PrefsService>().userWhatsAppProfile = onValue.data.whatsapp;
+                                            locator<PrefsService>().userWhatsAppCodeProfile = onValue.data.whatsappCode;
+                                            // locator<PrefsService>().CounteryIdProfile = onValue.data.;
+                                            // locator<PrefsService>().CityIdProfile = onValue.data.cityId;
+
+                                            // locator<PrefsService>().removeUserImageProfile();
+                                            // locator<PrefsService>().removeUserNameProfile();
+                                            // locator<PrefsService>().removeUserEmailProfile();
+                                            // locator<PrefsService>().removeUserLastName();
+                                            // locator<PrefsService>().removeUserPhoneProfile();
+                                            // locator<PrefsService>().removeUserPhoneCodeProfile();
+                                            // locator<PrefsService>().removeUserWhatsAppProfile();
+                                            // locator<PrefsService>().removeUserWhatsAppCodeProfile();
+//                                              locator<PrefsService>().removeCounteryIdProfile();
+//                                              locator<PrefsService>().removeCityIdProfile();
+
+//                                                  showDialog(
+//                                                    context: context,
+//                                                    builder: (BuildContext
+//                                                    context) {
+//                                                      return AlertDialog(
+//                                                        title: Text(
+//                                                            onValue.msg),
+//                                                      );
+//               }
+//                                                  );
+//
+//                                                  Navigator.pop(context);
+//                                                  Navigator.pop(context);
+//                                              Navigator.pushReplacement(
+//                                                  context,
+//                                                  new MaterialPageRoute(
+//                                                      builder: (BuildContext context) => MyAccount()));
+//
+                                            Fluttertoast.showToast(
+                                                msg: onValue.msg,
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0
+                                            );
+
+
+                                            // setState(() {
+                                            //
+                                            // });
+
+                                          } else {
+                                            locator<IsLoadingManager>().isLoading.add(false);
+
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext
+                                              context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      onValue.msg),
+                                                );
+                                              },
+                                            );
+                                          }
+                                        });
 //
 //                                         locator<AllOrdersFilterBloc>()
 //                                             .citiesSink
 //                                             .add(cities);
                                       },
-                                      child: Center(
-                                          child: Text(
-                                            countries[index],
-                                            textAlign: TextAlign.center,
-                                          )),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 8),
+                                        child: Center(
+                                            child: Text(
+                                              countries[index],
+                                              textAlign: TextAlign.center,
+                                            )),
+                                      ),
                                     );
                                   }),
                             ),
@@ -1333,106 +1462,44 @@ Widget _counteryCity(context) {
                     );
                   },
                   child: Container(
-                    height: 60.0,
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      border: Border.all(
-                          color: Colors.grey,
-                          style: BorderStyle.solid,
-                          width: 0.80),
+
+                    padding: EdgeInsets.symmetric(vertical: 8),
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.money_sharp, color: Colors.blue.withOpacity(.6),),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Container(
+                            child: StreamBuilder(
+                                // counteryCurrencyCountery
+                                initialData: "",
+                                stream: locator<AllOrdersFilterBloc>().counteryCurrencyStream$,
+                                builder: (context, snapshot) {
+                                  return Column(
+                                    children: [
+                                      Text("${AppLocalizations.of(context).translate("chose_currency")}", style:
+                                      TextStyle(fontWeight: bolFont, fontSize: PrimaryFont)),
+                                      Text("${snapshot.data}")
+                                      // TextStyle(fontWeight: bolFont, fontSize: PrimaryFont)),
+                                    ],
+                                  );
+                                })),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 15.0,
+                          color: lightText,
+                        )
+                      ],
                     ),
-                    child: Center(
-                        child: StreamBuilder(
-                            initialData: "",
-                            stream: locator<AllOrdersFilterBloc>().counteryStream$,
-                            builder: (context, snapshot) {
-                              return Text(snapshot.data);
-                            })),
                   )),
             );
           }),
-//       SizedBox(
-//         width: 5.0,
-//       ),
-//       Expanded(
-//         child: InkWell(
-//             onTap: () {
-//               showDialog(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   // return object of type Dialog
-//                   return StreamBuilder(
-//                       initialData: "",
-//                       stream: locator<AllOrdersFilterBloc>().citiesStream$,
-//                       builder: (context, snapshot) {
-//                         return AlertDialog(
-//                           content: Container(
-//                             height: MediaQuery.of(context).size.height,
-//                             width: MediaQuery.of(context).size.width,
-//                             child: Scrollbar(
-//                               child: GridView.builder(
-//                                   shrinkWrap: true,
-//                                   itemCount: snapshot.data.length,
-//                                   gridDelegate:
-//                                   new SliverGridDelegateWithFixedCrossAxisCount(
-//                                       crossAxisCount: 2,
-//                                       childAspectRatio:
-//                                       MediaQuery.of(context)
-//                                           .size
-//                                           .width /
-//                                           (MediaQuery.of(context)
-//                                               .size
-//                                               .height /
-//                                               4)),
-//                                   itemBuilder:
-//                                       (BuildContext context, int index) {
-//                                     return InkWell(
-//                                       onTap: () {
-//                                         locator<AllOrdersFilterBloc>().chosenCitySink.add(locator<AllOrdersFilterBloc>().currentcities[index]);
-//
-//                                         for(int ind = 0 ; ind < locator<AllOrdersFilterBloc>().currentCityIdTitle.length; ind ++){
-//                                           if(locator<AllOrdersFilterBloc>().currentCityIdTitle[ind].title.contains(locator<AllOrdersFilterBloc>()
-//                                               .currentChosenCity)){
-//                                             locator<AllOrdersFilterBloc>().cityIdSink.add(locator<AllOrdersFilterBloc>().currentCityIdTitle[ind].id);
-//                                           }
-//                                         }
-//
-//                                         print(
-//                                             "locator<AllOrdersFilterBloc>().counterySink.add(countries[index])${locator<AllOrdersFilterBloc>().currentCityId} h hahah ------------");
-//                                         Navigator.pop(context);
-// //                                        Navigator.of(context);
-//                                       },
-//                                       child: Center(
-//                                           child: Text(snapshot.data[index])),
-//                                     );
-//                                   }),
-//                             ),
-//                           ),
-//                         );
-//                       });
-//                 },
-//               );
-//             },
-//             child: Container(
-//               height: 60.0,
-//               padding: EdgeInsets.symmetric(horizontal: 10.0),
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(5.0),
-//                 border: Border.all(
-//                     color: Colors.grey,
-//                     style: BorderStyle.solid,
-//                     width: 0.80),
-//               ),
-//               child: Center(
-//                   child: StreamBuilder(
-//                       initialData: "",
-//                       stream: locator<AllOrdersFilterBloc>().chosenCityStream$,
-//                       builder: (context, snapshot) {
-//                         return Text(snapshot.data);
-//                       })),
-//             )),
-//       )
+
     ],
   );
 }

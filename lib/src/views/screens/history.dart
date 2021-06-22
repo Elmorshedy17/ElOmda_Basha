@@ -355,9 +355,7 @@ class _HistoryState extends State<History> {
                                                     width: 5.0,
                                                   ),
                                                   Text(
-                                                    dataSnapshot.data[index].total.toString(),
-
-                                                    //     "300",
+                                                    (dataSnapshot.data[index].total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2),
                                                     style: TextStyle(
                                                         fontSize: SecondaryFont,
                                                         fontWeight: semiFont,
@@ -367,7 +365,8 @@ class _HistoryState extends State<History> {
                                                     width: 5.0,
                                                   ),
                                                   Text(
-                                                    AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                                                    locator<PrefsService>().currencyCode,
+                                                    // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                                                     style: TextStyle(
                                                         fontSize: SecondaryFont,
                                                         fontWeight: regFont,

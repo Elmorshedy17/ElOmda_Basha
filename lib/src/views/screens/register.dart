@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
+import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/blocs/new_order_bloc.dart';
 import 'package:medicine/src/blocs/signUp_bloc.dart';
@@ -572,6 +573,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 //                              isLogging = false;
 //                            });
                             locator<UserIdBloc>().UserIdSink.add(data.data.id.toString().toString());
+                            locator<PrefsService>().rateToSar = data.data.rateToSar.toString() ;
+                            locator<PrefsService>().currencyCode = data.data.currencyCode.toString() ;
                             Navigator.pushReplacement(
                                 context,
                                 new MaterialPageRoute(

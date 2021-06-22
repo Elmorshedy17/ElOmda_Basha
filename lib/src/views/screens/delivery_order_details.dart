@@ -5,16 +5,18 @@ import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
 import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/blocs/api_blocs/delivery_coasts_bloc.dart';
-import 'package:medicine/src/blocs/delivery_order_update_details_bloc.dart';
 import 'package:medicine/src/blocs/loading_manger.dart';
 import 'package:medicine/src/views/screens/delivery_order_details_and_update.dart';
-import 'package:medicine/src/views/screens/follow_order.dart';
 import 'package:medicine/theme_setting.dart';
 
+
+
+
 class DeliveryOrderDetails extends StatefulWidget {
-  var data;
+final  data;
 
   DeliveryOrderDetails(this.data);
+
 
   @override
   _DeliveryOrderDetailsState createState() => _DeliveryOrderDetailsState();
@@ -295,7 +297,7 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
                               borderRadius: new BorderRadius.circular(15.0)),
 //                    color: Theme.of(context).primaryColor,
                           child: Text(
-                            AppLocalizations.of(context).translate("Deliver_str"),
+                              widget.data.status == "new" ?  AppLocalizations.of(context).translate("Deliver_str"): AppLocalizations.of(context).translate("Details"),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: MainFont,
@@ -305,29 +307,40 @@ class _DeliveryOrderDetailsState extends State<DeliveryOrderDetails> {
 
 onPressed: (){
 
-  locator<IsLoadingManager>().isLoading.add(true);
 
-  ApiService.AgreeChangeOrderStatus(
-    widget.data.id,
-    message.text
-  ).then((value) {
-    locator<IsLoadingManager>().isLoading.add(false);
 
-    Fluttertoast.showToast(
-        msg: value.massage,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-    if(value.key == "1"){
+                            if(widget.data.status == "new"){
+                              locator<IsLoadingManager>().isLoading.add(true);
 
-      Navigator.push(context,
-          new MaterialPageRoute(builder: (BuildContext context) => OrderDetailsDeliveryUpdate(widget.data.id)));
-    }
-  });
+                              ApiService.AgreeChangeOrderStatus(
+                                  widget.data.id,
+                                  message.text
+                              ).then((value) {
+                                locator<IsLoadingManager>().isLoading.add(false);
+
+                                Fluttertoast.showToast(
+                                    msg: value.massage,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+                                if(value.key == "1"){
+
+                                  Navigator.push(context,
+                                      new MaterialPageRoute(builder: (BuildContext context) => OrderDetailsDeliveryUpdate(widget.data.id)));
+                                }
+                              });
+                            }else{
+                              Navigator.push(context,
+                                  new MaterialPageRoute(builder: (BuildContext context) => OrderDetailsDeliveryUpdate(widget.data.id)));
+
+                            }
+
+
+
 
 },
                         ),

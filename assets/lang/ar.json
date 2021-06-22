@@ -266,7 +266,11 @@
   "number_cash": "رقم الكاش للتحويل",
   "cities_delegates": "المدن والمناديب",
   "show_messages": "عرض الرسائل",
-  "total": "الاجمالي"
+  "total": "الاجمالي",
+  "chose_currency": "اختر العملة",
+  "currency_in_real": "ملحوظة : برجاء الكتابة بالريال السعودي"
+
+
 
 
 

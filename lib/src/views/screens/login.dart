@@ -225,7 +225,8 @@ class _LoginState extends State<Login> {
 
                           if (data.key == "1") {
 
-
+                            locator<PrefsService>().rateToSar = data.data.rateToSar.toString() ;
+                            locator<PrefsService>().currencyCode = data.data.currencyCode.toString() ;
                             if(locator<PrefsService>().saveUserId != null){
                               locator<UserIdBloc>()
                                   .UserIdSink

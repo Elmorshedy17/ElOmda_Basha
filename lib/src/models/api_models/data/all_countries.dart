@@ -28,15 +28,27 @@ class AllCountries {
 }
 
 class Data {
-  int id;
+  var id;
   String title;
+  var code;
+  String currencyCode;
+  var rateToSar;
   List<Cities> cities;
 
-  Data({this.id, this.title, this.cities});
+  Data(
+      {this.id,
+        this.title,
+        this.code,
+        this.currencyCode,
+        this.rateToSar,
+        this.cities});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
+    code = json['code'];
+    currencyCode = json['currency_code'];
+    rateToSar = json['rate_to_sar'];
     if (json['cities'] != null) {
       cities = new List<Cities>();
       json['cities'].forEach((v) {
@@ -49,6 +61,9 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
+    data['code'] = this.code;
+    data['currency_code'] = this.currencyCode;
+    data['rate_to_sar'] = this.rateToSar;
     if (this.cities != null) {
       data['cities'] = this.cities.map((v) => v.toJson()).toList();
     }

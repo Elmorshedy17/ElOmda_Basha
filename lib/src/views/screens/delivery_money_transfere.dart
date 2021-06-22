@@ -150,6 +150,15 @@ class _DeliveryMoneyTransfereState extends State<DeliveryMoneyTransfere> {
                       SizedBox(
                         height: 15.0,
                       ),
+                      Text(
+                        "${AppLocalizations.of(context).translate("currency_in_real")}",
+                        style: TextStyle(
+                            color: Colors.redAccent
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
                       TextField(
                         controller: moneyController,
                         keyboardType: TextInputType.number,

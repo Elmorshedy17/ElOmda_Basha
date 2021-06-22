@@ -12,28 +12,9 @@ import 'package:medicine/src/views/widgets/shimmer_placeholders.dart';
 import 'package:medicine/theme_setting.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:rxdart/rxdart.dart';
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:geolocator/geolocator.dart';
-import 'package:medicine/localizations/app_localizations.dart';
-import 'package:medicine/service/api.dart';
-import 'package:medicine/service/prefs_Service.dart';
-import 'package:medicine/service/service_locator.dart';
-import 'package:medicine/src/blocs/loading_manger.dart';
-import 'package:medicine/src/blocs/new_order_bloc.dart';
 import 'package:medicine/src/blocs/resend_canceled_details_edit.dart';
-import 'package:medicine/src/blocs/user_id_bloc.dart';
 import 'package:medicine/src/models/super_visor_marketers/show_all_marketer_orders_model.dart';
-import 'package:medicine/src/views/screens/after_order.dart';
-import 'package:medicine/src/views/screens/home_page.dart';
-import 'package:medicine/src/views/screens/login.dart';
-import 'package:medicine/src/views/screens/verificationCode.dart';
-import 'package:medicine/theme_setting.dart';
-//import 'package:location/location.dart';lat
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
-import 'package:rxdart/rxdart.dart';
+
 
 List all = [];
 
@@ -576,15 +557,8 @@ class _MarketerEditCartState extends State<MarketerEditCart> {
                                 ],
                               )
                           );                          // Fluttertoast.showToast(
-                          //     msg: locator<PrefsService>().appLanguage == "en"?"update order first":"حدث الطلب اولا",
-                          //     toastLength: Toast.LENGTH_SHORT,
-                          //     gravity: ToastGravity.CENTER,
-                          //     timeInSecForIosWeb: 1,
-                          //     backgroundColor: Colors.red,
-                          //     textColor: Colors.white,
-                          //     fontSize: 16.0
-                          // );
-                        }else{
+                        }
+                        else{
                           locator<IsLoadingManager>().isLoading.add(true);
                           ApiService.UpdateMarkterOrder(widget.orderID,how,
                               locator<ResendOrderDetailsBloc>().currentCounteryId,
@@ -697,12 +671,13 @@ class _SingleItemState extends State<SingleItem> {
                   stream: quantityController.stream,
                   builder: (context, updatedCountSnapshot) {
                     total = (widget.data.price * quantity) + changePriceSnapshot.data;
+                  var   totalCurrency = (widget.data.price * quantity * double.parse(locator<PrefsService>().rateToSar.toString())) + changePriceSnapshot.data;
                     // all.add(SingleItemService(widget.data.id,updatedCountSnapshot.data,total));
 
 
 
 
-                    Map<String, dynamic> items = {'section_id':"${widget.data.id}",'count':"${quantity}",'total':"$total"};
+                    Map<String, dynamic> items = {'section_id':"${widget.data.id}",'count':"${quantity}",'total':"${totalCurrency /  double.parse(locator<PrefsService>().rateToSar.toString())}"};
 
 
 
@@ -808,7 +783,8 @@ class _SingleItemState extends State<SingleItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${widget.data.price} ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
+                              "${(widget.data.price * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}",
+                                  // "${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
                               style: TextStyle(
                                   color: Colors.red,
                                   fontSize: PrimaryFont,
@@ -860,7 +836,8 @@ class _SingleItemState extends State<SingleItem> {
                             ),
 
                             Text(
-                              "$total ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
+                              "${(totalCurrency ).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}",
+                                  // " ${AppLocalizations.of(context).translate("real_suadi_shortcut")}",
                               style: TextStyle(
                                   color: Colors.red,
                                   fontSize: MainFont,
@@ -893,8 +870,8 @@ class _SingleItemState extends State<SingleItem> {
                                             height: 100,
                                             child: new NumberPicker.integer(
                                                 initialValue: 0,
-                                                minValue: -(((quantity * widget.data.price) * widget.varuableDiscountRate) / 100).round(),
-                                                maxValue: (((quantity * widget.data.price) * widget.varuableDiscountRate) / 100).round(),
+                                                minValue: -((((quantity * widget.data.price) * widget.varuableDiscountRate) * double.parse(locator<PrefsService>().rateToSar.toString()) ) / 100).round(),
+                                                maxValue: ((((quantity * widget.data.price) * widget.varuableDiscountRate) * double.parse(locator<PrefsService>().rateToSar.toString()) ) / 100).round(),
                                                 onChanged: (newValue) {
                                                   changePrice.add(newValue);
                                                   // print("tottalDiscount $tottalDiscount");

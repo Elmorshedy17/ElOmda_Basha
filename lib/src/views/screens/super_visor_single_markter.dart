@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
+import 'package:medicine/service/prefs_Service.dart';
+import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/views/screens/points_transfere.dart';
 import 'package:medicine/theme_setting.dart';
 
@@ -108,7 +110,7 @@ class _SuperVisorSingleMarkterState extends State<SuperVisorSingleMarkter> {
                           children: <Widget>[
                             Text(
 //                          "1000",
-                              widget.data.totalCommission.toString(),
+                              "${(widget.data.totalCommission * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}",
                               style: TextStyle(
                                   fontWeight: semiFont,
                                   fontSize: PrimaryFont,
@@ -118,7 +120,7 @@ class _SuperVisorSingleMarkterState extends State<SuperVisorSingleMarkter> {
                               width: 5.0,
                             ),
                             Text(
-                              "RS",
+                              locator<PrefsService>().currencyCode,
                               style: TextStyle(
                                   fontWeight: semiFont,
                                   fontSize: SecondaryFont,
@@ -193,7 +195,7 @@ class _SuperVisorSingleMarkterState extends State<SuperVisorSingleMarkter> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          widget.data.needCommission.toString(),
+                         "${(double.parse(widget.data.needCommission.toString()) * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)}",
                           style: TextStyle(
                               fontWeight: semiFont,
                               fontSize: PrimaryFont,
@@ -203,7 +205,8 @@ class _SuperVisorSingleMarkterState extends State<SuperVisorSingleMarkter> {
                           width: 8.0,
                         ),
                         Text(
-                          AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                          locator<PrefsService>().currencyCode,
+                          // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                           style: TextStyle(
                               fontSize: PrimaryFont,
                               fontWeight: semiFont,

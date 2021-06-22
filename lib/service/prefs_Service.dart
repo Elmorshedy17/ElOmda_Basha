@@ -10,6 +10,9 @@ class PrefsService {
   static SharedPreferences _preferences;
 
   static const String APP_LANGUAGE_KEY = 'language_code';
+  static const String rate_to_sar = 'rate_to_sar';
+  static const String currency_code = 'currency_code';
+
   static const String APP_COUNTRY_CODE = 'countryCode';
   static const String HAS_CHOSEN_LANGUAGE = 'hasChosenLanguage';
   static const String SIGN_UP_KEY = 'signedUp';
@@ -204,6 +207,17 @@ class PrefsService {
   String get appLanguage => _getFromPrefs(APP_LANGUAGE_KEY);
   // setter for App language.
   set appLanguage(String value) => _saveToPrefs(APP_LANGUAGE_KEY, value);
+  ////////////////////////////////////////////////////////////////////////////////
+  // getter for App rate_to_sar.
+  String get rateToSar => _getFromPrefs(rate_to_sar);
+  // setter for App language.
+  set rateToSar(String value) => _saveToPrefs(rate_to_sar, value);
+// ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+  // getter for App rate_to_sar.
+  String get currencyCode => _getFromPrefs(currency_code);
+  // setter for App language.
+  set currencyCode(String value) => _saveToPrefs(currency_code, value);
 // ////////////////////////////////////////////////////////////////////////////////
   // getter for UserPassword.
   String get userPassword => _getFromPrefs(USER_PASSWORD);

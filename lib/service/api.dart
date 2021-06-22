@@ -618,7 +618,8 @@ class ApiService {
 //      "avatar": await MultipartFile.fromFile("$SelectedImagePath",filename: "$SelectedImagePath"),
       "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
       "notify_send":locator<PrefsService>().notifySend,
-      "account_number":"$accountNumber"
+      "account_number":"$accountNumber",
+    "country_id": locator<AllOrdersFilterBloc>().currentCounteryId,
 
     });
 //     FormData formData = SelectedImagePath != null? FormData.fromMap({
@@ -1639,7 +1640,8 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
         data: {
           "order_id": orderID,
           "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
-          "delivery":delivery
+          "delivery":delivery,
+          "message":msg
 
         },
       );

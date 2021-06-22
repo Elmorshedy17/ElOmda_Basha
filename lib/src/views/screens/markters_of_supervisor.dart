@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
+import 'package:medicine/service/prefs_Service.dart';
+import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/views/screens/super_visor_single_markter.dart';
 import 'package:medicine/theme_setting.dart';
 
@@ -97,11 +99,7 @@ class _SuperVisorMarktersState extends State<SuperVisorMarkters> {
                                                     child: Row(
                                                       children: <Widget>[
                                                         Text(
-                                                          snapshot
-                                                              .data
-                                                              .data[index]
-                                                              .needCommission
-                                                              .toString(),
+                                                          (snapshot.data.data[index].needCommission * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2),
 //                                                        "1000",
                                                           style: TextStyle(
                                                               fontWeight:
@@ -114,7 +112,8 @@ class _SuperVisorMarktersState extends State<SuperVisorMarkters> {
                                                           width: 8.0,
                                                         ),
                                                         Text(
-                                                          AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                                                          locator<PrefsService>().currencyCode,
+                                                          // AppLocalizations.of(context).translate("real_suadi_shortcut"),
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   semiFont,

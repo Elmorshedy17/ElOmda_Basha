@@ -111,16 +111,58 @@ class CartData {
   }
 }
 
+// class CountriesData {
+//   int id;
+//   String title;
+//   List<Cities> cities;
+//
+//   CountriesData({this.id, this.title, this.cities});
+//
+//   CountriesData.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     title = json['title'];
+//     if (json['cities'] != null) {
+//       cities = new List<Cities>();
+//       json['cities'].forEach((v) {
+//         cities.add(new Cities.fromJson(v));
+//       });
+//     }
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = this.id;
+//     data['title'] = this.title;
+//     if (this.cities != null) {
+//       data['cities'] = this.cities.map((v) => v.toJson()).toList();
+//     }
+//     return data;
+//   }
+// }
+
+
 class CountriesData {
   int id;
   String title;
+  var code;
+  String currencyCode;
+  var rateToSar;
   List<Cities> cities;
 
-  CountriesData({this.id, this.title, this.cities});
+  CountriesData(
+      {this.id,
+        this.title,
+        this.code,
+        this.currencyCode,
+        this.rateToSar,
+        this.cities});
 
   CountriesData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
+    code = json['code'];
+    currencyCode = json['currency_code'];
+    rateToSar = json['rate_to_sar'];
     if (json['cities'] != null) {
       cities = new List<Cities>();
       json['cities'].forEach((v) {
@@ -133,6 +175,9 @@ class CountriesData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
+    data['code'] = this.code;
+    data['currency_code'] = this.currencyCode;
+    data['rate_to_sar'] = this.rateToSar;
     if (this.cities != null) {
       data['cities'] = this.cities.map((v) => v.toJson()).toList();
     }
@@ -158,4 +203,23 @@ class Cities {
     return data;
   }
 }
+
+// class Cities {
+//   int id;
+//   String title;
+//
+//   Cities({this.id, this.title});
+//
+//   Cities.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     title = json['title'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = this.id;
+//     data['title'] = this.title;
+//     return data;
+//   }
+// }
 

@@ -1,3 +1,4 @@
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -290,37 +291,53 @@ setState(() {
                       }
 
                       return snapshot.hasData
-                          ? RefreshIndicator(
-                        onRefresh: _refresh,
-                        child:  ListView(
-                          reverse: true,
-                          padding: EdgeInsets.zero,
-                          children: [
-                            Container(
+                        //   ? RefreshIndicator(
+                        // onRefresh: _refresh,
+                        // child:  ListView(
+                        //   primary: true,
+                        //   reverse: true,
+                        //   padding: EdgeInsets.zero,
+                        //   children: [
+                          ?  Container(
                               height: MediaQuery.of(context).size.height - 100,
                               width: double.infinity,
                               // color: Colors.blueAccent,
-                              child: snapshot.data.data.length > 0 ?  ListView.builder(
+                              child: snapshot.data.data.length > 0 ? RefreshIndicator(
+                                onRefresh: _refresh,
+                                child: ListView.builder(
+                                    reverse: true,
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data.data.length,
+                                    // physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, int index) {
+                                      // return _singleProduct(
+                                      //     snapshot.data.data[index]);
+                                      return _singleProduct(
+                                          snapshot.data.data[index]);
+                                    }),
+                              ):RefreshIndicator(
+                                onRefresh: _refresh,
+                                child: ListView(
                                   reverse: true,
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.data.length,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, int index) {
-                                    return _singleProduct(
-                                        snapshot.data.data[index]);
-                                  }):Center(
-                                child: Text(
-                                  AppLocalizations.of(context).translate(
-                                      "There are no new orders on your area"),
-                                  style: TextStyle(
-                                      color: lightText,
-                                      fontSize: PrimaryFont),
+                                  children: [
+                                    SizedBox(
+                                      height: MediaQuery.of(context).size.height * .4,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        AppLocalizations.of(context).translate(
+                                            "There are no new orders on your area"),
+                                        style: TextStyle(
+                                            color: lightText,
+                                            fontSize: PrimaryFont),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ],
-                        )
-                      )
+                            )
+                        //   ],
+                        // ))
                           : HomePageItemShimmer();
                     }),
               ),
