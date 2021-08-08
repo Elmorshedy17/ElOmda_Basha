@@ -84,10 +84,10 @@ class DataInner {
   String hasProvider;
   String inWay;
   String finish;
-  int countryId;
+  var countryId;
   String countryTitle;
   String currencyCode;
-  int cityId;
+  var cityId;
   String cityTitle;
   String delegateName;
   String delegatePhone;
@@ -250,16 +250,16 @@ class OrderItems {
   int sectionId;
   String sectionTitle;
   String sectionDesc;
-  int sectionPrice;
+  var sectionPrice;
   String sectionImage;
-  int total;
-  int buyTotal;
-  int giftTotal;
-  int giftCount;
-  int commission;
-  int point;
-  int benfit;
-  int quantity;
+  var total;
+  var buyTotal;
+  var giftTotal;
+  var giftCount;
+  var commission;
+  var point;
+  var benfit;
+  var quantity;
 
   OrderItems(
       {this.orderItemId,

@@ -11,6 +11,7 @@ import 'package:medicine/src/blocs/firebase_token_bloc.dart';
 import 'package:medicine/src/blocs/home_page_bloc.dart';
 import 'package:medicine/src/blocs/loading_manger.dart';
 import 'package:medicine/src/blocs/local_firebase_bloc.dart';
+import 'package:medicine/src/models/delivery_models/all_notification_show_model.dart';
 import 'package:medicine/src/models/super_visor_marketers/home_model.dart';
 import 'package:medicine/src/views/screens/filtered_screen.dart';
 import 'package:medicine/src/views/screens/my_orders.dart';
@@ -262,20 +263,20 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 child:
-                                FutureBuilder(
+                                FutureBuilder<AllNotificationShowModel>(
                                   future: ApiService.AllNotificationShow(),
                                   builder: (context, NotificationsSnapshot) {
                                     return InkWell(
                                         onTap: () {
                                           setState(() {
-                                            locator<PrefsService>().NotiCount = NotificationsSnapshot.data.data.length;
+                                            locator<PrefsService>().NotiCount = NotificationsSnapshot.data.data.pagination.total;
                                           });
 print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
                                           Navigator.push(
                                               context,
                                               new MaterialPageRoute(
                                                   builder: (BuildContext context) =>
-                                                      Notifications(NotificationsSnapshot.data)));
+                                                      Notifications()));
 print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
 
                                         },
@@ -290,7 +291,7 @@ print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
                                             NotificationsSnapshot.hasData?    Positioned(
                                               top: 6.0,
                                               child: Container(
-                                                child: Center(child: Text("${NotificationsSnapshot.data.data.length - locator<PrefsService>().NotiCount}",style: TextStyle(color: Colors.white,height: 1.5,fontSize: 10),)),
+                                                child: Center(child: Text("${NotificationsSnapshot.data.data.pagination.total - locator<PrefsService>().NotiCount}",style: TextStyle(color: Colors.white,height: 1.5,fontSize: 10),)),
                                                 decoration: new BoxDecoration(
                                                   borderRadius: new BorderRadius.all(Radius.circular(500.0),
                                                   ),

@@ -7,6 +7,7 @@ import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/theme_setting.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 class FollowOrder extends StatefulWidget {
   var data;
@@ -38,6 +39,19 @@ class _FollowOrderState extends State<FollowOrder> {
         return "https://wa.me/+$phone?text=$message";
 
       }
+    }
+
+    if (await canLaunch(url())) {
+      await launch(url());
+    } else {
+      throw 'Could not launch ${url()}';
+    }
+  }
+
+  void launchWhatsGroupApp(
+      {@required String link,}) async {
+    String url() {
+      return "$link";
     }
 
     if (await canLaunch(url())) {
@@ -112,10 +126,11 @@ class _FollowOrderState extends State<FollowOrder> {
                   Share.share(
                       "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
                           "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
-                          "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
+                          "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phoneWithoutCode == "" ? widget.data.phone : widget.data.phoneWithoutCode}""\n"
                           "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                           "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                          "${AppLocalizations.of(context).translate("total")} ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
+                          "${AppLocalizations.of(context).translate("total")} ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}""\n"
+                          "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.notes}");
 
                 },
               ),
@@ -423,10 +438,11 @@ class _FollowOrderState extends State<FollowOrder> {
                                     launchWhatsApp(phone: "${widget.data.phone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
                                     "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
                                         "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
-                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
+                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phoneWithoutCode == "" ? widget.data.phone : widget.data.phoneWithoutCode}""\n"
                                         "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                        "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
+                                        "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}""\n"
+                                        "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.notes}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                 ),
@@ -474,10 +490,11 @@ class _FollowOrderState extends State<FollowOrder> {
                                     launchWhatsApp(phone: "${widget.data.whatsapp.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
                                     "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
                                         "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
-                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
+                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phoneWithoutCode == "" ? widget.data.phone : widget.data.phoneWithoutCode}""\n"
                                         "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                        "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
+                                        "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}""\n"
+                                        "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.notes}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                 ),
@@ -493,9 +510,10 @@ class _FollowOrderState extends State<FollowOrder> {
                   height: 30,
                 ),
                 Container(
-                  child: Wrap(
+                  child: Column(
                     children: <Widget>[
                       Container(
+                        // color: Colors.red,
                         child: ListTile(
                           leading: ClipRRect(
                             borderRadius:
@@ -515,13 +533,31 @@ class _FollowOrderState extends State<FollowOrder> {
                               child: Text(widget.data.delegatePhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString())),
                           trailing: MaterialButton(
                             onPressed: ()  {
-                              launchWhatsApp(phone: "${widget.data.delegatePhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                              "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
-                                  "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
-                                  "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phone}""\n"
-                                  "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
-                                  "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                  "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}");
+                              print("widget.data.delegateWhatsappLink${widget.data.delegateWhatsappLink}");
+                              if(widget.data.delegateWhatsappLink == ""){
+                                launchWhatsApp(phone: "${widget.data.delegatePhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
+                                "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
+                                    "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
+                                    "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phoneWithoutCode == "" ? widget.data.phone : widget.data.phoneWithoutCode}""\n"
+                                    "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
+                                    "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                    "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}""\n"
+                                    "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.notes}");
+
+                              }else{
+                                Clipboard.setData(ClipboardData(text:
+                                "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.id}""\n"
+                                    "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.name}""\n"
+                                    "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.phoneWithoutCode == "" ? widget.data.phone : widget.data.phoneWithoutCode}""\n"
+                                    "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.address}""\n"
+                                    "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                    "${AppLocalizations.of(context).translate("total")}  ${(widget.data.total * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2)} ${locator<PrefsService>().currencyCode}""\n"
+                                    "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.notes}"
+                                ));
+
+                                launchWhatsGroupApp(link: widget.data.delegateWhatsappLink);
+                              }
+
                             },
                             child: Image.asset(
                               "assets/images/whatsapp.png",

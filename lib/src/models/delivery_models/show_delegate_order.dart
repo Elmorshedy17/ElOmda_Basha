@@ -37,6 +37,7 @@ class Data {
   String name;
   String phone;
   String whatsapp;
+  String phoneWithoutCode;
   String date;
   String time;
   String address;
@@ -73,6 +74,9 @@ class Data {
   String delegateAvatar;
   var delegateCommission;
   var delegatePoint;
+  String marketerWhatsappLink;
+  String delegateWhatsappLink;
+
   List<OrderStatus> orderStatus;
   List<OrderItems> orderItems;
 
@@ -82,6 +86,7 @@ class Data {
         this.name,
         this.phone,
         this.whatsapp,
+        this.phoneWithoutCode,
         this.date,
         this.time,
         this.address,
@@ -119,6 +124,8 @@ class Data {
         this.delegateCommission,
         this.delegatePoint,
         this.orderStatus,
+        this.delegateWhatsappLink,
+        this.marketerWhatsappLink,
         this.orderItems});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -127,6 +134,7 @@ class Data {
     name = json['name'];
     phone = json['phone'];
     whatsapp = json['whatsapp'];
+    phoneWithoutCode = json['phone_without_code'];
     date = json['date'];
     time = json['time'];
     address = json['address'];
@@ -163,6 +171,10 @@ class Data {
     delegateAvatar = json['delegate_avatar'];
     delegateCommission = json['delegate_commission'];
     delegatePoint = json['delegate_point'];
+    delegateWhatsappLink = json['delegate_whatsapp_link'];
+    marketerWhatsappLink = json['marketer_whatsapp_link'];
+
+
     if (json['order_status'] != null) {
       orderStatus = new List<OrderStatus>();
       json['order_status'].forEach((v) {
@@ -184,6 +196,7 @@ class Data {
     data['name'] = this.name;
     data['phone'] = this.phone;
     data['whatsapp'] = this.whatsapp;
+    data['phone_without_code'] = this.phoneWithoutCode;
     data['date'] = this.date;
     data['time'] = this.time;
     data['address'] = this.address;
@@ -220,6 +233,9 @@ class Data {
     data['delegate_avatar'] = this.delegateAvatar;
     data['delegate_commission'] = this.delegateCommission;
     data['delegate_point'] = this.delegatePoint;
+    data['delegate_whatsapp_link'] = this.delegateWhatsappLink;
+    data['marketer_whatsapp_link'] = this.marketerWhatsappLink;
+
     if (this.orderStatus != null) {
       data['order_status'] = this.orderStatus.map((v) => v.toJson()).toList();
     }

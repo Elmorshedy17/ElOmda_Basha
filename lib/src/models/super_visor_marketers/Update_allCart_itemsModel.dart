@@ -1,7 +1,7 @@
 class UpdateAllCartItemsModel {
   String key;
   String msg;
-  int commission;
+  var commission;
   Data data;
 
   UpdateAllCartItemsModel({this.key, this.msg, this.commission, this.data});

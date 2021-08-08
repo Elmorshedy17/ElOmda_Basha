@@ -292,8 +292,7 @@ class AllOrdersFilterBloc {
 
 
 
-  final BehaviorSubject currentPageController =
-  BehaviorSubject.seeded(1);
+  final BehaviorSubject currentPageController = BehaviorSubject.seeded(1);
   Stream get isCurrentPageController$ => currentPageController.stream;
   Sink get inCurrentPageController => currentPageController.sink;
   int get currentPageControllerValue => currentPageController.value;
@@ -302,6 +301,9 @@ class AllOrdersFilterBloc {
   final BehaviorSubject isLoadingOrders = BehaviorSubject.seeded(false);
   Stream get isLoadingOrders$ => isLoadingOrders.stream;
   Sink get inIsLoadingOrders => isLoadingOrders.sink;
+
+
+
   final BehaviorSubject<int> countSubject = BehaviorSubject<int>();
 
 

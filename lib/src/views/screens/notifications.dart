@@ -3,22 +3,69 @@ import 'package:medicine/localizations/app_localizations.dart';
 import 'package:medicine/service/api.dart';
 import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
+import 'package:medicine/src/blocs/api_blocs/notifications_manger.dart';
 import 'package:medicine/src/blocs/loading_manger.dart';
 import 'package:medicine/src/blocs/user_type_bloc.dart';
-import 'package:medicine/src/views/screens/delivery_follow_order.dart';
+import 'package:medicine/src/models/delivery_models/all_notification_show_model.dart';
 import 'package:medicine/src/views/screens/delivery_order_details.dart';
 import 'package:medicine/src/views/screens/receipt.dart';
 import 'package:medicine/theme_setting.dart';
 
 
+
 class Notifications extends StatefulWidget {
-  var notificationsData;
-  Notifications(this.notificationsData);
+  // var notificationsData;
+  // Notifications(this.notificationsData);
   @override
   _NotificationsState createState() => _NotificationsState();
 }
 
 class _NotificationsState extends State<Notifications> {
+
+
+  ScrollController _scrollController = ScrollController();
+
+  int currentPage = 1;
+  List<InnerData> allNotificationsList = [];
+
+  @override
+  void initState() {
+    // locator<AllOrdersFilterBloc>().allOrdersFilterSink.add(filterHistory);
+    locator<NotificationsBloc>().inCurrentPageController.add(1);
+    loadMore();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        loadMore();
+        locator<NotificationsBloc>().inIsLoadingOrders.add(true);
+      }
+    });
+    super.initState();
+  }
+
+  void loadMore() {
+
+    ApiService.AllNotificationShow()
+        .then((onValue) {
+
+      if (allNotificationsList.length < onValue.data.pagination.total) {
+        currentPage++;
+        locator<NotificationsBloc>().inCurrentPageController.add(currentPage);
+        onValue.data.innerData.forEach((element) {
+          allNotificationsList.add(element);
+        });
+
+
+      }
+      locator<NotificationsBloc>().inIsLoadingOrders.add(false);
+      locator<NotificationsBloc>().inAllNotifications.add(allNotificationsList);
+    });
+
+    print("yayayay${allNotificationsList.length}");
+    print("currentPage${currentPage}");
+
+  }
+
 
   var GlobalUserType = locator<PrefsService>().userType == null ? locator<UserTypeBloc>().currentUserType:locator<PrefsService>().userType;
 
@@ -56,129 +103,135 @@ class _NotificationsState extends State<Notifications> {
 
           Navigator.pop(context);
 
-//            Navigator.pushReplacement(
-//                context,
-//                new MaterialPageRoute(
-//                    builder: (BuildContext
-//                    context) =>
-//                    GlobalUserType!= "delegate"? HomePage(locator<UserIdBloc>().currentUserId.toString()):DeliveyHomePage(locator<UserIdBloc>().currentUserId.toString())
-//                ));
+
 
           },
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20.0),
-        child: ListView.builder(
-            itemCount: widget.notificationsData.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: (){
-                  if(locator<PrefsService>().userType == null){}
-                 else if(locator<PrefsService>().userType !="delegate"){
-                    locator<IsLoadingManager>().isLoading.add(true);
-                    ApiService.ShowOrder(widget.notificationsData.data[index].orderId).then((onValue){
-                      locator<IsLoadingManager>().isLoading.add(false);
-                      if(onValue.key == "1"){
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) => Receipt(onValue.data)));
+      body: StreamBuilder<List<InnerData>>(
+          stream: locator<NotificationsBloc>().allNotifications$,
+          builder: (context, notificationsSnapshot) {
+            return notificationsSnapshot.hasData?
+           Container(
+            padding: EdgeInsets.all(20.0),
+            child: ListView.builder(
+              controller: _scrollController,
+                itemCount: notificationsSnapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: (){
+                      if(locator<PrefsService>().userType == null){}
+                     else if(locator<PrefsService>().userType !="delegate"){
+                        locator<IsLoadingManager>().isLoading.add(true);
+                        ApiService.ShowOrder(notificationsSnapshot.data[index].orderId).then((onValue){
+                          locator<IsLoadingManager>().isLoading.add(false);
+                          if(onValue.key == "1"){
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (BuildContext context) => Receipt(onValue.data)));
+                          }
+                        });
+                      }else{
+                        locator<IsLoadingManager>().isLoading.add(true);
+
+                        ApiService.ShowDelegateOrder(
+                            notificationsSnapshot.data[index].orderId).then((onValue) {
+                          locator<IsLoadingManager>().isLoading.add(false);
+
+                          if (onValue.key == "1") {
+                            Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) =>
+                                DeliveryOrderDetails(onValue.data)));
+                          } else {
+                            showDialog(context: context, builder: (BuildContext context) {
+                              return AlertDialog(title: Text(onValue.msg),);});}
+                        });
                       }
-                    });
-                  }else{
-                    locator<IsLoadingManager>().isLoading.add(true);
-
-                    ApiService.ShowDelegateOrder(
-                        widget.notificationsData.data[index].orderId).then((onValue) {
-                      locator<IsLoadingManager>().isLoading.add(false);
-
-                      if (onValue.key == "1") {
-                        Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) =>
-                            DeliveryOrderDetails(onValue.data)));
-                      } else {
-                        showDialog(context: context, builder: (BuildContext context) {
-                          return AlertDialog(title: Text(onValue.msg),);});}
-                    });
-                  }
-                },
-                child: Dismissible(
-                onDismissed: (direction) {
-                  ApiService.NotificationDelete(widget.notificationsData.data[index].id).then((onValue){
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(onValue.msg),
+                    },
+                    child: Dismissible(
+                    onDismissed: (direction) {
+                      ApiService.NotificationDelete(notificationsSnapshot.data[index].id).then((onValue){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(onValue.msg),
+                            );
+                          },
                         );
-                      },
-                    );
-                    print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
-                    locator<PrefsService>().NotiCount -= 1;
-                    print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
-                  });
-                },
-                  direction: DismissDirection.startToEnd,
-                  background: _trashContainer(),
-                  key: Key(widget.notificationsData.data[index].id.toString()),
-                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 2.5),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      elevation: 4.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: widget.notificationsData.data[index].userAvatar != null ?  ClipRRect(
-                            borderRadius:
-                            BorderRadius.all( Radius.circular(500.0)),
-                            child: Image.asset(widget.notificationsData.data[index].userAvatar,fit: BoxFit.fill,),
-                          ):Container(),
-                          title: Text(widget.notificationsData.data[index].message.toString(),style: TextStyle(
-                            fontSize: PrimaryFont,
-                            fontWeight: bolFont,
-                            color: littleGrey
-                          ),),
-                          subtitle:Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
+                        print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
+                        locator<PrefsService>().NotiCount -= 1;
+                        print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
+                      });
+                    },
+                      direction: DismissDirection.startToEnd,
+                      background: _trashContainer(),
+                      key: Key(notificationsSnapshot.data[index].id.toString()),
+                       child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 2.5),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          elevation: 4.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: notificationsSnapshot.data[index].userAvatar != null ?  ClipRRect(
+                                borderRadius:
+                                BorderRadius.all( Radius.circular(500.0)),
+                                child: Image.asset(notificationsSnapshot.data[index].userAvatar,fit: BoxFit.fill,),
+                              ):Container(),
+                              title: Text(notificationsSnapshot.data[index].message.toString(),style: TextStyle(
+                                fontSize: PrimaryFont,
+                                fontWeight: bolFont,
+                                color: littleGrey
+                              ),),
+                              subtitle:Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(widget.notificationsData.data[index].date,style: TextStyle(
-                                      fontSize: PrimaryFont,
-                                      fontWeight: semiFont,
-                                      color: littleGrey
-                                  ),),
-                                  SizedBox(width: 15.0,),
-                                  Text(widget.notificationsData.data[index].dateFrom,style: TextStyle(
-                                      fontSize: PrimaryFont,
-                                      fontWeight: semiFont,
-                                      color: littleGrey
-                                  ),),
-                                ],
-                              ),
-                              InkWell(
+                                  Row(
+                                    children: <Widget>[
+                                      Text(notificationsSnapshot.data[index].date,style: TextStyle(
+                                          fontSize: PrimaryFont,
+                                          fontWeight: semiFont,
+                                          color: littleGrey
+                                      ),),
+                                      SizedBox(width: 15.0,),
+                                      Text(notificationsSnapshot.data[index].dateFrom,style: TextStyle(
+                                          fontSize: PrimaryFont,
+                                          fontWeight: semiFont,
+                                          color: littleGrey
+                                      ),),
+                                    ],
+                                  ),
+                                  InkWell(
 //                            onTap: (){},
-                                child: Text(widget.notificationsData.data[index].type,style: TextStyle(
-                                  fontSize: PrimaryFont,
-                                  fontWeight: bolFont,
-                                  color: Colors.red.withOpacity(.7),
-                                  decoration: TextDecoration.underline,
-                                ),),
-                              ),
-                            ],
-                          ) ,
+                                    child: Text(notificationsSnapshot.data[index].type,style: TextStyle(
+                                      fontSize: PrimaryFont,
+                                      fontWeight: bolFont,
+                                      color: Colors.red.withOpacity(.7),
+                                      decoration: TextDecoration.underline,
+                                    ),),
+                                  ),
+                                ],
+                              ) ,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              );
-            }
-        ),
+                  );
+                }
+            ),
+          ):Center(
+              child: Container(
+                padding: EdgeInsets.all(30.0),
+                child: CircularProgressIndicator(),
+              ),
+            );
+        }
       ),
     );
   }

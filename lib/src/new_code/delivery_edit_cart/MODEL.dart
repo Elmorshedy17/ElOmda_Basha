@@ -36,8 +36,8 @@ class Data {
   String address;
   String notes;
   String message;
-  int lat;
-  int lng;
+  var lat;
+  var lng;
   var currencyCode;
   var totalForCountry;
   var delivery;

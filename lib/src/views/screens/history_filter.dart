@@ -19,7 +19,6 @@ DateTime fromDate ;
 
 final now = DateTime.now();
 final DateFormat formatter = DateFormat('yyyy-MM-dd');
-// final ToastTemplate _showToast = locator<ToastTemplate>();
 final yesterday = DateTime(now.year, now.month, now.day - 1);
 final prefs = locator<PrefsService>();
 

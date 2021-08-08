@@ -186,17 +186,54 @@ class MyOrdersScreen extends StatelessWidget {
                                                   child: Container(
 
                                                     child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: <Widget>[
                                                         Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: <Widget>[
                                                             Flexible(flex: 3,
                                                               child:
-                                                              Container(
-                                                                padding: const EdgeInsets.all(12.0),
-                                                                child: Image.network(showCartSnapshot.data.data.cartData[index].sectionImage,
-                                                                  height: 110.0,
-                                                                  width: 110.0,
-                                                                ),
+                                                              Column(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                children: [
+                                                                  Container(
+                                                                    padding: const EdgeInsets.all(12.0),
+                                                                    child: Image.network(showCartSnapshot.data.data.cartData[index].sectionImage,
+                                                                      height: 110.0,
+                                                                      width: 110.0,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets.only(bottom: 5,left: 5,right: 5),
+                                                                    child:
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      Text(
+                                                                        (showCartSnapshot.data.data.cartData[index].sectionPrice * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2),
+                                                                        style: TextStyle(
+                                                                            fontWeight: semiFont,
+                                                                            fontSize: MediumFont,
+                                                                            color: Theme.of(context).accentColor),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                        5.0,
+                                                                      ),
+                                                                      Text(
+                                                                        locator<PrefsService>().currencyCode,
+                                                                        // AppLocalizations.of(context).translate("real_suadi_shortcut"),
+                                                                        style: TextStyle(
+                                                                            fontWeight: regFont,
+                                                                            fontSize: SecondaryFont,
+                                                                            color: littleGrey),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
                                                             Flexible(
@@ -235,31 +272,7 @@ class MyOrdersScreen extends StatelessWidget {
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: <Widget>[
-                                                              Container(child:
-                                                                Row(
-                                                                  children: <Widget>[
-                                                                    Text(
-                                                                      (showCartSnapshot.data.data.cartData[index].sectionPrice * double.parse(locator<PrefsService>().rateToSar.toString())).toStringAsFixed(2),
-                                                                      style: TextStyle(
-                                                                          fontWeight: semiFont,
-                                                                          fontSize: MediumFont,
-                                                                          color: Theme.of(context).accentColor),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width:
-                                                                      5.0,
-                                                                    ),
-                                                                    Text(
-                                                                      locator<PrefsService>().currencyCode,
-                                                                      // AppLocalizations.of(context).translate("real_suadi_shortcut"),
-                                                                      style: TextStyle(
-                                                                          fontWeight: regFont,
-                                                                          fontSize: SecondaryFont,
-                                                                          color: littleGrey),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
+
                                                               Container(
                                                                 child:
                                                                 Container(
@@ -369,8 +382,7 @@ class MyOrdersScreen extends StatelessWidget {
                                                                     5.0,
                                                                   ),
                                                                   Text(
-                                                                    AppLocalizations.of(context)
-                                                                        .translate("real_suadi_shortcut"),
+                                                                    locator<PrefsService>().currencyCode,
                                                                     style: TextStyle(
                                                                         fontWeight: bolFont,
                                                                         fontSize: MainFont,
@@ -648,10 +660,7 @@ class MyOrdersScreen extends StatelessWidget {
                                                 width: 5.0,
                                               ),
                                               Text(
-                                                AppLocalizations.of(
-                                                    context)
-                                                    .translate(
-                                                    "real_suadi_shortcut"),
+                                                locator<PrefsService>().currencyCode,
                                                 style: TextStyle(
                                                     fontWeight: regFont,
                                                     fontSize:

@@ -21,6 +21,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
+import 'package:flutter/services.dart';
+
 
 class DelivereyFollowOrder extends StatefulWidget {
   ShowDelegateOrderModel data;
@@ -57,6 +59,19 @@ class _DelivereyFollowOrderState extends State<DelivereyFollowOrder> {
         return "https://wa.me/+$phone?text=$message";
 
       }
+    }
+
+    if (await canLaunch(url())) {
+      await launch(url());
+    } else {
+      throw 'Could not launch ${url()}';
+    }
+  }
+
+  void launchWhatsGroupApp(
+      {@required String link,}) async {
+    String url() {
+      return "$link";
     }
 
     if (await canLaunch(url())) {
@@ -185,10 +200,12 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                       Share.share(
                           "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
                               "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
-                              "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
+                              "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phoneWithoutCode == "" ?  widget.data.data.phone : widget.data.data.phoneWithoutCode}""\n"
                               "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                               "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                              "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}");
+                              "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}""\n"
+                              "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.data.notes}"
+                      );
 
                     },
                   ),
@@ -427,10 +444,11 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                    launchWhatsApp(phone: "${widget.data.data.phone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
                                    "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
                                    "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
-                                   "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
+                                   "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phoneWithoutCode == "" ?  widget.data.data.phone : widget.data.data.phoneWithoutCode}""\n"
                                    "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                    "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                   "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}"
+                                   "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}""\n"
+                                   "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.data.notes}"
                                    );
 
                                  },
@@ -491,10 +509,11 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                                     launchWhatsApp(phone: "${widget.data.data.whatsapp.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
                                     "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
                                         "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
-                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
+                                        "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phoneWithoutCode == "" ?  widget.data.data.phone : widget.data.data.phoneWithoutCode}""\n"
                                         "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
                                         "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                        "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}");
+                                        "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}""\n"
+                                        "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.data.notes}");
                                   },
                                   child: Image.asset("assets/images/whatsapp.png",width: 20,),
                                 ),
@@ -532,14 +551,32 @@ else if(ido != "has_provider" && ido != "in_way" && ido != "finish") {
                               child: Text(widget.data.data.marketerPhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString())),
                           trailing: MaterialButton(
                             onPressed: ()  {
-                              launchWhatsApp(phone: "${widget.data.data.marketerPhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
-                              "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
-                                  "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
-                                  "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phone}""\n"
-                                  "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
-                                  "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
-                                  "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}");
-                            },
+                              print("widget.data.data.marketerWhatsappLink${widget.data.data.marketerWhatsappLink}");
+                              if(widget.data.data.marketerWhatsappLink == ""){
+                                launchWhatsApp(phone: "${widget.data.data.marketerPhone.replaceAll(new RegExp(r'[^\w\s]+'),'').toString()}",message:
+                                "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
+                                    "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
+                                    "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phoneWithoutCode == "" ?  widget.data.data.phone : widget.data.data.phoneWithoutCode}""\n"
+                                    "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
+                                    "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                    "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}""\n"
+                                    "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.data.notes}");
+                              }else{
+                                Clipboard.setData(ClipboardData(text:
+                                "${AppLocalizations.of(context).translate(" Order_Number_str")}  ${widget.data.data.id}""\n"
+                                    "${AppLocalizations.of(context).translate("Customer_Name_:")}  ${widget.data.data.name}""\n"
+                                    "${AppLocalizations.of(context).translate("Phone Number")}  ${widget.data.data.phoneWithoutCode == "" ?  widget.data.data.phone : widget.data.data.phoneWithoutCode}""\n"
+                                    "${AppLocalizations.of(context).translate("Adress_str")}  ${widget.data.data.address}""\n"
+                                    "${AppLocalizations.of(context).translate("required_product")}  ${itemsDetails.toString()}""\n"
+                                    "${AppLocalizations.of(context).translate("total")} ${widget.data.data.totalForCountry} ${widget.data.data.currencyCode}""\n"
+                                    "${AppLocalizations.of(context).translate("notes_Str")}  ${widget.data.data.notes}"
+                                ));
+                                launchWhatsGroupApp(link: widget.data.data.marketerWhatsappLink);
+                              }
+                              // print("widget.data.data.marketerWhatsappLink${}");
+
+
+                              },
                             child: Image.asset(
                               "assets/images/whatsapp.png",
                               height: 60,

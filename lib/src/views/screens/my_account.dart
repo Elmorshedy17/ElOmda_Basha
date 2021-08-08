@@ -147,7 +147,7 @@ class _MyAccountState extends State<MyAccount> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height + 100,
                     width: MediaQuery.of(context).size.width,
                     //     color: Colors.yellow,
                   ),
@@ -356,7 +356,7 @@ class _MyAccountState extends State<MyAccount> {
                                                   child: RaisedButton(
                                                     color: Theme.of(context).accentColor,
                                                     onPressed: (){
-
+                                                      locator<AllOrdersFilterBloc>().counteryIdSink.add("");
 
                                                 print("firstValueXxX${first.value}");
                                                 print("firstValueXxX${second.value}");
@@ -405,38 +405,9 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
                                                             locator<PrefsService>().userPhoneCodeProfile = onValue.data.phoneCode;
                                                             locator<PrefsService>().userWhatsAppProfile = onValue.data.whatsapp;
                                                             locator<PrefsService>().userWhatsAppCodeProfile = onValue.data.whatsappCode;
-                                                            // locator<PrefsService>().CounteryIdProfile = onValue.data.;
-                                                            // locator<PrefsService>().CityIdProfile = onValue.data.cityId;
 
-                                                            // locator<PrefsService>().removeUserImageProfile();
-                                                            // locator<PrefsService>().removeUserNameProfile();
-                                                            // locator<PrefsService>().removeUserEmailProfile();
-                                                            // locator<PrefsService>().removeUserLastName();
-                                                            // locator<PrefsService>().removeUserPhoneProfile();
-                                                            // locator<PrefsService>().removeUserPhoneCodeProfile();
-                                                            // locator<PrefsService>().removeUserWhatsAppProfile();
-                                                            // locator<PrefsService>().removeUserWhatsAppCodeProfile();
-//                                              locator<PrefsService>().removeCounteryIdProfile();
-//                                              locator<PrefsService>().removeCityIdProfile();
 
-//                                                  showDialog(
-//                                                    context: context,
-//                                                    builder: (BuildContext
-//                                                    context) {
-//                                                      return AlertDialog(
-//                                                        title: Text(
-//                                                            onValue.msg),
-//                                                      );
-//               }
-//                                                  );
-//
-//                                                  Navigator.pop(context);
-//                                                  Navigator.pop(context);
-//                                              Navigator.pushReplacement(
-//                                                  context,
-//                                                  new MaterialPageRoute(
-//                                                      builder: (BuildContext context) => MyAccount()));
-//
+
                                                             Fluttertoast.showToast(
                                                                 msg: onValue.msg,
                                                                 toastLength: Toast.LENGTH_SHORT,
@@ -472,7 +443,7 @@ print("${firstNameController.text}  ${secondNameController.text}    ${PhoneContr
 //
 
                                                       }
-
+                                                      locator<AllOrdersFilterBloc>().counteryIdSink.add(locator<PrefsService>().appLanguage == "en"?"choose countery":"اختر دولة");
                                                     },
                                                     child: Text(
                                                       AppLocalizations.of(context).translate("Update_Profile_str") ,style: TextStyle(

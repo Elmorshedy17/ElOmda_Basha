@@ -6,6 +6,7 @@ import 'package:medicine/service/prefs_Service.dart';
 import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/blocs/filter_screen_bloc.dart';
 import 'package:medicine/src/blocs/home_page_bloc.dart';
+import 'package:medicine/src/models/delivery_models/all_notification_show_model.dart';
 import 'package:medicine/src/models/super_visor_marketers/home_model.dart';
 import 'package:medicine/src/views/screens/my_orders.dart';
 import 'package:medicine/src/views/screens/notifications.dart';
@@ -109,18 +110,18 @@ class _FilteredScreenState extends State<FilteredScreen> {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: FutureBuilder(
+                          child: FutureBuilder<AllNotificationShowModel>(
                               future: ApiService.AllNotificationShow(),
                               builder: (context, NotificationsSnapshot) {
                                 return InkWell(
                                     onTap: () {
-                                      locator<PrefsService>().NotiCount = NotificationsSnapshot.data.data.length;
+                                      locator<PrefsService>().NotiCount = NotificationsSnapshot.data.data.pagination.total;
 
                                       Navigator.push(
                                           context,
                                           new MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  Notifications(NotificationsSnapshot.data)));
+                                                  Notifications()));
                                     },
                                     child: Stack(
                                       children: <Widget>[
@@ -133,7 +134,7 @@ class _FilteredScreenState extends State<FilteredScreen> {
                                         NotificationsSnapshot.hasData?    Positioned(
                                           top: 6.0,
                                           child: Container(
-                                            child: Center(child: Text(NotificationsSnapshot.data.data.length.toString(),style: TextStyle(color: Colors.white,height: 1.5,fontSize: 10),)),
+                                            child: Center(child: Text(NotificationsSnapshot.data.data.pagination.total.toString(),style: TextStyle(color: Colors.white,height: 1.5,fontSize: 10),)),
                                             decoration: new BoxDecoration(
                                               borderRadius: new BorderRadius.all(Radius.circular(500.0),
                                               ),

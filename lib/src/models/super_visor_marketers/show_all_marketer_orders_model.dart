@@ -1,193 +1,3 @@
-// class ShowAllMarketerOrdersModel {
-//   String key;
-//   String msg;
-//   List<Data> data;
-//
-//   ShowAllMarketerOrdersModel({this.key, this.msg, this.data});
-//
-//   ShowAllMarketerOrdersModel.fromJson(Map<String, dynamic> json) {
-//     key = json['key'];
-//     msg = json['msg'];
-//     if (json['data'] != null) {
-//       data = new List<Data>();
-//       json['data'].forEach((v) {
-//         data.add(new Data.fromJson(v));
-//       });
-//     }
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['key'] = this.key;
-//     data['msg'] = this.msg;
-//     if (this.data != null) {
-//       data['data'] = this.data.map((v) => v.toJson()).toList();
-//     }
-//     return data;
-//   }
-// }
-//
-// class Data {
-//   var id;
-//   String status;
-//   String name;
-//   String phone;
-//   String whatsapp;
-//   String date;
-//   String time;
-//   String address;
-// //  var lat;
-// //  var lng;
-//   var delivery;
-//   var total;
-//   var marketerCommission;
-//   var marketerPovar;
-//   String newOrder;
-//   String cancel;
-//   String hasProvider;
-//   String inWay;
-//   String finish;
-//   String countryTitle;
-//   String cityTitle;
-//   String delegateName;
-//   String delegateAvatar;
-//   List<OrderItems> orderItems;
-//
-//   Data(
-//       {this.id,
-//         this.status,
-//         this.name,
-//         this.phone,
-//         this.whatsapp,
-//         this.date,
-//         this.time,
-//         this.address,
-// //        this.lat,
-// //        this.lng,
-//         this.delivery,
-//         this.total,
-//         this.marketerCommission,
-//         this.marketerPovar,
-//         this.newOrder,
-//         this.cancel,
-//         this.hasProvider,
-//         this.inWay,
-//         this.finish,
-//         this.countryTitle,
-//         this.cityTitle,
-//         this.delegateName,
-//         this.delegateAvatar,
-//         this.orderItems});
-//
-//   Data.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     status = json['status'];
-//     name = json['name'];
-//     phone = json['phone'];
-//     whatsapp = json['whatsapp'];
-//     date = json['date'];
-//     time = json['time'];
-//     address = json['address'];
-// //    lat = json['lat'];
-// //    lng = json['lng'];
-//     delivery = json['delivery'];
-//     total = json['total'];
-//     marketerCommission = json['marketer_commission'];
-//     marketerPovar = json['marketer_povar'];
-//     newOrder = json['new_order'];
-//     cancel = json['cancel'];
-//     hasProvider = json['has_provider'];
-//     inWay = json['in_way'];
-//     finish = json['finish'];
-//     countryTitle = json['country_title'];
-//     cityTitle = json['city_title'];
-//     delegateName = json['delegate_name'];
-//     delegateAvatar = json['delegate_avatar'];
-//     if (json['order_items'] != null) {
-//       orderItems = new List<OrderItems>();
-//       json['order_items'].forEach((v) {
-//         orderItems.add(new OrderItems.fromJson(v));
-//       });
-//     }
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['status'] = this.status;
-//     data['name'] = this.name;
-//     data['phone'] = this.phone;
-//     data['whatsapp'] = this.whatsapp;
-//     data['date'] = this.date;
-//     data['time'] = this.time;
-//     data['address'] = this.address;
-// //    data['lat'] = this.lat;
-// //    data['lng'] = this.lng;
-//     data['delivery'] = this.delivery;
-//     data['total'] = this.total;
-//     data['marketer_commission'] = this.marketerCommission;
-//     data['marketer_povar'] = this.marketerPovar;
-//     data['new_order'] = this.newOrder;
-//     data['cancel'] = this.cancel;
-//     data['has_provider'] = this.hasProvider;
-//     data['in_way'] = this.inWay;
-//     data['finish'] = this.finish;
-//     data['country_title'] = this.countryTitle;
-//     data['city_title'] = this.cityTitle;
-//     data['delegate_name'] = this.delegateName;
-//     data['delegate_avatar'] = this.delegateAvatar;
-//     if (this.orderItems != null) {
-//       data['order_items'] = this.orderItems.map((v) => v.toJson()).toList();
-//     }
-//     return data;
-//   }
-// }
-//
-// class OrderItems {
-//   var orderItemId;
-//   var sectionId;
-//   String sectionTitle;
-//   String sectionDesc;
-//   var sectionPrice;
-//   String sectionImage;
-//   var quantity;
-//   var total;
-//
-//   OrderItems(
-//       {this.orderItemId,
-//         this.sectionId,
-//         this.sectionTitle,
-//         this.sectionDesc,
-//         this.sectionPrice,
-//         this.sectionImage,
-//         this.quantity,
-//         this.total});
-//
-//   OrderItems.fromJson(Map<String, dynamic> json) {
-//     orderItemId = json['order_item_id'];
-//     sectionId = json['section_id'];
-//     sectionTitle = json['section_title'];
-//     sectionDesc = json['section_desc'];
-//     sectionPrice = json['section_price'];
-//     sectionImage = json['section_image'];
-//     quantity = json['quantity'];
-//     total = json['total'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['order_item_id'] = this.orderItemId;
-//     data['section_id'] = this.sectionId;
-//     data['section_title'] = this.sectionTitle;
-//     data['section_desc'] = this.sectionDesc;
-//     data['section_price'] = this.sectionPrice;
-//     data['section_image'] = this.sectionImage;
-//     data['quantity'] = this.quantity;
-//     data['total'] = this.total;
-//     return data;
-//   }
-// }
-
 class ShowAllMarketerOrdersModel {
   String key;
   String msg;
@@ -255,6 +65,7 @@ class DataInner {
   String name;
   String phone;
   String whatsapp;
+  String phoneWithoutCode;
   String date;
   String time;
   String address;
@@ -292,6 +103,7 @@ class DataInner {
         this.name,
         this.phone,
         this.whatsapp,
+        this.phoneWithoutCode,
         this.date,
         this.time,
         this.address,
@@ -328,6 +140,7 @@ class DataInner {
     name = json['name'];
     phone = json['phone'];
     whatsapp = json['whatsapp'];
+    phoneWithoutCode = json['phone_without_code'];
     date = json['date'];
     time = json['time'];
     address = json['address'];
@@ -376,6 +189,7 @@ class DataInner {
     data['name'] = this.name;
     data['phone'] = this.phone;
     data['whatsapp'] = this.whatsapp;
+    data['phone_without_code'] = this.phoneWithoutCode;
     data['date'] = this.date;
     data['time'] = this.time;
     data['address'] = this.address;

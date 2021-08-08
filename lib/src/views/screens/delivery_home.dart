@@ -1,4 +1,3 @@
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:medicine/src/blocs/api_blocs/currenct_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/delivery_coasts_bloc.dart';
 import 'package:medicine/src/blocs/firebase_token_bloc.dart';
 import 'package:medicine/src/blocs/local_firebase_bloc.dart';
+import 'package:medicine/src/models/delivery_models/all_notification_show_model.dart';
 import 'package:medicine/src/views/screens/delivery_order_details.dart';
 import 'package:medicine/src/views/screens/notifications.dart';
 import 'package:medicine/src/views/widgets/drawer.dart';
@@ -208,24 +208,21 @@ print("hathat");
                         children: <Widget>[
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: FutureBuilder(
+                            child: FutureBuilder<AllNotificationShowModel>(
                                 future: ApiService.AllNotificationShow(),
                                 builder: (context, NotificationsSnapshot) {
                                   return InkWell(
                                       onTap: () {
                                         print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
 setState(() {
-  locator<PrefsService>().NotiCount = NotificationsSnapshot.data.data.length;
-
+  locator<PrefsService>().NotiCount = NotificationsSnapshot.data.data.pagination.total;
 });
                                         Navigator.push(
                                             context,
                                             new MaterialPageRoute(
                                                 builder: (BuildContext
                                                 context) =>
-                                                    Notifications(
-                                                        NotificationsSnapshot
-                                                            .data)));
+                                                    Notifications()));
                                         print("locator<PrefsService>().NotiCount${locator<PrefsService>().NotiCount}");
                                       },
                                       child: Stack(
@@ -240,7 +237,7 @@ setState(() {
                                             top: 6.0,
                                             child: Container(
                                               child: Center(
-                                                  child: Text("${NotificationsSnapshot.data.data.length - locator<PrefsService>().NotiCount}",
+                                                  child: Text("${NotificationsSnapshot.data.data.pagination.total - locator<PrefsService>().NotiCount}",
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         height: 1.5,fontSize: 10),

@@ -5,6 +5,7 @@ import 'package:medicine/src/blocs/all_orders_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/check_code_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/currenct_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/delivery_coasts_bloc.dart';
+import 'package:medicine/src/blocs/api_blocs/notifications_manger.dart';
 import 'package:medicine/src/blocs/api_blocs/show_service_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/update_cart_bloc.dart';
 import 'package:medicine/src/blocs/carousel_indicator.dart';
@@ -76,4 +77,5 @@ void setupLocator() async {
   locator.registerLazySingleton<FirebaseTokenBloc>(() => FirebaseTokenBloc());
   locator.registerLazySingleton<IsLoadingManager>(() => IsLoadingManager());
   locator.registerLazySingleton<ResendOrderDetailsBloc>(() => ResendOrderDetailsBloc());
+  locator.registerLazySingleton<NotificationsBloc>(() => NotificationsBloc());
 }

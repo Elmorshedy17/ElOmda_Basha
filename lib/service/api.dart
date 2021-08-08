@@ -7,6 +7,7 @@ import 'package:medicine/service/service_locator.dart';
 import 'package:medicine/src/blocs/all_orders_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/check_code_bloc.dart';
 import 'package:medicine/src/blocs/api_blocs/login_api_bloc.dart';
+import 'package:medicine/src/blocs/api_blocs/notifications_manger.dart';
 import 'package:medicine/src/blocs/api_blocs/show_service_bloc.dart';
 import 'package:medicine/src/blocs/change_password_bloc.dart';
 import 'package:medicine/src/blocs/contact_admin_bloc.dart';
@@ -1881,6 +1882,7 @@ var showUrl = "show-all-marketer-orders?page=${locator<AllOrdersFilterBloc>().cu
         '$BASE_URL$All_Notification_Show',
         data: {
           "user_id":GlobalUserId,
+          "page":locator<NotificationsBloc>().currentPageControllerValue
         },
       );
       return AllNotificationShowModel.fromJson(response.data);
