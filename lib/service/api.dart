@@ -594,7 +594,7 @@ class ApiService {
       "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
       "notify_send":locator<PrefsService>().notifySend,
       "account_number":"$accountNumber",
-      "country_id": locator<AllOrdersFilterBloc>().currentCounteryId,
+      "country_id": locator<AllOrdersFilterBloc>().currentCounteryId == (locator<PrefsService>().appLanguage == "en"?"choose countery":"اختر دولة")? "" :locator<AllOrdersFilterBloc>().currentCounteryId,
     }):
     FormData.fromMap({
       "lang":locator<PrefsService>().appLanguage,
@@ -620,7 +620,7 @@ class ApiService {
       "device_id": locator<FirebaseTokenBloc>().currentFirebaseToken,
       "notify_send":locator<PrefsService>().notifySend,
       "account_number":"$accountNumber",
-    "country_id": locator<AllOrdersFilterBloc>().currentCounteryId,
+    "country_id": locator<AllOrdersFilterBloc>().currentCounteryId == (locator<PrefsService>().appLanguage == "en"?"choose countery":"اختر دولة")? "" :locator<AllOrdersFilterBloc>().currentCounteryId,
 
     });
 //     FormData formData = SelectedImagePath != null? FormData.fromMap({
